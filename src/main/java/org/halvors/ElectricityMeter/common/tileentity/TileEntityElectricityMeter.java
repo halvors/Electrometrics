@@ -1,6 +1,8 @@
 package org.halvors.ElectricityMeter.common.tileentity;
 
-public class TileEntityElectricityMeter extends TileEntityContainer {
+import net.minecraft.tileentity.TileEntity;
+
+public class TileEntityElectricityMeter extends TileEntity {
 	public TileEntityElectricityMeter() {
 		
 	}

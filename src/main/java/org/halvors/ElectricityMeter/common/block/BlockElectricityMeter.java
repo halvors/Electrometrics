@@ -20,10 +20,10 @@ public class BlockElectricityMeter extends BlockContainer {
 	public BlockElectricityMeter() {
 		super(Material.iron);
 
-		setBlockName("blockSolarPanel");
+		setBlockName("blockElectricityMeter");
 		setHardness(3.5F);
 		setResistance(8F);
-		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.3F, 1.0F);
+		//setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.3F, 1.0F);
 		setCreativeTab(ElectricityMeter.tabElectricityMeter);
 		setStepSound(soundTypeMetal);
 	}
@@ -37,11 +37,11 @@ public class BlockElectricityMeter extends BlockContainer {
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
 		topIcon = iconRegister.registerIcon(Reference.PREFIX
-				+ "blockSolarPanel_top");
+				+ "blockElectricityMeter_top");
 		sideIcon = iconRegister.registerIcon(Reference.PREFIX
-				+ "blockSolarPanel_side");
+				+ "blockElectricityMeter_side");
 		bottomIcon = iconRegister.registerIcon(Reference.PREFIX
-				+ "blockSolarPanel_bottom");
+				+ "blockElectricityMeter_bottom");
 	}
 
 	@Override
