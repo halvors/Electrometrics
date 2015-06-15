@@ -75,7 +75,7 @@ public class BlockElectricityMeter extends BlockContainer {
 
 			player.addChatMessage(new ChatComponentText("[ElectricityMeter]"));
 			player.addChatMessage(new ChatComponentText("A total of " + tileEntityElectricityMeter.getElectricityCount() + " has passed thru."));
-			player.addChatMessage(new ChatComponentText("A total of " + tileEntityElectricityMeter.getEnergy() + " is stored."));
+			//player.addChatMessage(new ChatComponentText("A total of " + tileEntityElectricityMeter.getEnergy() + " is stored."));
 
 			return true;
 		}
