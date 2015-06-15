@@ -22,6 +22,11 @@ public class TileEntityElectricityMeter extends TileEntity implements IEnergyPro
 	}
 
 	@Override
+	public void updateEntity() {
+		super.updateEntity();
+	}
+
+	@Override
 	public void readFromNBT(NBTTagCompound nbtTags) {
 		super.readFromNBT(nbtTags);
 		storage.readFromNBT(nbtTags);
