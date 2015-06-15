@@ -1,141 +1,87 @@
 package org.halvors.ElectricityMeter;
 
-import nova.core.block.BlockFactory;
-import nova.core.block.BlockManager;
-import nova.core.component.Category;
-import nova.core.gui.factory.GuiFactory;
-import nova.core.gui.factory.GuiManager;
-import nova.core.item.ItemFactory;
-import nova.core.item.ItemManager;
-import nova.core.loader.Loadable;
-import nova.core.loader.NovaMod;
-import nova.core.nativewrapper.NativeManager;
-import nova.core.network.NetworkManager;
-import nova.core.recipes.RecipeManager;
-import nova.core.recipes.crafting.ItemIngredient;
-import nova.core.recipes.crafting.ShapedCraftingRecipe;
-import nova.core.render.RenderManager;
-import nova.core.render.texture.BlockTexture;
-import org.halvors.ElectricityMeter.block.BlockElectricityMeter;
-import org.halvors.ElectricityMeter.gui.GuiBasic;
-import org.halvors.ElectricityMeter.gui.GuiElectricityMeter;
 
-import java.util.ArrayList;
-import java.util.List;
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.block.Block;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import org.halvors.ElectricityMeter.common.CommonProxy;
+import org.halvors.ElectricityMeter.common.block.BlockElectricityMeter;
+import org.halvors.ElectricityMeter.common.tileentity.TileEntityElectricityMeter;
 
-/**
- * ConcentratedSolars is a NOVA mod that adds solar power sources to the game.
- *
- * @author halvors
- */
-@NovaMod(id = Reference.ID, name = Reference.NAME, version = Reference.VERSION, novaVersion = Reference.NOVA_VERSION)
-public class ElectricityMeter implements Loadable {
-	private static ElectricityMeter instance;
+@Mod(modid = Reference.ID, name = Reference.NAME, version = Reference.VERSION)
+public class ElectricityMeter {
+	// Says where the client and server 'proxy' code is loaded.
+	@SidedProxy(clientSide = "org.halvors.ElectricityMeter.client.ClientProxy", serverSide = "org.halvors.ElectricityMeter.common.CommonProxy")
+	public static CommonProxy proxy;
+
+	// The instance of your mod that Forge uses.
+	@Instance(value = Reference.ID)
+	public static ElectricityMeter instance;
 
 	// Blocks
-	public static BlockFactory blockElectricityMeter;
+	public static Block blockElectricityMeter;
 
 	// Items
-	public static ItemFactory itemElectricityMeter;
 
-	// Textures
-	public static BlockTexture blockElectricityMeterTexture;
-	public static BlockTexture blockElectricityMeterTextureSide;
+	// Creative tab
+	public static CreativeTabElectricityMeter tabElectricityMeter = new CreativeTabElectricityMeter();
 
-	// GUIs
-	public static GuiFactory guiBasic;
-	public static GuiFactory guiElectricityMeter;
+	@EventHandler
+	public void preInit(FMLPreInitializationEvent event) {
 
-	// Category
-	public final Category category = new Category("categoryElectricityMeter");
-
-	// Managers
-	public final BlockManager blockManager;
-	public final ItemManager itemManager;
-	public final RenderManager renderManager;
-	public final NativeManager nativeManager;
-	public final NetworkManager networkManager;
-	public final RecipeManager recipeManager;
-	public final GuiManager guiManager;
-
-	public ElectricityMeter(BlockManager blockManager,
-							ItemManager itemManager,
-							RenderManager renderManager,
-							NativeManager nativeManager,
-							NetworkManager networkManager,
-							RecipeManager recipeManager,
-							GuiManager guiManager) {
-		instance = this;
-
-		this.blockManager = blockManager;
-		this.itemManager = itemManager;
-		this.renderManager = renderManager;
-		this.nativeManager = nativeManager;
-		this.networkManager = networkManager;
-		this.recipeManager = recipeManager;
-		this.guiManager = guiManager;
 	}
 
-	@Override
-	public void preInit() {
+	@EventHandler
+	public void init(FMLInitializationEvent event) {
+		proxy.registerRenderers();
+
+		// Register GUI handler.
+		//NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
+
+		// Call functions for adding blocks etc.
 		addBlocks();
 		addItems();
-		addTextures();
+		addTileEntities();
 		addRecipes();
-		addGUIs();
 	}
 
-	@Override
-	public void init() {
-
-	}
-
-	@Override
-	public void postInit() {
-
-	}
-
-	/**
-	 * Returns the instance of this mod.
-	 */
-	public static ElectricityMeter getInstance() {
-		return instance;
+	@EventHandler
+	public void postInit(FMLPostInitializationEvent event) {
+		// Nothing to see here.
 	}
 
 	public void addBlocks() {
 		// Create blocks.
-		blockElectricityMeter = blockManager.register(BlockElectricityMeter.class);
+		blockElectricityMeter = new BlockElectricityMeter();
+
+		// Register blocks.
+		GameRegistry.registerBlock(blockElectricityMeter, "blockElectricityMeter");
 	}
 
 	public void addItems() {
 		// Create items.
-		itemElectricityMeter = itemManager.getItemFromBlock(blockElectricityMeter);
+
+		// Register items.
 	}
 
-	public void addTextures() {
-		// Create textures.
-		blockElectricityMeterTexture = renderManager.registerTexture(new BlockTexture(Reference.ID, "blockElectricityMeter"));
-		blockElectricityMeterTextureSide = renderManager.registerTexture(new BlockTexture(Reference.ID, "blockElectricityMeterSide"));
+	public void addTileEntities() {
+		// Register tile entities.
+		GameRegistry.registerTileEntity(TileEntityElectricityMeter.class, "tileEntityElectricityMeter");
 	}
 
 	public void addRecipes() {
-		// Create recipes.
-		ItemIngredient glassPaneIngredient = ItemIngredient.forDictionary("paneGlass");
-		ItemIngredient ironIngotIngredient = ItemIngredient.forDictionary("ingotIron");
-		ItemIngredient goldIngotIngredient = ItemIngredient.forDictionary("ingotGold");
-		ItemIngredient dustRedstoneIngredient = ItemIngredient.forDictionary("dustRedstone");
-
 		// Register recipes.
-		recipeManager.addRecipe(new ShapedCraftingRecipe(itemElectricityMeter.makeItem(), "AAA-BCB-BDB",
-				glassPaneIngredient,
-				ironIngotIngredient,
-				goldIngotIngredient,
-				dustRedstoneIngredient));
-	}
-
-	public void addGUIs() {
-		// Create GUIs.
-		guiBasic = guiManager.register(() -> new GuiBasic());
-		guiElectricityMeter = guiManager.register(() -> new GuiElectricityMeter());
+		GameRegistry.addRecipe(new ItemStack(blockElectricityMeter),
+				"III",
+				"RCR",
+				"III", 'I', Items.iron_ingot, 'C', Items.clock, 'R', Items.redstone);
 	}
 }

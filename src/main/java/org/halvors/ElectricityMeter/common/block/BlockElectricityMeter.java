@@ -7,6 +7,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import org.halvors.ElectricityMeter.ElectricityMeter;
@@ -66,17 +67,19 @@ public class BlockElectricityMeter extends BlockContainer {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z,
-			EntityPlayer player, int metadata, float what, float these,
-			float are) {
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int facing, float playerX, float playerY, float playerZ) {
 		TileEntity tileEntity = world.getTileEntity(x, y, z);
 
-		if (tileEntity == null || player.isSneaking()) {
-			return false;
+		if (tileEntity instanceof TileEntityElectricityMeter) {
+			TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
+
+			player.addChatMessage(new ChatComponentText("[ElectricityMeter]"));
+			player.addChatMessage(new ChatComponentText("A total of " + tileEntityElectricityMeter.getElectricityCount() + " has passed thru."));
+			player.addChatMessage(new ChatComponentText("A total of " + tileEntityElectricityMeter.getEnergy() + " is stored."));
+
+			return true;
 		}
 
-		player.openGui(ElectricityMeter.instance, 0, world, x, y, z);
-
-		return true;
+		return false;
 	}
 }
