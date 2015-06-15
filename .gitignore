@@ -16,7 +16,6 @@ build
 output
 .gradle
 /run
-/gradle
 *.bat
 *.classpath
 *.project
@@ -24,5 +23,9 @@ output
 /bin
 /eclipse
 *.txt
-gradlew
+/config
+/logs
+
+// IntelliJ
 .idea
+*.iml
