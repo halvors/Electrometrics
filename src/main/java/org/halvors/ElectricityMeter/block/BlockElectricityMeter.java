@@ -21,7 +21,7 @@ public class BlockElectricityMeter extends BlockBasic implements Stateful {
     public BlockElectricityMeter() {
         super();
 
-        collider.setBoundingBox(new Cuboid(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F));
+        collider.setBoundingBox(new Cuboid(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F));
         collider.isOpaqueCube(false);
 
         renderer.setTexture((direction) -> Optional.of(ElectricityMeter.blockElectricityMeterTexture));

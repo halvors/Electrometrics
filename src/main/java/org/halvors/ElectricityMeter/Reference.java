@@ -4,7 +4,7 @@ public class Reference {
 	/** 
 	 * The official name of the mod.
 	 */
-	public static final String ID = "ElectricityMeter";
+	public static final String ID = "electricitymeter";
 	public static final String NAME = "Electricity Meter";
 	public static final String MAJOR_VERSION = "@MAJOR@";
 	public static final String MINOR_VERSION = "@MINOR@";
