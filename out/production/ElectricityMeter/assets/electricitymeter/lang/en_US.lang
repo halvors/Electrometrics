@@ -1,0 +1,10 @@
+// Creative tab
+itemGroup.tabConcentratedSolars=Concentrated Solars
+
+// Items
+item.itemMirror.name=Mirror
+item.itemParabol.name=Parabol
+
+// Blocks
+tile.blockSolarPanel.name=Solar Panel
+tile.blockDishStirling.name=Dish Stirling

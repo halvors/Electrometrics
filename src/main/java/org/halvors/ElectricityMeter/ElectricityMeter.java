@@ -3,6 +3,7 @@ package org.halvors.ElectricityMeter;
 import nova.core.block.BlockFactory;
 import nova.core.block.BlockManager;
 import nova.core.component.Category;
+import nova.core.game.ClientManager;
 import nova.core.gui.factory.GuiFactory;
 import nova.core.gui.factory.GuiManager;
 import nova.core.item.ItemFactory;
@@ -135,7 +136,6 @@ public class ElectricityMeter implements Loadable {
 
 	public void addGUIs() {
 		// Create GUIs.
-		guiBasic = guiManager.register(() -> new GuiBasic());
 		guiElectricityMeter = guiManager.register(() -> new GuiElectricityMeter());
 	}
 }
