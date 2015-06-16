@@ -62,8 +62,7 @@ processResources
     }
 }
 
-allprojects {
-    apply plugin: 'java'
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
-}
+// We use Java 8.
+apply plugin: 'java'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
