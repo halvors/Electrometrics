@@ -37,12 +37,11 @@ public class BlockElectricityMeter extends BlockContainer {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
-		topIcon = iconRegister.registerIcon(Reference.PREFIX
-				+ "blockElectricityMeter_top");
-		sideIcon = iconRegister.registerIcon(Reference.PREFIX
-				+ "blockElectricityMeter_side");
-		bottomIcon = iconRegister.registerIcon(Reference.PREFIX
-				+ "blockElectricityMeter_bottom");
+		topIcon = iconRegister.registerIcon(Reference.PREFIX + "blockElectricityMeter");
+		sideIcon = iconRegister.registerIcon(Reference.PREFIX + "blockElectricityMeterSide");
+
+		//bottomIcon = iconRegister.registerIcon(Reference.PREFIX
+		//		+ "blockElectricityMeter_bottom");
 	}
 
 	@Override
@@ -74,8 +73,8 @@ public class BlockElectricityMeter extends BlockContainer {
 			TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
 
 			player.addChatMessage(new ChatComponentText("[ElectricityMeter]"));
-			player.addChatMessage(new ChatComponentText("A total of " + tileEntityElectricityMeter.getElectricityCount() + " has passed thru."));
-			//player.addChatMessage(new ChatComponentText("A total of " + tileEntityElectricityMeter.getEnergy() + " is stored."));
+			player.addChatMessage(new ChatComponentText("A total of " + tileEntityElectricityMeter.getElectricityCount() + " RF has passed thru."));
+			player.addChatMessage(new ChatComponentText("A total of " + (tileEntityElectricityMeter.getElectricityCount() * 10) + " J has passed thru."));
 
 			return true;
 		}
