@@ -88,7 +88,7 @@ public class TileEntityElectricityMeter extends TileEntity implements IEnergyPro
 
 			if (tileEntity instanceof IEnergyReceiver) {
 				IEnergyReceiver receiver = (IEnergyReceiver) tileEntity;
-				extractEnergy(direction.getOpposite(), receiver.receiveEnergy(direction.getOpposite(), storage.getMaxExtract(), false), false);
+				extractEnergy(direction.getOpposite(), receiver.receiveEnergy(direction.getOpposite(), storage.getEnergyStored(), false), false);
 			}
 		}
 	}
