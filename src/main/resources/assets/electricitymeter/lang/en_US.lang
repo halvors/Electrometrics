@@ -1,10 +1,7 @@
-// Creative tab
-itemGroup.tabConcentratedSolars=Concentrated Solars
-
-// Items
-item.itemMirror.name=Mirror
-item.itemParabol.name=Parabol
+# Electricity Meter Language Properties
 
 // Blocks
-tile.blockSolarPanel.name=Solar Panel
-tile.blockDishStirling.name=Dish Stirling
+tile.blockElectricityMeter.name=Electricity Meter
+
+// Creative tab
+itemGroup.tabElectricityMeter=Electricity Meter

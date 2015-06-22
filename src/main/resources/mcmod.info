@@ -1,6 +1,6 @@
 [
 {
-  "modid": "ElectricityMeter",
+  "modid": "electricitymeter",
   "name": "Electricity Meter",
   "description": "Electricity Meter is a Minecraft mod that let you keep count of the amount of electricity flowing thru it.",
   "version": "${version}",
