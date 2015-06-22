@@ -1,12 +1,12 @@
 package org.halvors.ElectricityMeter;
 
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-public class CreativeTabElectricityMeter extends CreativeTabs {
-    public CreativeTabElectricityMeter() {
+public class CreativeTab extends CreativeTabs {
+    public CreativeTab() {
         super("tabElectricityMeter");
     }
 
@@ -17,6 +17,6 @@ public class CreativeTabElectricityMeter extends CreativeTabs {
 
     @Override
     public Item getTabIconItem() {
-        return Items.clock;
+        return new ItemBlock(ElectricityMeter.blockElectricityMeter);
     }
 }

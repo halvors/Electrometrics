@@ -7,6 +7,7 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
@@ -31,7 +32,7 @@ public class ElectricityMeter {
 	// Items
 
 	// Creative tab
-	public static CreativeTabElectricityMeter tabElectricityMeter = new CreativeTabElectricityMeter();
+	public static CreativeTab tabElectricityMeter = new CreativeTab();
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
@@ -42,14 +43,14 @@ public class ElectricityMeter {
 	public void init(FMLInitializationEvent event) {
 		proxy.registerRenderers();
 
-		// Register GUI handler.
-		//NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
-
-		// Call functions for adding blocks etc.
+		// Call functions for adding blocks, items, etc.
 		addBlocks();
 		addItems();
 		addTileEntities();
 		addRecipes();
+
+		// Register the proxy as our GuiHandler.
+		NetworkRegistry.INSTANCE.registerGuiHandler(instance, proxy);
 	}
 
 	@EventHandler

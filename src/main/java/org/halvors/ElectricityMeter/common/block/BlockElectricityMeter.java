@@ -39,9 +39,7 @@ public class BlockElectricityMeter extends BlockContainer {
 	public void registerBlockIcons(IIconRegister iconRegister) {
 		topIcon = iconRegister.registerIcon(Reference.PREFIX + "blockElectricityMeter");
 		sideIcon = iconRegister.registerIcon(Reference.PREFIX + "blockElectricityMeterSide");
-
-		//bottomIcon = iconRegister.registerIcon(Reference.PREFIX
-		//		+ "blockElectricityMeter_bottom");
+		bottomIcon = iconRegister.registerIcon(Reference.PREFIX + "blockElectricityMeterSide");
 	}
 
 	@Override
@@ -67,16 +65,23 @@ public class BlockElectricityMeter extends BlockContainer {
 
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int facing, float playerX, float playerY, float playerZ) {
-		TileEntity tileEntity = world.getTileEntity(x, y, z);
-
-		if (tileEntity instanceof TileEntityElectricityMeter) {
-			TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
-
-			player.addChatMessage(new ChatComponentText("[ElectricityMeter]"));
-			player.addChatMessage(new ChatComponentText("A total of " + tileEntityElectricityMeter.getElectricityCount() + " RF has passed thru."));
-			player.addChatMessage(new ChatComponentText("A total of " + (tileEntityElectricityMeter.getElectricityCount() * 10) + " J has passed thru."));
+		if (!player.isSneaking()) {
+			// Open the GUI.
+			player.openGui(ElectricityMeter.instance, 0, world, x, y, z);
 
 			return true;
+		} else {
+			TileEntity tileEntity = world.getTileEntity(x, y, z);
+
+			if (tileEntity instanceof TileEntityElectricityMeter) {
+				TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
+
+				player.addChatMessage(new ChatComponentText("[ElectricityMeter]"));
+				player.addChatMessage(new ChatComponentText("A total of " + tileEntityElectricityMeter.getElectricityCount() + " RF has passed thru."));
+				player.addChatMessage(new ChatComponentText("A total of " + (tileEntityElectricityMeter.getElectricityCount() * 10) + " J has passed thru."));
+
+				return true;
+			}
 		}
 
 		return false;
