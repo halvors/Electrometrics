@@ -18,6 +18,4 @@ public class Reference {
 	public static final String DOMAIN = "electricitymeter";
 	public static final String PREFIX = DOMAIN + ":";
 	public static final String DIRECTORY = "/assets/" + DOMAIN + "/";
-
-	public static final String NOVA_VERSION = "0.0.1";
 }

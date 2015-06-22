@@ -8,7 +8,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntityElectricityMeter extends TileEntity implements IEnergyProvider, IEnergyReceiver {
-	private EnergyStorage storage = new EnergyStorage(64000);
+	private EnergyStorage storage = new EnergyStorage(1024);
 
 	/* The amount of energy that has passed thru. */
 	private double electricityCount;
@@ -46,13 +46,16 @@ public class TileEntityElectricityMeter extends TileEntity implements IEnergyPro
 
 	@Override
 	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+		// Add the amount of energy we're extracting to the counter.
+		if (!simulate) {
+			electricityCount += maxExtract;
+		}
+
 		return storage.extractEnergy(maxExtract, simulate);
 	}
 
 	@Override
 	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-		electricityCount += maxReceive;
-
 		return storage.receiveEnergy(maxReceive, simulate);
 	}
 
