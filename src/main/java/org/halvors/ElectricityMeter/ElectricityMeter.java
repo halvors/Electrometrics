@@ -15,7 +15,7 @@ import org.halvors.ElectricityMeter.common.CommonProxy;
 import org.halvors.ElectricityMeter.common.block.BlockElectricityMeter;
 import org.halvors.ElectricityMeter.common.tileentity.TileEntityElectricityMeter;
 
-@Mod(modid = Reference.ID, name = Reference.NAME, version = Reference.VERSION)
+@Mod(modid = Reference.ID, name = Reference.NAME, version = Reference.VERSION, dependencies = "after:CoFHCore")
 public class ElectricityMeter {
 	// Says where the client and server 'proxy' code is loaded.
 	@SidedProxy(clientSide = "org.halvors.ElectricityMeter.client.ClientProxy", serverSide = "org.halvors.ElectricityMeter.common.CommonProxy")

@@ -8,7 +8,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntityElectricityMeter extends TileEntity implements IEnergyProvider, IEnergyReceiver {
-	private EnergyStorage storage = new EnergyStorage(32000);
+	private EnergyStorage storage = new EnergyStorage(64000);
 
 	/* The amount of energy that has passed thru. */
 	private double electricityCount;
@@ -17,13 +17,15 @@ public class TileEntityElectricityMeter extends TileEntity implements IEnergyPro
 
 	}
 
-	public double getElectricityCount() {
-		return electricityCount;
-	}
-
 	@Override
 	public void updateEntity() {
 		super.updateEntity();
+
+		if (!worldObj.isRemote) {
+			if (storage.getEnergyStored() > 0) {
+				transferEnergy();
+			}
+		}
 	}
 
 	@Override
@@ -49,6 +51,8 @@ public class TileEntityElectricityMeter extends TileEntity implements IEnergyPro
 
 	@Override
 	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+		electricityCount += maxReceive;
+
 		return storage.receiveEnergy(maxReceive, simulate);
 	}
 
@@ -65,5 +69,27 @@ public class TileEntityElectricityMeter extends TileEntity implements IEnergyPro
 	@Override
 	public boolean canConnectEnergy(ForgeDirection from) {
 		return true;
+	}
+
+	/**
+	 * Returns the amount of energy that this block has totally received.
+	 */
+	public double getElectricityCount() {
+		return electricityCount;
+	}
+
+	/**
+	 * Transfer energy to any blocks demanding energy that are connected to
+	 * this one.
+	 */
+	private void transferEnergy() {
+		for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
+			TileEntity tileEntity = worldObj.getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
+
+			if (tileEntity instanceof IEnergyReceiver) {
+				IEnergyReceiver receiver = (IEnergyReceiver) tileEntity;
+				extractEnergy(direction.getOpposite(), receiver.receiveEnergy(direction.getOpposite(), storage.getMaxExtract(), false), false);
+			}
+		}
 	}
 }
