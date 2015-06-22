@@ -9,14 +9,16 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import org.halvors.ElectricityMeter.ElectricityMeter;
 import org.halvors.ElectricityMeter.Reference;
+import org.halvors.ElectricityMeter.common.UnitDisplay;
 import org.halvors.ElectricityMeter.common.tileentity.TileEntityElectricityMeter;
 
 public class BlockElectricityMeter extends BlockContainer {
 	@SideOnly(Side.CLIENT)
-	public static IIcon topIcon, sideIcon, bottomIcon;
+	public static IIcon icon, frontIcon;
 
 	public BlockElectricityMeter() {
 		super(Material.iron);
@@ -37,23 +39,19 @@ public class BlockElectricityMeter extends BlockContainer {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
-		topIcon = iconRegister.registerIcon(Reference.PREFIX + "blockElectricityMeter");
-		sideIcon = iconRegister.registerIcon(Reference.PREFIX + "blockElectricityMeterSide");
-		bottomIcon = iconRegister.registerIcon(Reference.PREFIX + "blockElectricityMeterSide");
+		icon = iconRegister.registerIcon(Reference.PREFIX + "blockElectricityMeter");
+		frontIcon = iconRegister.registerIcon(Reference.PREFIX + "blockElectricityMeterFront");
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int meta) {
 		switch (side) {
-		case 1:
-			return topIcon;
-
-		case 0:
-			return bottomIcon;
+		case 2:
+			return frontIcon;
 
 		default:
-			return sideIcon;
+			return icon;
 		}
 	}
 
@@ -77,8 +75,10 @@ public class BlockElectricityMeter extends BlockContainer {
 				TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
 
 				player.addChatMessage(new ChatComponentText("[ElectricityMeter]"));
-				player.addChatMessage(new ChatComponentText("A total of " + tileEntityElectricityMeter.getElectricityCount() + " RF has passed thru."));
-				player.addChatMessage(new ChatComponentText("A total of " + (tileEntityElectricityMeter.getElectricityCount() * 10) + " J has passed thru."));
+
+				for (UnitDisplay.Unit unit : UnitDisplay.Unit.values()) {
+					player.addChatMessage(new ChatComponentText("A total of " + UnitDisplay.getDisplayShort(tileEntityElectricityMeter.getElectricityCount(), unit) + " has passed thru."));
+				}
 
 				return true;
 			}
