@@ -39,8 +39,12 @@ public class GuiElectricityMeter extends GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTick) {
+        super.drawScreen(mouseX, mouseY, partialTick);
+
         int guiWidth = (width - xSize) / 2;
         int guiHeight = (height - ySize) / 2;
+
+        fontRendererObj.drawString("Electricity Meter", guiWidth + 8, guiHeight + 8, 0x404040);
 
         fontRendererObj.drawString("Password", guiWidth + 64, guiHeight + 5, 0x404040);
         fontRendererObj.drawString("Enter:", guiWidth + 45, guiHeight + 40, 0x404040);
@@ -51,8 +55,6 @@ public class GuiElectricityMeter extends GuiScreen {
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         */
-
-        super.drawScreen(mouseX, mouseY, partialTick);
     }
 }
 
