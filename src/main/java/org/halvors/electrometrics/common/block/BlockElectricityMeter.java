@@ -36,8 +36,8 @@ public class BlockElectricityMeter extends BlockBasic {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
-		icon = iconRegister.registerIcon(Reference.PREFIX + "blockElectricityMeter");
-		frontIcon = iconRegister.registerIcon(Reference.PREFIX + "blockElectricityMeterFront");
+		icon = iconRegister.registerIcon(Reference.BLOCK_TEXTURE_DIRECTORY + "blockElectricityMeter");
+		frontIcon = iconRegister.registerIcon(Reference.BLOCK_TEXTURE_DIRECTORY + "blockElectricityMeterFront");
 	}
 
 	@Override

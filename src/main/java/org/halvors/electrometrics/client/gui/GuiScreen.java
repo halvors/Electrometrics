@@ -5,7 +5,7 @@ import org.halvors.electrometrics.Reference;
 import org.lwjgl.opengl.GL11;
 
 public class GuiScreen extends net.minecraft.client.gui.GuiScreen {
-    private static final ResourceLocation texture = new ResourceLocation(Reference.DOMAIN, "gui/guiBlank.png");
+    private static final ResourceLocation texture = new ResourceLocation(Reference.GUI_DIRECTORY, "guiBlank.png");
 
     protected int xSize = 176;
     protected int ySize = 166;
