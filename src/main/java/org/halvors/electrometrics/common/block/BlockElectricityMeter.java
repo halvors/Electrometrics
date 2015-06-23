@@ -36,8 +36,8 @@ public class BlockElectricityMeter extends BlockBasic {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
-		icon = iconRegister.registerIcon(Reference.BLOCK_TEXTURE_DIRECTORY + "blockElectricityMeter");
-		frontIcon = iconRegister.registerIcon(Reference.BLOCK_TEXTURE_DIRECTORY + "blockElectricityMeterFront");
+		icon = iconRegister.registerIcon(Reference.PREFIX + "blockElectricityMeter");
+		frontIcon = iconRegister.registerIcon(Reference.PREFIX + "blockElectricityMeterFront");
 	}
 
 	@Override
@@ -60,21 +60,23 @@ public class BlockElectricityMeter extends BlockBasic {
 				player.openGui(Electrometrics.instance, 0, world, x, y, z);
 
 				return true;
-			} else {
-				TileEntity tileEntity = world.getTileEntity(x, y, z);
-
-				if (tileEntity instanceof TileEntityElectricityMeter) {
-					TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
-
-					player.addChatMessage(new ChatComponentText("[Electricity Meter]"));
-
-					for (UnitDisplay.Unit unit : UnitDisplay.Unit.values()) {
-						player.addChatMessage(new ChatComponentText("A total of " + UnitDisplay.getDisplayShort(tileEntityElectricityMeter.getElectricityCount(), unit) + " has passed thru."));
-					}
-
-					return true;
-				}
 			}
+
+			/*
+			TileEntity tileEntity = world.getTileEntity(x, y, z);
+
+			if (tileEntity instanceof TileEntityElectricityMeter) {
+				TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
+
+				player.addChatMessage(new ChatComponentText("[Electricity Meter]"));
+
+				for (UnitDisplay.Unit unit : UnitDisplay.Unit.values()) {
+					player.addChatMessage(new ChatComponentText("A total of " + UnitDisplay.getDisplayShort(tileEntityElectricityMeter.getElectricityCount(), unit) + " has passed thru."));
+				}
+
+				return true;
+			}
+			*/
 		}
 
 		return false;

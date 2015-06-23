@@ -9,7 +9,7 @@ import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
 import org.lwjgl.opengl.GL11;
 
 public class GuiElectricityMeter1 extends GuiContainer {
-    private static final ResourceLocation texture = new ResourceLocation(Reference.DOMAIN, "textures/gui/guiElectricityMeter.png");
+    private static final ResourceLocation texture = new ResourceLocation(Reference.PREFIX + "guiElectricityMeter.png");
 
     private final TileEntityElectricityMeter tileEntity;
 
