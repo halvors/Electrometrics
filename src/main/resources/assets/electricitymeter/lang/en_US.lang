@@ -1,7 +1,0 @@
-# Electricity Meter Language Properties
-
-// Blocks
-tile.blockElectricityMeter.name=Electricity Meter
-
-// Creative tab
-itemGroup.tabElectricityMeter=Electricity Meter

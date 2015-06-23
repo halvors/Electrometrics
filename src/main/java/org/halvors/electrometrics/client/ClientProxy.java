@@ -1,11 +1,11 @@
-package org.halvors.ElectricityMeter.client;
+package org.halvors.electrometrics.client;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import org.halvors.ElectricityMeter.client.gui.GuiElectricityMeter;
-import org.halvors.ElectricityMeter.common.CommonProxy;
-import org.halvors.ElectricityMeter.common.tileentity.TileEntityElectricityMeter;
+import org.halvors.electrometrics.client.gui.GuiElectricityMeter;
+import org.halvors.electrometrics.common.CommonProxy;
+import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
 
 public class ClientProxy extends CommonProxy {
     @Override

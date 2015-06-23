@@ -1,10 +1,6 @@
-package org.halvors.ElectricityMeter.common.tileentity;
+package org.halvors.electrometrics.common.tileentity;
 
-import cofh.api.energy.EnergyStorage;
-import cofh.api.energy.IEnergyProvider;
-import cofh.api.energy.IEnergyReceiver;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntityElectricityMeter extends TileEntityEnergyProvider {

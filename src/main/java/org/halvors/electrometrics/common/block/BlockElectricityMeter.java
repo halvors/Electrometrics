@@ -1,4 +1,4 @@
-package org.halvors.ElectricityMeter.common.block;
+package org.halvors.electrometrics.common.block;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -9,10 +9,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import org.halvors.ElectricityMeter.ElectricityMeter;
-import org.halvors.ElectricityMeter.Reference;
-import org.halvors.ElectricityMeter.common.UnitDisplay;
-import org.halvors.ElectricityMeter.common.tileentity.TileEntityElectricityMeter;
+import org.halvors.electrometrics.ElectroMetrics;
+import org.halvors.electrometrics.Reference;
+import org.halvors.electrometrics.common.UnitDisplay;
+import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
 
 public class BlockElectricityMeter extends BlockBasic {
 	@SideOnly(Side.CLIENT)
@@ -57,7 +57,7 @@ public class BlockElectricityMeter extends BlockBasic {
 		if (world.isRemote) {
 			if (!player.isSneaking()) {
 				// Open the GUI.
-				player.openGui(ElectricityMeter.instance, 0, world, x, y, z);
+				player.openGui(ElectroMetrics.instance, 0, world, x, y, z);
 
 				return true;
 			} else {
@@ -66,7 +66,7 @@ public class BlockElectricityMeter extends BlockBasic {
 				if (tileEntity instanceof TileEntityElectricityMeter) {
 					TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
 
-					player.addChatMessage(new ChatComponentText("[ElectricityMeter]"));
+					player.addChatMessage(new ChatComponentText("[electrometrics]"));
 
 					for (UnitDisplay.Unit unit : UnitDisplay.Unit.values()) {
 						player.addChatMessage(new ChatComponentText("A total of " + UnitDisplay.getDisplayShort(tileEntityElectricityMeter.getElectricityCount(), unit) + " has passed thru."));

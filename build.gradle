@@ -28,8 +28,8 @@ configFile.withReader {
 }
 
 version = config.minecraft_version + "-" + config.mod_version
-group= "org.halvors.electricitymeter" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "electricitymeter"
+group= "org.halvors.electrometrics" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "electrometrics"
 
 minecraft {
 	version = config.minecraft_version + "-" + config.forge_version
@@ -52,8 +52,7 @@ dependencies {
 
 }
 
-processResources
-{
+processResources {
     // this will ensure that this task is redone when the versions change.
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version
@@ -71,8 +70,3 @@ processResources
         exclude 'mcmod.info'
     }
 }
-
-// We use Java 8.
-apply plugin: 'java'
-sourceCompatibility = 1.8
-targetCompatibility = 1.8

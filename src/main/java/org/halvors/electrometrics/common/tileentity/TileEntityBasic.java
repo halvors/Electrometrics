@@ -1,4 +1,4 @@
-package org.halvors.ElectricityMeter.common.tileentity;
+package org.halvors.electrometrics.common.tileentity;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;

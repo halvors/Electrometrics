@@ -1,4 +1,4 @@
-package org.halvors.ElectricityMeter.common;
+package org.halvors.electrometrics.common;
 
 /**
  * An easy way to display information on electricity for the client.

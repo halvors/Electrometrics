@@ -1,4 +1,4 @@
-package org.halvors.ElectricityMeter;
+package org.halvors.electrometrics;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -7,16 +7,16 @@ import net.minecraft.item.ItemStack;
 
 public class CreativeTab extends CreativeTabs {
     public CreativeTab() {
-        super("tabElectricityMeter");
+        super("tabElectroMetrics");
     }
 
     @Override
     public ItemStack getIconItemStack() {
-        return new ItemStack(ElectricityMeter.blockElectricityMeter);
+        return new ItemStack(ElectroMetrics.blockElectricityMeter);
     }
 
     @Override
     public Item getTabIconItem() {
-        return new ItemBlock(ElectricityMeter.blockElectricityMeter);
+        return new ItemBlock(ElectroMetrics.blockElectricityMeter);
     }
 }

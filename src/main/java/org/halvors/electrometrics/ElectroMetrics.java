@@ -1,4 +1,4 @@
-package org.halvors.ElectricityMeter;
+package org.halvors.electrometrics;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -12,19 +12,19 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import org.halvors.ElectricityMeter.common.CommonProxy;
-import org.halvors.ElectricityMeter.common.block.BlockElectricityMeter;
-import org.halvors.ElectricityMeter.common.tileentity.TileEntityElectricityMeter;
+import org.halvors.electrometrics.common.CommonProxy;
+import org.halvors.electrometrics.common.block.BlockElectricityMeter;
+import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
 
 @Mod(modid = Reference.ID, name = Reference.NAME, version = Reference.VERSION, dependencies = "after:CoFHCore")
-public class ElectricityMeter {
+public class ElectroMetrics {
 	// Says where the client and server 'proxy' code is loaded.
-	@SidedProxy(clientSide = "org.halvors.ElectricityMeter.client.ClientProxy", serverSide = "org.halvors.ElectricityMeter.common.CommonProxy")
+	@SidedProxy(clientSide = "org.halvors.electrometrics.client.ClientProxy", serverSide = "org.halvors.electrometrics.common.CommonProxy")
 	public static CommonProxy proxy;
 
 	// The instance of your mod that Forge uses.
 	@Instance(value = Reference.ID)
-	public static ElectricityMeter instance;
+	public static ElectroMetrics instance;
 
 	// Blocks
 	public static Block blockElectricityMeter;
@@ -32,7 +32,7 @@ public class ElectricityMeter {
 	// Items
 
 	// Creative tab
-	public static CreativeTab tabElectricityMeter = new CreativeTab();
+	public static CreativeTab tabElectroMetrics = new CreativeTab();
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
