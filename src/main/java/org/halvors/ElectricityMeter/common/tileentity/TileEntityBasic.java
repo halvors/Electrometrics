@@ -42,5 +42,11 @@ public class TileEntityBasic extends TileEntity {
         if (canSetFacing(facing)) {
             this.facing = facing;
         }
+
+        /*
+        if(!worldObj.isRemote) {
+            markDirty();
+        }
+        */
     }
 }
