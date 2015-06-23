@@ -23,7 +23,7 @@ public class ClientProxy extends CommonProxy {
         TileEntity tileEntity = world.getTileEntity(x, y, z);
 
         if (tileEntity instanceof TileEntityElectricityMeter) {
-            return new GuiElectricityMeter();
+            return new GuiElectricityMeter((TileEntityElectricityMeter) tileEntity);
         }
 
         return null;

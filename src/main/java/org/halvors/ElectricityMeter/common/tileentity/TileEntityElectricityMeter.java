@@ -7,11 +7,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityElectricityMeter extends TileEntity implements IEnergyProvider, IEnergyReceiver {
-	private EnergyStorage storage = new EnergyStorage(1024);
-
-	/* The amount of energy that has passed thru. */
+public class TileEntityElectricityMeter extends TileEntityBasic implements IEnergyProvider, IEnergyReceiver {
+	// The amount of energy that has passed thru.
 	private double electricityCount;
+
+	// The internal energy storage.
+	private EnergyStorage storage = new EnergyStorage(1024);
 
 	public TileEntityElectricityMeter() {
 
