@@ -66,7 +66,7 @@ public class BlockElectricityMeter extends BlockBasic {
 				if (tileEntity instanceof TileEntityElectricityMeter) {
 					TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
 
-					player.addChatMessage(new ChatComponentText("[electrometrics]"));
+					player.addChatMessage(new ChatComponentText("[Electricity Meter]"));
 
 					for (UnitDisplay.Unit unit : UnitDisplay.Unit.values()) {
 						player.addChatMessage(new ChatComponentText("A total of " + UnitDisplay.getDisplayShort(tileEntityElectricityMeter.getElectricityCount(), unit) + " has passed thru."));

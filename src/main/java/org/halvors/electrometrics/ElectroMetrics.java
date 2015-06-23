@@ -50,7 +50,7 @@ public class Electrometrics {
 		addRecipes();
 
 		// Register the proxy as our GuiHandler.
-		NetworkRegistry.INSTANCE.registerGuiHandler(instance, proxy);
+		NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
 	}
 
 	@EventHandler
