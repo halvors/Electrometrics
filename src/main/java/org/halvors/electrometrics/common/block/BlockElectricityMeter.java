@@ -9,7 +9,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import org.halvors.electrometrics.ElectroMetrics;
+import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.Reference;
 import org.halvors.electrometrics.common.UnitDisplay;
 import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
@@ -57,7 +57,7 @@ public class BlockElectricityMeter extends BlockBasic {
 		if (world.isRemote) {
 			if (!player.isSneaking()) {
 				// Open the GUI.
-				player.openGui(ElectroMetrics.instance, 0, world, x, y, z);
+				player.openGui(Electrometrics.instance, 0, world, x, y, z);
 
 				return true;
 			} else {

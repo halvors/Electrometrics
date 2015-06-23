@@ -7,16 +7,16 @@ import net.minecraft.item.ItemStack;
 
 public class CreativeTab extends CreativeTabs {
     public CreativeTab() {
-        super("tabElectroMetrics");
+        super("tabElectrometrics");
     }
 
     @Override
     public ItemStack getIconItemStack() {
-        return new ItemStack(ElectroMetrics.blockElectricityMeter);
+        return new ItemStack(Electrometrics.blockElectricityMeter);
     }
 
     @Override
     public Item getTabIconItem() {
-        return new ItemBlock(ElectroMetrics.blockElectricityMeter);
+        return new ItemBlock(Electrometrics.blockElectricityMeter);
     }
 }

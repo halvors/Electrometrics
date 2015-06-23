@@ -9,14 +9,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import org.halvors.electrometrics.ElectroMetrics;
+import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.common.tileentity.TileEntityBasic;
 
 public class BlockBasic extends BlockContainer {
     protected BlockBasic(Material material) {
         super(material);
 
-        setCreativeTab(ElectroMetrics.tabElectroMetrics);
+        setCreativeTab(Electrometrics.tabElectrometrics);
     }
 
     @Override

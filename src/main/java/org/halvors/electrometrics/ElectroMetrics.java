@@ -17,14 +17,14 @@ import org.halvors.electrometrics.common.block.BlockElectricityMeter;
 import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
 
 @Mod(modid = Reference.ID, name = Reference.NAME, version = Reference.VERSION, dependencies = "after:CoFHCore")
-public class ElectroMetrics {
+public class Electrometrics {
 	// Says where the client and server 'proxy' code is loaded.
 	@SidedProxy(clientSide = "org.halvors.electrometrics.client.ClientProxy", serverSide = "org.halvors.electrometrics.common.CommonProxy")
 	public static CommonProxy proxy;
 
 	// The instance of your mod that Forge uses.
 	@Instance(value = Reference.ID)
-	public static ElectroMetrics instance;
+	public static Electrometrics instance;
 
 	// Blocks
 	public static Block blockElectricityMeter;
@@ -32,7 +32,7 @@ public class ElectroMetrics {
 	// Items
 
 	// Creative tab
-	public static CreativeTab tabElectroMetrics = new CreativeTab();
+	public static CreativeTab tabElectrometrics = new CreativeTab();
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
