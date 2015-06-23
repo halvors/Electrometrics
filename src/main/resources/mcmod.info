@@ -1,8 +1,8 @@
 [
 {
-  "modid": "electricitymeter",
-  "name": "Electricity Meter",
-  "description": "Electricity Meter is a Minecraft mod that let you keep count of the amount of electricity flowing thru it.",
+  "modid": "electrometrics",
+  "name": "ElectroMetrics",
+  "description": "ElectroMetrics is a Minecraft mod that brings content that lets you monitor the electricity flow of your grid.",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",

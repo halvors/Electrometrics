@@ -36,7 +36,7 @@ public class ElectroMetrics {
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-
+		// Nothing to see here.
 	}
 
 	@EventHandler
