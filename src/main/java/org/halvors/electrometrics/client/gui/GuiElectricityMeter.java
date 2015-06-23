@@ -1,13 +1,14 @@
 package org.halvors.electrometrics.client.gui;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.GuiButton;
+import org.halvors.electrometrics.common.UnitDisplay;
+import org.halvors.electrometrics.common.UnitDisplay.Unit;
 import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
 
-@SideOnly(Side.CLIENT)
 public class GuiElectricityMeter extends GuiScreen {
     private final TileEntityElectricityMeter tileEntity;
+
+    private double energyCount = 0;
 
     public GuiElectricityMeter(TileEntityElectricityMeter tileEntity) {
         this.tileEntity = tileEntity;
@@ -21,11 +22,17 @@ public class GuiElectricityMeter extends GuiScreen {
         int guiHeight = (height - ySize) / 2;
 
         buttonList.clear();
-        buttonList.add(new GuiButton(0, guiWidth + 55, guiHeight + 68, 60, 20, ""));
+        buttonList.add(new GuiButton(0, guiWidth + 96, guiHeight + 32, 60, 20, "Reset"));
     }
 
     @Override
     public void updateScreen() {
+        energyCount = tileEntity.getElectricityCount();
+
+
+
+        super.updateScreen();
+
         /*
         passwordField.updateCursorCounter();
 
@@ -37,6 +44,8 @@ public class GuiElectricityMeter extends GuiScreen {
         */
     }
 
+    int i = 0;
+
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTick) {
         super.drawScreen(mouseX, mouseY, partialTick);
@@ -44,17 +53,23 @@ public class GuiElectricityMeter extends GuiScreen {
         int guiWidth = (width - xSize) / 2;
         int guiHeight = (height - ySize) / 2;
 
-        fontRendererObj.drawString("Electricity Meter", guiWidth + 8, guiHeight + 8, 0x404040);
+        fontRendererObj.drawString("Electricity Meter", guiWidth + 8, guiHeight + 6, 0x404040);
 
-        fontRendererObj.drawString("Password", guiWidth + 64, guiHeight + 5, 0x404040);
-        fontRendererObj.drawString("Enter:", guiWidth + 45, guiHeight + 40, 0x404040);
+        // Energy count.
+        String energy = UnitDisplay.getDisplayShort(energyCount, Unit.JOULES);
 
-        /*
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glEnable(GL11.GL_CULL_FACE);
-        GL11.glEnable(GL11.GL_ALPHA_TEST);
-        GL11.glEnable(GL11.GL_DEPTH_TEST);
-        */
+        fontRendererObj.drawString("Energy:", guiWidth + 16, guiHeight + 32, 0x404040);
+        fontRendererObj.drawString(energy, guiWidth + 64, guiHeight + 32, 0x404040);
+
+        // Current output.
+        fontRendererObj.drawString("Output:", guiWidth + 16, guiHeight + 42, 0x404040);
+        fontRendererObj.drawString(energy, guiWidth + 64, guiHeight + 42, 0x404040);
+
+        // Test.
+        fontRendererObj.drawString("Test:", guiWidth + 16, guiHeight + 56, 0x404040);
+        fontRendererObj.drawString(String.valueOf(i), guiWidth + 64, guiHeight + 56, 0x404040);
+
+        i++;
     }
 }
 

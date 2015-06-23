@@ -54,31 +54,31 @@ public class BlockElectricityMeter extends BlockBasic {
 
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int facing, float playerX, float playerY, float playerZ) {
-		if (world.isRemote) {
-			if (!player.isSneaking()) {
-				// Open the GUI.
-				player.openGui(Electrometrics.instance, 0, world, x, y, z);
-
-				return true;
-			}
-
-			/*
-			TileEntity tileEntity = world.getTileEntity(x, y, z);
-
-			if (tileEntity instanceof TileEntityElectricityMeter) {
-				TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
-
-				player.addChatMessage(new ChatComponentText("[Electricity Meter]"));
-
-				for (UnitDisplay.Unit unit : UnitDisplay.Unit.values()) {
-					player.addChatMessage(new ChatComponentText("A total of " + UnitDisplay.getDisplayShort(tileEntityElectricityMeter.getElectricityCount(), unit) + " has passed thru."));
-				}
-
-				return true;
-			}
-			*/
+		if (player.isSneaking()) {
+			return false;
 		}
 
-		return false;
+		if (world.isRemote) {
+			return true;
+		}
+
+		TileEntity tileEntity = world.getTileEntity(x, y, z);
+
+		if (tileEntity instanceof TileEntityElectricityMeter) {
+			// Open the GUI.
+			player.openGui(Electrometrics.instance, 0, world, x, y, z);
+		}
+
+		if (tileEntity instanceof TileEntityElectricityMeter) {
+			TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
+
+			player.addChatMessage(new ChatComponentText("[Electricity Meter]"));
+
+			for (UnitDisplay.Unit unit : UnitDisplay.Unit.values()) {
+				player.addChatMessage(new ChatComponentText("A total of " + UnitDisplay.getDisplayShort(tileEntityElectricityMeter.getElectricityCount(), unit) + " has passed thru."));
+			}
+		}
+
+		return true;
 	}
 }

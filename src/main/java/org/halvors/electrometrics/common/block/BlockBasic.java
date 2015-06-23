@@ -7,8 +7,11 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.common.tileentity.TileEntityBasic;
 
@@ -60,5 +63,22 @@ public class BlockBasic extends BlockContainer {
 
             tileEntityBasic.setFacing((short) change);
         }
+    }
+
+    @Override
+    public boolean rotateBlock(World world, int x, int y, int z, ForgeDirection axis) {
+        TileEntity tileEntity = world.getTileEntity(x, y, z);
+
+        if (tileEntity instanceof TileEntityBasic) {
+            TileEntityBasic TileEntityBasic = (TileEntityBasic) tileEntity;
+
+            if (TileEntityBasic.canSetFacing(axis.ordinal())) {
+                TileEntityBasic.setFacing((short) axis.ordinal());
+
+                return true;
+            }
+        }
+
+        return super.rotateBlock(world, x, y, z, axis);
     }
 }
