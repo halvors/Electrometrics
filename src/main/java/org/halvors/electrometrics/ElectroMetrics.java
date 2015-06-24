@@ -29,7 +29,7 @@ public class Electrometrics {
 	private static Electrometrics instance;
 
 	// Packet handler.
-	private PacketHandler packetHandler = new PacketHandler();
+	private static PacketHandler packetHandler = new PacketHandler();
 
 	// Creative tab
 	public static CreativeTab tabElectrometrics = new CreativeTab();
@@ -101,7 +101,7 @@ public class Electrometrics {
 		return instance;
 	}
 
-	public PacketHandler getPacketHandler() {
+	public static PacketHandler getPacketHandler() {
 		return packetHandler;
 	}
 }
