@@ -5,13 +5,16 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.Reference;
+import org.halvors.electrometrics.common.PacketHandler;
 import org.halvors.electrometrics.common.UnitDisplay;
+import org.halvors.electrometrics.common.network.ElectricityMeterMessage;
 import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
 
 public class BlockElectricityMeter extends BlockBasic {
@@ -58,24 +61,28 @@ public class BlockElectricityMeter extends BlockBasic {
 			return false;
 		}
 
-		if (world.isRemote) {
-			return true;
-		}
-
 		TileEntity tileEntity = world.getTileEntity(x, y, z);
 
-		if (tileEntity instanceof TileEntityElectricityMeter) {
-			// Open the GUI.
-			player.openGui(Electrometrics.getInstance(), 0, world, x, y, z);
-		}
+		if (world.isRemote) {
+			if (tileEntity instanceof TileEntityElectricityMeter) {
+				TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
 
-		if (tileEntity instanceof TileEntityElectricityMeter) {
-			TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
+				// Open the GUI.
+				player.openGui(Electrometrics.getInstance(), 0, world, x, y, z);
 
-			player.addChatMessage(new ChatComponentText("[Electricity Meter]"));
+				return true;
+			}
+		} else {
+			if (tileEntity instanceof TileEntityElectricityMeter) {
+				TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
 
-			for (UnitDisplay.Unit unit : UnitDisplay.Unit.values()) {
-				player.addChatMessage(new ChatComponentText("A total of " + UnitDisplay.getDisplayShort(tileEntityElectricityMeter.getElectricityCount(), unit) + " has passed thru."));
+				player.addChatMessage(new ChatComponentText("[Electricity Meter]"));
+
+				for (UnitDisplay.Unit unit : UnitDisplay.Unit.values()) {
+					player.addChatMessage(new ChatComponentText("A total of " + UnitDisplay.getDisplayShort(tileEntityElectricityMeter.getElectricityCount(), unit) + " has passed thru."));
+				}
+
+				return true;
 			}
 		}
 
