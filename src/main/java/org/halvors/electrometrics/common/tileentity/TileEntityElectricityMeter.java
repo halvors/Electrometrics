@@ -2,6 +2,8 @@ package org.halvors.electrometrics.common.tileentity;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
+import org.halvors.electrometrics.common.PacketHandler;
+import org.halvors.electrometrics.common.network.ElectricityMeterMessage;
 
 public class TileEntityElectricityMeter extends TileEntityEnergyProvider {
 	// The amount of energy that has passed thru.
@@ -9,6 +11,15 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider {
 
 	public TileEntityElectricityMeter() {
 		super(1024);
+	}
+
+	@Override
+	public void updateEntity() {
+		super.updateEntity();
+
+		if (!worldObj.isRemote) {
+			PacketHandler.getNetwork().sendToDimension(new ElectricityMeterMessage(this), worldObj.provider.dimensionId);
+		}
 	}
 
 	@Override
@@ -40,5 +51,9 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider {
 	 */
 	public double getElectricityCount() {
 		return electricityCount;
+	}
+
+	public void setElectricityCount(double electricityCount) {
+		this.electricityCount = electricityCount;
 	}
 }
