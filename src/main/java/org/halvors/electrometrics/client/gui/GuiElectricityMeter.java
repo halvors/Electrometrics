@@ -8,6 +8,8 @@ import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
 public class GuiElectricityMeter extends GuiScreen {
     private final TileEntityElectricityMeter tileEntity;
 
+    private int ticker = 0;
+
     public GuiElectricityMeter(TileEntityElectricityMeter tileEntity) {
         this.tileEntity = tileEntity;
     }
@@ -42,7 +44,12 @@ public class GuiElectricityMeter extends GuiScreen {
         fontRendererObj.drawString("Output:", guiWidth + 16, guiHeight + 42, 0x404040);
         fontRendererObj.drawString("0.0 J", guiWidth + 64, guiHeight + 42, 0x404040);
 
-        tileEntity.sync();
+        if (ticker == 0) {
+            ticker = 20;
+            tileEntity.sync();
+        } else {
+            ticker--;
+        }
     }
 }
 
