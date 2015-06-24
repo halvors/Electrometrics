@@ -19,8 +19,8 @@ public class PacketHandler {
         network.registerMessage(PacketTileEntityElectricityMeter.class, PacketTileEntityElectricityMeter.class, 0, Side.SERVER);
     }
 
-    public static EntityPlayer getPlayer(MessageContext context) {
-        return context.side.isClient() ? Minecraft.getMinecraft().thePlayer : context.getServerHandler().playerEntity;
+    public static EntityPlayer getPlayer(MessageContext messageContext) {
+        return messageContext.side.isClient() ? Minecraft.getMinecraft().thePlayer : messageContext.getServerHandler().playerEntity;
     }
 
     public static SimpleNetworkWrapper getNetwork() {

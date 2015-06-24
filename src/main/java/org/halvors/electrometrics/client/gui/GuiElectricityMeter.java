@@ -1,11 +1,8 @@
 package org.halvors.electrometrics.client.gui;
 
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiLabel;
-import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.UnitDisplay;
 import org.halvors.electrometrics.common.UnitDisplay.Unit;
-import org.halvors.electrometrics.common.network.PacketTileEntityElectricityMeter;
 import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
 
 public class GuiElectricityMeter extends GuiScreen {

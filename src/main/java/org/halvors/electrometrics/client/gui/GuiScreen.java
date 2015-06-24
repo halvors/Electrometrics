@@ -14,16 +14,6 @@ public class GuiScreen extends net.minecraft.client.gui.GuiScreen {
 
     }
 
-    /*
-    @Override
-    public void initGui() {
-        super.initGui();
-
-        int guiWidth = (width - xSize) / 2;
-        int guiHeight = (height - ySize) / 2;
-    }
-    */
-
     @Override
     public boolean doesGuiPauseGame() {
         return false;
