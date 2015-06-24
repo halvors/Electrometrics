@@ -66,7 +66,7 @@ public class BlockElectricityMeter extends BlockBasic {
 
 		if (tileEntity instanceof TileEntityElectricityMeter) {
 			// Open the GUI.
-			player.openGui(Electrometrics.instance, 0, world, x, y, z);
+			player.openGui(Electrometrics.getInstance(), 0, world, x, y, z);
 		}
 
 		if (tileEntity instanceof TileEntityElectricityMeter) {
