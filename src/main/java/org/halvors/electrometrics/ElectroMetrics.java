@@ -13,6 +13,8 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import org.halvors.electrometrics.common.CommonProxy;
+import org.halvors.electrometrics.common.CreativeTab;
+import org.halvors.electrometrics.common.PacketHandler;
 import org.halvors.electrometrics.common.block.BlockElectricityMeter;
 import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
 
@@ -20,19 +22,22 @@ import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
 public class Electrometrics {
 	// Says where the client and server 'proxy' code is loaded.
 	@SidedProxy(clientSide = "org.halvors.electrometrics.client.ClientProxy", serverSide = "org.halvors.electrometrics.common.CommonProxy")
-	public static CommonProxy proxy;
+	private static CommonProxy proxy;
 
 	// The instance of your mod that Forge uses.
 	@Instance(value = Reference.ID)
-	public static Electrometrics instance;
+	private static Electrometrics instance;
+
+	// Packet handler.
+	private PacketHandler packetHandler = new PacketHandler();
+
+	// Creative tab
+	public static CreativeTab tabElectrometrics = new CreativeTab();
 
 	// Blocks
 	public static Block blockElectricityMeter;
 
 	// Items
-
-	// Creative tab
-	public static CreativeTab tabElectrometrics = new CreativeTab();
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
@@ -43,14 +48,17 @@ public class Electrometrics {
 	public void init(FMLInitializationEvent event) {
 		proxy.registerRenderers();
 
+		// Register the proxy as our GuiHandler to NetworkRegistry.
+		NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
+
+		// Packet registrations
+		packetHandler.initialize();
+
 		// Call functions for adding blocks, items, etc.
 		addBlocks();
 		addItems();
 		addTileEntities();
 		addRecipes();
-
-		// Register the proxy as our GuiHandler.
-		NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
 	}
 
 	@EventHandler
@@ -83,5 +91,17 @@ public class Electrometrics {
 				"III",
 				"RCR",
 				"III", 'I', Items.iron_ingot, 'C', Items.clock, 'R', Items.redstone);
+	}
+
+	public static CommonProxy getProxy() {
+		return proxy;
+	}
+
+	public static Electrometrics getInstance() {
+		return instance;
+	}
+
+	public PacketHandler getPacketHandler() {
+		return packetHandler;
 	}
 }
