@@ -5,24 +5,9 @@ import cofh.api.energy.IEnergyReceiver;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityEnergyReceiver extends TileEntityBasic implements IEnergyReceiver {
-    // The internal energy storage.
-    protected EnergyStorage storage;
-
+public class TileEntityEnergyReceiver extends TileEntityEnergyStorage implements IEnergyReceiver {
     public TileEntityEnergyReceiver(int storage) {
-        this.storage = new EnergyStorage(storage);
-    }
-
-    @Override
-    public void readFromNBT(NBTTagCompound nbtTags) {
-        super.readFromNBT(nbtTags);
-        storage.readFromNBT(nbtTags);
-    }
-
-    @Override
-    public void writeToNBT(NBTTagCompound nbtTags) {
-        super.writeToNBT(nbtTags);
-        storage.writeToNBT(nbtTags);
+        super(storage);
     }
 
     @Override

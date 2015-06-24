@@ -14,7 +14,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import org.halvors.electrometrics.common.CommonProxy;
 import org.halvors.electrometrics.common.CreativeTab;
-import org.halvors.electrometrics.common.PacketHandler;
+import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.block.BlockElectricityMeter;
 import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
 
