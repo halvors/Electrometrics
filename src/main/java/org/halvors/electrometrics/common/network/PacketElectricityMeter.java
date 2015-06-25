@@ -4,6 +4,7 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
@@ -41,15 +42,17 @@ public class PacketElectricityMeter extends PacketTileEntity implements IMessage
 
     @Override
     public IMessage onMessage(PacketElectricityMeter message, MessageContext messageContext) {
-        TileEntity tileEntity = message.world.getTileEntity(x, y, z);
+        EntityPlayer player = PacketHandler.getPlayer(messageContext);
+        TileEntity tileEntity = player.worldObj.getTileEntity(message.x, message.y, message.z);
 
         if (tileEntity instanceof TileEntityElectricityMeter) {
             TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
 
             if (message.packetType == PacketType.GET) {
-                // Send the data to the sender of the packet.
-                return new PacketElectricityMeter(PacketType.GET, message.world, message.x, message.y, message.z, tileEntityElectricityMeter.getElectricityCount());
+                // Send a SET packet back to the sender.
+                return new PacketElectricityMeter(PacketType.SET, /*message.world*/player.worldObj, message.x, message.y, message.z, tileEntityElectricityMeter.getElectricityCount());
             } else if (message.packetType == PacketType.SET) {
+                // Update the tileEntity with the value of this SET packet.
                 tileEntityElectricityMeter.setElectricityCount(message.electricityCount);
             }
         }
