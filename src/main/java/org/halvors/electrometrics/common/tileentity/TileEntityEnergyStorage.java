@@ -35,4 +35,8 @@ public class TileEntityEnergyStorage extends TileEntityBasic {
 
         storage.writeToNBT(nbtTags);
     }
+
+    public EnergyStorage getStorage() {
+        return storage;
+    }
 }
