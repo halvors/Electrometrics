@@ -6,8 +6,16 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntityEnergyProvider extends TileEntityEnergyReceiver implements IEnergyProvider {
-    public TileEntityEnergyProvider(int storage) {
-        super(storage);
+    public TileEntityEnergyProvider(int maxEnergy) {
+        super(maxEnergy);
+    }
+
+    public TileEntityEnergyProvider(int maxEnergy, int maxReceive) {
+        super(maxEnergy, maxReceive);
+    }
+
+    public TileEntityEnergyProvider(int maxEnergy, int maxReceive, int maxExtract) {
+        super(maxEnergy, maxReceive, maxExtract);
     }
 
     @Override

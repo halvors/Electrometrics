@@ -10,7 +10,7 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider {
 	private double electricityCount;
 
 	public TileEntityElectricityMeter() {
-		super(1024);
+		super(25600, 25600, 25600);
 	}
 
 	@Override

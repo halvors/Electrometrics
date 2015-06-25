@@ -1,16 +1,25 @@
 package org.halvors.electrometrics.common.tileentity;
 
 import cofh.api.energy.EnergyStorage;
-import cofh.api.energy.IEnergyReceiver;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntityEnergyStorage extends TileEntityBasic {
     // The internal energy storage.
     protected EnergyStorage storage;
 
-    public TileEntityEnergyStorage(int storage) {
-        this.storage = new EnergyStorage(storage);
+    public TileEntityEnergyStorage(int maxEnergy) {
+        storage = new EnergyStorage(maxEnergy);
+    }
+
+    public TileEntityEnergyStorage(int maxEnergy, int maxReceive) {
+        storage = new EnergyStorage(maxEnergy);
+        storage.setMaxReceive(maxReceive);
+    }
+
+    public TileEntityEnergyStorage(int maxEnergy, int maxReceive, int maxExtract) {
+        storage = new EnergyStorage(maxEnergy);
+        storage.setMaxReceive(maxReceive);
+        storage.setMaxExtract(maxExtract);
     }
 
     @Override
