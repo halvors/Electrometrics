@@ -1,16 +1,22 @@
 package org.halvors.electrometrics.client.gui;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.GuiButton;
+import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.common.UnitDisplay;
 import org.halvors.electrometrics.common.UnitDisplay.Unit;
 import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
 
+@SideOnly(Side.CLIENT)
 public class GuiElectricityMeter extends GuiScreen {
     private final TileEntityElectricityMeter tileEntity;
 
     private int ticker = 0;
 
     public GuiElectricityMeter(TileEntityElectricityMeter tileEntity) {
+        super("Electricity Meter");
+
         this.tileEntity = tileEntity;
     }
 
@@ -21,8 +27,19 @@ public class GuiElectricityMeter extends GuiScreen {
         int guiWidth = (width - xSize) / 2;
         int guiHeight = (height - ySize) / 2;
 
+        // Add buttons.
         buttonList.clear();
-        buttonList.add(new GuiButton(0, guiWidth + 128, guiHeight + 64, 60, 20, "Reset"));
+        buttonList.add(new GuiButton(0, guiWidth + 108, guiHeight + 56, 60, 20, "Reset"));
+    }
+
+    @Override
+    protected void actionPerformed(GuiButton guiButton) {
+        switch (guiButton.id) {
+            case 0:
+                tileEntity.setElectricityCount(0);
+                tileEntity.sendData();
+                break;
+        }
     }
 
     @Override
@@ -32,21 +49,20 @@ public class GuiElectricityMeter extends GuiScreen {
         int guiWidth = (width - xSize) / 2;
         int guiHeight = (height - ySize) / 2;
 
-        fontRendererObj.drawString("Electricity Meter", guiWidth + 8, guiHeight + 6, 0x404040);
+        // Formatting energy to the correct energy unit.
+        String energy = Electrometrics.getEnergyDisplay(tileEntity.getElectricityCount());
+        String output = UnitDisplay.getDisplayShort(tileEntity.getElectricityCount(), Unit.REDSTONE_FLUX);
 
-        // Energy count.
-        String energy = UnitDisplay.getDisplayShort(tileEntity.getElectricityCount(), Unit.JOULES);
-
-        fontRendererObj.drawString("Energy:", guiWidth + 16, guiHeight + 32, 0x404040);
-        fontRendererObj.drawString(energy, guiWidth + 64, guiHeight + 32, 0x404040);
+        fontRendererObj.drawString("Energy:", guiWidth + 8, guiHeight + 32, 0x404040);
+        fontRendererObj.drawString(energy, guiWidth + 56, guiHeight + 32, 0x404040);
 
         // Current output.
-        fontRendererObj.drawString("Output:", guiWidth + 16, guiHeight + 42, 0x404040);
-        fontRendererObj.drawString("0.0 J", guiWidth + 64, guiHeight + 42, 0x404040);
+        fontRendererObj.drawString("Output:", guiWidth + 8, guiHeight + 42, 0x404040);
+        fontRendererObj.drawString(output, guiWidth + 56, guiHeight + 42, 0x404040);
 
         if (ticker == 0) {
-            ticker = 20;
-            tileEntity.sync();
+            ticker = 5;
+            tileEntity.requestData();
         } else {
             ticker--;
         }
