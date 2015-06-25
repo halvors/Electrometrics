@@ -3,7 +3,8 @@ package org.halvors.electrometrics.common.tileentity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.halvors.electrometrics.common.network.PacketHandler;
-import org.halvors.electrometrics.common.network.PacketTileEntityElectricityMeter;
+import org.halvors.electrometrics.common.network.PacketElectricityMeter;
+import org.halvors.electrometrics.common.network.PacketType;
 
 public class TileEntityElectricityMeter extends TileEntityEnergyProvider {
 	// The amount of energy that has passed thru.
@@ -42,9 +43,18 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider {
 		return super.extractEnergy(from, maxExtract, simulate);
 	}
 
-	public void sync() {
-		// Reguest information from the server.
-		PacketHandler.getNetwork().sendToServer(new PacketTileEntityElectricityMeter(xCoord, yCoord, zCoord));
+	/*
+	 * Request the most recent data from server.
+	 */
+	public void requestData() {
+		PacketHandler.getNetwork().sendToServer(new PacketElectricityMeter(PacketType.GET, worldObj, xCoord, yCoord, zCoord));
+	}
+
+	/*
+	 * Sends the most recent data to the server, this usually happen after use alterations (GUI).
+	 */
+	public void sendData() {
+		PacketHandler.getNetwork().sendToServer(new PacketElectricityMeter(PacketType.SET, worldObj, xCoord, yCoord, zCoord, electricityCount));
 	}
 
 	/**
@@ -54,6 +64,9 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider {
 		return electricityCount;
 	}
 
+	/*
+	 * Sets the amount of energy that this block has totally received.
+	 */
 	public void setElectricityCount(double electricityCount) {
 		this.electricityCount = electricityCount;
 	}

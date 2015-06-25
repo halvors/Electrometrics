@@ -5,7 +5,7 @@ import net.minecraft.tileentity.TileEntity;
 
 public class TileEntityBasic extends TileEntity {
     // The direction this block is facing.
-    public int facing;
+    private int facing;
 
     public TileEntityBasic() {
 

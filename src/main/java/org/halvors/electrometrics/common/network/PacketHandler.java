@@ -13,10 +13,10 @@ public class PacketHandler {
 
     public void initialize() {
         // Client side
-        network.registerMessage(PacketTileEntityElectricityMeter.class, PacketTileEntityElectricityMeter.class, 0, Side.CLIENT);
+        network.registerMessage(PacketElectricityMeter.class, PacketElectricityMeter.class, 0, Side.CLIENT);
 
         // Server side
-        network.registerMessage(PacketTileEntityElectricityMeter.class, PacketTileEntityElectricityMeter.class, 0, Side.SERVER);
+        network.registerMessage(PacketElectricityMeter.class, PacketElectricityMeter.class, 0, Side.SERVER);
     }
 
     public static EntityPlayer getPlayer(MessageContext messageContext) {
