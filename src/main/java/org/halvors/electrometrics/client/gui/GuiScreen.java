@@ -36,10 +36,10 @@ public class GuiScreen extends net.minecraft.client.gui.GuiScreen {
 
         drawTexturedModalRect(guiWidth, guiHeight, 0, 0, xSize, ySize);
 
+        super.drawScreen(mouseX, mouseY, partialTick);
+
         // Display the name of this GuiScreen.
         fontRendererObj.drawString(getName(), (guiWidth + (xSize / 2)) - fontRendererObj.getStringWidth(getName()), guiHeight + 6, 0x404040);
-
-        super.drawScreen(mouseX, mouseY, partialTick);
     }
 
     public String getName() {
