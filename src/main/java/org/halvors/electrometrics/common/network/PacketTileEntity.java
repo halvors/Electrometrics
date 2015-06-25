@@ -2,12 +2,10 @@ package org.halvors.electrometrics.common.network;
 
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
 import net.minecraft.world.World;
-import net.minecraftforge.common.DimensionManager;
 
 public class PacketTileEntity extends Packet implements IMessage {
-    protected World world;
+    //protected World world;
     protected int x;
     protected int y;
     protected int z;
@@ -19,7 +17,7 @@ public class PacketTileEntity extends Packet implements IMessage {
     public PacketTileEntity(PacketType packetType, World world, int x, int y, int z) {
         super(packetType);
 
-        this.world = world;
+        //this.world = world;
         this.x = x;
         this.y = y;
         this.z = z;
@@ -29,7 +27,7 @@ public class PacketTileEntity extends Packet implements IMessage {
     public void fromBytes(ByteBuf dataStream) {
         super.fromBytes(dataStream);
 
-        world = DimensionManager.getProvider(dataStream.readInt()).worldObj;
+        //world = ;
         x = dataStream.readInt();
         y = dataStream.readInt();
         z = dataStream.readInt();
@@ -39,7 +37,7 @@ public class PacketTileEntity extends Packet implements IMessage {
     public void toBytes(ByteBuf dataStream) {
         super.toBytes(dataStream);
 
-        dataStream.writeInt(world.provider.dimensionId);
+        //dataStream.writeInt(world.provider.dimensionId);
         dataStream.writeInt(x);
         dataStream.writeInt(y);
         dataStream.writeInt(z);
