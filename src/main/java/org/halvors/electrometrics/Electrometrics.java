@@ -1,5 +1,6 @@
 package org.halvors.electrometrics;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -13,8 +14,11 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.halvors.electrometrics.common.CommonProxy;
 import org.halvors.electrometrics.common.CreativeTab;
+import org.halvors.electrometrics.common.PlayerEventHandler;
 import org.halvors.electrometrics.common.UnitDisplay;
 import org.halvors.electrometrics.common.UnitDisplay.Unit;
 import org.halvors.electrometrics.common.block.BlockElectricityMeter;
@@ -32,6 +36,9 @@ public class Electrometrics {
 	// The instance of your mod that Forge uses.
 	@Instance(value = Reference.ID)
 	private static Electrometrics instance;
+
+	// Logger instance.
+	private static Logger logger = LogManager.getLogger(Reference.ID);
 
 	// Packet handler.
 	private static PacketHandler packetHandler = new PacketHandler();
@@ -87,11 +94,14 @@ public class Electrometrics {
 	public void init(FMLInitializationEvent event) {
 		proxy.registerRenderers();
 
-		// Register the proxy as our GuiHandler to NetworkRegistry.
-		NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
-
 		// Packet registrations
 		packetHandler.initialize();
+
+		// Register the our EventHandler.
+		FMLCommonHandler.instance().bus().register(new PlayerEventHandler());
+
+		// Register the proxy as our GuiHandler to NetworkRegistry.
+		NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
 
 		// Call functions for adding blocks, items, etc.
 		addBlocks();
@@ -138,6 +148,10 @@ public class Electrometrics {
 
 	public static Electrometrics getInstance() {
 		return instance;
+	}
+
+	public static Logger getLogger() {
+		return logger;
 	}
 
 	public static PacketHandler getPacketHandler() {
