@@ -27,8 +27,8 @@ public class UnitDisplay {
         ELECTRICAL_UNITS("Electrical-Units", "Eu");
         */
 
-        JOULES("Joule", "J"),
         REDSTONE_FLUX("Redstone Flux", "RF"),
+        JOULES("Joule", "J"),
         MINECRAFT_JOULES("Minecraft Joule", "MJ"),
         ELECTRICAL_UNITS("Electrical Unit", "EU");
 

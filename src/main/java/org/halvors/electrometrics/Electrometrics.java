@@ -15,6 +15,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import org.halvors.electrometrics.common.CommonProxy;
 import org.halvors.electrometrics.common.CreativeTab;
+import org.halvors.electrometrics.common.UnitDisplay;
+import org.halvors.electrometrics.common.UnitDisplay.Unit;
 import org.halvors.electrometrics.common.block.BlockElectricityMeter;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
@@ -46,8 +48,10 @@ public class Electrometrics {
 	// Items.
 
 	// Variables.
+	public static Unit energyType = Unit.JOULES;
 	public static double toJoules;
-	public static double fromJoules;
+	public static double toMinecraftJoules;
+	public static double toElectricalUnits;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
@@ -55,9 +59,28 @@ public class Electrometrics {
 
 		// Set the mod's configuration
 		configuration = new Configuration(config);
+		configuration.load();
 
-		toJoules = configuration.get(Configuration.CATEGORY_GENERAL, "RFToJoules", 0.4D).getDouble();
-		fromJoules = configuration.get(Configuration.CATEGORY_GENERAL, "JoulesToRF", 2.5D).getDouble();
+		String energyTypeString = configuration.get(Configuration.CATEGORY_GENERAL, "energyType", "J", null, new String[] { "RF", "J", "MJ", "EU" }).getString();
+
+		if (energyTypeString != null) {
+			if (energyTypeString.trim().equalsIgnoreCase("RF")) {
+				energyType = Unit.REDSTONE_FLUX;
+			} else if (energyTypeString.trim().equalsIgnoreCase("J")) {
+				energyType = Unit.JOULES;
+			} else if (energyTypeString.trim().equalsIgnoreCase("MJ")) {
+				energyType = Unit.MINECRAFT_JOULES;
+			} else if (energyTypeString.trim().equalsIgnoreCase("EU")) {
+				energyType = Unit.ELECTRICAL_UNITS;
+			}
+		}
+
+		toJoules = configuration.get(Configuration.CATEGORY_GENERAL, "RFToJoules", 2.5).getDouble(); // Ok?
+		toMinecraftJoules = configuration.get(Configuration.CATEGORY_GENERAL, "RFToMinecraftJoules", 0.1).getDouble(); // Ok?
+
+		toElectricalUnits = configuration.get(Configuration.CATEGORY_GENERAL, "RFToElectricalUnits", 0.4).getDouble(); // Ok?, not checked...
+
+		configuration.save();
 	}
 
 	@EventHandler
@@ -123,5 +146,26 @@ public class Electrometrics {
 
 	public static Configuration getConfiguration() {
 		return configuration;
+	}
+
+	/*
+     * Converts the energy to the default energy system.
+     */
+	public static String getEnergyDisplay(double energy) {
+		switch (energyType) {
+			case REDSTONE_FLUX:
+				return UnitDisplay.getDisplayShort(energy, Unit.REDSTONE_FLUX);
+
+			case JOULES:
+				return UnitDisplay.getDisplayShort(energy * toJoules, Unit.JOULES);
+
+			case MINECRAFT_JOULES:
+				return UnitDisplay.getDisplayShort(energy * toMinecraftJoules / 10, Unit.MINECRAFT_JOULES);
+
+			case ELECTRICAL_UNITS:
+				return UnitDisplay.getDisplayShort(energy * toElectricalUnits, Unit.MINECRAFT_JOULES);
+		}
+
+		return null;
 	}
 }
