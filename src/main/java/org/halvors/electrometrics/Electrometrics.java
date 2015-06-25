@@ -1,8 +1,8 @@
 package org.halvors.electrometrics;
 
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -12,11 +12,14 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.config.Configuration;
 import org.halvors.electrometrics.common.CommonProxy;
 import org.halvors.electrometrics.common.CreativeTab;
-import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.block.BlockElectricityMeter;
+import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
+
+import java.io.File;
 
 @Mod(modid = Reference.ID, name = Reference.NAME, version = Reference.VERSION, dependencies = "after:CoFHCore")
 public class Electrometrics {
@@ -31,17 +34,30 @@ public class Electrometrics {
 	// Packet handler.
 	private static PacketHandler packetHandler = new PacketHandler();
 
-	// Creative tab
+	// Configuration.
+	private static Configuration configuration;
+
+	// Creative tab.
 	public static CreativeTab tabElectrometrics = new CreativeTab();
 
-	// Blocks
+	// Blocks.
 	public static Block blockElectricityMeter;
 
-	// Items
+	// Items.
+
+	// Variables.
+	public static double toJoules;
+	public static double fromJoules;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		// Nothing to see here.
+		File config = event.getSuggestedConfigurationFile();
+
+		// Set the mod's configuration
+		configuration = new Configuration(config);
+
+		toJoules = configuration.get(Configuration.CATEGORY_GENERAL, "RFToJoules", 0.4D).getDouble();
+		fromJoules = configuration.get(Configuration.CATEGORY_GENERAL, "JoulesToRF", 2.5D).getDouble();
 	}
 
 	@EventHandler
@@ -103,5 +119,9 @@ public class Electrometrics {
 
 	public static PacketHandler getPacketHandler() {
 		return packetHandler;
+	}
+
+	public static Configuration getConfiguration() {
+		return configuration;
 	}
 }

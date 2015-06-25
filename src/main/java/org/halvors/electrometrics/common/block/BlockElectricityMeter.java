@@ -6,12 +6,10 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.Reference;
-import org.halvors.electrometrics.common.UnitDisplay;
 import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
 
 public class BlockElectricityMeter extends BlockBasic {
@@ -69,19 +67,21 @@ public class BlockElectricityMeter extends BlockBasic {
 
 				return true;
 			}
-		} else {
-			if (tileEntity instanceof TileEntityElectricityMeter) {
-				TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
-
-				player.addChatMessage(new ChatComponentText("[Electricity Meter]"));
-
-				for (UnitDisplay.Unit unit : UnitDisplay.Unit.values()) {
-					player.addChatMessage(new ChatComponentText("A total of " + UnitDisplay.getDisplayShort(tileEntityElectricityMeter.getElectricityCount(), unit) + " has passed thru."));
-				}
-
-				return true;
-			}
 		}
+
+		/*
+		if (tileEntity instanceof TileEntityElectricityMeter) {
+			TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
+
+			player.addChatMessage(new ChatComponentText("[Electricity Meter]"));
+
+			for (UnitDisplay.Unit unit : UnitDisplay.Unit.values()) {
+				player.addChatMessage(new ChatComponentText("A total of " + UnitDisplay.getDisplayShort(tileEntityElectricityMeter.getElectricityCount(), unit) + " has passed thru."));
+			}
+
+			return true;
+		}
+		*/
 
 		return true;
 	}
