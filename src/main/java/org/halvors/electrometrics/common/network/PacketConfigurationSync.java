@@ -7,7 +7,7 @@ import io.netty.buffer.ByteBuf;
 import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.common.UnitDisplay;
 
-public class PacketConfigurationSync implements IMessage, IMessageHandler<IMessage, IMessage> {
+public class PacketConfigurationSync implements IMessage, IMessageHandler<PacketConfigurationSync, IMessage> {
     public PacketConfigurationSync() {
 
     }
@@ -29,7 +29,7 @@ public class PacketConfigurationSync implements IMessage, IMessageHandler<IMessa
     }
 
     @Override
-    public IMessage onMessage(IMessage message, MessageContext messageContext) {
+    public IMessage onMessage(PacketConfigurationSync message, MessageContext messageContext) {
         return null;
     }
 }

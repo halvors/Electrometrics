@@ -53,12 +53,12 @@ public class GuiElectricityMeter extends GuiScreen {
         String energy = Electrometrics.getEnergyDisplay(tileEntity.getElectricityCount());
         String maxOutput = Electrometrics.getEnergyDisplay(tileEntity.getStorage().getMaxEnergyStored());
 
-        fontRendererObj.drawString("Energy:", guiWidth, guiHeight + 32, 0x404040);
-        fontRendererObj.drawString(energy, guiWidth + 48, guiHeight + 32, 0x404040);
+        fontRendererObj.drawString("Energy:", guiWidth + 6, guiHeight + 32, 0x404040);
+        fontRendererObj.drawString(energy, guiWidth + 64, guiHeight + 32, 0x404040);
 
         // Current output.
-        fontRendererObj.drawString("Max output:", guiWidth, guiHeight + 40, 0x404040);
-        fontRendererObj.drawString(maxOutput, guiWidth + 48, guiHeight + 40, 0x404040);
+        fontRendererObj.drawString("Max output:", guiWidth + 6, guiHeight + 42, 0x404040);
+        fontRendererObj.drawString(maxOutput, guiWidth + 64, guiHeight + 42, 0x404040);
 
         if (ticker == 0) {
             ticker = 5;

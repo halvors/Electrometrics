@@ -8,7 +8,7 @@ import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class GuiScreen extends net.minecraft.client.gui.GuiScreen {
-    private static final ResourceLocation texture = new ResourceLocation(Reference.DOMAIN, "gui/guiBlank.png");
+    private static final ResourceLocation texture = new ResourceLocation(Reference.DOMAIN, "gui/guiScreenBlank.png");
 
     // The name of this GuiScreen.
     private String name;
@@ -37,7 +37,7 @@ public class GuiScreen extends net.minecraft.client.gui.GuiScreen {
         drawTexturedModalRect(guiWidth, guiHeight, 0, 0, xSize, ySize);
 
         // Display the name of this GuiScreen.
-        fontRendererObj.drawString(getName(), guiWidth + (xSize / 2), guiHeight + 5, 0x404040);
+        fontRendererObj.drawString(getName(), (guiWidth + (xSize / 2)) - fontRendererObj.getStringWidth(getName()), guiHeight + 6, 0x404040);
 
         super.drawScreen(mouseX, mouseY, partialTick);
     }
