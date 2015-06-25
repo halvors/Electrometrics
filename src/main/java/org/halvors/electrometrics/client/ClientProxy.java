@@ -1,5 +1,7 @@
 package org.halvors.electrometrics.client;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -7,6 +9,7 @@ import org.halvors.electrometrics.client.gui.GuiElectricityMeter;
 import org.halvors.electrometrics.common.CommonProxy;
 import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
 
+@SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
     @Override
     public void registerRenderers() {
