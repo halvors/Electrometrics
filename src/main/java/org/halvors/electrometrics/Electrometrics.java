@@ -35,13 +35,13 @@ import java.io.File;
  */
 @Mod(modid = Reference.ID, name = Reference.NAME, version = Reference.VERSION, dependencies = "after:CoFHCore")
 public class Electrometrics {
-	// Says where the client and server 'proxy' code is loaded.
-	@SidedProxy(clientSide = "org.halvors.electrometrics.client.ClientProxy", serverSide = "org.halvors.electrometrics.common.CommonProxy")
-	private static CommonProxy proxy;
-
 	// The instance of your mod that Forge uses.
 	@Instance(value = Reference.ID)
 	private static Electrometrics instance;
+
+	// Says where the client and server 'proxy' code is loaded.
+	@SidedProxy(clientSide = "org.halvors.electrometrics.client.ClientProxy", serverSide = "org.halvors.electrometrics.common.CommonProxy")
+	private static CommonProxy proxy;
 
 	// Logger instance.
 	private static Logger logger = LogManager.getLogger(Reference.ID);
