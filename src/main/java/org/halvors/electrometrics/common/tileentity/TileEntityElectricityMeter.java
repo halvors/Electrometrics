@@ -5,6 +5,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketElectricityMeter;
 import org.halvors.electrometrics.common.network.PacketType;
+import org.halvors.electrometrics.common.util.Location;
 
 /**
  * This is the TileEntity of the Electricity Meter which provides a simple way to keep count of the electricity you use.
@@ -53,14 +54,14 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider {
 	 * Request the most recent data from server.
 	 */
 	public void requestData() {
-		PacketHandler.getNetwork().sendToServer(new PacketElectricityMeter(PacketType.GET, worldObj, xCoord, yCoord, zCoord));
+		PacketHandler.getNetwork().sendToServer(new PacketElectricityMeter(PacketType.GET, new Location(worldObj, xCoord, yCoord, zCoord)));
 	}
 
 	/*
 	 * Sends the most recent data to the server, this usually happen after use alterations (GUI).
 	 */
 	public void sendData() {
-		PacketHandler.getNetwork().sendToServer(new PacketElectricityMeter(PacketType.SET, worldObj, xCoord, yCoord, zCoord, electricityCount));
+		PacketHandler.getNetwork().sendToServer(new PacketElectricityMeter(PacketType.SET, new Location(worldObj, xCoord, yCoord, zCoord), electricityCount));
 	}
 
 	/**

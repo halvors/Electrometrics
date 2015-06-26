@@ -4,10 +4,9 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
+import org.halvors.electrometrics.common.util.Location;
 
 /**
  * This is a packet used by the ElectricityMeter to synchronize fields between the server and the client.
@@ -21,12 +20,12 @@ public class PacketElectricityMeter extends PacketTileEntity implements IMessage
 
     }
 
-    public PacketElectricityMeter(PacketType packetType, World world, int x, int y, int z) {
-        super(packetType, world, x, y, z);
+    public PacketElectricityMeter(PacketType packetType, Location location) {
+        super(packetType, location);
     }
 
-    public PacketElectricityMeter(PacketType packetType, World world, int x, int y, int z, double electricityCount) {
-        super(packetType, world, x, y, z);
+    public PacketElectricityMeter(PacketType packetType, Location location, double electricityCount) {
+        super(packetType, location);
 
         this.electricityCount = electricityCount;
     }
@@ -47,19 +46,23 @@ public class PacketElectricityMeter extends PacketTileEntity implements IMessage
 
     @Override
     public IMessage onMessage(PacketElectricityMeter message, MessageContext messageContext) {
-        EntityPlayer player = PacketHandler.getPlayer(messageContext);
-        TileEntity tileEntity = player.worldObj.getTileEntity(message.x, message.y, message.z);
+        //EntityPlayer player = PacketHandler.getPlayer(messageContext);
+        TileEntity tileEntity = message.location.getTileEntity();
 
         if (tileEntity instanceof TileEntityElectricityMeter) {
             TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
 
             if (message.packetType == PacketType.GET) {
                 // Send a SET packet back to the sender.
-                return new PacketElectricityMeter(PacketType.SET, /*message.world*/player.worldObj, message.x, message.y, message.z, tileEntityElectricityMeter.getElectricityCount());
+                return new PacketElectricityMeter(PacketType.SET, message.location, tileEntityElectricityMeter.getElectricityCount());
             } else if (message.packetType == PacketType.SET) {
                 // Update the tileEntity with the value of this SET packet.
                 tileEntityElectricityMeter.setElectricityCount(message.electricityCount);
             }
+        }
+
+        if (tileEntity == null) {
+            System.out.println("Something therible happend, tileEntity is null!!!!");
         }
 
         return null;
