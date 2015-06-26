@@ -16,6 +16,13 @@ public class Location {
         this.z = z;
     }
 
+    public Location(TileEntity tileEntity) {
+        this.world = tileEntity.getWorldObj();
+        this.x = tileEntity.xCoord;
+        this.y = tileEntity.yCoord;
+        this.z = tileEntity.zCoord;
+    }
+
     public World getWorld() {
         return world;
     }
