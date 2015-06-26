@@ -22,11 +22,17 @@ import org.halvors.electrometrics.common.event.PlayerEventHandler;
 import org.halvors.electrometrics.common.UnitDisplay;
 import org.halvors.electrometrics.common.UnitDisplay.Unit;
 import org.halvors.electrometrics.common.block.BlockElectricityMeter;
+import org.halvors.electrometrics.common.item.ItemBlockElectricityMeter;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
 
 import java.io.File;
 
+/**
+ * The Electrometrics main class.
+ *
+ * @author halvors
+ */
 @Mod(modid = Reference.ID, name = Reference.NAME, version = Reference.VERSION, dependencies = "after:CoFHCore")
 public class Electrometrics {
 	// Says where the client and server 'proxy' code is loaded.
@@ -120,7 +126,7 @@ public class Electrometrics {
 		blockElectricityMeter = new BlockElectricityMeter();
 
 		// Register blocks.
-		GameRegistry.registerBlock(blockElectricityMeter, "blockElectricityMeter");
+		GameRegistry.registerBlock(blockElectricityMeter, ItemBlockElectricityMeter.class, "blockElectricityMeter");
 	}
 
 	public void addItems() {

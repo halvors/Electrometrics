@@ -4,12 +4,16 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.Reference;
+import org.halvors.electrometrics.common.item.ItemBlockElectricityMeter;
 import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
 
 public class BlockElectricityMeter extends BlockBasic {
@@ -56,33 +60,39 @@ public class BlockElectricityMeter extends BlockBasic {
 			return false;
 		}
 
-		TileEntity tileEntity = world.getTileEntity(x, y, z);
-
 		if (world.isRemote) {
-			if (tileEntity instanceof TileEntityElectricityMeter) {
-				TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
-
-				// Open the GUI.
-				player.openGui(Electrometrics.getInstance(), 0, world, x, y, z);
-
-				return true;
-			}
+			// Open the GUI.
+			player.openGui(Electrometrics.getInstance(), 0, world, x, y, z);
 		}
-
-		/*
-		if (tileEntity instanceof TileEntityElectricityMeter) {
-			TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
-
-			player.addChatMessage(new ChatComponentText("[Electricity Meter]"));
-
-			for (UnitDisplay.Unit unit : UnitDisplay.Unit.values()) {
-				player.addChatMessage(new ChatComponentText("A total of " + UnitDisplay.getDisplayShort(tileEntityElectricityMeter.getElectricityCount(), unit) + " has passed thru."));
-			}
-
-			return true;
-		}
-		*/
 
 		return true;
+	}
+
+	@Override
+	public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean willHarvest) {
+		if (!player.capabilities.isCreativeMode && !world.isRemote && canHarvestBlock(player, world.getBlockMetadata(x, y, z))) {
+			TileEntity tileEntity = world.getTileEntity(x, y, z);
+
+			if (tileEntity instanceof TileEntityElectricityMeter) {
+				TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
+				ItemStack itemStack = new ItemStack(Electrometrics.blockElectricityMeter);
+				ItemBlockElectricityMeter itemBlockElectricityMeter = (ItemBlockElectricityMeter) itemStack.getItem();
+
+				// Store the electricity count in this ItemBlock.
+				itemBlockElectricityMeter.setElectricityCount(itemStack, tileEntityElectricityMeter.getElectricityCount());
+
+				// Create the entityItem.
+				float motion = 0.7F;
+				double motionX = (world.rand.nextFloat() * motion) + (1.0F - motion) * 0.5D;
+				double motionY = (world.rand.nextFloat() * motion) + (1.0F - motion) * 0.5D;
+				double motionZ = (world.rand.nextFloat() * motion) + (1.0F - motion) * 0.5D;
+				EntityItem entityItem = new EntityItem(world, x + motionX, y + motionY, z + motionZ, itemStack);
+
+				// Spawn the entityItem in the world.
+				world.spawnEntityInWorld(entityItem);
+			}
+		}
+
+		return world.setBlockToAir(x, y, z);
 	}
 }

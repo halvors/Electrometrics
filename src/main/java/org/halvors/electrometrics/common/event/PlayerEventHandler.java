@@ -12,7 +12,7 @@ import org.halvors.electrometrics.common.network.PacketHandler;
 
 public class PlayerEventHandler {
     public PlayerEventHandler() {
-        MinecraftForge.EVENT_BUS.register(this);
+
     }
 
     @SubscribeEvent
