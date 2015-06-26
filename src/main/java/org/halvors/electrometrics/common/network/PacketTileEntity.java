@@ -48,9 +48,15 @@ public class PacketTileEntity extends PacketLocation implements IMessage, IMessa
 
     @Override
     public IMessage onMessage(PacketTileEntity message, MessageContext context) {
+        if (message.getLocation().getWorld().isRemote) {
+            System.out.println("PacketTileEntity: Client");
+        } else {
+            System.out.println("PacketTileEntity: Server");
+        }
+
         TileEntity tileEntity = message.getLocation().getTileEntity();
 
-        if (tileEntity instanceof ITileEntityNetwork) {
+        if (tileEntity != null && tileEntity instanceof ITileEntityNetwork) {
             ITileEntityNetwork tileEntityNetwork = (ITileEntityNetwork) tileEntity;
 
             try {

@@ -1,19 +1,10 @@
 package org.halvors.electrometrics.common.network;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.common.util.Location;
-
-import java.util.ArrayList;
 
 /**
  * This is a packet that provides a location, and is meant to be extended.
