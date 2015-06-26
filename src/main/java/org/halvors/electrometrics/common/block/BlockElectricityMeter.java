@@ -16,6 +16,12 @@ import org.halvors.electrometrics.Reference;
 import org.halvors.electrometrics.common.item.ItemBlockElectricityMeter;
 import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
 
+/**
+ * This is the Block of the Electricity Meter which provides a simple way to keep count of the electricity you use.
+ * Especially suitable for pay-by-use applications where a player buys electricity from another player on multiplayer worlds.
+ *
+ * @author halvors
+ */
 public class BlockElectricityMeter extends BlockBasic {
 	@SideOnly(Side.CLIENT)
 	public static IIcon icon, frontIcon;

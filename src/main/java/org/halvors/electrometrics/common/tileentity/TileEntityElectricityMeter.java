@@ -6,6 +6,12 @@ import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketElectricityMeter;
 import org.halvors.electrometrics.common.network.PacketType;
 
+/**
+ * This is the TileEntity of the Electricity Meter which provides a simple way to keep count of the electricity you use.
+ * Especially suitable for pay-by-use applications where a player buys electricity from another player on multiplayer worlds.
+ *
+ * @author halvors
+ */
 public class TileEntityElectricityMeter extends TileEntityEnergyProvider {
 	// The amount of energy that has passed thru.
 	private double electricityCount;

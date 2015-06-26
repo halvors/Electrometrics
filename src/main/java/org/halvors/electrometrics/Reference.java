@@ -1,5 +1,10 @@
 package org.halvors.electrometrics;
 
+/**
+ * This is a reference class used to store important static information about this mod.
+ *
+ * @author halvors
+ */
 public class Reference {
 	/**
 	 * The official name of the mod.

@@ -5,6 +5,11 @@ import cofh.api.energy.IEnergyReceiver;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
+/**
+ * When extended, this makes a TileEntity able to provide electricity.
+ *
+ * @author halvors
+ */
 public class TileEntityEnergyProvider extends TileEntityEnergyReceiver implements IEnergyProvider {
     public TileEntityEnergyProvider(int maxEnergy) {
         super(maxEnergy);

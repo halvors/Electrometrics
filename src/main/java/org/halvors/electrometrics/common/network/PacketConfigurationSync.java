@@ -7,6 +7,11 @@ import io.netty.buffer.ByteBuf;
 import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.common.UnitDisplay;
 
+/**
+ * This is a packet that synchronizes the configuration from the server to the clients.
+ *
+ * @author halvors
+ */
 public class PacketConfigurationSync implements IMessage, IMessageHandler<PacketConfigurationSync, IMessage> {
     public PacketConfigurationSync() {
 

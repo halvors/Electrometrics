@@ -29,7 +29,7 @@ import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
 import java.io.File;
 
 /**
- * The Electrometrics main class.
+ * This is the Electrometrics class, whick is the main class of this mod.
  *
  * @author halvors
  */

@@ -13,6 +13,11 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.common.tileentity.TileEntityBasic;
 
+/**
+ * This is a basic Block that is meant to be extended by other Blocks.
+ *
+ * @author halvors
+ */
 public class BlockBasic extends BlockContainer {
     protected BlockBasic(Material material) {
         super(material);

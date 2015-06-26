@@ -5,6 +5,8 @@ import net.minecraft.util.StatCollector;
 /**
  * Simple color enum for adding colors to in-game GUI strings of text.
  *
+ * This class is borrowed from Mekanism and is customized to fit our use.
+ *
  * @author aidanBrady
  */
 public enum EnumColor {

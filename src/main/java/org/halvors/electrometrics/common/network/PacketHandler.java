@@ -8,6 +8,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import org.halvors.electrometrics.Reference;
 
+/**
+ * This is the PacketHandler which is responsible for registering the packet that we are going to use.
+ *
+ * @author halvors
+ */
 public class PacketHandler {
     private static SimpleNetworkWrapper network = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.ID);
 

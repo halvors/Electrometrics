@@ -4,6 +4,11 @@ import cpw.mods.fml.common.network.IGuiHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
+/**
+ * This is the common proxy used by both the client and the server.
+ *
+ * @author halvors
+ */
 public class CommonProxy implements IGuiHandler {
     // Client stuff
     public void registerRenderers() {

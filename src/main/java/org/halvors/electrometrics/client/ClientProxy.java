@@ -9,6 +9,11 @@ import org.halvors.electrometrics.client.gui.GuiElectricityMeter;
 import org.halvors.electrometrics.common.CommonProxy;
 import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
 
+/**
+ * This is the client proxy used only by the client.
+ *
+ * @author halvors
+ */
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
     @Override

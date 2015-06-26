@@ -8,6 +8,12 @@ import org.halvors.electrometrics.common.UnitDisplay;
 import org.halvors.electrometrics.common.UnitDisplay.Unit;
 import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
 
+/**
+ * This is the GUI of the Electricity Meter which provides a simple way to keep count of the electricity you use.
+ * Especially suitable for pay-by-use applications where a player buys electricity from another player on multiplayer worlds.
+ *
+ * @author halvors
+ */
 @SideOnly(Side.CLIENT)
 public class GuiElectricityMeter extends GuiScreen {
     private final TileEntityElectricityMeter tileEntity;

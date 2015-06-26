@@ -4,6 +4,11 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.world.World;
 
+/**
+ * This is a packet that provides common information for all TileEntity packets, and is meant to be extended.
+ *
+ * @author halvors
+ */
 public class PacketTileEntity extends Packet implements IMessage {
     //protected World world;
     protected int x;

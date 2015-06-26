@@ -6,6 +6,11 @@ import net.minecraft.util.ResourceLocation;
 import org.halvors.electrometrics.Reference;
 import org.lwjgl.opengl.GL11;
 
+/**
+ * This implements a basic GuiScreen that is meant to be extended by other GuiScreens.
+ *
+ * @author halvors
+ */
 @SideOnly(Side.CLIENT)
 public class GuiScreen extends net.minecraft.client.gui.GuiScreen {
     private static final ResourceLocation texture = new ResourceLocation(Reference.DOMAIN, "gui/guiScreenBlank.png");

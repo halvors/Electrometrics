@@ -3,6 +3,11 @@ package org.halvors.electrometrics.common.tileentity;
 import cofh.api.energy.EnergyStorage;
 import net.minecraft.nbt.NBTTagCompound;
 
+/**
+ * This provides electricity storage to a TileEntity when extended.
+ *
+ * @author halvors
+ */
 public class TileEntityEnergyStorage extends TileEntityBasic {
     // The internal energy storage.
     protected EnergyStorage storage;

@@ -9,6 +9,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
 
+/**
+ * This is a packet used by the ElectricityMeter to synchronize fields between the server and the client.
+ *
+ * @author halvors
+ */
 public class PacketElectricityMeter extends PacketTileEntity implements IMessage, IMessageHandler<PacketElectricityMeter, IMessage> {
     private double electricityCount;
 

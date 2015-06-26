@@ -3,6 +3,8 @@ package org.halvors.electrometrics.common;
 /**
  * An easy way to display information on electricity for the client.
  *
+ * This class is borrowed from Universal Electricity and is customized to fit our use.
+ *
  * @author Calclavia
  */
 public class UnitDisplay {

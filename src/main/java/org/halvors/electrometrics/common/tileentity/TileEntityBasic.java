@@ -3,6 +3,11 @@ package org.halvors.electrometrics.common.tileentity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
+/**
+ * This is a basic TileEntity that is meant to be extended by other TileEntities.
+ *
+ * @author halvors
+ */
 public class TileEntityBasic extends TileEntity {
     // The direction this block is facing.
     private int facing;

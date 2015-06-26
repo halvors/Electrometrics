@@ -10,6 +10,11 @@ import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.common.network.PacketConfigurationSync;
 import org.halvors.electrometrics.common.network.PacketHandler;
 
+/**
+ * This is the event handler that handles player events.
+ *
+ * @author halvors
+ */
 public class PlayerEventHandler {
     public PlayerEventHandler() {
 

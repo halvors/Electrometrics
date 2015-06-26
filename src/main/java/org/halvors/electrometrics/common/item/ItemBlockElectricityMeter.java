@@ -13,6 +13,12 @@ import org.halvors.electrometrics.common.util.EnumColor;
 
 import java.util.List;
 
+/**
+ * This is the ItemBlock of the Electricity Meter which provides a simple way to keep count of the electricity you use.
+ * Especially suitable for pay-by-use applications where a player buys electricity from another player on multiplayer worlds.
+ *
+ * @author halvors
+ */
 public class ItemBlockElectricityMeter extends ItemBlockBasic {
     public ItemBlockElectricityMeter(Block block) {
         super(block);
