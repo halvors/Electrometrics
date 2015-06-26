@@ -18,7 +18,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.halvors.electrometrics.common.CommonProxy;
 import org.halvors.electrometrics.common.CreativeTab;
-import org.halvors.electrometrics.common.PlayerEventHandler;
+import org.halvors.electrometrics.common.event.PlayerEventHandler;
 import org.halvors.electrometrics.common.UnitDisplay;
 import org.halvors.electrometrics.common.UnitDisplay.Unit;
 import org.halvors.electrometrics.common.block.BlockElectricityMeter;
