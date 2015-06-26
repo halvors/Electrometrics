@@ -1,5 +1,6 @@
 package org.halvors.electrometrics.common.util;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -14,6 +15,13 @@ public class Location {
         this.x = x;
         this.y = y;
         this.z = z;
+    }
+
+    public Location(Entity entity) {
+        this.world = entity.worldObj;
+        this.x = entity.serverPosX;
+        this.y = entity.serverPosY;
+        this.z = entity.serverPosZ;
     }
 
     public Location(TileEntity tileEntity) {
