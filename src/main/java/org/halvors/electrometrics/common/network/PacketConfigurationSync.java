@@ -34,7 +34,7 @@ public class PacketConfigurationSync implements IMessage, IMessageHandler<Packet
     }
 
     @Override
-    public IMessage onMessage(PacketConfigurationSync message, MessageContext messageContext) {
+    public IMessage onMessage(PacketConfigurationSync message, MessageContext context) {
         return null;
     }
 }
