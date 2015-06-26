@@ -6,6 +6,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -14,6 +15,8 @@ import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.Reference;
 import org.halvors.electrometrics.common.item.ItemBlockElectricityMeter;
 import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
+
+import java.util.Random;
 
 /**
  * This is the Block of the Electricity Meter which provides a simple way to keep count of the electricity you use.
@@ -74,6 +77,11 @@ public class BlockElectricityMeter extends BlockBasic {
 	}
 
 	@Override
+	public Item getItemDropped(int meta, Random random, int fortune) {
+		return null;
+	}
+
+	@Override
 	public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean willHarvest) {
 		if (!player.capabilities.isCreativeMode && !world.isRemote && canHarvestBlock(player, world.getBlockMetadata(x, y, z))) {
 			TileEntity tileEntity = world.getTileEntity(x, y, z);
@@ -100,4 +108,6 @@ public class BlockElectricityMeter extends BlockBasic {
 
 		return world.setBlockToAir(x, y, z);
 	}
+
+
 }
