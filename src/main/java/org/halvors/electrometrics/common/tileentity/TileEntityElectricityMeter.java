@@ -1,13 +1,9 @@
 package org.halvors.electrometrics.common.tileentity;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.halvors.electrometrics.common.network.ITileEntityNetwork;
-import org.halvors.electrometrics.common.network.PacketHandler;
-import org.halvors.electrometrics.common.network.PacketRequestData;
-import org.halvors.electrometrics.common.util.Location;
 
 import java.util.ArrayList;
 
@@ -25,7 +21,6 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 		super(25600, 25600, 25600);
 	}
 
-	/*
 	@Override
 	public void readFromNBT(NBTTagCompound nbtTags) {
 		super.readFromNBT(nbtTags);
@@ -39,7 +34,6 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 
 		nbtTags.setDouble("electricityCount", electricityCount);
 	}
-	*/
 
 	@Override
 	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
@@ -53,22 +47,16 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 
 	@Override
 	public void handlePacketData(ByteBuf dataStream) throws Exception {
-		//super.handlePacketData(dataStream);
+		super.handlePacketData(dataStream);
 
-		if (worldObj.isRemote) {
-			System.out.println("TileEntityElectricityMeter: Client");
-		} else {
-			System.out.println("TileEntityElectricityMeter: Server");
-		}
-
-		electricityCount = 25600;
+		electricityCount = dataStream.readDouble();
 	}
 
 	@Override
 	public ArrayList getPacketData(ArrayList data) {
-		//super.getPacketData(data);
+		super.getPacketData(data);
 
-		data.add(electricityCount);
+		data.add(getElectricityCount());
 
 		return data;
 	}
