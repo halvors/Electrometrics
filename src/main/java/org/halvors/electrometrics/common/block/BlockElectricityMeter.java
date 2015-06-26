@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import org.halvors.electrometrics.Electrometrics;
@@ -65,6 +66,10 @@ public class BlockElectricityMeter extends BlockBasic {
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int facing, float playerX, float playerY, float playerZ) {
 		if (player.isSneaking()) {
+			if (world.isRemote) {
+				player.addChatMessage(new ChatComponentText("Count is: " + ((TileEntityElectricityMeter) world.getTileEntity(x, y, z)).getElectricityCount()));
+			}
+
 			return false;
 		}
 
