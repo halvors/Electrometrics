@@ -1,11 +1,11 @@
 package org.halvors.electrometrics.common.tileentity;
 
+import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
-import org.halvors.electrometrics.common.network.PacketHandler;
-import org.halvors.electrometrics.common.network.PacketElectricityMeter;
-import org.halvors.electrometrics.common.network.PacketType;
-import org.halvors.electrometrics.common.util.Location;
+import org.halvors.electrometrics.common.network.ITileEntityNetwork;
+
+import java.util.ArrayList;
 
 /**
  * This is the TileEntity of the Electricity Meter which provides a simple way to keep count of the electricity you use.
@@ -13,17 +13,12 @@ import org.halvors.electrometrics.common.util.Location;
  *
  * @author halvors
  */
-public class TileEntityElectricityMeter extends TileEntityEnergyProvider {
+public class TileEntityElectricityMeter extends TileEntityEnergyProvider implements ITileEntityNetwork {
 	// The amount of energy that has passed thru.
 	private double electricityCount;
 
 	public TileEntityElectricityMeter() {
 		super(25600, 25600, 25600);
-	}
-
-	@Override
-	public void updateEntity() {
-		super.updateEntity();
 	}
 
 	@Override
@@ -50,18 +45,26 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider {
 		return super.extractEnergy(from, maxExtract, simulate);
 	}
 
-	/*
-	 * Request the most recent data from server.
-	 */
-	public void requestData() {
-		PacketHandler.getNetwork().sendToServer(new PacketElectricityMeter(PacketType.GET, new Location(worldObj, xCoord, yCoord, zCoord)));
+	@Override
+	public void handlePacketData(ByteBuf dataStream) throws Exception {
+		super.handlePacketData(dataStream);
+
+		setElectricityCount(dataStream.readDouble());
+
+		if (worldObj.isRemote) {
+			System.out.println("Server:" +  electricityCount);
+		} else {
+			System.out.println("Client:" +  electricityCount);
+		}
 	}
 
-	/*
-	 * Sends the most recent data to the server, this usually happen after use alterations (GUI).
-	 */
-	public void sendData() {
-		PacketHandler.getNetwork().sendToServer(new PacketElectricityMeter(PacketType.SET, new Location(worldObj, xCoord, yCoord, zCoord), electricityCount));
+	@Override
+	public ArrayList getPacketData(ArrayList data) {
+		super.getPacketData(data);
+
+		data.add(electricityCount);
+
+		return data;
 	}
 
 	/**

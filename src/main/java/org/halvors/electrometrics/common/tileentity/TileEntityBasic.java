@@ -1,14 +1,18 @@
 package org.halvors.electrometrics.common.tileentity;
 
+import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import org.halvors.electrometrics.common.network.ITileEntityNetwork;
+
+import java.util.ArrayList;
 
 /**
  * This is a basic TileEntity that is meant to be extended by other TileEntities.
  *
  * @author halvors
  */
-public class TileEntityBasic extends TileEntity {
+public class TileEntityBasic extends TileEntity implements ITileEntityNetwork {
     // The direction this block is facing.
     private int facing;
 
@@ -28,6 +32,18 @@ public class TileEntityBasic extends TileEntity {
         super.writeToNBT(nbtTags);
 
         nbtTags.setInteger("facing", facing);
+    }
+
+    @Override
+    public void handlePacketData(ByteBuf dataStream) throws Exception {
+        facing = dataStream.readInt();
+    }
+
+    @Override
+    public ArrayList getPacketData(ArrayList data) {
+        data.add(facing);
+
+        return data;
     }
 
     /**
