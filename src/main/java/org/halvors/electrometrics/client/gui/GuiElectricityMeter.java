@@ -70,7 +70,7 @@ public class GuiElectricityMeter extends GuiScreen {
 
         // Current output.
         fontRendererObj.drawString("Max output:", guiWidth + 6, guiHeight + 42, 0x404040);
-        fontRendererObj.drawString(maxOutput, guiWidth + 72, guiHeight + 42, 0x404040);
+        fontRendererObj.drawString(maxOutput + "/t", guiWidth + 72, guiHeight + 42, 0x404040);
 
         if (ticker == 0) {
             ticker = 5;
