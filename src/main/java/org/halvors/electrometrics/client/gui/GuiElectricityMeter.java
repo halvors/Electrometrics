@@ -2,6 +2,7 @@ package org.halvors.electrometrics.client.gui;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.common.network.PacketHandler;
@@ -37,9 +38,12 @@ public class GuiElectricityMeter extends GuiScreen {
         int guiWidth = (width - xSize) / 2;
         int guiHeight = (height - ySize) / 2;
 
+        // Create buttons.
+        GuiButton button = new GuiButton(0, guiWidth + 110, guiHeight + 70, 60, 20, "Reset");
+
         // Add buttons.
         buttonList.clear();
-        buttonList.add(new GuiButton(0, guiWidth + 110, guiHeight + 70, 60, 20, "Reset"));
+        buttonList.add(button);
     }
 
     @Override
@@ -49,7 +53,7 @@ public class GuiElectricityMeter extends GuiScreen {
                 tileEntity.setElectricityCount(0);
 
                 // Update the server-side TileEntity.
-                PacketHandler.getNetwork().sendToServer(new PacketTileEntity(new Location(tileEntity), tileEntity.getPacketData(new ArrayList())));
+                PacketHandler.getNetwork().sendToServer(new PacketTileEntity(tileEntity));
                 break;
         }
     }
@@ -75,7 +79,7 @@ public class GuiElectricityMeter extends GuiScreen {
         if (ticker == 0) {
             ticker = 5;
             // Request the latest data from the server-side TileEntity.
-            PacketHandler.getNetwork().sendToServer(new PacketRequestData(new Location(tileEntity)));
+            PacketHandler.getNetwork().sendToServer(new PacketRequestData(tileEntity));
         } else {
             ticker--;
         }
