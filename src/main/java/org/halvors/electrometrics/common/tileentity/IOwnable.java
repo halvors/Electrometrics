@@ -1,13 +1,13 @@
 package org.halvors.electrometrics.common.tileentity;
 
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.EntityPlayer;
 
 public interface IOwnable {
     boolean hasOwner();
 
-    boolean isOwner(EntityPlayerMP player);
+    boolean isOwner(EntityPlayer player);
 
-    EntityPlayerMP getOwner();
+    EntityPlayer getOwner();
 
-    void setOwner(EntityPlayerMP player);
+    void setOwner(EntityPlayer player);
 }
