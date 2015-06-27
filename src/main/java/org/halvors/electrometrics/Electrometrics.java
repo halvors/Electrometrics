@@ -22,6 +22,7 @@ import org.halvors.electrometrics.common.event.PlayerEventHandler;
 import org.halvors.electrometrics.common.UnitDisplay;
 import org.halvors.electrometrics.common.UnitDisplay.Unit;
 import org.halvors.electrometrics.common.block.BlockElectricityMeter;
+import org.halvors.electrometrics.common.item.ItemBlockElectricityMeter;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
 
@@ -124,7 +125,7 @@ public class Electrometrics {
 		blockElectricityMeter = new BlockElectricityMeter();
 
 		// Register blocks.
-		GameRegistry.registerBlock(blockElectricityMeter, "blockElectricityMeter");
+		GameRegistry.registerBlock(blockElectricityMeter, ItemBlockElectricityMeter.class, "blockElectricityMeter");
 	}
 
 	public void addItems() {

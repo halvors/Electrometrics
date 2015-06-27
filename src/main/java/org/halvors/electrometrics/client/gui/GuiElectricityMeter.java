@@ -39,14 +39,14 @@ public class GuiElectricityMeter extends GuiScreen {
 
         // Add buttons.
         buttonList.clear();
-        buttonList.add(new GuiButton(0, guiWidth + 108, guiHeight + 56, 60, 20, "Reset"));
+        buttonList.add(new GuiButton(0, guiWidth + 116, guiHeight + 96, 60, 20, "Reset"));
     }
 
     @Override
     protected void actionPerformed(GuiButton guiButton) {
         switch (guiButton.id) {
             case 0:
-                //tileEntity.setElectricityCount(0);
+                tileEntity.setElectricityCount(0);
 
                 // Update the server-side TileEntity.
                 PacketHandler.getNetwork().sendToServer(new PacketTileEntity(new Location(tileEntity), tileEntity.getPacketData(new ArrayList())));
@@ -62,11 +62,11 @@ public class GuiElectricityMeter extends GuiScreen {
         int guiHeight = (height - ySize) / 2;
 
         // Formatting energy to the correct energy unit.
-        String energy = Electrometrics.getEnergyDisplay(tileEntity.getElectricityCount());
+        String energyCount = Electrometrics.getEnergyDisplay(tileEntity.getElectricityCount());
         String maxOutput = Electrometrics.getEnergyDisplay(tileEntity.getStorage().getMaxEnergyStored());
 
-        fontRendererObj.drawString("Energy:", guiWidth + 6, guiHeight + 32, 0x404040);
-        fontRendererObj.drawString(energy, guiWidth + 64, guiHeight + 32, 0x404040);
+        fontRendererObj.drawString("Measured energy:", guiWidth + 6, guiHeight + 32, 0x404040);
+        fontRendererObj.drawString(energyCount, guiWidth + 64, guiHeight + 32, 0x404040);
 
         // Current output.
         fontRendererObj.drawString("Max output:", guiWidth + 6, guiHeight + 42, 0x404040);
