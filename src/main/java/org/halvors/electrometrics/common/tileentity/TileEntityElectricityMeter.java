@@ -3,7 +3,6 @@ package org.halvors.electrometrics.common.tileentity;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
-import org.halvors.electrometrics.common.network.ITileEntityNetwork;
 
 import java.util.ArrayList;
 
@@ -13,7 +12,7 @@ import java.util.ArrayList;
  *
  * @author halvors
  */
-public class TileEntityElectricityMeter extends TileEntityEnergyProvider implements ITileEntityNetwork {
+public class TileEntityElectricityMeter extends TileEntityEnergyProvider implements INetworkable {
 	// The amount of energy that has passed thru.
 	private double electricityCount;
 

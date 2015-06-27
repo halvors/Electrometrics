@@ -1,4 +1,4 @@
-package org.halvors.electrometrics.common.network;
+package org.halvors.electrometrics.common.tileentity;
 
 import io.netty.buffer.ByteBuf;
 
@@ -9,7 +9,7 @@ import java.util.ArrayList;
  *
  * @author halvors
  */
-public interface ITileEntityNetwork {
+public interface INetworkable {
     /**
      * Receive and manage a packet's data.
      * @param dataStream
