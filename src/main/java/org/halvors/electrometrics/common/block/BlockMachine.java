@@ -38,6 +38,8 @@ public class BlockMachine extends BlockBasic {
         this.name = name;
 
         setBlockName(name);
+        setHardness(3.5F);
+        setResistance(8F);
     }
 
     @Override
@@ -92,6 +94,7 @@ public class BlockMachine extends BlockBasic {
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemStack) {
         TileEntity tileEntity = world.getTileEntity(x, y, z);
 
+        // If this TileEntity implements IRotatable, we do our rotations.
         if (tileEntity instanceof IRotatable) {
             IRotatable rotatable = (IRotatable) tileEntity;
 
@@ -119,9 +122,11 @@ public class BlockMachine extends BlockBasic {
             rotatable.setFacing((short) change);
         }
 
+        // Check if this entity is a player.
         if (entity instanceof EntityPlayerMP) {
             EntityPlayerMP player = (EntityPlayerMP) entity;
 
+            // If this TileEntity implements IOwnable, we set the owner.
             if (tileEntity instanceof IOwnable) {
                 IOwnable ownable = (IOwnable) tileEntity;
                 ownable.setOwner(player);
@@ -134,6 +139,7 @@ public class BlockMachine extends BlockBasic {
         TileEntity tileEntity = world.getTileEntity(x, y, z);
         ForgeDirection[] valid = new ForgeDirection[6];
 
+        // If this TileEntity implements IRotatable, we do our rotations.
         if (tileEntity instanceof IRotatable) {
             IRotatable rotatable = (IRotatable) tileEntity;
 
@@ -151,6 +157,7 @@ public class BlockMachine extends BlockBasic {
     public boolean rotateBlock(World world, int x, int y, int z, ForgeDirection axis) {
         TileEntity tileEntity = world.getTileEntity(x, y, z);
 
+        // If this TileEntity implements IRotatable, we do our rotations.
         if (tileEntity instanceof IRotatable) {
             IRotatable rotatable = (IRotatable) tileEntity;
 
@@ -168,6 +175,7 @@ public class BlockMachine extends BlockBasic {
     public float getBlockHardness(World world, int x, int y, int z) {
         TileEntity tileEntity = world.getTileEntity(x, y, z);
 
+        // If this TileEntity implements IOwnable, we check if there is a owner.
         if (tileEntity instanceof IOwnable) {
             IOwnable ownable = (IOwnable) tileEntity;
 

@@ -23,9 +23,6 @@ public class BlockElectricityMeter extends BlockMachine {
 	public BlockElectricityMeter() {
 		super("blockElectricityMeter", Material.iron);
 
-		setHardness(3.5F);
-		setResistance(8F);
-		//setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.3F, 1.0F);
 		setStepSound(soundTypeMetal);
 	}
 
