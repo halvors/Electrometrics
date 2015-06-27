@@ -33,6 +33,8 @@ public class GuiScreen extends net.minecraft.client.gui.GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTick) {
+        drawDefaultBackground();
+
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         mc.renderEngine.bindTexture(texture);
 
