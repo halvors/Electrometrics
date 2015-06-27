@@ -13,6 +13,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.halvors.electrometrics.Reference;
+import org.halvors.electrometrics.common.tileentity.IActiveState;
 import org.halvors.electrometrics.common.tileentity.IRotatable;
 import org.halvors.electrometrics.common.tileentity.TileEntityMachine;
 import org.halvors.electrometrics.common.util.Orientation;
@@ -60,12 +61,19 @@ public class BlockMachine extends BlockBasic {
     public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
         TileEntity tileEntity = world.getTileEntity(x, y, z);
 
+        // Check if this implements IRotatable.
         if (tileEntity instanceof IRotatable) {
             IRotatable rotatable = (IRotatable) tileEntity;
+            boolean isActive = false;
 
-            //boolean active = MekanismUtils.isActive(world, x, y, z);
+            // Check if this implements IActiveState, if it do we get the state from it.
+            if (tileEntity instanceof IActiveState) {
+                IActiveState activeState = (IActiveState) tileEntity;
 
-            return icons[Orientation.getBaseOrientation(side, rotatable.getFacing())];
+                isActive = activeState.isActive();
+            }
+
+            return icons[Orientation.getBaseOrientation(side, rotatable.getFacing() + (isActive ? 6 : 0))];
         }
 
         return baseIcon;

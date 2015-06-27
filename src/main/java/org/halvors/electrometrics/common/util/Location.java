@@ -2,7 +2,7 @@ package org.halvors.electrometrics.common.util;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
+import net.minecraft.world.IBlockAccess;
 
 public class Location {
     private int x;
@@ -39,7 +39,7 @@ public class Location {
         return z;
     }
 
-    public TileEntity getTileEntity(World world) {
+    public TileEntity getTileEntity(IBlockAccess world) {
         return world.getTileEntity(x, y, z);
     }
 }
