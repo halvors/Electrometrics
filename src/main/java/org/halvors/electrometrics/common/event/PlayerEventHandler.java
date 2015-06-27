@@ -5,7 +5,6 @@ import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.common.network.PacketConfigurationSync;
 import org.halvors.electrometrics.common.network.PacketHandler;

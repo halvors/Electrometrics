@@ -2,16 +2,12 @@ package org.halvors.electrometrics.client.gui;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketRequestData;
 import org.halvors.electrometrics.common.network.PacketTileEntity;
 import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
-import org.halvors.electrometrics.common.util.Location;
-
-import java.util.ArrayList;
 
 /**
  * This is the GUI of the Electricity Meter which provides a simple way to keep count of the electricity you use.

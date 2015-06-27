@@ -1,5 +1,6 @@
 package org.halvors.electrometrics.common.util;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
@@ -37,6 +38,10 @@ public class Location {
 
     public int getZ() {
         return z;
+    }
+
+    public Block getBlock(IBlockAccess world) {
+        return world.getBlock(x, y, z);
     }
 
     public TileEntity getTileEntity(IBlockAccess world) {

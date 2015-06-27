@@ -1,5 +1,7 @@
 package org.halvors.electrometrics.common.tileentity;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -18,10 +20,20 @@ public class TileEntityMachine extends TileEntity implements IRotatable, INetwor
     private int facing;
 
     // The direction this block is facing on the client side.
+    @SideOnly(Side.CLIENT)
     public int clientFacing;
 
     public TileEntityMachine() {
 
+    }
+
+    @Override
+    public void validate() {
+        super.validate();
+
+        if (worldObj.isRemote) {
+            PacketHandler.getNetwork().sendToServer(new PacketRequestData(this));
+        }
     }
 
     @Override
@@ -56,10 +68,8 @@ public class TileEntityMachine extends TileEntity implements IRotatable, INetwor
         return data;
     }
 
-    /**
+    /*
      * Whether or not this block's orientation can be changed to a specific direction. True by default.
-     * @param facing - facing to check
-     * @return if the block's orientation can be changed
      */
     @Override
     public boolean canSetFacing(int facing) {
@@ -82,18 +92,5 @@ public class TileEntityMachine extends TileEntity implements IRotatable, INetwor
             markDirty();
         }
         */
-    }
-
-    public void onChunkLoad() {
-        markDirty();
-    }
-
-    @Override
-    public void validate() {
-        super.validate();
-
-        if (worldObj.isRemote) {
-            PacketHandler.getNetwork().sendToServer(new PacketRequestData(this));
-        }
     }
 }

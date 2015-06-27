@@ -5,6 +5,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import org.halvors.electrometrics.Electrometrics;
+
 /**
  * This is a basic Block that is meant to be extended by other Blocks.
  *
