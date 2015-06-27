@@ -54,6 +54,7 @@ public class TileEntityMachine extends TileEntity implements IRotatable, INetwor
     public void handlePacketData(ByteBuf dataStream) throws Exception {
         facing = dataStream.readInt();
 
+        // Check if client is in sync with the server, if not update it.
         if (clientFacing != facing) {
             clientFacing = facing;
 

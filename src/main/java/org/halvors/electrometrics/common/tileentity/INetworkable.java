@@ -5,7 +5,7 @@ import io.netty.buffer.ByteBuf;
 import java.util.ArrayList;
 
 /**
- * Internal interface used for blocks that send data between clients and the server
+ * Internal interface used for TileEntities that sends or receives data.
  *
  * @author halvors
  */
@@ -19,8 +19,8 @@ public interface INetworkable {
     /**
      * Gets an ArrayList of data this tile entity keeps synchronized with the client.
      * @param data - list of data
-     * @return ArrayList
+     * @return ArrayList<Object>
      */
-    ArrayList<Object> getPacketData(ArrayList data);
+    ArrayList<Object> getPacketData(ArrayList<Object> data);
 }
 
