@@ -19,6 +19,10 @@ public class PacketRequestData extends PacketLocation implements IMessage, IMess
         super(location);
     }
 
+    public PacketRequestData(INetworkable networkable) {
+        super(new Location((TileEntity) networkable));
+    }
+
     @Override
     public void fromBytes(ByteBuf dataStream) {
         super.fromBytes(dataStream);

@@ -20,17 +20,24 @@ import java.util.ArrayList;
  * @author halvors
  */
 public class PacketTileEntity extends PacketLocation implements IMessage, IMessageHandler<PacketTileEntity, IMessage> {
-    private ArrayList dataList;
+    private ArrayList<Object> dataList;
     private ByteBuf storedBuffer = null;
 
     public PacketTileEntity() {
 
     }
 
-    public PacketTileEntity(Location location, ArrayList dataList) {
+    public PacketTileEntity(Location location, ArrayList<Object> dataList) {
         super(location);
 
         this.dataList = dataList;
+    }
+
+
+    public PacketTileEntity(INetworkable networkable) {
+        super(new Location((TileEntity) networkable));
+
+        this.dataList = networkable.getPacketData(new ArrayList<Object>());
     }
 
     @Override
