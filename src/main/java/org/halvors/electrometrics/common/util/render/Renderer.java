@@ -54,8 +54,6 @@ public class Renderer {
     public static boolean blockTextureExists(String texture) {
         String path = Reference.PREFIX + "textures/blocks/" + texture + ".png"; // Need to add :textures/blocks/?
 
-        System.out.println("The texture path is: " + path);
-
         try {
             Minecraft.getMinecraft().getResourceManager().getAllResources(new ResourceLocation(path));
 

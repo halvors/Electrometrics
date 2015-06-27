@@ -12,7 +12,7 @@ public class DefaultIcon {
     private IIcon defaultIcon;
     private List<Integer> icons = new ArrayList<Integer>();
 
-    public DefaultIcon(IIcon defaultIcon, int... is) {
+    public DefaultIcon(IIcon defaultIcon, int ...is) {
         this.defaultIcon = defaultIcon;
 
         for (int i : is) {
@@ -24,7 +24,7 @@ public class DefaultIcon {
         return new DefaultIcon(icon, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
     }
 
-    public static DefaultIcon getActivePair(IIcon icon, int... is) {
+    public static DefaultIcon getActivePair(IIcon icon, int ...is) {
         DefaultIcon defaultIcon = new DefaultIcon(icon, is);
 
         for (int i : is) {
