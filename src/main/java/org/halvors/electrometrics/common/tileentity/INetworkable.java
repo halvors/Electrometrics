@@ -21,6 +21,6 @@ public interface INetworkable {
      * @param data - list of data
      * @return ArrayList
      */
-    ArrayList getPacketData(ArrayList data);
+    ArrayList<Object> getPacketData(ArrayList data);
 }
 
