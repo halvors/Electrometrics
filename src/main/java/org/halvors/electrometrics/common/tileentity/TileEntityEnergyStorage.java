@@ -8,7 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
  *
  * @author halvors
  */
-public class TileEntityEnergyStorage extends TileEntityBasic {
+public class TileEntityEnergyStorage extends TileEntityMachine {
     // The internal energy storage.
     protected EnergyStorage storage;
 

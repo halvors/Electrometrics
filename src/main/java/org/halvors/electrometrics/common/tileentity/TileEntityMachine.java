@@ -3,7 +3,8 @@ package org.halvors.electrometrics.common.tileentity;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import org.halvors.electrometrics.common.network.ITileEntityNetwork;
+import org.halvors.electrometrics.common.network.PacketHandler;
+import org.halvors.electrometrics.common.network.PacketRequestData;
 
 import java.util.ArrayList;
 
@@ -12,11 +13,14 @@ import java.util.ArrayList;
  *
  * @author halvors
  */
-public class TileEntityBasic extends TileEntity implements ITileEntityNetwork {
+public class TileEntityMachine extends TileEntity implements IRotatable, INetworkable {
     // The direction this block is facing.
     private int facing;
 
-    public TileEntityBasic() {
+    // The direction this block is facing on the client side.
+    public int clientFacing;
+
+    public TileEntityMachine() {
 
     }
 
@@ -37,10 +41,16 @@ public class TileEntityBasic extends TileEntity implements ITileEntityNetwork {
     @Override
     public void handlePacketData(ByteBuf dataStream) throws Exception {
         facing = dataStream.readInt();
+
+        if (clientFacing != facing) {
+            clientFacing = facing;
+
+            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        }
     }
 
     @Override
-    public ArrayList getPacketData(ArrayList data) {
+    public ArrayList<Object> getPacketData(ArrayList data) {
         data.add(facing);
 
         return data;
@@ -51,14 +61,17 @@ public class TileEntityBasic extends TileEntity implements ITileEntityNetwork {
      * @param facing - facing to check
      * @return if the block's orientation can be changed
      */
+    @Override
     public boolean canSetFacing(int facing) {
         return true;
     }
 
+    @Override
     public short getFacing() {
-        return (short)facing;
+        return (short) facing;
     }
 
+    @Override
     public void setFacing(short facing) {
         if (canSetFacing(facing)) {
             this.facing = facing;
@@ -69,5 +82,18 @@ public class TileEntityBasic extends TileEntity implements ITileEntityNetwork {
             markDirty();
         }
         */
+    }
+
+    public void onChunkLoad() {
+        markDirty();
+    }
+
+    @Override
+    public void validate() {
+        super.validate();
+
+        if (worldObj.isRemote) {
+            PacketHandler.getNetwork().sendToServer(new PacketRequestData(this));
+        }
     }
 }
