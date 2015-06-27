@@ -4,7 +4,9 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -14,6 +16,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.halvors.electrometrics.Reference;
 import org.halvors.electrometrics.common.tileentity.IActiveState;
+import org.halvors.electrometrics.common.tileentity.IOwnable;
 import org.halvors.electrometrics.common.tileentity.IRotatable;
 import org.halvors.electrometrics.common.tileentity.TileEntityMachine;
 import org.halvors.electrometrics.common.util.Orientation;
@@ -115,6 +118,15 @@ public class BlockMachine extends BlockBasic {
 
             rotatable.setFacing((short) change);
         }
+
+        if (entity instanceof EntityPlayerMP) {
+            EntityPlayerMP player = (EntityPlayerMP) entity;
+
+            if (tileEntity instanceof IOwnable) {
+                IOwnable ownable = (IOwnable) tileEntity;
+                ownable.setOwner(player);
+            }
+        }
     }
 
     @Override
@@ -150,5 +162,31 @@ public class BlockMachine extends BlockBasic {
         }
 
         return super.rotateBlock(world, x, y, z, axis);
+    }
+
+    @Override
+    public float getBlockHardness(World world, int x, int y, int z) {
+        TileEntity tileEntity = world.getTileEntity(x, y, z);
+
+        if (tileEntity instanceof IOwnable) {
+            IOwnable ownable = (IOwnable) tileEntity;
+
+            return ownable.hasOwner() ? blockHardness : -1;
+        }
+
+        return blockHardness;
+    }
+
+    @Override
+    public float getExplosionResistance(Entity entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ) {
+        TileEntity tileEntity = world.getTileEntity(x, y, z);
+
+        if (tileEntity instanceof IOwnable) {
+            IOwnable ownable = (IOwnable) tileEntity;
+
+            return ownable.hasOwner() ? blockResistance : -1;
+        }
+
+        return blockResistance;
     }
 }

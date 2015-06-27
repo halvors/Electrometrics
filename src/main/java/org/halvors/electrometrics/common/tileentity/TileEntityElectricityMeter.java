@@ -1,12 +1,20 @@
 package org.halvors.electrometrics.common.tileentity;
 
+import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * This is the TileEntity of the Electricity Meter which provides a simple way to keep count of the electricity you use.
@@ -14,12 +22,15 @@ import java.util.ArrayList;
  *
  * @author halvors
  */
-public class TileEntityElectricityMeter extends TileEntityEnergyProvider implements INetworkable, IActiveState {
+public class TileEntityElectricityMeter extends TileEntityEnergyProvider implements INetworkable, IActiveState, IOwnable {
 	// The amount of energy that has passed thru.
 	private double electricityCount;
 
 	// Whether or not this block is in it's active state.
 	private boolean isActive = false;
+
+	// The UUID of the player owning this.
+	private UUID owner;
 
 	// The client's current active state.
 	@SideOnly(Side.CLIENT)
@@ -33,16 +44,18 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 	public void readFromNBT(NBTTagCompound nbtTags) {
 		super.readFromNBT(nbtTags);
 
-		electricityCount = nbtTags.getDouble("electricityCount");
 		isActive = nbtTags.getBoolean("isActive");
+		owner = UUID.fromString(nbtTags.getString("owner"));
+		electricityCount = nbtTags.getDouble("electricityCount");
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbtTags) {
 		super.writeToNBT(nbtTags);
 
-		nbtTags.setDouble("electricityCount", electricityCount);
 		nbtTags.setBoolean("isActive", isActive);
+		nbtTags.setString("owner", owner.toString());
+		nbtTags.setDouble("electricityCount", electricityCount);
 	}
 
 	@Override
@@ -59,8 +72,9 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 	public void handlePacketData(ByteBuf dataStream) throws Exception {
 		super.handlePacketData(dataStream);
 
-		setElectricityCount(dataStream.readDouble());
-		setActive(dataStream.readBoolean());
+		isActive = dataStream.readBoolean();
+		owner = UUID.fromString(ByteBufUtils.readUTF8String(dataStream));
+		electricityCount = dataStream.readDouble();
 
 		// Check if client is in sync with the server, if not update it.
 		if (clientIsActive != isActive) {
@@ -74,8 +88,9 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 	public ArrayList getPacketData(ArrayList data) {
 		super.getPacketData(data);
 
-		data.add(getElectricityCount());
-		data.add(isActive());
+		data.add(electricityCount);
+		data.add(isActive);
+		data.add(owner.toString());
 
 		return data;
 	}
@@ -88,6 +103,33 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 	@Override
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
+	}
+
+	@Override
+	public boolean hasOwner() {
+		return getOwner() != null;
+	}
+
+	@Override
+	public EntityPlayerMP getOwner() {
+		List<WorldServer> worldList = Arrays.asList(Minecraft.getMinecraft().getIntegratedServer().worldServers);
+
+		for (World world : worldList) {
+			List<EntityPlayerMP> playerList = world.playerEntities;
+
+			for (EntityPlayerMP player : playerList) {
+				if (player.getUniqueID() == owner) {
+					return player;
+				}
+			}
+		}
+
+		return null;
+	}
+
+	@Override
+	public void setOwner(EntityPlayerMP player) {
+
 	}
 
 	/**
