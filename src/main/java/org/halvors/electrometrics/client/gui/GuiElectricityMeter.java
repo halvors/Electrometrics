@@ -39,7 +39,7 @@ public class GuiElectricityMeter extends GuiScreen {
 
         // Add buttons.
         buttonList.clear();
-        buttonList.add(new GuiButton(0, guiWidth + 116, guiHeight + 96, 60, 20, "Reset"));
+        buttonList.add(new GuiButton(0, guiWidth + 110, guiHeight + 70, 60, 20, "Reset"));
     }
 
     @Override
@@ -65,12 +65,12 @@ public class GuiElectricityMeter extends GuiScreen {
         String energyCount = Electrometrics.getEnergyDisplay(tileEntity.getElectricityCount());
         String maxOutput = Electrometrics.getEnergyDisplay(tileEntity.getStorage().getMaxEnergyStored());
 
-        fontRendererObj.drawString("Measured energy:", guiWidth + 6, guiHeight + 32, 0x404040);
-        fontRendererObj.drawString(energyCount, guiWidth + 64, guiHeight + 32, 0x404040);
+        fontRendererObj.drawString("Measured:", guiWidth + 6, guiHeight + 32, 0x404040);
+        fontRendererObj.drawString(energyCount, guiWidth + 72, guiHeight + 32, 0x404040);
 
         // Current output.
         fontRendererObj.drawString("Max output:", guiWidth + 6, guiHeight + 42, 0x404040);
-        fontRendererObj.drawString(maxOutput, guiWidth + 64, guiHeight + 42, 0x404040);
+        fontRendererObj.drawString(maxOutput, guiWidth + 72, guiHeight + 42, 0x404040);
 
         if (ticker == 0) {
             ticker = 5;

@@ -92,20 +92,6 @@ public class BlockElectricityMeter extends BlockBasic {
 		}
 
 		return world.setBlockToAir(x, y, z);
-
-		/*
-		TileEntityEnergyCube tileEntity = (TileEntityEnergyCube)world.getTileEntity(x, y, z);
-		ItemStack itemStack = new ItemStack(MekanismBlocks.EnergyCube);
-
-		IEnergyCube energyCube = (IEnergyCube)itemStack.getItem();
-		energyCube.setEnergyCubeTier(itemStack, tileEntity.tier);
-
-		IEnergizedItem energizedItem = (IEnergizedItem)itemStack.getItem();
-		energizedItem.setEnergy(itemStack, tileEntity.electricityStored);
-
-		ISustainedInventory inventory = (ISustainedInventory)itemStack.getItem();
-		inventory.setInventory(((ISustainedInventory)tileEntity).getInventory(), itemStack);
-		 */
 	}
 
 	@Override
