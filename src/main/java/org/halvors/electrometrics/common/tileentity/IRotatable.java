@@ -6,9 +6,9 @@ package org.halvors.electrometrics.common.tileentity;
  * @author halvors
  */
 public interface IRotatable {
-    boolean canSetFacing(int facing);
+	boolean canSetFacing(int facing);
 
-    short getFacing();
+	short getFacing();
 
-    void setFacing(short facing);
+	void setFacing(short facing);
 }

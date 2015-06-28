@@ -10,29 +10,29 @@ import org.halvors.electrometrics.common.util.Location;
  * @author halvors
  */
 public class PacketLocation implements IMessage {
-    private Location location;
+	private Location location;
 
-    public PacketLocation() {
+	public PacketLocation() {
 
-    }
+	}
 
-    public PacketLocation(Location location) {
-        this.location = location;
-    }
+	public PacketLocation(Location location) {
+		this.location = location;
+	}
 
-    @Override
-    public void fromBytes(ByteBuf dataStream) {
-        location = new Location(dataStream.readInt(), dataStream.readInt(), dataStream.readInt());
-    }
+	@Override
+	public void fromBytes(ByteBuf dataStream) {
+		location = new Location(dataStream.readInt(), dataStream.readInt(), dataStream.readInt());
+	}
 
-    @Override
-    public void toBytes(ByteBuf dataStream) {
-        dataStream.writeInt(location.getX());
-        dataStream.writeInt(location.getY());
-        dataStream.writeInt(location.getZ());
-    }
+	@Override
+	public void toBytes(ByteBuf dataStream) {
+		dataStream.writeInt(location.getX());
+		dataStream.writeInt(location.getY());
+		dataStream.writeInt(location.getZ());
+	}
 
-    public Location getLocation() {
-        return location;
-    }
+	public Location getLocation() {
+		return location;
+	}
 }

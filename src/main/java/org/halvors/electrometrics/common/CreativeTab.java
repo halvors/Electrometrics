@@ -12,17 +12,17 @@ import org.halvors.electrometrics.Electrometrics;
  * @author halvors
  */
 public class CreativeTab extends CreativeTabs {
-    public CreativeTab() {
-        super("tabElectrometrics");
-    }
+	public CreativeTab() {
+		super("tabElectrometrics");
+	}
 
-    @Override
-    public ItemStack getIconItemStack() {
-        return new ItemStack(Electrometrics.blockElectricityMeter);
-    }
+	@Override
+	public ItemStack getIconItemStack() {
+		return new ItemStack(Electrometrics.blockElectricityMeter);
+	}
 
-    @Override
-    public Item getTabIconItem() {
-        return new ItemBlock(Electrometrics.blockElectricityMeter);
-    }
+	@Override
+	public Item getTabIconItem() {
+		return new ItemBlock(Electrometrics.blockElectricityMeter);
+	}
 }

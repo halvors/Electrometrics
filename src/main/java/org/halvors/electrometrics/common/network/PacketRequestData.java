@@ -11,38 +11,38 @@ import org.halvors.electrometrics.common.util.Location;
 import java.util.ArrayList;
 
 public class PacketRequestData extends PacketLocation implements IMessage, IMessageHandler<PacketRequestData, IMessage> {
-    public PacketRequestData() {
+	public PacketRequestData() {
 
-    }
+	}
 
-    public PacketRequestData(Location location) {
-        super(location);
-    }
+	public PacketRequestData(Location location) {
+		super(location);
+	}
 
-    public PacketRequestData(INetworkable networkable) {
-        super(new Location((TileEntity) networkable));
-    }
+	public PacketRequestData(INetworkable networkable) {
+		super(new Location((TileEntity) networkable));
+	}
 
-    @Override
-    public void fromBytes(ByteBuf dataStream) {
-        super.fromBytes(dataStream);
-    }
+	@Override
+	public void fromBytes(ByteBuf dataStream) {
+		super.fromBytes(dataStream);
+	}
 
-    @Override
-    public void toBytes(ByteBuf dataStream) {
-        super.toBytes(dataStream);
-    }
+	@Override
+	public void toBytes(ByteBuf dataStream) {
+		super.toBytes(dataStream);
+	}
 
-    @Override
-    public IMessage onMessage(PacketRequestData message, MessageContext context) {
-        TileEntity tileEntity = message.getLocation().getTileEntity(PacketHandler.getWorld(context));
+	@Override
+	public IMessage onMessage(PacketRequestData message, MessageContext context) {
+		TileEntity tileEntity = message.getLocation().getTileEntity(PacketHandler.getWorld(context));
 
-        if (tileEntity != null && tileEntity instanceof INetworkable) {
-            INetworkable networkable = (INetworkable) tileEntity;
+		if (tileEntity != null && tileEntity instanceof INetworkable) {
+			INetworkable networkable = (INetworkable) tileEntity;
 
-            return new PacketTileEntity(message.getLocation(), networkable.getPacketData(new ArrayList()));
-        }
+			return new PacketTileEntity(message.getLocation(), networkable.getPacketData(new ArrayList()));
+		}
 
-        return null;
-    }
+		return null;
+	}
 }

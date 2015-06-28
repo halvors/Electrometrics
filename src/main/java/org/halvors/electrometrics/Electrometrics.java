@@ -168,8 +168,8 @@ public class Electrometrics {
 	}
 
 	/*
-     * Converts the energy to the default energy system.
-     */
+	 * Converts the energy to the default energy system.
+	 */
 	public static String getEnergyDisplay(double energy) {
 		switch (energyType) {
 			case REDSTONE_FLUX:

@@ -6,13 +6,13 @@ package org.halvors.electrometrics.common.tileentity;
  * @author halvors
  */
 public interface IActiveState {
-    /**
-     * Gets the active state as a boolean.
-     */
-    boolean isActive();
+	/**
+	 * Gets the active state as a boolean.
+	 */
+	boolean isActive();
 
-    /**
-     * Sets the active state to a new value.
-     */
-    void setActive(boolean isActive);
+	/**
+	 * Sets the active state to a new value.
+	 */
+	void setActive(boolean isActive);
 }

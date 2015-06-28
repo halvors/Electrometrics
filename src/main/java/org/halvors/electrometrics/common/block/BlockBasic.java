@@ -12,14 +12,14 @@ import org.halvors.electrometrics.Electrometrics;
  * @author halvors
  */
 public class BlockBasic extends BlockContainer {
-    protected BlockBasic(Material material) {
-        super(material);
+	protected BlockBasic(Material material) {
+		super(material);
 
-        setCreativeTab(Electrometrics.tabElectrometrics);
-    }
+		setCreativeTab(Electrometrics.tabElectrometrics);
+	}
 
-    @Override
-    public TileEntity createNewTileEntity(World world, int metadata) {
-        return null;
-    }
+	@Override
+	public TileEntity createNewTileEntity(World world, int metadata) {
+		return null;
+	}
 }

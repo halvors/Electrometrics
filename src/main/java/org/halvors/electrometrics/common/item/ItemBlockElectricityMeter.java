@@ -21,45 +21,45 @@ import java.util.List;
  * @author halvors
  */
 public class ItemBlockElectricityMeter extends ItemBlockBasic {
-    public ItemBlockElectricityMeter(Block block) {
-        super(block);
-    }
+	public ItemBlockElectricityMeter(Block block) {
+		super(block);
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack itemStack, EntityPlayer entityplayer, List list, boolean flag) {
-        list.add(Color.BRIGHT_GREEN + "Measured energy: " + Color.GREY + Electrometrics.getEnergyDisplay(getElectricityCount(itemStack)));
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack itemStack, EntityPlayer entityplayer, List list, boolean flag) {
+		list.add(Color.BRIGHT_GREEN + "Measured energy: " + Color.GREY + Electrometrics.getEnergyDisplay(getElectricityCount(itemStack)));
+	}
 
-    @Override
-    public boolean placeBlockAt(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata) {
-        boolean placed = super.placeBlockAt(itemStack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata);
+	@Override
+	public boolean placeBlockAt(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata) {
+		boolean placed = super.placeBlockAt(itemStack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata);
 
-        if (placed) {
-            TileEntity tileEntity = world.getTileEntity(x, y, z);
+		if (placed) {
+			TileEntity tileEntity = world.getTileEntity(x, y, z);
 
-            if (tileEntity instanceof TileEntityElectricityMeter) {
-                TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
-                tileEntityElectricityMeter.setElectricityCount(getElectricityCount(itemStack));
-            }
-        }
+			if (tileEntity instanceof TileEntityElectricityMeter) {
+				TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
+				tileEntityElectricityMeter.setElectricityCount(getElectricityCount(itemStack));
+			}
+		}
 
-        return placed;
-    }
+		return placed;
+	}
 
-    public double getElectricityCount(ItemStack itemStack) {
-        if (itemStack.stackTagCompound != null) {
-            return itemStack.stackTagCompound.getDouble("electricityCount");
-        }
+	public double getElectricityCount(ItemStack itemStack) {
+		if (itemStack.stackTagCompound != null) {
+			return itemStack.stackTagCompound.getDouble("electricityCount");
+		}
 
-        return 0;
-    }
+		return 0;
+	}
 
-    public void setElectricityCount(ItemStack itemStack, double electricityCount) {
-        if (itemStack.stackTagCompound == null) {
-            itemStack.setTagCompound(new NBTTagCompound());
-        }
+	public void setElectricityCount(ItemStack itemStack, double electricityCount) {
+		if (itemStack.stackTagCompound == null) {
+			itemStack.setTagCompound(new NBTTagCompound());
+		}
 
-        itemStack.stackTagCompound.setDouble("electricityCount", electricityCount);
-    }
+		itemStack.stackTagCompound.setDouble("electricityCount", electricityCount);
+	}
 }

@@ -15,19 +15,19 @@ import org.halvors.electrometrics.common.network.PacketHandler;
  * @author halvors
  */
 public class PlayerEventHandler {
-    public PlayerEventHandler() {
+	public PlayerEventHandler() {
 
-    }
+	}
 
-    @SubscribeEvent
-    public void onPlayerLoginEvent(PlayerLoggedInEvent event) {
-        EntityPlayer player = event.player;
-        World world = player.worldObj;
+	@SubscribeEvent
+	public void onPlayerLoginEvent(PlayerLoggedInEvent event) {
+		EntityPlayer player = event.player;
+		World world = player.worldObj;
 
-        if (!world.isRemote) {
-            PacketHandler.getNetwork().sendTo(new PacketConfigurationSync(), (EntityPlayerMP) player);
+		if (!world.isRemote) {
+			PacketHandler.getNetwork().sendTo(new PacketConfigurationSync(), (EntityPlayerMP) player);
 
-            Electrometrics.getLogger().info("Sent configuration to '" + player.getDisplayName() + "'.");
-        }
-    }
+			Electrometrics.getLogger().info("Sent configuration to '" + player.getDisplayName() + "'.");
+		}
+	}
 }

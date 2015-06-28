@@ -13,28 +13,28 @@ import org.halvors.electrometrics.common.UnitDisplay;
  * @author halvors
  */
 public class PacketConfigurationSync implements IMessage, IMessageHandler<PacketConfigurationSync, IMessage> {
-    public PacketConfigurationSync() {
+	public PacketConfigurationSync() {
 
-    }
+	}
 
-    @Override
-    public void fromBytes(ByteBuf dataStream) {
-        Electrometrics.energyType = UnitDisplay.Unit.values()[dataStream.readInt()];
-        Electrometrics.toJoules = dataStream.readDouble();
-        Electrometrics.toMinecraftJoules = dataStream.readDouble();
-        Electrometrics.toElectricalUnits = dataStream.readDouble();
-    }
+	@Override
+	public void fromBytes(ByteBuf dataStream) {
+		Electrometrics.energyType = UnitDisplay.Unit.values()[dataStream.readInt()];
+		Electrometrics.toJoules = dataStream.readDouble();
+		Electrometrics.toMinecraftJoules = dataStream.readDouble();
+		Electrometrics.toElectricalUnits = dataStream.readDouble();
+	}
 
-    @Override
-    public void toBytes(ByteBuf dataStream) {
-        dataStream.writeInt(Electrometrics.energyType.ordinal());
-        dataStream.writeDouble(Electrometrics.toJoules);
-        dataStream.writeDouble(Electrometrics.toMinecraftJoules);
-        dataStream.writeDouble(Electrometrics.toElectricalUnits);
-    }
+	@Override
+	public void toBytes(ByteBuf dataStream) {
+		dataStream.writeInt(Electrometrics.energyType.ordinal());
+		dataStream.writeDouble(Electrometrics.toJoules);
+		dataStream.writeDouble(Electrometrics.toMinecraftJoules);
+		dataStream.writeDouble(Electrometrics.toElectricalUnits);
+	}
 
-    @Override
-    public IMessage onMessage(PacketConfigurationSync message, MessageContext context) {
-        return null;
-    }
+	@Override
+	public IMessage onMessage(PacketConfigurationSync message, MessageContext context) {
+		return null;
+	}
 }
