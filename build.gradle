@@ -29,7 +29,7 @@ configFile.withReader {
 
 version = config.minecraft_version + "-" + config.mod_version
 group= "org.halvors.electrometrics" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "electrometrics"
+archivesBaseName = "Electrometrics"
 
 minecraft {
 	version = config.minecraft_version + "-" + config.forge_version
