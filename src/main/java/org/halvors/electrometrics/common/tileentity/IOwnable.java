@@ -4,9 +4,22 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 
 public interface IOwnable {
+	/**
+	 * Check if the player is owning this.
+	 * @param player
+	 * @return true if the player is the owner of this.
+	 */
 	boolean isOwner(EntityPlayer player);
 
+	/**
+	 * Get the player owning this.
+	 * @return player
+	 */
 	EntityPlayerMP getOwner();
 
+	/**
+	 * Sets the player owning this.
+	 * @param player
+	 */
 	void setOwner(EntityPlayer player);
 }
