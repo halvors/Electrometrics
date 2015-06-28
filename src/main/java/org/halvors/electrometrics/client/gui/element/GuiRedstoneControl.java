@@ -2,19 +2,25 @@ package org.halvors.electrometrics.client.gui.element;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import org.halvors.electrometrics.Reference;
+import org.halvors.electrometrics.client.gui.IGui;
+import org.halvors.electrometrics.common.network.PacketHandler;
+import org.halvors.electrometrics.common.network.PacketTileEntity;
+import org.halvors.electrometrics.common.tileentity.INetworkable;
 import org.halvors.electrometrics.common.tileentity.IRedstoneControl;
+import org.halvors.electrometrics.common.tileentity.RedstoneControlType;
+import org.halvors.electrometrics.common.util.Rectangle4i;
 
 @SideOnly(Side.CLIENT)
 public class GuiRedstoneControl extends GuiElement {
     private TileEntity tileEntity;
 
-    public GuiRedstoneControl(IGuiWrapper gui, TileEntity tile, ResourceLocation def) {
-        super(new ResourceLocation("/gui/element/", "GuiRedstoneControl.png"), gui, def);
+    public GuiRedstoneControl(IGui gui, TileEntity tileEntity, ResourceLocation defaultResource) {
+        super(new ResourceLocation(Reference.DOMAIN, "gui/elements/guiRedstoneControl.png"), gui, defaultResource);
 
-        tileEntity = tile;
+        this.tileEntity = tileEntity;
     }
 
     @Override
@@ -24,50 +30,70 @@ public class GuiRedstoneControl extends GuiElement {
 
     @Override
     public void renderBackground(int xAxis, int yAxis, int guiWidth, int guiHeight) {
-        mc.renderEngine.bindTexture(RESOURCE);
+        game.renderEngine.bindTexture(resource);
 
-        guiObj.drawTexturedRect(guiWidth + 176, guiHeight + 138, 0, 0, 26, 26);
+        gui.drawTexturedRect(guiWidth + 176, guiHeight + 138, 0, 0, 26, 26);
 
-        IRedstoneControl control = (IRedstoneControl) tileEntity;
-        int renderX = 26 + (18 * control.getControlType().ordinal());
+        if (tileEntity instanceof IRedstoneControl) {
+            IRedstoneControl redstoneControl = (IRedstoneControl) tileEntity;
+            int renderX = 26 + (18 * redstoneControl.getControlType().ordinal());
 
-        if (xAxis >= 179 && xAxis <= 197 && yAxis >= 142 && yAxis <= 160) {
-            guiObj.drawTexturedRect(guiWidth + 179, guiHeight + 142, renderX, 0, 18, 18);
-        } else {
-            guiObj.drawTexturedRect(guiWidth + 179, guiHeight + 142, renderX, 18, 18, 18);
+            if (xAxis >= 179 && xAxis <= 197 && yAxis >= 142 && yAxis <= 160) {
+                gui.drawTexturedRect(guiWidth + 179, guiHeight + 142, renderX, 0, 18, 18);
+            } else {
+                gui.drawTexturedRect(guiWidth + 179, guiHeight + 142, renderX, 18, 18, 18);
+            }
         }
 
-        mc.renderEngine.bindTexture(defaultLocation);
+        game.renderEngine.bindTexture(defaultResource);
     }
 
     @Override
     public void renderForeground(int xAxis, int yAxis) {
-        mc.renderEngine.bindTexture(RESOURCE);
+        game.renderEngine.bindTexture(resource);
 
-        IRedstoneControl control = (IRedstoneControl) tileEntity;
+        if (tileEntity instanceof IRedstoneControl) {
+            IRedstoneControl redstoneControl = (IRedstoneControl) tileEntity;
 
-        if(xAxis >= 179 && xAxis <= 197 && yAxis >= 142 && yAxis <= 160) {
-            displayTooltip(control.getControlType().getDisplay(), xAxis, yAxis);
+            if (xAxis >= 179 && xAxis <= 197 && yAxis >= 142 && yAxis <= 160) {
+                displayTooltip(redstoneControl.getControlType().getDisplay(), xAxis, yAxis);
+            }
         }
 
-        mc.renderEngine.bindTexture(defaultLocation);
+        game.renderEngine.bindTexture(defaultResource);
     }
 
     @Override
-    public void preMouseClicked(int xAxis, int yAxis, int button) {}
+    public void preMouseClicked(int xAxis, int yAxis, int button) {
+
+    }
 
     @Override
     public void mouseClicked(int xAxis, int yAxis, int button) {
-        IRedstoneControl control = (IRedstoneControl) tileEntity;
+        if (tileEntity instanceof IRedstoneControl) {
+            IRedstoneControl redstoneControl = (IRedstoneControl) tileEntity;
 
-        if (button == 0) {
-            if (xAxis >= 179 && xAxis <= 197 && yAxis >= 142 && yAxis <= 160) {
-                RedstoneControl current = control.getControlType();
-                int ordinalToSet = current.ordinal() < (RedstoneControl.values().length-1) ? current.ordinal()+1 : 0;
-                if(ordinalToSet == RedstoneControl.PULSE.ordinal() && !control.canPulse()) ordinalToSet = 0;
+            if (button == 0) {
+                if (xAxis >= 179 && xAxis <= 197 && yAxis >= 142 && yAxis <= 160) {
+                    RedstoneControlType current = redstoneControl.getControlType();
+                    int ordinalToSet = current.ordinal() < (RedstoneControlType.values().length - 1) ? current.ordinal() + 1 : 0;
 
-                SoundHandler.playSound("gui.button.press");
-                Mekanism.packetHandler.sendToServer(new RedstoneControlMessage(Coord4D.get(tileEntity), RedstoneControl.values()[ordinalToSet]));
+                    if (ordinalToSet == RedstoneControlType.PULSE.ordinal() && !redstoneControl.canPulse()) {
+                        ordinalToSet = 0;
+                    }
+
+                    //SoundHandler.playSound("gui.button.press");
+
+                    // Set the redstone control type.
+                    redstoneControl.setControlType(RedstoneControlType.values()[ordinalToSet]);
+
+                    if (tileEntity instanceof INetworkable) {
+                        INetworkable networkable = (INetworkable) tileEntity;
+
+                        // Send a update packet to the server.
+                        PacketHandler.getNetwork().sendToServer(new PacketTileEntity(networkable));
+                    }
+                }
             }
         }
     }

@@ -4,41 +4,41 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.util.ResourceLocation;
+import org.halvors.electrometrics.client.gui.IGui;
+import org.halvors.electrometrics.common.util.Rectangle4i;
 import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 
 @SideOnly(Side.CLIENT)
 public abstract class GuiElement {
-    public static Minecraft mc = Minecraft.getMinecraft();
+    public static Minecraft game = Minecraft.getMinecraft();
 
     public ResourceLocation resource;
-
-    public IGuiWrapper gui;
-
+    public IGui gui;
     public ResourceLocation defaultResource;
 
-    public GuiElement(ResourceLocation resource, IGuiWrapper gui, ResourceLocation defaultResource) {
+    public GuiElement(ResourceLocation resource, IGui gui, ResourceLocation defaultResource) {
         this.resource = resource;
         this.gui = gui;
         this.defaultResource = defaultResource;
     }
 
-    public void displayTooltip(String s, int xAxis, int yAxis) {
-        gui.displayTooltip(s, xAxis, yAxis);
+    public void displayTooltip(String text, int xAxis, int yAxis) {
+        gui.displayTooltip(text, xAxis, yAxis);
     }
 
     public void displayTooltips(List<String> list, int xAxis, int yAxis) {
         gui.displayTooltips(list, xAxis, yAxis);
     }
 
+    /*
     public void offsetX(int xSize) {
         if (gui instanceof GuiContainer) {
             try {
-                int size = (Integer) MekanismUtils.getPrivateValue(guiObj, GuiContainer.class, ObfuscatedNames.GuiContainer_xSize);
-                MekanismUtils.setPrivateValue(guiObj, size + xSize, GuiContainer.class, ObfuscatedNames.GuiContainer_xSize);
+                int size = (Integer) MekanismUtils.getPrivateValue(gui, GuiContainer.class, OebfuscatedNames.GuiContainer_xSiz);
+                MekanismUtils.setPrivateValue(gui, size + xSize, GuiContainer.class, ObfuscatedNames.GuiContainer_xSize);
             } catch(Exception e) {
                 e.printStackTrace();
             }
@@ -48,8 +48,8 @@ public abstract class GuiElement {
     public void offsetY(int ySize) {
         if (gui instanceof GuiContainer) {
             try {
-                int size = (Integer) MekanismUtils.getPrivateValue(guiObj, GuiContainer.class, ObfuscatedNames.GuiContainer_ySize);
-                MekanismUtils.setPrivateValue(guiObj, size + ySize, GuiContainer.class, ObfuscatedNames.GuiContainer_ySize);
+                int size = (Integer) MekanismUtils.getPrivateValue(gui, GuiContainer.class, ObfuscatedNames.GuiContainer_ySize);
+                MekanismUtils.setPrivateValue(gui, size + ySize, GuiContainer.class, ObfuscatedNames.GuiContainer_ySize);
             } catch(Exception e) {
                 e.printStackTrace();
             }
@@ -59,9 +59,9 @@ public abstract class GuiElement {
     public void offsetLeft(int guiLeft) {
         if (gui instanceof GuiContainer) {
             try {
-                int left = (Integer) MekanismUtils.getPrivateValue(guiObj, GuiContainer.class, ObfuscatedNames.GuiContainer_guiLeft);
+                int left = (Integer) MekanismUtils.getPrivateValue(gui, GuiContainer.class, ObfuscatedNames.GuiContainer_guiLeft);
                 System.out.println(left + " " + guiLeft);
-                MekanismUtils.setPrivateValue(guiObj, left + guiLeft, GuiContainer.class, ObfuscatedNames.GuiContainer_guiLeft);
+                MekanismUtils.setPrivateValue(gui, left + guiLeft, GuiContainer.class, ObfuscatedNames.GuiContainer_guiLeft);
             } catch(Exception e) {
                 e.printStackTrace();
             }
@@ -71,13 +71,14 @@ public abstract class GuiElement {
     public void offsetTop(int guiTop) {
         if (gui instanceof GuiContainer) {
             try {
-                int top = (Integer) MekanismUtils.getPrivateValue(guiObj, GuiContainer.class, ObfuscatedNames.GuiContainer_guiTop);
-                MekanismUtils.setPrivateValue(guiObj, top + guiTop, GuiContainer.class, ObfuscatedNames.GuiContainer_guiTop);
+                int top = (Integer) MekanismUtils.getPrivateValue(gui, GuiContainer.class, ObfuscatedNames.GuiContainer_guiTop);
+                MekanismUtils.setPrivateValue(gui, top + guiTop, GuiContainer.class, ObfuscatedNames.GuiContainer_guiTop);
             } catch(Exception e) {
                 e.printStackTrace();
             }
         }
     }
+    */
 
     public void renderScaledText(String text, int x, int y, int color, int maxX) {
         int length = getFontRenderer().getStringWidth(text);
@@ -99,7 +100,7 @@ public abstract class GuiElement {
     }
 
     public FontRenderer getFontRenderer() {
-        return gui.getFont();
+        return gui.getFontRenderer();
     }
 
     public void mouseClickMove(int mouseX, int mouseY, int button, long ticks) {
