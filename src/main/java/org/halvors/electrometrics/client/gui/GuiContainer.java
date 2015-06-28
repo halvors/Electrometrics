@@ -68,6 +68,9 @@ public abstract class GuiContainer extends net.minecraft.client.gui.inventory.Gu
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 
+        fontRendererObj.drawString(tileEntity.getName(), (xSize / 2) - (fontRendererObj.getStringWidth(tileEntity.getName()) / 2), 6, 0x404040);
+        fontRendererObj.drawString("Inventory", 8, (ySize - 96) + 2, 0x404040);
+
         int xAxis = (mouseX - (width - xSize) / 2);
         int yAxis = (mouseY - (height - ySize) / 2);
 

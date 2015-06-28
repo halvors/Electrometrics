@@ -95,6 +95,8 @@ public abstract class GuiScreen extends net.minecraft.client.gui.GuiScreen imple
     }
 
     protected void drawGuiScreenForegroundLayer(int mouseX, int mouseY) {
+        fontRendererObj.drawString(tileEntity.getName(), (xSize / 2) - (fontRendererObj.getStringWidth(tileEntity.getName()) / 2), 6, 0x404040);
+
         int xAxis = (mouseX - (width - xSize) / 2);
         int yAxis = (mouseY - (height - ySize) / 2);
 
