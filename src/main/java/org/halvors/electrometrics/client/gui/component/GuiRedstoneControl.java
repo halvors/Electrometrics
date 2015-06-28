@@ -1,4 +1,4 @@
-package org.halvors.electrometrics.client.gui.element;
+package org.halvors.electrometrics.client.gui.component;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -14,7 +14,7 @@ import org.halvors.electrometrics.common.tileentity.RedstoneControlType;
 import org.halvors.electrometrics.common.util.Rectangle4i;
 
 @SideOnly(Side.CLIENT)
-public class GuiRedstoneControl extends GuiElement {
+public class GuiRedstoneControl extends GuiComponent {
     private TileEntity tileEntity;
 
     public GuiRedstoneControl(IGui gui, TileEntity tileEntity, ResourceLocation defaultResource) {

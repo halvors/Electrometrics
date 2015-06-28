@@ -4,7 +4,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.util.IIcon;
-import org.halvors.electrometrics.client.gui.element.GuiElement;
+import org.halvors.electrometrics.client.gui.component.GuiComponent;
 import org.halvors.electrometrics.common.tileentity.TileEntityMachine;
 import org.lwjgl.opengl.GL11;
 
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 public abstract class GuiContainer extends net.minecraft.client.gui.inventory.GuiContainer implements IGui {
-    private Set<GuiElement> guiElementList = new HashSet<GuiElement>();
+    private Set<GuiComponent> guiComponentList = new HashSet<GuiComponent>();
 
     protected TileEntityMachine tileEntity;
 
@@ -24,8 +24,15 @@ public abstract class GuiContainer extends net.minecraft.client.gui.inventory.Gu
         this.tileEntity = tileEntity;
     }
 
-    public void add(GuiElement guiElement) {
-        guiElementList.add(guiElement);
+    /**
+     * Add a GuiComponent to this screen.
+     * @param guiComponent
+     * @return guiComponent
+     */
+    public <T extends GuiComponent> T add(GuiComponent guiComponent) {
+        guiComponentList.add(guiComponent);
+
+        return (T) guiComponent;
     }
 
     public float getNeededScale(String text, int maxX) {
@@ -64,8 +71,8 @@ public abstract class GuiContainer extends net.minecraft.client.gui.inventory.Gu
         int xAxis = (mouseX - (width - xSize) / 2);
         int yAxis = (mouseY - (height - ySize) / 2);
 
-        for (GuiElement element : guiElementList) {
-            element.renderForeground(xAxis, yAxis);
+        for (GuiComponent component : guiComponentList) {
+            component.renderForeground(xAxis, yAxis);
         }
     }
 
@@ -81,8 +88,8 @@ public abstract class GuiContainer extends net.minecraft.client.gui.inventory.Gu
         int xAxis = mouseX - guiWidth;
         int yAxis = mouseY - guiHeight;
 
-        for (GuiElement element : guiElementList) {
-            element.renderBackground(xAxis, yAxis, guiWidth, guiHeight);
+        for (GuiComponent component : guiComponentList) {
+            component.renderBackground(xAxis, yAxis, guiWidth, guiHeight);
         }
     }
 
@@ -91,14 +98,14 @@ public abstract class GuiContainer extends net.minecraft.client.gui.inventory.Gu
         int xAxis = (mouseX - (width - xSize) / 2);
         int yAxis = (mouseY - (height - ySize) / 2);
 
-        for (GuiElement element : guiElementList) {
-            element.preMouseClicked(xAxis, yAxis, button);
+        for (GuiComponent component : guiComponentList) {
+            component.preMouseClicked(xAxis, yAxis, button);
         }
 
         super.mouseClicked(mouseX, mouseY, button);
 
-        for (GuiElement element : guiElementList) {
-            element.mouseClicked(xAxis, yAxis, button);
+        for (GuiComponent component : guiComponentList) {
+            component.mouseClicked(xAxis, yAxis, button);
         }
     }
 
@@ -121,8 +128,8 @@ public abstract class GuiContainer extends net.minecraft.client.gui.inventory.Gu
         int xAxis = (mouseX - (width - xSize) / 2);
         int yAxis = (mouseY - (height - ySize) / 2);
 
-        for (GuiElement element : guiElementList) {
-            element.mouseClickMove(xAxis, yAxis, button, ticks);
+        for (GuiComponent component : guiComponentList) {
+            component.mouseClickMove(xAxis, yAxis, button, ticks);
         }
     }
 
@@ -133,8 +140,8 @@ public abstract class GuiContainer extends net.minecraft.client.gui.inventory.Gu
         int xAxis = (mouseX - (width - xSize) / 2);
         int yAxis = (mouseY - (height - ySize) / 2);
 
-        for (GuiElement element : guiElementList) {
-            element.mouseMovedOrUp(xAxis, yAxis, type);
+        for (GuiComponent component : guiComponentList) {
+            component.mouseMovedOrUp(xAxis, yAxis, type);
         }
     }
 

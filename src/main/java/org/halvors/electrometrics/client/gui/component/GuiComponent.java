@@ -1,4 +1,4 @@
-package org.halvors.electrometrics.client.gui.element;
+package org.halvors.electrometrics.client.gui.component;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -12,14 +12,14 @@ import org.lwjgl.opengl.GL11;
 import java.util.List;
 
 @SideOnly(Side.CLIENT)
-public abstract class GuiElement {
+public abstract class GuiComponent {
     protected static Minecraft game = Minecraft.getMinecraft();
 
     protected ResourceLocation resource;
     protected IGui gui;
     protected ResourceLocation defaultResource;
 
-    protected GuiElement(ResourceLocation resource, IGui gui, ResourceLocation defaultResource) {
+    protected GuiComponent(ResourceLocation resource, IGui gui, ResourceLocation defaultResource) {
         this.resource = resource;
         this.gui = gui;
         this.defaultResource = defaultResource;
@@ -31,52 +31,6 @@ public abstract class GuiElement {
 
     public void displayTooltips(List<String> list, int xAxis, int yAxis) {
         gui.displayTooltips(list, xAxis, yAxis);
-    }
-
-    /*
-    public void offsetX(int xSize) {
-        if (gui instanceof GuiContainer) {
-            try {
-                int size = (Integer) MekanismUtils.getPrivateValue(gui, GuiContainer.class, OebfuscatedNames.GuiContainer_xSiz);
-                MekanismUtils.setPrivateValue(gui, size + xSize, GuiContainer.class, ObfuscatedNames.GuiContainer_xSize);
-            } catch(Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public void offsetY(int ySize) {
-        if (gui instanceof GuiContainer) {
-            try {
-                int size = (Integer) MekanismUtils.getPrivateValue(gui, GuiContainer.class, ObfuscatedNames.GuiContainer_ySize);
-                MekanismUtils.setPrivateValue(gui, size + ySize, GuiContainer.class, ObfuscatedNames.GuiContainer_ySize);
-            } catch(Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public void offsetLeft(int guiLeft) {
-        if (gui instanceof GuiContainer) {
-            try {
-                int left = (Integer) MekanismUtils.getPrivateValue(gui, GuiContainer.class, ObfuscatedNames.GuiContainer_guiLeft);
-                System.out.println(left + " " + guiLeft);
-                MekanismUtils.setPrivateValue(gui, left + guiLeft, GuiContainer.class, ObfuscatedNames.GuiContainer_guiLeft);
-            } catch(Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public void offsetTop(int guiTop) {
-        if (gui instanceof GuiContainer) {
-            try {
-                int top = (Integer) MekanismUtils.getPrivateValue(gui, GuiContainer.class, ObfuscatedNames.GuiContainer_guiTop);
-                MekanismUtils.setPrivateValue(gui, top + guiTop, GuiContainer.class, ObfuscatedNames.GuiContainer_guiTop);
-            } catch(Exception e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     public void renderScaledText(String text, int x, int y, int color, int maxX) {
@@ -97,7 +51,6 @@ public abstract class GuiElement {
             GL11.glPopMatrix();
         }
     }
-    */
 
     public FontRenderer getFontRenderer() {
         return gui.getFontRenderer();
