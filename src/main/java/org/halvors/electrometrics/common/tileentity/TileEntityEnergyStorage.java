@@ -1,14 +1,17 @@
 package org.halvors.electrometrics.common.tileentity;
 
 import cofh.api.energy.EnergyStorage;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
+
+import java.util.ArrayList;
 
 /**
  * This provides electricity storage to a TileEntity when extended.
  *
  * @author halvors
  */
-public class TileEntityEnergyStorage extends TileEntityMachine {
+public class TileEntityEnergyStorage extends TileEntityMachine implements INetworkable {
     // The internal energy storage.
     protected EnergyStorage storage;
 
@@ -39,6 +42,22 @@ public class TileEntityEnergyStorage extends TileEntityMachine {
         super.writeToNBT(nbtTags);
 
         storage.writeToNBT(nbtTags);
+    }
+
+    @Override
+    public void handlePacketData(ByteBuf dataStream) throws Exception {
+        super.handlePacketData(dataStream);
+
+        storage.setEnergyStored(dataStream.readInt());
+    }
+
+    @Override
+    public ArrayList<Object> getPacketData(ArrayList<Object> data) {
+        super.getPacketData(data);
+
+        data.add(storage.getEnergyStored());
+
+        return data;
     }
 
     public EnergyStorage getStorage() {

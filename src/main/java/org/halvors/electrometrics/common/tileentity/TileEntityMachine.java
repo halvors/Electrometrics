@@ -9,6 +9,7 @@ import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketRequestData;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * This is a basic TileEntity that is meant to be extended by other TileEntities.
@@ -63,7 +64,7 @@ public class TileEntityMachine extends TileEntity implements IRotatable, INetwor
     }
 
     @Override
-    public ArrayList<Object> getPacketData(ArrayList data) {
+    public ArrayList<Object> getPacketData(ArrayList<Object> data) {
         data.add(facing);
 
         return data;
