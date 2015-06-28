@@ -2,19 +2,36 @@ package org.halvors.electrometrics.client.gui;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.EntityPlayer;
 import org.halvors.electrometrics.Electrometrics;
-import org.halvors.electrometrics.client.gui.element.GuiEnergyInfo;
-import org.halvors.electrometrics.client.gui.element.GuiOwnerInfo;
-import org.halvors.electrometrics.client.gui.element.GuiRedstoneControl;
-import org.halvors.electrometrics.client.gui.element.IInfoHandler;
+import org.halvors.electrometrics.client.gui.component.GuiEnergyInfo;
+import org.halvors.electrometrics.client.gui.component.GuiOwnerInfo;
+import org.halvors.electrometrics.client.gui.component.GuiRedstoneControl;
+import org.halvors.electrometrics.client.gui.component.IInfoHandler;
+import org.halvors.electrometrics.common.network.PacketHandler;
+import org.halvors.electrometrics.common.network.PacketRequestData;
+import org.halvors.electrometrics.common.network.PacketTileEntity;
+import org.halvors.electrometrics.common.tileentity.IOwnable;
+import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.tileentity.TileEntityMachine;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This is the GUI of the Electricity Meter which provides a simple way to keep count of the electricity you use.
+ * Especially suitable for pay-by-use applications where a player buys electricity from another player on multiplayer worlds.
+ *
+ * @author halvors
+ */
 @SideOnly(Side.CLIENT)
 public class GuiElectricityMeter extends GuiScreen {
+    private GuiButton resetButton;
+    private int ticker = 0;
+
     public GuiElectricityMeter(TileEntityMachine tileEntity) {
         super(tileEntity);
 
@@ -39,65 +56,91 @@ public class GuiElectricityMeter extends GuiScreen {
 
                 return list;
             }
-        }
-
-                , this, tileEntity.getGuiResource()));
+        }, this, tileEntity.getGuiResource()));
 
         add(new GuiRedstoneControl(this, tileEntity, tileEntity.getGuiResource()));
-
-        /*
-        guiElements.add(new GuiRedstoneControl(this, tileEntity, tileEntity.guiLocation));
-        guiElements.add(new GuiUpgradeTab(this, tileEntity, tileEntity.guiLocation));
-        guiElements.add(new GuiSideConfigurationTab(this, tileEntity, tileEntity.guiLocation));
-        guiElements.add(new GuiTransporterConfigTab(this, 34, tileEntity, tileEntity.guiLocation));
-        guiElements.add(new GuiPowerBar(this, tileEntity, tileEntity.guiLocation, 164, 15));
-        guiElements.add(new GuiEnergyInfo(new IInfoHandler() {
-            @Override
-            public List<String> getInfo()
-            {
-                String multiplier = MekanismUtils.getEnergyDisplay(tileEntity.energyPerTick);
-                return ListUtils.asList(LangUtils.localize("gui.using") + ": " + multiplier + "/t", LangUtils.localize("gui.needed") + ": " + MekanismUtils.getEnergyDisplay(tileEntity.getMaxEnergy()-tileEntity.getEnergy()));
-            }
-        }, this, tileEntity.guiLocation));
-
-        guiElements.add(new GuiSlot(SlotType.INPUT, this, tileEntity.guiLocation, 55, 16));
-        guiElements.add(new GuiSlot(SlotType.POWER, this, tileEntity.guiLocation, 55, 52).with(SlotOverlay.POWER));
-        guiElements.add(new GuiSlot(SlotType.OUTPUT_LARGE, this, tileEntity.guiLocation, 111, 30));
-
-        guiElements.add(new GuiProgress(new IProgressInfoHandler()
-        {
-            @Override
-            public double getProgress()
-            {
-                return tileEntity.getScaledProgress();
-            }
-        }, getProgressType(), this, tileEntity.guiLocation, 77, 37));
-        */
-    }
-
-    /*
-    public ProgressBar getProgressType()
-    {
-        return ProgressBar.BLUE;
-    }
-    */
-
-    @Override
-    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        fontRendererObj.drawString(tileEntity.getName(), (xSize / 2) - (fontRendererObj.getStringWidth(tileEntity.getName()) / 2), 6, 0x404040);
-        fontRendererObj.drawString("Inventory", 8, (ySize - 96) + 2, 0x404040);
-
-        super.drawGuiContainerForegroundLayer(mouseX, mouseY);
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float partialTick, int mouseX, int mouseY) {
-        mc.renderEngine.bindTexture(tileEntity.getGuiResource());
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    public void initGui() {
+        super.initGui();
+
         int guiWidth = (width - xSize) / 2;
         int guiHeight = (height - ySize) / 2;
+
+        // Create buttons.
+        resetButton = new GuiButton(0, guiWidth + 110, guiHeight + 60, 60, 20, "Reset");
+
+        // If this has a owner, restrict the reset button to that player.
+        if (tileEntity instanceof IOwnable) {
+            IOwnable ownable = (IOwnable) tileEntity;
+            EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+
+            resetButton.enabled = ownable.isOwner(player);
+        }
+
+        // Add buttons.
+        buttonList.clear();
+        buttonList.add(resetButton);
+    }
+
+    @Override
+    protected void actionPerformed(GuiButton guiButton) {
+        super.actionPerformed(guiButton);
+
+        if (tileEntity instanceof TileEntityElectricityMeter) {
+            TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
+
+            switch (guiButton.id) {
+                case 0:
+                    tileEntityElectricityMeter.setElectricityCount(0);
+
+                    // Update the server-side TileEntity.
+                    PacketHandler.getNetwork().sendToServer(new PacketTileEntity(tileEntity));
+                    break;
+            }
+        }
+    }
+
+    @Override
+    protected void drawGuiScreenForegroundLayer(int mouseX, int mouseY) {
+        if (tileEntity instanceof TileEntityElectricityMeter) {
+            TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
+
+            // Formatting energy to the correct energy unit.
+            String energyCount = Electrometrics.getEnergyDisplay(tileEntityElectricityMeter.getElectricityCount());
+            String maxOutput = Electrometrics.getEnergyDisplay(tileEntityElectricityMeter.getStorage().getMaxEnergyStored());
+
+            fontRendererObj.drawString("Measured:", 8, ySize - 140, 0x404040);
+            fontRendererObj.drawString(energyCount, 72, ySize - 140, 0x404040);
+
+            // Current output.
+            fontRendererObj.drawString("Max output:", 8, ySize - 128, 0x404040);
+            fontRendererObj.drawString(maxOutput + "/t", 72, ySize - 128, 0x404040);
+
+            if (ticker == 0) {
+                ticker = 5;
+                // Request the latest data from the server-side TileEntity.
+                PacketHandler.getNetwork().sendToServer(new PacketRequestData(tileEntity));
+            } else {
+                ticker--;
+            }
+        }
+
+        super.drawGuiScreenForegroundLayer(mouseX, mouseY);
+    }
+
+    @Override
+    protected void drawGuiScreenBackgroundLayer(float partialTick, int mouseX, int mouseY) {
+        mc.renderEngine.bindTexture(tileEntity.getGuiResource());
+
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+
+        int guiWidth = (width - xSize) / 2;
+        int guiHeight = (height - ySize) / 2;
+
         drawTexturedModalRect(guiWidth, guiHeight, 0, 0, xSize, ySize);
 
-        super.drawGuiContainerBackgroundLayer(partialTick, mouseX, mouseY);
+        super.drawGuiScreenBackgroundLayer(partialTick, mouseX, mouseY);
     }
 }
