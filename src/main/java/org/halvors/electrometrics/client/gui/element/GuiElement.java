@@ -13,13 +13,13 @@ import java.util.List;
 
 @SideOnly(Side.CLIENT)
 public abstract class GuiElement {
-    public static Minecraft game = Minecraft.getMinecraft();
+    protected static Minecraft game = Minecraft.getMinecraft();
 
-    public ResourceLocation resource;
-    public IGui gui;
-    public ResourceLocation defaultResource;
+    protected ResourceLocation resource;
+    protected IGui gui;
+    protected ResourceLocation defaultResource;
 
-    public GuiElement(ResourceLocation resource, IGui gui, ResourceLocation defaultResource) {
+    protected GuiElement(ResourceLocation resource, IGui gui, ResourceLocation defaultResource) {
         this.resource = resource;
         this.gui = gui;
         this.defaultResource = defaultResource;
@@ -78,7 +78,6 @@ public abstract class GuiElement {
             }
         }
     }
-    */
 
     public void renderScaledText(String text, int x, int y, int color, int maxX) {
         int length = getFontRenderer().getStringWidth(text);
@@ -98,6 +97,7 @@ public abstract class GuiElement {
             GL11.glPopMatrix();
         }
     }
+    */
 
     public FontRenderer getFontRenderer() {
         return gui.getFontRenderer();

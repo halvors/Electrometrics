@@ -12,7 +12,7 @@ public class GuiOwnerInfo extends GuiElement {
     public IInfoHandler infoHandler;
 
     public GuiOwnerInfo(IInfoHandler infoHandler, IGui gui, ResourceLocation defaultResource) {
-        super(new ResourceLocation(Reference.DOMAIN, "gui/elements/guiEnergyInfo.png"), gui, defaultResource);
+        super(new ResourceLocation(Reference.DOMAIN, "gui/elements/guiOwnerInfo.png"), gui, defaultResource);
 
         this.infoHandler = infoHandler;
     }
