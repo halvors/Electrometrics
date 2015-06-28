@@ -1,12 +1,11 @@
 package org.halvors.electrometrics.client.gui;
 
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import org.halvors.electrometrics.client.gui.element.GuiElement;
+import org.halvors.electrometrics.common.tileentity.TileEntityMachine;
 import org.lwjgl.opengl.GL11;
 
 import java.util.Arrays;
@@ -14,15 +13,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public abstract class Gui extends GuiContainer implements IGui {
-    private TileEntity tileEntity;
-
+public abstract class GuiContainer extends net.minecraft.client.gui.inventory.GuiContainer implements IGui {
     private Set<GuiElement> guiElementList = new HashSet<GuiElement>();
 
-    public Gui(TileEntity tile, Container container) {
+    protected TileEntityMachine tileEntity;
+
+    public GuiContainer(TileEntityMachine tileEntity, Container container) {
         super(container);
 
-        tileEntity = tile;
+        this.tileEntity = tileEntity;
     }
 
     public void add(GuiElement guiElement) {
@@ -39,14 +38,13 @@ public abstract class Gui extends GuiContainer implements IGui {
         }
     }
 
-    /** returns scale */
     public void renderScaledText(String text, int x, int y, int color, int maxX) {
         int length = fontRendererObj.getStringWidth(text);
 
         if (length <= maxX) {
             fontRendererObj.drawString(text, x, y, color);
         } else {
-            float scale = (float )maxX / length;
+            float scale = (float) maxX / length;
             float reverse = 1 / scale;
             float yAdd = 4 - (scale * 8) / 2F;
 
@@ -69,50 +67,7 @@ public abstract class Gui extends GuiContainer implements IGui {
         for (GuiElement element : guiElementList) {
             element.renderForeground(xAxis, yAxis);
         }
-
-        /*
-        if (tileEntity instanceof ISideConfiguration) {
-            Slot hovering = null;
-
-            for (int i = 0; i < inventorySlots.inventorySlots.size(); i++) {
-                Slot slot = (Slot)inventorySlots.inventorySlots.get(i);
-
-                if (isMouseOverSlot(slot, mouseX, mouseY)) {
-                    hovering = slot;
-                    break;
-                }
-            }
-
-            ItemStack stack = mc.thePlayer.inventory.getItemStack();
-
-            if (stack != null && stack.getItem() instanceof ItemConfigurator && hovering != null) {
-                SideData data = getFromSlot(hovering);
-
-                if (data != null) {
-                    drawCreativeTabHoveringText(data.color + data.localize() + " (" + data.color.getName() + ")", xAxis, yAxis);
-                }
-            }
-        }
-        */
     }
-
-    /*
-    private SideData getFromSlot(Slot slot) {
-        if (slot.slotNumber < tileEntity.getSizeInventory()) {
-            ISideConfiguration config = (ISideConfiguration)tileEntity;
-
-            for (SideData data : config.getConfig().getOutputs(TransmissionType.ITEM)) {
-                for (int id : data.availableSlots) {
-                    if (id == slot.getSlotIndex()) {
-                        return data;
-                    }
-                }
-            }
-        }
-
-        return null;
-    }
-    */
 
     protected boolean isMouseOverSlot(Slot slot, int mouseX, int mouseY) {
         return func_146978_c(slot.xDisplayPosition, slot.yDisplayPosition, 16, 16, mouseX, mouseY); // isPointInRegion
