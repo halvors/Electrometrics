@@ -6,8 +6,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.halvors.electrometrics.common.network.PacketHandler;
@@ -24,22 +24,25 @@ import java.util.UUID;
  *
  * @author halvors
  */
-public class TileEntityElectricityMeter extends TileEntityEnergyProvider implements INetworkable, IActiveState, IOwnable {
-	// The amount of energy that has passed thru.
-	private double electricityCount;
+public class TileEntityElectricityMeter extends TileEntityEnergyProvider implements INetworkable, IOwnable, IRedstoneControl, IActiveState {
+	// The UUID of the player owning this.
+	private UUID owner;
 
-	// Whether or not this block is in it's active state.
+	// The current RedstoneControlType of this TileEntity.
+	private RedstoneControlType redstoneControlType = RedstoneControlType.DISABLED;
+
+	// Whether or not this TileEntity's block is in it's active state.
 	private boolean isActive;
 
 	// The client's current active state.
 	@SideOnly(Side.CLIENT)
-	public boolean clientIsActive;
+	private boolean clientIsActive;
 
-	// The UUID of the player owning this.
-	public UUID owner;
+	// The amount of energy that has passed thru.
+	private double electricityCount;
 
 	public TileEntityElectricityMeter() {
-		super(25600, 25600, 25600);
+		super("Electricity Meter", 25600, 25600, 25600);
 	}
 
 	@Override
@@ -55,8 +58,9 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 	public void readFromNBT(NBTTagCompound nbtTags) {
 		super.readFromNBT(nbtTags);
 
-		isActive = nbtTags.getBoolean("isActive");
 		owner = UUID.fromString(nbtTags.getString("owner"));
+		redstoneControlType = RedstoneControlType.values()[nbtTags.getInteger("redstoneControlType")];
+		isActive = nbtTags.getBoolean("isActive");
 		electricityCount = nbtTags.getDouble("electricityCount");
 	}
 
@@ -64,8 +68,9 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 	public void writeToNBT(NBTTagCompound nbtTags) {
 		super.writeToNBT(nbtTags);
 
-		nbtTags.setBoolean("isActive", isActive);
 		nbtTags.setString("owner", owner.toString());
+		nbtTags.setInteger("redstoneControlType", redstoneControlType.ordinal());
+		nbtTags.setBoolean("isActive", isActive);
 		nbtTags.setDouble("electricityCount", electricityCount);
 	}
 
@@ -83,9 +88,9 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 	public void handlePacketData(ByteBuf dataStream) throws Exception {
 		super.handlePacketData(dataStream);
 
-		isActive = dataStream.readBoolean();
 		owner = UUID.fromString(ByteBufUtils.readUTF8String(dataStream));
-		electricityCount = dataStream.readDouble();
+		redstoneControlType = RedstoneControlType.values()[dataStream.readInt()];
+		isActive = dataStream.readBoolean();
 
 		// Check if client is in sync with the server, if not update it.
 		if (clientIsActive != isActive) {
@@ -93,27 +98,20 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 
 			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		}
+
+		electricityCount = dataStream.readDouble();
 	}
 
 	@Override
 	public ArrayList<Object> getPacketData(ArrayList<Object> data) {
 		super.getPacketData(data);
 
-		data.add(isActive);
 		data.add(owner.toString());
+		data.add(redstoneControlType.ordinal());
+		data.add(isActive);
 		data.add(electricityCount);
 
 		return data;
-	}
-
-	@Override
-	public boolean isActive() {
-		return isActive;
-	}
-
-	@Override
-	public void setActive(boolean isActive) {
-		this.isActive = isActive;
 	}
 
 	@Override
@@ -122,14 +120,18 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 	}
 
 	@Override
-	public EntityPlayer getOwner() {
-		List<WorldServer> worldList = Arrays.asList(Minecraft.getMinecraft().getIntegratedServer().worldServers);
+	public EntityPlayerMP getOwner() {
+        List<WorldServer> worldList = Arrays.asList(Minecraft.getMinecraft().getIntegratedServer().worldServers);
 
-		for (World world : worldList) {
-			List<EntityPlayer> playerList = world.playerEntities;
+		for (WorldServer worldServer : worldList) {
+			List<EntityPlayerMP> playerList = worldServer.playerEntities;
 
-			for (EntityPlayer player : playerList) {
-				if (isOwner(player)) {
+			for (EntityPlayerMP player : playerList) {
+                System.out.println("Found player: " + player.getDisplayName());
+
+                if (isOwner(player)) {
+                    System.out.println("Found player match: " + player.getDisplayName());
+
 					return player;
 				}
 			}
@@ -143,6 +145,41 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 		this.owner = player.getUniqueID();
 	}
 
+	@Override
+	public RedstoneControlType getControlType() {
+		return redstoneControlType;
+	}
+
+	@Override
+	public void setControlType(RedstoneControlType redstoneControlType) {
+		this.redstoneControlType = redstoneControlType;
+	}
+
+	@Override
+	public boolean isPowered() {
+		return false;
+	}
+
+	@Override
+	public boolean wasPowered() {
+		return false;
+	}
+
+	@Override
+	public boolean canPulse() {
+		return false;
+	}
+
+	@Override
+	public boolean isActive() {
+		return isActive;
+	}
+
+	@Override
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
+
 	/**
 	 * Returns the amount of energy that this block has totally received.
 	 */
@@ -150,7 +187,7 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 		return electricityCount;
 	}
 
-	/*
+	/**
 	 * Sets the amount of energy that this block has totally received.
 	 */
 	public void setElectricityCount(double electricityCount) {
