@@ -5,6 +5,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
+import org.halvors.electrometrics.Reference;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketRequestData;
 
@@ -16,15 +18,18 @@ import java.util.ArrayList;
  * @author halvors
  */
 public class TileEntityMachine extends TileEntity implements IRotatable, INetworkable {
-	// The direction this block is facing.
+	// The name of this TileEntity.
+	private String name;
+
+	// The direction this TileEntity's block is facing.
 	private int facing;
 
-	// The direction this block is facing on the client side.
+	// The direction this TileEntity's block is facing, client side.
 	@SideOnly(Side.CLIENT)
-	public int clientFacing;
+	private int clientFacing;
 
-	public TileEntityMachine() {
-
+	protected TileEntityMachine(String name) {
+		this.name = name;
 	}
 
 	@Override
@@ -69,7 +74,7 @@ public class TileEntityMachine extends TileEntity implements IRotatable, INetwor
 		return data;
 	}
 
-	/*
+	/**
 	 * Whether or not this block's orientation can be changed to a specific direction. True by default.
 	 */
 	@Override
@@ -93,5 +98,14 @@ public class TileEntityMachine extends TileEntity implements IRotatable, INetwor
 			markDirty();
 		}
 		*/
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	// For testing purposes.
+	public ResourceLocation getGuiResource() {
+		return new ResourceLocation(Reference.PREFIX + "gui/guiContainerBlank.png");
 	}
 }

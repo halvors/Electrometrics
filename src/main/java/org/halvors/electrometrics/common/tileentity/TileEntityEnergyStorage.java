@@ -15,18 +15,21 @@ public class TileEntityEnergyStorage extends TileEntityMachine implements INetwo
 	// The internal energy storage.
 	protected EnergyStorage storage;
 
-	public TileEntityEnergyStorage(int maxEnergy) {
+	public TileEntityEnergyStorage(String name, int maxEnergy) {
+		super(name);
+
 		storage = new EnergyStorage(maxEnergy);
 	}
 
-	public TileEntityEnergyStorage(int maxEnergy, int maxReceive) {
-		storage = new EnergyStorage(maxEnergy);
+	public TileEntityEnergyStorage(String name, int maxEnergy, int maxReceive) {
+		this(name, maxEnergy);
+
 		storage.setMaxReceive(maxReceive);
 	}
 
-	public TileEntityEnergyStorage(int maxEnergy, int maxReceive, int maxExtract) {
-		storage = new EnergyStorage(maxEnergy);
-		storage.setMaxReceive(maxReceive);
+	public TileEntityEnergyStorage(String name, int maxEnergy, int maxReceive, int maxExtract) {
+		this(name, maxEnergy, maxReceive);
+
 		storage.setMaxExtract(maxExtract);
 	}
 
