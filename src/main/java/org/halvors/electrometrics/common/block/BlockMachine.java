@@ -17,11 +17,11 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.Reference;
 import org.halvors.electrometrics.common.tileentity.IActiveState;
 import org.halvors.electrometrics.common.tileentity.IOwnable;
 import org.halvors.electrometrics.common.tileentity.IRotatable;
-import org.halvors.electrometrics.common.tileentity.TileEntityMachine;
 import org.halvors.electrometrics.common.util.Orientation;
 import org.halvors.electrometrics.common.util.render.DefaultIcon;
 import org.halvors.electrometrics.common.util.render.Renderer;
@@ -47,7 +47,7 @@ public class BlockMachine extends BlockBasic {
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
-		return new TileEntityMachine();
+		return null;
 	}
 
 	@Override
@@ -104,9 +104,31 @@ public class BlockMachine extends BlockBasic {
 
 				if (!ownable.isOwner(player)) {
 					player.addChatMessage(new ChatComponentText("Only the owner can remove this block."));
+
+					EntityPlayerMP player1 = ownable.getOwner();
+
+					if (player1 != null) {
+						player.addChatMessage(new ChatComponentText("Only the owner (" + player1.getDisplayName() + ")can remove this block."));
+					} else {
+						player.addChatMessage(new ChatComponentText("Something is null."));
+					}
 				}
 			}
 		}
+	}
+
+	@Override
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int facing, float playerX, float playerY, float playerZ) {
+		if (!player.isSneaking()) {
+			//if (world.isRemote) {
+				// Open the GUI.
+				player.openGui(Electrometrics.getInstance(), 0, world, x, y, z);
+			//}
+
+			return true;
+		}
+
+		return false;
 	}
 
 	@Override

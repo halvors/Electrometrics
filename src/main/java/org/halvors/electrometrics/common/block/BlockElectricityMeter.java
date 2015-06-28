@@ -63,6 +63,7 @@ public class BlockElectricityMeter extends BlockMachine {
 		return world.setBlockToAir(x, y, z);
 	}
 
+	/*
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int facing, float playerX, float playerY, float playerZ) {
 		if (!player.isSneaking()) {
@@ -76,4 +77,5 @@ public class BlockElectricityMeter extends BlockMachine {
 
 		return false;
 	}
+	*/
 }
