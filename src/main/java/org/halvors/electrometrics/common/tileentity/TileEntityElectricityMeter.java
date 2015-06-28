@@ -5,11 +5,13 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.ForgeDirection;
+import org.halvors.electrometrics.common.network.PacketHandler;
+import org.halvors.electrometrics.common.network.PacketRequestData;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,17 +29,26 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 	private double electricityCount;
 
 	// Whether or not this block is in it's active state.
-	private boolean isActive = false;
-
-	// The UUID of the player owning this.
-	private UUID owner;
+	private boolean isActive;
 
 	// The client's current active state.
 	@SideOnly(Side.CLIENT)
 	public boolean clientIsActive;
 
+	// The UUID of the player owning this.
+	public UUID owner;
+
 	public TileEntityElectricityMeter() {
 		super(25600, 25600, 25600);
+	}
+
+	@Override
+	public void validate() {
+		super.validate();
+
+		if (worldObj.isRemote) {
+			PacketHandler.getNetwork().sendToServer(new PacketRequestData(this));
+		}
 	}
 
 	@Override
@@ -85,12 +96,12 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 	}
 
 	@Override
-	public ArrayList getPacketData(ArrayList data) {
+	public ArrayList<Object> getPacketData(ArrayList<Object> data) {
 		super.getPacketData(data);
 
-		data.add(electricityCount);
 		data.add(isActive);
 		data.add(owner.toString());
+		data.add(electricityCount);
 
 		return data;
 	}
@@ -106,19 +117,19 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 	}
 
 	@Override
-	public boolean hasOwner() {
-		return getOwner() != null;
+	public boolean isOwner(EntityPlayer player) {
+		return owner.equals(player.getUniqueID());
 	}
 
 	@Override
-	public EntityPlayerMP getOwner() {
+	public EntityPlayer getOwner() {
 		List<WorldServer> worldList = Arrays.asList(Minecraft.getMinecraft().getIntegratedServer().worldServers);
 
 		for (World world : worldList) {
-			List<EntityPlayerMP> playerList = world.playerEntities;
+			List<EntityPlayer> playerList = world.playerEntities;
 
-			for (EntityPlayerMP player : playerList) {
-				if (player.getUniqueID() == owner) {
+			for (EntityPlayer player : playerList) {
+				if (isOwner(player)) {
 					return player;
 				}
 			}
@@ -128,8 +139,8 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 	}
 
 	@Override
-	public void setOwner(EntityPlayerMP player) {
-
+	public void setOwner(EntityPlayer player) {
+		this.owner = player.getUniqueID();
 	}
 
 	/**

@@ -2,11 +2,14 @@ package org.halvors.electrometrics.client.gui;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.EntityPlayer;
 import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketRequestData;
 import org.halvors.electrometrics.common.network.PacketTileEntity;
+import org.halvors.electrometrics.common.tileentity.IOwnable;
 import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
 
 /**
@@ -17,68 +20,71 @@ import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
  */
 @SideOnly(Side.CLIENT)
 public class GuiElectricityMeter extends GuiScreen {
-    private final TileEntityElectricityMeter tileEntity;
+	private final TileEntityElectricityMeter tileEntity;
 
-    private int ticker = 0;
+	private int ticker = 0;
 
-    public GuiElectricityMeter(TileEntityElectricityMeter tileEntity) {
-        super("Electricity Meter");
+	public GuiElectricityMeter(TileEntityElectricityMeter tileEntity) {
+		super("Electricity Meter");
 
-        this.tileEntity = tileEntity;
-    }
+		this.tileEntity = tileEntity;
+	}
 
-    @Override
-    public void initGui() {
-        super.initGui();
+	@Override
+	public void initGui() {
+		super.initGui();
 
-        int guiWidth = (width - xSize) / 2;
-        int guiHeight = (height - ySize) / 2;
+		int guiWidth = (width - xSize) / 2;
+		int guiHeight = (height - ySize) / 2;
 
-        // Create buttons.
-        GuiButton button = new GuiButton(0, guiWidth + 110, guiHeight + 70, 60, 20, "Reset");
+		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 
-        // Add buttons.
-        buttonList.clear();
-        buttonList.add(button);
-    }
+		// Create buttons.
+		GuiButton button = new GuiButton(0, guiWidth + 110, guiHeight + 70, 60, 20, "Reset");
+		button.enabled = tileEntity.isOwner(player);
 
-    @Override
-    protected void actionPerformed(GuiButton guiButton) {
-        switch (guiButton.id) {
-            case 0:
-                tileEntity.setElectricityCount(0);
+		// Add buttons.
+		buttonList.clear();
+		buttonList.add(button);
+	}
 
-                // Update the server-side TileEntity.
-                PacketHandler.getNetwork().sendToServer(new PacketTileEntity(tileEntity));
-                break;
-        }
-    }
+	@Override
+	protected void actionPerformed(GuiButton guiButton) {
+		switch (guiButton.id) {
+			case 0:
+				tileEntity.setElectricityCount(0);
 
-    @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTick) {
-        super.drawScreen(mouseX, mouseY, partialTick);
+				// Update the server-side TileEntity.
+				PacketHandler.getNetwork().sendToServer(new PacketTileEntity(tileEntity));
+				break;
+		}
+	}
 
-        int guiWidth = (width - xSize) / 2;
-        int guiHeight = (height - ySize) / 2;
+	@Override
+	public void drawScreen(int mouseX, int mouseY, float partialTick) {
+		super.drawScreen(mouseX, mouseY, partialTick);
 
-        // Formatting energy to the correct energy unit.
-        String energyCount = Electrometrics.getEnergyDisplay(tileEntity.getElectricityCount());
-        String maxOutput = Electrometrics.getEnergyDisplay(tileEntity.getStorage().getMaxEnergyStored());
+		int guiWidth = (width - xSize) / 2;
+		int guiHeight = (height - ySize) / 2;
 
-        fontRendererObj.drawString("Measured:", guiWidth + 6, guiHeight + 32, 0x404040);
-        fontRendererObj.drawString(energyCount, guiWidth + 72, guiHeight + 32, 0x404040);
+		// Formatting energy to the correct energy unit.
+		String energyCount = Electrometrics.getEnergyDisplay(tileEntity.getElectricityCount());
+		String maxOutput = Electrometrics.getEnergyDisplay(tileEntity.getStorage().getMaxEnergyStored());
 
-        // Current output.
-        fontRendererObj.drawString("Max output:", guiWidth + 6, guiHeight + 42, 0x404040);
-        fontRendererObj.drawString(maxOutput + "/t", guiWidth + 72, guiHeight + 42, 0x404040);
+		fontRendererObj.drawString("Measured:", guiWidth + 6, guiHeight + 32, 0x404040);
+		fontRendererObj.drawString(energyCount, guiWidth + 72, guiHeight + 32, 0x404040);
 
-        if (ticker == 0) {
-            ticker = 5;
-            // Request the latest data from the server-side TileEntity.
-            PacketHandler.getNetwork().sendToServer(new PacketRequestData(tileEntity));
-        } else {
-            ticker--;
-        }
-    }
+		// Current output.
+		fontRendererObj.drawString("Max output:", guiWidth + 6, guiHeight + 42, 0x404040);
+		fontRendererObj.drawString(maxOutput + "/t", guiWidth + 72, guiHeight + 42, 0x404040);
+
+		if (ticker == 0) {
+			ticker = 5;
+			// Request the latest data from the server-side TileEntity.
+			PacketHandler.getNetwork().sendToServer(new PacketRequestData(tileEntity));
+		} else {
+			ticker--;
+		}
+	}
 }
 
