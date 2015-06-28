@@ -9,7 +9,6 @@ import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketRequestData;
 import org.halvors.electrometrics.common.network.PacketTileEntity;
-import org.halvors.electrometrics.common.tileentity.IOwnable;
 import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
 
 /**

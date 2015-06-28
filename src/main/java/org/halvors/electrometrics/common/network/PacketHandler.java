@@ -17,11 +17,19 @@ import org.halvors.electrometrics.Reference;
 public class PacketHandler {
 	private static SimpleNetworkWrapper network = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.ID);
 
+	public PacketHandler() {
+
+	}
+
 	public void initialize() {
 		network.registerMessage(PacketConfigurationSync.class, PacketConfigurationSync.class, 0, Side.CLIENT);
 		network.registerMessage(PacketRequestData.class, PacketRequestData.class, 1, Side.SERVER);
 		network.registerMessage(PacketTileEntity.class, PacketTileEntity.class, 2, Side.CLIENT);
 		network.registerMessage(PacketTileEntity.class, PacketTileEntity.class, 2, Side.SERVER);
+	}
+
+	public static SimpleNetworkWrapper getNetwork() {
+		return network;
 	}
 
 	public static EntityPlayer getPlayer(MessageContext context) {
@@ -30,9 +38,5 @@ public class PacketHandler {
 
 	public static World getWorld(MessageContext context) {
 		return getPlayer(context).worldObj;
-	}
-
-	public static SimpleNetworkWrapper getNetwork() {
-		return network;
 	}
 }

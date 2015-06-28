@@ -8,8 +8,10 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
@@ -89,6 +91,22 @@ public class BlockMachine extends BlockBasic {
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int meta) {
 		return icons[side];
+	}
+
+	@Override
+	public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player) {
+		if (!world.isRemote) {
+			TileEntity tileEntity = world.getTileEntity(x, y, z);
+
+			// Display a message the the player clicking this block if not the owner.
+			if (tileEntity instanceof IOwnable) {
+				IOwnable ownable = (IOwnable) tileEntity;
+
+				if (!ownable.isOwner(player)) {
+					player.addChatMessage(new ChatComponentText("Only the owner can remove this block."));
+				}
+			}
+		}
 	}
 
 	@Override
