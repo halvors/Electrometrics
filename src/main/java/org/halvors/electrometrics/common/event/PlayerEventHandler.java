@@ -25,7 +25,7 @@ public class PlayerEventHandler {
 		World world = player.worldObj;
 
 		if (!world.isRemote) {
-			PacketHandler.getNetwork().sendTo(new PacketConfigurationSync(), (EntityPlayerMP) player);
+			PacketHandler.sendTo(new PacketConfigurationSync(), (EntityPlayerMP) player);
 
 			Electrometrics.getLogger().info("Sent configuration to '" + player.getDisplayName() + "'.");
 		}

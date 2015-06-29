@@ -6,21 +6,21 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.tileentity.TileEntity;
 import org.halvors.electrometrics.common.tileentity.INetworkable;
-import org.halvors.electrometrics.common.util.Location;
+import org.halvors.electrometrics.common.util.location.BlockLocation;
 
 import java.util.ArrayList;
 
-public class PacketRequestData extends PacketLocation implements IMessage, IMessageHandler<PacketRequestData, IMessage> {
+public class PacketRequestData extends PacketBlockLocation implements IMessage, IMessageHandler<PacketRequestData, IMessage> {
 	public PacketRequestData() {
 
 	}
 
-	public PacketRequestData(Location location) {
-		super(location);
+	public PacketRequestData(BlockLocation blockLocation) {
+		super(blockLocation);
 	}
 
 	public PacketRequestData(INetworkable networkable) {
-		super(new Location((TileEntity) networkable));
+		super(new BlockLocation((TileEntity) networkable));
 	}
 
 	@Override
@@ -35,12 +35,12 @@ public class PacketRequestData extends PacketLocation implements IMessage, IMess
 
 	@Override
 	public IMessage onMessage(PacketRequestData message, MessageContext context) {
-		TileEntity tileEntity = message.getLocation().getTileEntity(PacketHandler.getWorld(context));
+		TileEntity tileEntity = message.getBlockLocation().getTileEntity(PacketHandler.getWorld(context));
 
 		if (tileEntity != null && tileEntity instanceof INetworkable) {
 			INetworkable networkable = (INetworkable) tileEntity;
 
-			return new PacketTileEntity(message.getLocation(), networkable.getPacketData(new ArrayList()));
+			return new PacketTileEntity(message.getBlockLocation(), networkable.getPacketData(new ArrayList<Object>()));
 		}
 
 		return null;

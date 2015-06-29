@@ -37,7 +37,7 @@ public class TileEntityMachine extends TileEntity implements IRotatable, INetwor
 		super.validate();
 
 		if (worldObj.isRemote) {
-			PacketHandler.getNetwork().sendToServer(new PacketRequestData(this));
+			PacketHandler.sendToServer(new PacketRequestData(this));
 		}
 	}
 

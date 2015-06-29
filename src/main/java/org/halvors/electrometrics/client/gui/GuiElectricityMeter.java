@@ -96,7 +96,7 @@ public class GuiElectricityMeter extends GuiScreen {
                     tileEntityElectricityMeter.setElectricityCount(0);
 
                     // Update the server-side TileEntity.
-                    PacketHandler.getNetwork().sendToServer(new PacketTileEntity(tileEntity));
+                    PacketHandler.sendToServer(new PacketTileEntity(tileEntity));
                     break;
             }
         }
@@ -121,7 +121,7 @@ public class GuiElectricityMeter extends GuiScreen {
             if (ticker == 0) {
                 ticker = 5;
                 // Request the latest data from the server-side TileEntity.
-                PacketHandler.getNetwork().sendToServer(new PacketRequestData(tileEntity));
+                PacketHandler.sendToServer(new PacketRequestData(tileEntity));
             } else {
                 ticker--;
             }

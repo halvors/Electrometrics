@@ -10,7 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.common.tileentity.INetworkable;
-import org.halvors.electrometrics.common.util.Location;
+import org.halvors.electrometrics.common.util.location.BlockLocation;
 
 import java.util.ArrayList;
 
@@ -19,7 +19,7 @@ import java.util.ArrayList;
  *
  * @author halvors
  */
-public class PacketTileEntity extends PacketLocation implements IMessage, IMessageHandler<PacketTileEntity, IMessage> {
+public class PacketTileEntity extends PacketBlockLocation implements IMessage, IMessageHandler<PacketTileEntity, IMessage> {
 	private ArrayList<Object> dataList;
 	private ByteBuf storedBuffer = null;
 
@@ -27,15 +27,15 @@ public class PacketTileEntity extends PacketLocation implements IMessage, IMessa
 
 	}
 
-	public PacketTileEntity(Location location, ArrayList<Object> dataList) {
-		super(location);
+	public PacketTileEntity(BlockLocation blockLocation, ArrayList<Object> dataList) {
+		super(blockLocation);
 
 		this.dataList = dataList;
 	}
 
 
 	public PacketTileEntity(INetworkable networkable) {
-		super(new Location((TileEntity) networkable));
+		super(new BlockLocation((TileEntity) networkable));
 
 		this.dataList = networkable.getPacketData(new ArrayList<Object>());
 	}
@@ -56,7 +56,7 @@ public class PacketTileEntity extends PacketLocation implements IMessage, IMessa
 
 	@Override
 	public IMessage onMessage(PacketTileEntity message, MessageContext context) {
-		TileEntity tileEntity = message.getLocation().getTileEntity(PacketHandler.getWorld(context));
+		TileEntity tileEntity = message.getBlockLocation().getTileEntity(PacketHandler.getWorld(context));
 
 		if (tileEntity != null && tileEntity instanceof INetworkable) {
 			INetworkable networkable = (INetworkable) tileEntity;
