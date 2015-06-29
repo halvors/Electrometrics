@@ -114,7 +114,7 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 	public ArrayList<Object> getPacketData(ArrayList<Object> data) {
 		super.getPacketData(data);
 
-		data.add(owner.toString());
+		data.add(owner != null ? owner.toString() : "");
 		data.add(redstoneControlType.ordinal());
 		data.add(isActive);
 		data.add(electricityCount);
