@@ -27,6 +27,9 @@ import java.util.UUID;
 public class TileEntityElectricityMeter extends TileEntityEnergyProvider implements INetworkable, IOwnable, IRedstoneControl, IActiveState {
 	// The UUID of the player owning this.
 	private UUID owner;
+        
+        // The name of the player owning this.
+        private String ownerName;
 
 	// The current RedstoneControlType of this TileEntity.
 	private RedstoneControlType redstoneControlType = RedstoneControlType.DISABLED;
@@ -78,7 +81,7 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 		super.writeToNBT(nbtTags);
 
 		nbtTags.setString("owner", owner != null ? owner.toString() : "");
-                nbtTags.setString("ownerName, ownerName);
+                nbtTags.setString("ownerName", ownerName);
 		nbtTags.setInteger("redstoneControlType", redstoneControlType.ordinal());
 		nbtTags.setBoolean("isActive", isActive);
 		nbtTags.setDouble("electricityCount", electricityCount);
