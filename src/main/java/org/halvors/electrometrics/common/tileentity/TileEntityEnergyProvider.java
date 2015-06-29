@@ -4,6 +4,7 @@ import cofh.api.energy.IEnergyProvider;
 import cofh.api.energy.IEnergyReceiver;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+import org.halvors.electrometrics.common.util.Utils;
 
 /**
  * When extended, this makes a TileEntity able to provide electricity.
@@ -27,7 +28,7 @@ public class TileEntityEnergyProvider extends TileEntityEnergyReceiver implement
 	public void updateEntity() {
 		super.updateEntity();
 
-		if (!worldObj.isRemote) {
+		if (!worldObj.isRemote && Utils.canFunction(this)) {
 			if (storage.getEnergyStored() > 0) {
 				transferEnergy();
 			}
