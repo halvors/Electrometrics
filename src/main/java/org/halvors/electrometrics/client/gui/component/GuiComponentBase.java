@@ -12,14 +12,14 @@ import org.lwjgl.opengl.GL11;
 import java.util.List;
 
 @SideOnly(Side.CLIENT)
-public abstract class GuiComponent {
+public abstract class GuiComponentBase {
     protected static Minecraft mc = Minecraft.getMinecraft();
 
     protected ResourceLocation resource;
     protected IGui gui;
     protected ResourceLocation defaultResource;
 
-    protected GuiComponent(ResourceLocation resource, IGui gui, ResourceLocation defaultResource) {
+    protected GuiComponentBase(ResourceLocation resource, IGui gui, ResourceLocation defaultResource) {
         this.resource = resource;
         this.gui = gui;
         this.defaultResource = defaultResource;

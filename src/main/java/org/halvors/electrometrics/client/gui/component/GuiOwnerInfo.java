@@ -8,7 +8,7 @@ import org.halvors.electrometrics.client.gui.IGui;
 import org.halvors.electrometrics.common.util.render.Rectangle4i;
 
 @SideOnly(Side.CLIENT)
-public class GuiOwnerInfo extends GuiComponent implements IGuiComponent {
+public class GuiOwnerInfo extends GuiComponentBase implements IGuiComponent {
     public IInfoHandler infoHandler;
 
     public GuiOwnerInfo(IInfoHandler infoHandler, IGui gui, ResourceLocation defaultResource) {
