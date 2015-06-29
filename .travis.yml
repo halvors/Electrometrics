@@ -3,8 +3,7 @@ jdk:
   - oraclejdk7
   - openjdk7
   - oraclejdk8
-  - openjdk8
   
 before_install: chmod +x gradlew
-install: ./gradlew setupCIWorkspace -S
-script: ./gradlew build -S
+install: ./gradlew setupCIWorkspace
+script: ./gradlew build
