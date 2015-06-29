@@ -51,6 +51,13 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 }
 
+// Fix for resources not loading when running from IntelliJ
+idea {
+    module {
+        inheritOutputDirs = true
+    }
+}
+
 processResources {
     // this will ensure that this task is redone when the versions change.
     inputs.property "version", project.version
