@@ -120,6 +120,17 @@ public class BlockMachine extends BlockBasic {
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int facing, float playerX, float playerY, float playerZ) {
 		if (!player.isSneaking()) {
+			TileEntity tileEntity = world.getTileEntity(x, y, z);
+
+			// Check whether or not this IOwnable has a owner, if not set the current player as owner.
+			if (tileEntity instanceof IOwnable) {
+				IOwnable ownable = (IOwnable) tileEntity;
+
+				if (!ownable.hasOwner()) {
+					ownable.setOwner(player);
+				}
+			}
+
 			// Open the GUI.
 			player.openGui(Electrometrics.getInstance(), 0, world, x, y, z);
 
