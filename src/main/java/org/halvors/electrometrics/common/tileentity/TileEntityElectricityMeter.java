@@ -76,7 +76,7 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 	public void writeToNBT(NBTTagCompound nbtTags) {
 		super.writeToNBT(nbtTags);
 
-		nbtTags.setString("owner", owner.toString());
+		nbtTags.setString("owner", owner != null ? owner.toString() : "");
 		nbtTags.setInteger("redstoneControlType", redstoneControlType.ordinal());
 		nbtTags.setBoolean("isActive", isActive);
 		nbtTags.setDouble("electricityCount", electricityCount);
@@ -120,6 +120,11 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 		data.add(electricityCount);
 
 		return data;
+	}
+
+	@Override
+	public boolean hasOwner() {
+		return owner != null;
 	}
 
 	@Override
