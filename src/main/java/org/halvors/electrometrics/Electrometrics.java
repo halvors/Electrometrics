@@ -166,25 +166,4 @@ public class Electrometrics {
 	public static Configuration getConfiguration() {
 		return configuration;
 	}
-
-	/*
-	 * Converts the energy to the default energy system.
-	 */
-	public static String getEnergyDisplay(double energy) {
-		switch (energyType) {
-			case REDSTONE_FLUX:
-				return UnitDisplay.getDisplayShort(energy, Unit.REDSTONE_FLUX);
-
-			case JOULES:
-				return UnitDisplay.getDisplayShort(energy * toJoules, Unit.JOULES);
-
-			case MINECRAFT_JOULES:
-				return UnitDisplay.getDisplayShort(energy * toMinecraftJoules / 10, Unit.MINECRAFT_JOULES);
-
-			case ELECTRICAL_UNITS:
-				return UnitDisplay.getDisplayShort(energy * toElectricalUnits, Unit.MINECRAFT_JOULES);
-		}
-
-		return null;
-	}
 }
