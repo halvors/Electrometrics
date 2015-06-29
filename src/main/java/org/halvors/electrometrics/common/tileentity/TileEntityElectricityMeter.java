@@ -129,7 +129,7 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 
 	@Override
 	public boolean isOwner(EntityPlayer player) {
-		return owner.equals(player.getUniqueID());
+		return owner.equals(player.getPersistentID());
 	}
 
 	@Override
@@ -144,7 +144,7 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 
 	@Override
 	public void setOwner(EntityPlayer player) {
-		this.owner = player.getUniqueID();
+		this.owner = player.getPersistentID();
 	}
 
 	@Override

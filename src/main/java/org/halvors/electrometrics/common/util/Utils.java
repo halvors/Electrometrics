@@ -76,7 +76,7 @@ public class Utils {
             for (EntityPlayerMP player : playerList)  {
                 System.out.println("Found player: " + player.getDisplayName());
 
-                if (uuid.equals(player.getUniqueID())) {
+                if (uuid.equals(player.getPersistentID())) {
                     System.out.println("Found player match: " + player.getDisplayName());
 
                     return player;
