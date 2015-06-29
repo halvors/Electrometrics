@@ -1,12 +1,17 @@
 package org.halvors.electrometrics.common.util;
 
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.common.UnitDisplay;
 import org.halvors.electrometrics.common.tileentity.IRedstoneControl;
 
+import java.util.List;
+import java.util.UUID;
+
 public class Utils {
-    /*
+    /**
 	 * Converts the energy to the default energy system.
 	 */
     public static String getEnergyDisplay(double energy) {
@@ -53,5 +58,30 @@ public class Utils {
         }
 
         return false;
+    }
+
+    /**
+     * Get a player from it's unique id.
+     * @param uuid
+     * @return the player with the provided uuid.
+     */
+    public static EntityPlayerMP getPlayerFromUUID(UUID uuid) {
+        MinecraftServer server = MinecraftServer.getServer();
+
+        if (server != null) {
+            List<EntityPlayerMP> playerList = (List<EntityPlayerMP>) server.getConfigurationManager().playerEntityList;
+
+            for (EntityPlayerMP player : playerList)  {
+                System.out.println("Found player: " + player.getDisplayName());
+
+                if (uuid.equals(player.getUniqueID())) {
+                    System.out.println("Found player match: " + player.getDisplayName());
+
+                    return player;
+                }
+            }
+        }
+
+        return null;
     }
 }
