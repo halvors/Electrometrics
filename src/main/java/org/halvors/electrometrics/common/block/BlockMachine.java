@@ -2,6 +2,7 @@ package org.halvors.electrometrics.common.block;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -22,6 +23,7 @@ import org.halvors.electrometrics.Reference;
 import org.halvors.electrometrics.common.tileentity.IActiveState;
 import org.halvors.electrometrics.common.tileentity.IOwnable;
 import org.halvors.electrometrics.common.tileentity.IRotatable;
+import org.halvors.electrometrics.common.tileentity.TileEntityMachine;
 import org.halvors.electrometrics.common.util.Orientation;
 import org.halvors.electrometrics.common.util.render.DefaultIcon;
 import org.halvors.electrometrics.common.util.render.Renderer;
@@ -41,8 +43,9 @@ public class BlockMachine extends BlockBasic {
 		this.name = name;
 
 		setBlockName(name);
-		setHardness(3.5F);
-		setResistance(8F);
+		setHardness(2F);
+		setResistance(4F);
+		setStepSound(soundTypeMetal);
 	}
 
 	@Override
@@ -248,5 +251,18 @@ public class BlockMachine extends BlockBasic {
 		}
 
 		return blockResistance;
+	}
+
+	@Override
+	public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
+		if (!world.isRemote) {
+			TileEntity tileEntity = world.getTileEntity(x, y, z);
+
+			if (tileEntity instanceof TileEntityMachine) {
+				TileEntityMachine tileEntityMachine = (TileEntityMachine) tileEntity;
+
+				tileEntityMachine.onNeighborChange(block);
+			}
+		}
 	}
 }

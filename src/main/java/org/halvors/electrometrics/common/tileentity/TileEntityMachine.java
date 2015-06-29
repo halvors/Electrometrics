@@ -3,8 +3,10 @@ package org.halvors.electrometrics.common.tileentity;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketRequestData;
 
@@ -15,7 +17,7 @@ import java.util.ArrayList;
  *
  * @author halvors
  */
-public class TileEntityMachine extends TileEntity implements IRotatable, INetworkable {
+public abstract class TileEntityMachine extends TileEntity implements IRotatable, INetworkable {
 	// The name of this TileEntity.
 	private String name;
 
@@ -101,4 +103,6 @@ public class TileEntityMachine extends TileEntity implements IRotatable, INetwor
 	public String getName() {
 		return name;
 	}
+
+	public abstract void onNeighborChange(Block block);
 }
