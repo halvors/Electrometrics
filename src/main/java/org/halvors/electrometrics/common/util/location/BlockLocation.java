@@ -1,31 +1,39 @@
-package org.halvors.electrometrics.common.util;
+package org.halvors.electrometrics.common.util.location;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 
-public class Location {
+public class BlockLocation {
+	private int dimensionId;
 	private int x;
 	private int y;
 	private int z;
 
-	public Location(int x, int y, int z) {
+	public BlockLocation(int dimensionId, int x, int y, int z) {
+		this.dimensionId = dimensionId;
 		this.x = x;
 		this.y = y;
 		this.z = z;
 	}
 
-	public Location(Entity entity) {
+	public BlockLocation(Entity entity) {
+		this.dimensionId = entity.dimension;
 		this.x = entity.serverPosX;
 		this.y = entity.serverPosY;
 		this.z = entity.serverPosZ;
 	}
 
-	public Location(TileEntity tileEntity) {
+	public BlockLocation(TileEntity tileEntity) {
+		this.dimensionId = tileEntity.getWorldObj().provider.dimensionId;
 		this.x = tileEntity.xCoord;
 		this.y = tileEntity.yCoord;
 		this.z = tileEntity.zCoord;
+	}
+
+	public int getDimensionId() {
+		return dimensionId;
 	}
 
 	public int getX() {
