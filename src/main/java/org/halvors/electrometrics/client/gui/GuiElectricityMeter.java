@@ -5,7 +5,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
-import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.client.gui.component.GuiEnergyInfo;
 import org.halvors.electrometrics.client.gui.component.GuiOwnerInfo;
 import org.halvors.electrometrics.client.gui.component.GuiRedstoneControl;
@@ -17,7 +16,6 @@ import org.halvors.electrometrics.common.tileentity.IOwnable;
 import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.tileentity.TileEntityMachine;
 import org.halvors.electrometrics.common.util.Utils;
-import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;

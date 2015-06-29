@@ -8,7 +8,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.util.Color;
 import org.halvors.electrometrics.common.util.Utils;
