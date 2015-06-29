@@ -3,13 +3,12 @@ package org.halvors.electrometrics.client.gui;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.Slot;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import org.halvors.electrometrics.Reference;
-import org.halvors.electrometrics.client.gui.component.GuiComponent;
 import org.halvors.electrometrics.client.gui.component.IGuiComponent;
+import org.halvors.electrometrics.common.component.IComponent;
+import org.halvors.electrometrics.common.component.IComponentHandler;
 import org.halvors.electrometrics.common.tileentity.TileEntityMachine;
 import org.lwjgl.opengl.GL11;
 
@@ -19,27 +18,75 @@ import java.util.List;
 import java.util.Set;
 
 @SideOnly(Side.CLIENT)
-public abstract class GuiContainer extends net.minecraft.client.gui.inventory.GuiContainer implements IGui {
-    private Set<IGuiComponent> guiComponentList = new HashSet<IGuiComponent>();
+public abstract class GuiScreenBase extends net.minecraft.client.gui.GuiScreen implements IGui, IComponentHandler {
+    private Set<IComponent> componentList = new HashSet<IComponent>();
 
-    protected ResourceLocation defaultResource = new ResourceLocation(Reference.PREFIX + "gui/guiContainerBlank.png");
+    protected ResourceLocation defaultResource = new ResourceLocation(Reference.PREFIX + "gui/guiScreenBlank.png");
     protected TileEntityMachine tileEntity;
 
-    public GuiContainer(TileEntityMachine tileEntity, Container container) {
-        super(container);
+    // This is not present by default in GuiScreenBase as it is in GuiContainerBase.
+    protected int xSize = 176;
+    protected int ySize = 166;
+    protected int guiLeft;
+    protected int guiTop;
 
+    public GuiScreenBase(TileEntityMachine tileEntity) {
         this.tileEntity = tileEntity;
     }
 
-    /**
-     * Add a GuiComponent to this screen.
-     * @param guiComponent
-     * @return guiComponent
-     */
-    public <Class extends IGuiComponent> Class add(IGuiComponent guiComponent) {
-        guiComponentList.add(guiComponent);
+    @Override
+    public boolean doesGuiPauseGame() {
+        return false;
+    }
 
-        return (Class) guiComponent;
+    @Override
+    public void initGui() {
+        super.initGui();
+
+        guiLeft = (width - xSize) / 2;
+        guiTop = (height - ySize) / 2;
+    }
+
+    @Override
+    public void drawScreen(int mouseX, int mouseY, float partialTick) {
+        drawDefaultBackground();
+
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+
+        drawGuiScreenBackgroundLayer(partialTick, mouseX, mouseY);
+
+        super.drawScreen(mouseX, mouseY, partialTick);
+
+        GL11.glTranslatef(guiLeft, guiTop, 0);
+
+        drawGuiScreenForegroundLayer(mouseX, mouseY);
+    }
+
+    /**
+     * Add a component to this screen.
+     * @param component
+     * @return component
+     */
+    @Override
+    public <Class extends IComponent> Class add(Class component) {
+        if (component instanceof IGuiComponent) {
+            componentList.add((IGuiComponent) component);
+
+            return component;
+        }
+
+        return null;
+    }
+
+    /**
+     * Remove a component from this screen.
+     *
+     * @param component
+     * @param <Class>
+     */
+    @Override
+    public <Class extends IComponent> void remove(Class component) {
+        componentList.remove(component);
     }
 
     public float getNeededScale(String text, int maxX) {
@@ -71,27 +118,21 @@ public abstract class GuiContainer extends net.minecraft.client.gui.inventory.Gu
         }
     }
 
-    @Override
-    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        super.drawGuiContainerForegroundLayer(mouseX, mouseY);
-
+    protected void drawGuiScreenForegroundLayer(int mouseX, int mouseY) {
         fontRendererObj.drawString(tileEntity.getName(), (xSize / 2) - (fontRendererObj.getStringWidth(tileEntity.getName()) / 2), 6, 0x404040);
-        fontRendererObj.drawString("Inventory", 8, (ySize - 96) + 2, 0x404040);
 
         int xAxis = (mouseX - (width - xSize) / 2);
         int yAxis = (mouseY - (height - ySize) / 2);
 
-        for (IGuiComponent component : guiComponentList) {
-            component.renderForeground(xAxis, yAxis);
+        for (IComponent component : componentList) {
+            if (component instanceof IGuiComponent) {
+                IGuiComponent guiComponent = (IGuiComponent) component;
+                guiComponent.renderForeground(xAxis, yAxis);
+            }
         }
     }
 
-    protected boolean isMouseOverSlot(Slot slot, int mouseX, int mouseY) {
-        return func_146978_c(slot.xDisplayPosition, slot.yDisplayPosition, 16, 16, mouseX, mouseY); // isPointInRegion
-    }
-
-    @Override
-    protected void drawGuiContainerBackgroundLayer(float partialTick, int mouseX, int mouseY) {
+    protected void drawGuiScreenBackgroundLayer(float partialTick, int mouseX, int mouseY) {
         mc.renderEngine.bindTexture(defaultResource);
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -104,8 +145,11 @@ public abstract class GuiContainer extends net.minecraft.client.gui.inventory.Gu
         int xAxis = mouseX - guiWidth;
         int yAxis = mouseY - guiHeight;
 
-        for (IGuiComponent component : guiComponentList) {
-            component.renderBackground(xAxis, yAxis, guiWidth, guiHeight);
+        for (IComponent component : componentList) {
+            if (component instanceof IGuiComponent) {
+                IGuiComponent guiComponent = (IGuiComponent) component;
+                guiComponent.renderBackground(xAxis, yAxis, guiWidth, guiHeight);
+            }
         }
     }
 
@@ -114,14 +158,20 @@ public abstract class GuiContainer extends net.minecraft.client.gui.inventory.Gu
         int xAxis = (mouseX - (width - xSize) / 2);
         int yAxis = (mouseY - (height - ySize) / 2);
 
-        for (IGuiComponent component : guiComponentList) {
-            component.preMouseClicked(xAxis, yAxis, button);
+        for (IComponent component : componentList) {
+            if (component instanceof IGuiComponent) {
+                IGuiComponent guiComponent = (IGuiComponent) component;
+                guiComponent.preMouseClicked(xAxis, yAxis, button);
+            }
         }
 
         super.mouseClicked(mouseX, mouseY, button);
 
-        for (IGuiComponent component : guiComponentList) {
-            component.mouseClicked(xAxis, yAxis, button);
+        for (IComponent component : componentList) {
+            if (component instanceof IGuiComponent) {
+                IGuiComponent guiComponent = (IGuiComponent) component;
+                guiComponent.mouseClicked(xAxis, yAxis, button);
+            }
         }
     }
 
@@ -144,8 +194,11 @@ public abstract class GuiContainer extends net.minecraft.client.gui.inventory.Gu
         int xAxis = (mouseX - (width - xSize) / 2);
         int yAxis = (mouseY - (height - ySize) / 2);
 
-        for (IGuiComponent component : guiComponentList) {
-            component.mouseClickMove(xAxis, yAxis, button, ticks);
+        for (IComponent component : componentList) {
+            if (component instanceof IGuiComponent) {
+                IGuiComponent guiComponent = (IGuiComponent) component;
+                guiComponent.mouseClickMove(xAxis, yAxis, button, ticks);
+            }
         }
     }
 
@@ -156,13 +209,12 @@ public abstract class GuiContainer extends net.minecraft.client.gui.inventory.Gu
         int xAxis = (mouseX - (width - xSize) / 2);
         int yAxis = (mouseY - (height - ySize) / 2);
 
-        for (IGuiComponent component : guiComponentList) {
-            component.mouseMovedOrUp(xAxis, yAxis, type);
+        for (IComponent component : componentList) {
+            if (component instanceof IGuiComponent) {
+                IGuiComponent guiComponent = (IGuiComponent) component;
+                guiComponent.mouseMovedOrUp(xAxis, yAxis, type);
+            }
         }
-    }
-
-    public void handleMouse(Slot slot, int slotIndex, int button, int modifier) {
-        handleMouseClick(slot, slotIndex, button, modifier);
     }
 
     @Override

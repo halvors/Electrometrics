@@ -2,10 +2,11 @@ package org.halvors.electrometrics.client.gui.component;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import org.halvors.electrometrics.common.component.IComponent;
 import org.halvors.electrometrics.common.util.render.Rectangle4i;
 
 @SideOnly(Side.CLIENT)
-public interface IGuiComponent {
+public interface IGuiComponent extends IComponent {
     Rectangle4i getBounds(int guiWidth, int guiHeight);
 
     void renderBackground(int xAxis, int yAxis, int guiWidth, int guiHeight);

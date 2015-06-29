@@ -14,7 +14,6 @@ import org.halvors.electrometrics.common.network.PacketRequestData;
 import org.halvors.electrometrics.common.network.PacketTileEntity;
 import org.halvors.electrometrics.common.tileentity.IOwnable;
 import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
-import org.halvors.electrometrics.common.tileentity.TileEntityMachine;
 import org.halvors.electrometrics.common.util.Utils;
 
 import java.util.ArrayList;
@@ -27,11 +26,11 @@ import java.util.List;
  * @author halvors
  */
 @SideOnly(Side.CLIENT)
-public class GuiElectricityMeter extends GuiScreen {
+public class GuiElectricityMeter extends GuiScreenBase {
     private GuiButton resetButton;
     private int ticker = 0;
 
-    public GuiElectricityMeter(TileEntityMachine tileEntity) {
+    public GuiElectricityMeter(TileEntityElectricityMeter tileEntity) {
         super(tileEntity);
 
         add(new GuiOwnerInfo(new IInfoHandler() {
