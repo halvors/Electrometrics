@@ -8,14 +8,14 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketRequestData;
 import org.halvors.electrometrics.common.network.PacketTileEntity;
+import org.halvors.electrometrics.common.util.UUIDHelper;
+import org.halvors.electrometrics.common.util.Utils;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -134,21 +134,12 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 
 	@Override
 	public EntityPlayerMP getOwner() {
-		MinecraftServer server = MinecraftServer.getServer();
+		return Utils.getPlayerFromUUID(owner);
+	}
 
-		if (server != null) {
-			for (EntityPlayerMP player : (List<EntityPlayerMP>) server.getConfigurationManager().playerEntityList) {
-				System.out.println("Found player: " + player.getDisplayName());
-
-				if (isOwner(player)) {
-					System.out.println("Found player match: " + player.getDisplayName());
-
-					return player;
-				}
-			}
-		}
-
-		return null;
+	@Override
+	public String getOwnerName() {
+		return UUIDHelper.getUsernameForUUID(owner, true);
 	}
 
 	@Override

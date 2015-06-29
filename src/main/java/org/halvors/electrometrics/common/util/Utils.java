@@ -12,8 +12,10 @@ import java.util.UUID;
 
 public class Utils {
     /**
-	 * Converts the energy to the default energy system.
-	 */
+     * Converts the energy to the default energy system.
+     * @param energy
+     * @return the energy as a String.
+     */
     public static String getEnergyDisplay(double energy) {
         switch (Electrometrics.energyType) {
             case REDSTONE_FLUX:

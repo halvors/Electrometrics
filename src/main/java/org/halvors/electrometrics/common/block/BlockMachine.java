@@ -106,15 +106,10 @@ public class BlockMachine extends BlockBasic {
 				IOwnable ownable = (IOwnable) tileEntity;
 
 				if (!ownable.isOwner(player)) {
-					player.addChatMessage(new ChatComponentText("Only the owner can remove this block."));
+					EntityPlayerMP playerOwner = ownable.getOwner();
+					String name = playerOwner != null ? playerOwner.getDisplayName() : ownable.getOwnerName();
 
-					EntityPlayerMP player1 = ownable.getOwner();
-
-					if (player1 != null) {
-						player.addChatMessage(new ChatComponentText("Only the owner (" + player1.getDisplayName() + ")can remove this block."));
-					} else {
-						player.addChatMessage(new ChatComponentText("Something is null."));
-					}
+					player.addChatMessage(new ChatComponentText("This block is owned by " + name + ", you cannot remove this block."));
 				}
 			}
 		}

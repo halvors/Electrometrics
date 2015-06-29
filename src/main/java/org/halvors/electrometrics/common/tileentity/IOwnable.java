@@ -23,6 +23,8 @@ public interface IOwnable {
 	 */
 	EntityPlayerMP getOwner();
 
+	String getOwnerName();
+
 	/**
 	 * Sets the player owning this.
 	 * @param player
