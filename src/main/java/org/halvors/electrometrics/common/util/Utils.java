@@ -4,7 +4,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import org.halvors.electrometrics.Electrometrics;
-import org.halvors.electrometrics.common.UnitDisplay;
 import org.halvors.electrometrics.common.tileentity.IRedstoneControl;
 
 import java.util.List;
@@ -25,7 +24,7 @@ public class Utils {
                 return UnitDisplay.getDisplayShort(energy * Electrometrics.toJoules, UnitDisplay.Unit.JOULES);
 
             case MINECRAFT_JOULES:
-                return UnitDisplay.getDisplayShort(energy * Electrometrics.toMinecraftJoules / 10, UnitDisplay.Unit.MINECRAFT_JOULES);
+                return UnitDisplay.getDisplayShort(energy * Electrometrics.toMinecraftJoules, UnitDisplay.Unit.MINECRAFT_JOULES);
 
             case ELECTRICAL_UNITS:
                 return UnitDisplay.getDisplayShort(energy * Electrometrics.toElectricalUnits, UnitDisplay.Unit.MINECRAFT_JOULES);

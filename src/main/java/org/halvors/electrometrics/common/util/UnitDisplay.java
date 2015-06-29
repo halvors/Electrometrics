@@ -1,4 +1,4 @@
-package org.halvors.electrometrics.common;
+package org.halvors.electrometrics.common.util;
 
 /**
  * An easy way to display information on electricity for the client.
@@ -11,7 +11,7 @@ public class UnitDisplay {
 	 * Universal Electricity's units are in KILOJOULES, KILOWATTS and KILOVOLTS. Try to make your
 	 * energy ratio as close to real life as possible.
 	 */
-	public static enum Unit {
+	public enum Unit {
 		/*
 		AMPERE("Amp", "I"),
 		AMP_HOUR("Amp Hour", "Ah"),
@@ -47,7 +47,7 @@ public class UnitDisplay {
 	}
 
 	/** Metric system of measurement. */
-	public static enum UnitPrefix {
+	public enum UnitPrefix {
 		MICRO("Micro", "u", 0.000001),
 		MILLI("Milli", "m", 0.001),
 		BASE("", "", 1),
