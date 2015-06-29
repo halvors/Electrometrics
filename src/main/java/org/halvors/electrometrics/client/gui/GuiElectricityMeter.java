@@ -36,10 +36,15 @@ public class GuiElectricityMeter extends GuiScreen {
         add(new GuiOwnerInfo(new IInfoHandler() {
             @Override
             public List<String> getInfo() {
-                List<String> list = new ArrayList<String>();
-                list.add("halvorshalvors");
+                if (tileEntity instanceof IOwnable) {
+                    IOwnable ownable = (IOwnable) tileEntity;
+                    List<String> list = new ArrayList<String>();
+                    list.add(ownable.getOwnerName());
 
-                return list;
+                    return list;
+                }
+
+                return null;
             }
         }, this, defaultResource));
 
