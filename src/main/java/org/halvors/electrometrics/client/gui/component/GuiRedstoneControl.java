@@ -11,7 +11,7 @@ import org.halvors.electrometrics.common.network.PacketTileEntity;
 import org.halvors.electrometrics.common.tileentity.INetworkable;
 import org.halvors.electrometrics.common.tileentity.IRedstoneControl;
 import org.halvors.electrometrics.common.tileentity.RedstoneControlType;
-import org.halvors.electrometrics.common.util.Rectangle4i;
+import org.halvors.electrometrics.common.util.render.Rectangle4i;
 
 @SideOnly(Side.CLIENT)
 public class GuiRedstoneControl extends GuiComponent {
@@ -91,7 +91,7 @@ public class GuiRedstoneControl extends GuiComponent {
                         INetworkable networkable = (INetworkable) tileEntity;
 
                         // Send a update packet to the server.
-                        PacketHandler.getNetwork().sendToServer(new PacketTileEntity(networkable));
+                        PacketHandler.sendToServer(new PacketTileEntity(networkable));
                     }
                 }
             }

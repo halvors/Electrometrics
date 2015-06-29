@@ -5,7 +5,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.util.ResourceLocation;
 import org.halvors.electrometrics.Reference;
 import org.halvors.electrometrics.client.gui.IGui;
-import org.halvors.electrometrics.common.util.Rectangle4i;
+import org.halvors.electrometrics.common.util.render.Rectangle4i;
 
 @SideOnly(Side.CLIENT)
 public class GuiEnergyInfo extends GuiComponent {

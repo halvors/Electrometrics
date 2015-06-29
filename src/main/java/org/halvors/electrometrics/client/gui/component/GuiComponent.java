@@ -6,7 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.ResourceLocation;
 import org.halvors.electrometrics.client.gui.IGui;
-import org.halvors.electrometrics.common.util.Rectangle4i;
+import org.halvors.electrometrics.common.util.render.Rectangle4i;
 import org.lwjgl.opengl.GL11;
 
 import java.util.List;
