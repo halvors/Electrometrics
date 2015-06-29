@@ -6,7 +6,6 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketRequestData;
 
@@ -17,7 +16,7 @@ import java.util.ArrayList;
  *
  * @author halvors
  */
-public abstract class TileEntityMachine extends TileEntity implements IRotatable, INetworkable {
+public class TileEntityMachine extends TileEntity implements IRotatable, INetworkable {
 	// The name of this TileEntity.
 	private String name;
 
@@ -104,5 +103,7 @@ public abstract class TileEntityMachine extends TileEntity implements IRotatable
 		return name;
 	}
 
-	public abstract void onNeighborChange(Block block);
+	public void onNeighborChange(Block block) {
+
+	}
 }
