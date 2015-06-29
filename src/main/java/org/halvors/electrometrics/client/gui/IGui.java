@@ -1,10 +1,13 @@
 package org.halvors.electrometrics.client.gui;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.IIcon;
 
 import java.util.List;
 
+@SideOnly(Side.CLIENT)
 public interface IGui {
     void drawTexturedRect(int x, int y, int u, int v, int w, int h);
 

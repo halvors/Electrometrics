@@ -103,9 +103,4 @@ public class TileEntityMachine extends TileEntity implements IRotatable, INetwor
 	public String getName() {
 		return name;
 	}
-
-	// For testing purposes.
-	public ResourceLocation getGuiResource() {
-		return new ResourceLocation(Reference.PREFIX + "gui/guiContainerBlank.png");
-	}
 }

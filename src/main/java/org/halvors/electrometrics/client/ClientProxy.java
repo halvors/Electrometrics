@@ -33,8 +33,6 @@ public class ClientProxy extends CommonProxy implements IGuiHandler {
 
 		if (tileEntity instanceof TileEntityElectricityMeter) {
 			return new GuiElectricityMeter((TileEntityElectricityMeter) tileEntity);
-
-			//return new GuiElectricityMeterOld((TileEntityElectricityMeter) tileEntity);
 		}
 
 		return null;

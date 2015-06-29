@@ -1,7 +1,11 @@
 package org.halvors.electrometrics.client.gui;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.ResourceLocation;
+import org.halvors.electrometrics.Reference;
 import org.halvors.electrometrics.client.gui.component.GuiComponent;
 import org.halvors.electrometrics.common.tileentity.TileEntityMachine;
 import org.lwjgl.opengl.GL11;
@@ -11,9 +15,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@SideOnly(Side.CLIENT)
 public abstract class GuiScreen extends net.minecraft.client.gui.GuiScreen implements IGui {
     private Set<GuiComponent> guiComponentList = new HashSet<GuiComponent>();
 
+    protected ResourceLocation defaultResource = new ResourceLocation(Reference.PREFIX + "gui/guiScreenBlank.png");
     protected TileEntityMachine tileEntity;
 
     // This is not present by default in GuiScreen as it is in GuiContainer.
@@ -106,8 +112,14 @@ public abstract class GuiScreen extends net.minecraft.client.gui.GuiScreen imple
     }
 
     protected void drawGuiScreenBackgroundLayer(float partialTick, int mouseX, int mouseY) {
+        mc.renderEngine.bindTexture(defaultResource);
+
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+
         int guiWidth = (width - xSize) / 2;
         int guiHeight = (height - ySize) / 2;
+
+        drawTexturedModalRect(guiWidth, guiHeight, 0, 0, xSize, ySize);
 
         int xAxis = mouseX - guiWidth;
         int yAxis = mouseY - guiHeight;

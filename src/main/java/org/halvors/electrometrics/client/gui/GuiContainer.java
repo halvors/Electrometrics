@@ -1,9 +1,13 @@
 package org.halvors.electrometrics.client.gui;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.ResourceLocation;
+import org.halvors.electrometrics.Reference;
 import org.halvors.electrometrics.client.gui.component.GuiComponent;
 import org.halvors.electrometrics.common.tileentity.TileEntityMachine;
 import org.lwjgl.opengl.GL11;
@@ -13,9 +17,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@SideOnly(Side.CLIENT)
 public abstract class GuiContainer extends net.minecraft.client.gui.inventory.GuiContainer implements IGui {
     private Set<GuiComponent> guiComponentList = new HashSet<GuiComponent>();
 
+    protected ResourceLocation defaultResource = new ResourceLocation(Reference.PREFIX + "gui/guiContainerBlank.png");
     protected TileEntityMachine tileEntity;
 
     public GuiContainer(TileEntityMachine tileEntity, Container container) {
@@ -85,8 +91,14 @@ public abstract class GuiContainer extends net.minecraft.client.gui.inventory.Gu
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTick, int mouseX, int mouseY) {
+        mc.renderEngine.bindTexture(defaultResource);
+
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+
         int guiWidth = (width - xSize) / 2;
         int guiHeight = (height - ySize) / 2;
+
+        drawTexturedModalRect(guiWidth, guiHeight, 0, 0, xSize, ySize);
 
         int xAxis = mouseX - guiWidth;
         int yAxis = mouseY - guiHeight;
