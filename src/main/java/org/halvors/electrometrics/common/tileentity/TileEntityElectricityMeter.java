@@ -12,7 +12,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketRequestData;
 import org.halvors.electrometrics.common.network.PacketTileEntity;
-import org.halvors.electrometrics.common.util.UUIDHelper;
 import org.halvors.electrometrics.common.util.Utils;
 
 import java.util.ArrayList;
@@ -27,9 +26,9 @@ import java.util.UUID;
 public class TileEntityElectricityMeter extends TileEntityEnergyProvider implements INetworkable, IOwnable, IRedstoneControl, IActiveState {
 	// The UUID of the player owning this.
 	private UUID owner;
-        
-        // The name of the player owning this.
-        private String ownerName;
+
+	// The name of the player owning this.
+	private String ownerName;
 
 	// The current RedstoneControlType of this TileEntity.
 	private RedstoneControlType redstoneControlType = RedstoneControlType.DISABLED;
@@ -70,7 +69,7 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 		super.readFromNBT(nbtTags);
 
 		owner = UUID.fromString(nbtTags.getString("owner"));
-                ownerName = nbtTags.getString("ownerName");
+		ownerName = nbtTags.getString("ownerName");
 		redstoneControlType = RedstoneControlType.values()[nbtTags.getInteger("redstoneControlType")];
 		isActive = nbtTags.getBoolean("isActive");
 		electricityCount = nbtTags.getDouble("electricityCount");
@@ -81,7 +80,7 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 		super.writeToNBT(nbtTags);
 
 		nbtTags.setString("owner", owner != null ? owner.toString() : "");
-                nbtTags.setString("ownerName", ownerName);
+		nbtTags.setString("ownerName", !ownerName.isEmpty() ? ownerName : "");
 		nbtTags.setInteger("redstoneControlType", redstoneControlType.ordinal());
 		nbtTags.setBoolean("isActive", isActive);
 		nbtTags.setDouble("electricityCount", electricityCount);
@@ -102,7 +101,7 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 		super.handlePacketData(dataStream);
 
 		owner = UUID.fromString(ByteBufUtils.readUTF8String(dataStream));
-                ownerName = ByteBufUtils.readUTF8String(dataStream);
+		ownerName = ByteBufUtils.readUTF8String(dataStream);
 		redstoneControlType = RedstoneControlType.values()[dataStream.readInt()];
 		isActive = dataStream.readBoolean();
 
@@ -121,8 +120,8 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 		super.getPacketData(data);
 
 		data.add(owner != null ? owner.toString() : "");
-                data.add(ownerName);
-                data.add(redstoneControlType.ordinal());
+		data.add(!ownerName.isEmpty() ? ownerName : "");
+		data.add(redstoneControlType.ordinal());
 		data.add(isActive);
 		data.add(electricityCount);
 
@@ -146,12 +145,13 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 
 	@Override
 	public String getOwnerName() {
-		return UUIDHelper.getUsernameForUUID(owner, true);
+		return ownerName;
 	}
 
 	@Override
 	public void setOwner(EntityPlayer player) {
 		this.owner = player.getPersistentID();
+		this.ownerName = player.getDisplayName();
 	}
 
 	@Override
