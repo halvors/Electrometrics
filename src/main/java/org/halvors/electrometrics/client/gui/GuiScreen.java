@@ -26,7 +26,7 @@ public abstract class GuiScreen extends net.minecraft.client.gui.GuiScreen imple
 
     // This is not present by default in GuiScreen as it is in GuiContainer.
     protected int xSize = 176;
-    protected int ySize = 100;
+    protected int ySize = 166;
     protected int guiLeft;
     protected int guiTop;
 
