@@ -15,13 +15,15 @@ import org.halvors.electrometrics.common.tileentity.RedstoneControlType;
 import org.halvors.electrometrics.common.util.render.Rectangle4i;
 
 @SideOnly(Side.CLIENT)
-public class GuiRedstoneControl extends GuiComponent implements IGuiComponent {
-    private TileEntity tileEntity;
+public class GuiRedstoneControl extends GuiComponentBase implements IGuiComponent {
+    private IRedstoneControl redstoneControl;
+    private INetworkable networkable;
 
-    public GuiRedstoneControl(IGui gui, TileEntity tileEntity, ResourceLocation defaultResource) {
+    public <Class extends TileEntity & IRedstoneControl & INetworkable> GuiRedstoneControl(IGui gui, Class tileEntity, ResourceLocation defaultResource) {
         super(new ResourceLocation(Reference.DOMAIN, "gui/elements/guiRedstoneControl.png"), gui, defaultResource);
 
-        this.tileEntity = tileEntity;
+        this.redstoneControl = tileEntity;
+        this.networkable = tileEntity;
     }
 
     @Override
@@ -35,15 +37,12 @@ public class GuiRedstoneControl extends GuiComponent implements IGuiComponent {
 
         gui.drawTexturedRect(guiWidth + 176, guiHeight + 138, 0, 0, 26, 26);
 
-        if (tileEntity instanceof IRedstoneControl) {
-            IRedstoneControl redstoneControl = (IRedstoneControl) tileEntity;
-            int renderX = 26 + (18 * redstoneControl.getControlType().ordinal());
+        int renderX = 26 + (18 * redstoneControl.getControlType().ordinal());
 
-            if (xAxis >= 179 && xAxis <= 197 && yAxis >= 142 && yAxis <= 160) {
-                gui.drawTexturedRect(guiWidth + 179, guiHeight + 142, renderX, 0, 18, 18);
-            } else {
-                gui.drawTexturedRect(guiWidth + 179, guiHeight + 142, renderX, 18, 18, 18);
-            }
+        if (xAxis >= 179 && xAxis <= 197 && yAxis >= 142 && yAxis <= 160) {
+            gui.drawTexturedRect(guiWidth + 179, guiHeight + 142, renderX, 0, 18, 18);
+        } else {
+            gui.drawTexturedRect(guiWidth + 179, guiHeight + 142, renderX, 18, 18, 18);
         }
 
         mc.renderEngine.bindTexture(defaultResource);
@@ -53,12 +52,8 @@ public class GuiRedstoneControl extends GuiComponent implements IGuiComponent {
     public void renderForeground(int xAxis, int yAxis) {
         mc.renderEngine.bindTexture(resource);
 
-        if (tileEntity instanceof IRedstoneControl) {
-            IRedstoneControl redstoneControl = (IRedstoneControl) tileEntity;
-
-            if (xAxis >= 179 && xAxis <= 197 && yAxis >= 142 && yAxis <= 160) {
-                displayTooltip(redstoneControl.getControlType().getDisplay(), xAxis, yAxis);
-            }
+        if (xAxis >= 179 && xAxis <= 197 && yAxis >= 142 && yAxis <= 160) {
+            displayTooltip(redstoneControl.getControlType().getDisplay(), xAxis, yAxis);
         }
 
         mc.renderEngine.bindTexture(defaultResource);
@@ -71,10 +66,8 @@ public class GuiRedstoneControl extends GuiComponent implements IGuiComponent {
 
     @Override
     public void mouseClicked(int xAxis, int yAxis, int button) {
-        if (tileEntity instanceof IRedstoneControl) {
-            IRedstoneControl redstoneControl = (IRedstoneControl) tileEntity;
-
-            if (button == 0) {
+        switch (button) {
+            case 0:
                 if (xAxis >= 179 && xAxis <= 197 && yAxis >= 142 && yAxis <= 160) {
                     RedstoneControlType current = redstoneControl.getControlType();
                     int ordinalToSet = current.ordinal() < (RedstoneControlType.values().length - 1) ? current.ordinal() + 1 : 0;
@@ -88,14 +81,10 @@ public class GuiRedstoneControl extends GuiComponent implements IGuiComponent {
                     // Set the redstone control type.
                     redstoneControl.setControlType(RedstoneControlType.values()[ordinalToSet]);
 
-                    if (tileEntity instanceof INetworkable) {
-                        INetworkable networkable = (INetworkable) tileEntity;
-
-                        // Send a update packet to the server.
-                        PacketHandler.sendToServer(new PacketTileEntity(networkable));
-                    }
+                    // Send a update packet to the server.
+                    PacketHandler.sendToServer(new PacketTileEntity(networkable));
                 }
-            }
+                break;
         }
     }
 
