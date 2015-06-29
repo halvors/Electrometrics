@@ -4,14 +4,19 @@ import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketRequestData;
+import org.halvors.electrometrics.common.network.PacketTileEntity;
+import org.halvors.electrometrics.common.util.location.BlockLocation;
+import org.halvors.electrometrics.common.util.location.Range;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,6 +46,9 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 	// The amount of energy that has passed thru.
 	private double electricityCount;
 
+	public boolean redstone;
+	public boolean redstoneLastTick;
+
 	public TileEntityElectricityMeter() {
 		super("Electricity Meter", 25600, 25600, 25600);
 	}
@@ -50,8 +58,13 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 		super.validate();
 
 		if (worldObj.isRemote) {
-			PacketHandler.getNetwork().sendToServer(new PacketRequestData(this));
+			PacketHandler.sendToServer(new PacketRequestData(this));
 		}
+	}
+
+	@Override
+	public void updateEntity() {
+		redstoneLastTick = redstone;
 	}
 
 	@Override
@@ -121,16 +134,14 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 
 	@Override
 	public EntityPlayerMP getOwner() {
-        List<WorldServer> worldList = Arrays.asList(Minecraft.getMinecraft().getIntegratedServer().worldServers);
+		MinecraftServer server = MinecraftServer.getServer();
 
-		for (WorldServer worldServer : worldList) {
-			List<EntityPlayerMP> playerList = worldServer.playerEntities;
+		if (server != null) {
+			for (EntityPlayerMP player : (List<EntityPlayerMP>) server.getConfigurationManager().playerEntityList) {
+				System.out.println("Found player: " + player.getDisplayName());
 
-			for (EntityPlayerMP player : playerList) {
-                System.out.println("Found player: " + player.getDisplayName());
-
-                if (isOwner(player)) {
-                    System.out.println("Found player match: " + player.getDisplayName());
+				if (isOwner(player)) {
+					System.out.println("Found player match: " + player.getDisplayName());
 
 					return player;
 				}
@@ -157,12 +168,12 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 
 	@Override
 	public boolean isPowered() {
-		return false;
+		return redstone;
 	}
 
 	@Override
 	public boolean wasPowered() {
-		return false;
+		return redstoneLastTick;
 	}
 
 	@Override
@@ -192,5 +203,17 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 	 */
 	public void setElectricityCount(double electricityCount) {
 		this.electricityCount = electricityCount;
+	}
+
+	public void onNeighborChange(Block block) {
+		if(!worldObj.isRemote) {
+			boolean power = worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
+
+			if (redstone != power) {
+				redstone = power;
+
+				PacketHandler.sendToReceivers(new PacketTileEntity(this), this);
+			}
+		}
 	}
 }

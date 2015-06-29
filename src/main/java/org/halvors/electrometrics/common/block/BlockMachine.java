@@ -120,10 +120,8 @@ public class BlockMachine extends BlockBasic {
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int facing, float playerX, float playerY, float playerZ) {
 		if (!player.isSneaking()) {
-			//if (world.isRemote) {
-				// Open the GUI.
-				player.openGui(Electrometrics.getInstance(), 0, world, x, y, z);
-			//}
+			// Open the GUI.
+			player.openGui(Electrometrics.getInstance(), 0, world, x, y, z);
 
 			return true;
 		}

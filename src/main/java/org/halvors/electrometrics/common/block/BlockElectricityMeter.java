@@ -1,5 +1,6 @@
 package org.halvors.electrometrics.common.block;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -63,19 +64,16 @@ public class BlockElectricityMeter extends BlockMachine {
 		return world.setBlockToAir(x, y, z);
 	}
 
-	/*
 	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int facing, float playerX, float playerY, float playerZ) {
-		if (!player.isSneaking()) {
-			if (world.isRemote) {
-				// Open the GUI.
-				player.openGui(Electrometrics.getInstance(), 0, world, x, y, z);
+	public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
+		if(!world.isRemote) {
+			TileEntity tileEntity = world.getTileEntity(x, y, z);
+
+			if (tileEntity instanceof TileEntityElectricityMeter) {
+				TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
+
+				tileEntityElectricityMeter.onNeighborChange(block);
 			}
-
-			return true;
 		}
-
-		return false;
 	}
-	*/
 }
