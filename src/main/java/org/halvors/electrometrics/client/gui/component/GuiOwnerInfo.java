@@ -24,11 +24,11 @@ public class GuiOwnerInfo extends GuiComponent {
 
     @Override
     public void renderBackground(int xAxis, int yAxis, int guiWidth, int guiHeight) {
-        game.renderEngine.bindTexture(resource);
+        mc.renderEngine.bindTexture(resource);
 
         gui.drawTexturedRect(guiWidth - 26, guiHeight + 1, 0, 0, 26, 26);
 
-        game.renderEngine.bindTexture(defaultResource);
+        mc.renderEngine.bindTexture(defaultResource);
     }
 
     @Override

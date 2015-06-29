@@ -30,7 +30,7 @@ public class GuiRedstoneControl extends GuiComponent {
 
     @Override
     public void renderBackground(int xAxis, int yAxis, int guiWidth, int guiHeight) {
-        game.renderEngine.bindTexture(resource);
+        mc.renderEngine.bindTexture(resource);
 
         gui.drawTexturedRect(guiWidth + 176, guiHeight + 138, 0, 0, 26, 26);
 
@@ -45,12 +45,12 @@ public class GuiRedstoneControl extends GuiComponent {
             }
         }
 
-        game.renderEngine.bindTexture(defaultResource);
+        mc.renderEngine.bindTexture(defaultResource);
     }
 
     @Override
     public void renderForeground(int xAxis, int yAxis) {
-        game.renderEngine.bindTexture(resource);
+        mc.renderEngine.bindTexture(resource);
 
         if (tileEntity instanceof IRedstoneControl) {
             IRedstoneControl redstoneControl = (IRedstoneControl) tileEntity;
@@ -60,7 +60,7 @@ public class GuiRedstoneControl extends GuiComponent {
             }
         }
 
-        game.renderEngine.bindTexture(defaultResource);
+        mc.renderEngine.bindTexture(defaultResource);
     }
 
     @Override

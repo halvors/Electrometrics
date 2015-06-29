@@ -13,7 +13,7 @@ import java.util.List;
 
 @SideOnly(Side.CLIENT)
 public abstract class GuiComponent {
-    protected static Minecraft game = Minecraft.getMinecraft();
+    protected static Minecraft mc = Minecraft.getMinecraft();
 
     protected ResourceLocation resource;
     protected IGui gui;
