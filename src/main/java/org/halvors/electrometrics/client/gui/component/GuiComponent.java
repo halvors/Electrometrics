@@ -56,21 +56,5 @@ public abstract class GuiComponent {
         return gui.getFontRenderer();
     }
 
-    public void mouseClickMove(int mouseX, int mouseY, int button, long ticks) {
 
-    }
-
-    public void mouseMovedOrUp(int x, int y, int type) {
-
-    }
-
-    public abstract Rectangle4i getBounds(int guiWidth, int guiHeight);
-
-    public abstract void renderBackground(int xAxis, int yAxis, int guiWidth, int guiHeight);
-
-    public abstract void renderForeground(int xAxis, int yAxis);
-
-    public abstract void preMouseClicked(int xAxis, int yAxis, int button);
-
-    public abstract void mouseClicked(int xAxis, int yAxis, int button);
 }

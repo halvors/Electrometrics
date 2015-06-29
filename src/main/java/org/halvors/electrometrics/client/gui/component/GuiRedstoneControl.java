@@ -14,7 +14,7 @@ import org.halvors.electrometrics.common.tileentity.RedstoneControlType;
 import org.halvors.electrometrics.common.util.render.Rectangle4i;
 
 @SideOnly(Side.CLIENT)
-public class GuiRedstoneControl extends GuiComponent {
+public class GuiRedstoneControl extends GuiComponent implements IGuiComponent {
     private TileEntity tileEntity;
 
     public GuiRedstoneControl(IGui gui, TileEntity tileEntity, ResourceLocation defaultResource) {
@@ -96,5 +96,15 @@ public class GuiRedstoneControl extends GuiComponent {
                 }
             }
         }
+    }
+
+    @Override
+    public void mouseClickMove(int mouseX, int mouseY, int button, long ticks) {
+
+    }
+
+    @Override
+    public void mouseMovedOrUp(int x, int y, int type) {
+
     }
 }

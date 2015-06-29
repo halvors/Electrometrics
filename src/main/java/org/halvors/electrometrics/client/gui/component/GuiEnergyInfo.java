@@ -8,7 +8,7 @@ import org.halvors.electrometrics.client.gui.IGui;
 import org.halvors.electrometrics.common.util.render.Rectangle4i;
 
 @SideOnly(Side.CLIENT)
-public class GuiEnergyInfo extends GuiComponent {
+public class GuiEnergyInfo extends GuiComponent implements IGuiComponent {
     public IInfoHandler infoHandler;
 
     public GuiEnergyInfo(IInfoHandler infoHandler, IGui gui, ResourceLocation defaultResource) {
@@ -45,6 +45,16 @@ public class GuiEnergyInfo extends GuiComponent {
 
     @Override
     public void mouseClicked(int xAxis, int yAxis, int button) {
+
+    }
+
+    @Override
+    public void mouseClickMove(int mouseX, int mouseY, int button, long ticks) {
+
+    }
+
+    @Override
+    public void mouseMovedOrUp(int x, int y, int type) {
 
     }
 }
