@@ -6,6 +6,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import org.halvors.electrometrics.Reference;
 import org.halvors.electrometrics.client.gui.IGui;
+import org.halvors.electrometrics.client.sound.SoundHandler;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketTileEntity;
 import org.halvors.electrometrics.common.tileentity.INetworkable;
@@ -82,7 +83,7 @@ public class GuiRedstoneControl extends GuiComponent implements IGuiComponent {
                         ordinalToSet = 0;
                     }
 
-                    //SoundHandler.playSound("gui.button.press");
+                    SoundHandler.playSound("gui.button.press");
 
                     // Set the redstone control type.
                     redstoneControl.setControlType(RedstoneControlType.values()[ordinalToSet]);
