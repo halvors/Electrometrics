@@ -16,6 +16,7 @@ import org.halvors.electrometrics.common.network.PacketTileEntity;
 import org.halvors.electrometrics.common.tileentity.IOwnable;
 import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.tileentity.TileEntityMachine;
+import org.halvors.electrometrics.common.util.Utils;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -48,11 +49,11 @@ public class GuiElectricityMeter extends GuiScreen {
         add(new GuiEnergyInfo(new IInfoHandler() {
             @Override
             public List<String> getInfo() {
-                String multiplier = Electrometrics.getEnergyDisplay(10);
+                String multiplier = Utils.getEnergyDisplay(10);
 
                 List<String> list = new ArrayList<String>();
                 list.add("Using: " + multiplier + "/t");
-                list.add("Needed: " + Electrometrics.getEnergyDisplay(10));
+                list.add("Needed: " + Utils.getEnergyDisplay(10));
 
                 return list;
             }
@@ -108,8 +109,8 @@ public class GuiElectricityMeter extends GuiScreen {
             TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
 
             // Formatting energy to the correct energy unit.
-            String energyCount = Electrometrics.getEnergyDisplay(tileEntityElectricityMeter.getElectricityCount());
-            String maxOutput = Electrometrics.getEnergyDisplay(tileEntityElectricityMeter.getStorage().getMaxEnergyStored());
+            String energyCount = Utils.getEnergyDisplay(tileEntityElectricityMeter.getElectricityCount());
+            String maxOutput = Utils.getEnergyDisplay(tileEntityElectricityMeter.getStorage().getMaxEnergyStored());
 
             fontRendererObj.drawString("Measured:", 8, ySize - 140, 0x404040);
             fontRendererObj.drawString(energyCount, 72, ySize - 140, 0x404040);

@@ -11,6 +11,7 @@ import net.minecraft.world.World;
 import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.util.Color;
+import org.halvors.electrometrics.common.util.Utils;
 
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class ItemBlockElectricityMeter extends ItemBlockBasic {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack itemStack, EntityPlayer entityplayer, List list, boolean flag) {
-		list.add(Color.BRIGHT_GREEN + "Measured energy: " + Color.GREY + Electrometrics.getEnergyDisplay(getElectricityCount(itemStack)));
+		list.add(Color.BRIGHT_GREEN + "Measured energy: " + Color.GREY + Utils.getEnergyDisplay(getElectricityCount(itemStack)));
 	}
 
 	@Override
