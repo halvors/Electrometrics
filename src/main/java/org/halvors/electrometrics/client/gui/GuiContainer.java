@@ -20,13 +20,13 @@ import java.util.List;
 import java.util.Set;
 
 @SideOnly(Side.CLIENT)
-public abstract class GuiContainerBase extends net.minecraft.client.gui.inventory.GuiContainer implements IGui, IComponentHandler {
+public abstract class GuiContainer extends net.minecraft.client.gui.inventory.GuiContainer implements IGui, IComponentHandler {
     private Set<IComponent> componentList = new HashSet<IComponent>();
 
     protected ResourceLocation defaultResource = new ResourceLocation(Reference.PREFIX + "gui/guiContainerBlank.png");
     protected TileEntityMachine tileEntity;
 
-    public GuiContainerBase(TileEntityMachine tileEntity, Container container) {
+    public GuiContainer(TileEntityMachine tileEntity, Container container) {
         super(container);
 
         this.tileEntity = tileEntity;

@@ -18,19 +18,19 @@ import java.util.List;
 import java.util.Set;
 
 @SideOnly(Side.CLIENT)
-public abstract class GuiScreenBase extends net.minecraft.client.gui.GuiScreen implements IGui, IComponentHandler {
+public abstract class GuiScreen extends net.minecraft.client.gui.GuiScreen implements IGui, IComponentHandler {
     private Set<IComponent> componentList = new HashSet<IComponent>();
 
     protected ResourceLocation defaultResource = new ResourceLocation(Reference.PREFIX + "gui/guiScreenBlank.png");
     protected TileEntityMachine tileEntity;
 
-    // This is not present by default in GuiScreenBase as it is in GuiContainerBase.
+    // This is not present by default in GuiScreen as it is in GuiContainer.
     protected int xSize = 176;
-    protected int ySize = 166;
+    protected int ySize = 100;
     protected int guiLeft;
     protected int guiTop;
 
-    public GuiScreenBase(TileEntityMachine tileEntity) {
+    public GuiScreen(TileEntityMachine tileEntity) {
         this.tileEntity = tileEntity;
     }
 

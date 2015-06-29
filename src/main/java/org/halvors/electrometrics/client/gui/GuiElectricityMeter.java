@@ -26,7 +26,7 @@ import java.util.List;
  * @author halvors
  */
 @SideOnly(Side.CLIENT)
-public class GuiElectricityMeter extends GuiScreenBase {
+public class GuiElectricityMeter extends GuiScreen {
     private GuiButton resetButton;
     private int ticker = 0;
 

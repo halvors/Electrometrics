@@ -55,6 +55,4 @@ public abstract class GuiComponentBase {
     public FontRenderer getFontRenderer() {
         return gui.getFontRenderer();
     }
-
-
 }
