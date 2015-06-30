@@ -81,7 +81,7 @@ public class BlockMachine extends BlockBasic {
 				isActive = activeState.isActive();
 			}
 
-			return iconList[Orientation.getBaseOrientation(side, rotatable.getFacing() + (isActive ? 6 : 0))];
+			return iconList[Orientation.getBaseOrientation(side, rotatable.getFacing()) + (isActive ? 6 : 0)];
 		}
 
 		return null;
@@ -92,12 +92,12 @@ public class BlockMachine extends BlockBasic {
 	public IIcon getIcon(int side, int meta) {
 		// Workaround to for when block is not rendered in world, by swapping the front and back sides.
 		switch (side) {
-			case 2: // Back (South)
-				side = 3; // Fix.
+			case 2: // Back
+				side = 3;
 				break;
 
-			case 3: // Front (North)
-				side = 2; // Fix.
+			case 3: // Front
+				side = 2;
 				break;
 		}
 
