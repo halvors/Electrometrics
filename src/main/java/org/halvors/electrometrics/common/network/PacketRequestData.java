@@ -10,10 +10,6 @@ import org.halvors.electrometrics.common.util.location.BlockLocation;
 import java.util.ArrayList;
 
 public class PacketRequestData extends PacketBlockLocation implements IMessage, IMessageHandler<PacketRequestData, IMessage> {
-	public PacketRequestData() {
-
-	}
-
 	public PacketRequestData(BlockLocation blockLocation) {
 		super(blockLocation);
 	}
@@ -30,7 +26,7 @@ public class PacketRequestData extends PacketBlockLocation implements IMessage, 
 			if (tileEntity instanceof INetworkable) {
 				INetworkable networkable = (INetworkable) tileEntity;
 
-				return new PacketTileEntity(message.getBlockLocation(), networkable.getPacketData(new ArrayList<Object>()));
+				return new PacketTileEntity(message.getBlockLocation(), networkable.getPacketData(new ArrayList<>()));
 			}
 		}
 

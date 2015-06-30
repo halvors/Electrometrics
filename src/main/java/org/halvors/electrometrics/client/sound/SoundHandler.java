@@ -9,14 +9,14 @@ import net.minecraft.util.ResourceLocation;
 
 @SideOnly(Side.CLIENT)
 public class SoundHandler {
-    private static final Minecraft mc = Minecraft.getMinecraft();
+	private static final Minecraft mc = Minecraft.getMinecraft();
 
-    public static void playSound(ISound sound) {
-        mc.getSoundHandler().playSound(sound);
-    }
+	public static void playSound(ISound sound) {
+		mc.getSoundHandler().playSound(sound);
+	}
 
-    public static void playSound(String sound) {
-        playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation(sound), 1.0F));
-    }
+	public static void playSound(String sound) {
+		playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation(sound), 1.0F));
+	}
 }
 

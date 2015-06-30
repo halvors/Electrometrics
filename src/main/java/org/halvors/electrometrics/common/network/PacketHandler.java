@@ -28,10 +28,6 @@ import java.util.List;
 public class PacketHandler {
 	private static final SimpleNetworkWrapper network = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.ID);
 
-	public PacketHandler() {
-
-	}
-
 	public void initialize() {
 		network.registerMessage(PacketConfigurationSync.class, PacketConfigurationSync.class, 0, Side.CLIENT);
 		network.registerMessage(PacketRequestData.class, PacketRequestData.class, 1, Side.SERVER);

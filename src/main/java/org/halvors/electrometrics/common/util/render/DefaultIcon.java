@@ -10,7 +10,7 @@ import java.util.List;
 @SideOnly(Side.CLIENT)
 public class DefaultIcon {
 	private final IIcon defaultIcon;
-	private final List<Integer> icons = new ArrayList<Integer>();
+	private final List<Integer> icons = new ArrayList<>();
 
 	public DefaultIcon(IIcon defaultIcon, int ...is) {
 		this.defaultIcon = defaultIcon;

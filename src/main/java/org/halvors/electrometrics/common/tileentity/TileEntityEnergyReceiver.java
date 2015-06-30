@@ -8,16 +8,16 @@ import net.minecraftforge.common.util.ForgeDirection;
  *
  * @author halvors
  */
-public abstract class TileEntityEnergyReceiver extends TileEntityEnergyStorage implements IEnergyReceiver {
-	public TileEntityEnergyReceiver(String name, int maxEnergy) {
+abstract class TileEntityEnergyReceiver extends TileEntityEnergyStorage implements IEnergyReceiver {
+	TileEntityEnergyReceiver(String name, int maxEnergy) {
 		super(name, maxEnergy);
 	}
 
-	public TileEntityEnergyReceiver(String name, int maxEnergy, int maxReceive) {
+	TileEntityEnergyReceiver(String name, int maxEnergy, int maxReceive) {
 		super(name, maxEnergy, maxReceive);
 	}
 
-	public TileEntityEnergyReceiver(String name, int maxEnergy, int maxReceive, int maxExtract) {
+	TileEntityEnergyReceiver(String name, int maxEnergy, int maxReceive, int maxExtract) {
 		super(name, maxEnergy, maxReceive, maxExtract);
 	}
 

@@ -57,8 +57,6 @@ public class Electrometrics {
 	// Blocks.
 	public static Block blockElectricityMeter;
 
-	// Items.
-
 	// Variables.
 	public static Unit energyType = Unit.JOULES;
 	public static double toJoules;
@@ -107,17 +105,11 @@ public class Electrometrics {
 
 		// Call functions for adding blocks, items, etc.
 		addBlocks();
-		addItems();
 		addTileEntities();
 		addRecipes();
 	}
 
-	@EventHandler
-	public void postInit(FMLPostInitializationEvent event) {
-		// Nothing to see here.
-	}
-
-	public void addBlocks() {
+	private void addBlocks() {
 		// Create blocks.
 		blockElectricityMeter = new BlockElectricityMeter();
 
@@ -125,18 +117,12 @@ public class Electrometrics {
 		GameRegistry.registerBlock(blockElectricityMeter, ItemBlockElectricityMeter.class, "blockElectricityMeter");
 	}
 
-	public void addItems() {
-		// Create items.
-
-		// Register items.
-	}
-
-	public void addTileEntities() {
+	private void addTileEntities() {
 		// Register tile entities.
 		GameRegistry.registerTileEntity(TileEntityElectricityMeter.class, "tileEntityElectricityMeter");
 	}
 
-	public void addRecipes() {
+	private void addRecipes() {
 		// Register recipes.
 		GameRegistry.addRecipe(new ItemStack(blockElectricityMeter),
 				"III",

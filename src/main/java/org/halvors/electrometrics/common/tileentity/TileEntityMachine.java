@@ -3,7 +3,6 @@ package org.halvors.electrometrics.common.tileentity;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import org.halvors.electrometrics.common.network.PacketHandler;
@@ -27,7 +26,7 @@ public abstract class TileEntityMachine extends TileEntity implements IRotatable
 	@SideOnly(Side.CLIENT)
 	private int clientFacing;
 
-	protected TileEntityMachine(String name) {
+	TileEntityMachine(String name) {
 		this.name = name;
 	}
 
@@ -103,5 +102,5 @@ public abstract class TileEntityMachine extends TileEntity implements IRotatable
 		return name;
 	}
 
-	public abstract void onNeighborChange(Block block);
+	public abstract void onNeighborChange();
 }

@@ -4,7 +4,6 @@ import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -43,8 +42,8 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 	// The amount of energy that has passed thru.
 	private double electricityCount;
 
-	public boolean isPowered;
-	public boolean wasPowered;
+	private boolean isPowered;
+	private boolean wasPowered;
 
 	public TileEntityElectricityMeter() {
 		super("Electricity Meter", 25600, 25600, 25600);
@@ -210,7 +209,7 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 		this.electricityCount = electricityCount;
 	}
 
-	public void onNeighborChange(Block block) {
+	public void onNeighborChange() {
 		if (!worldObj.isRemote) {
 			boolean power = worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
 

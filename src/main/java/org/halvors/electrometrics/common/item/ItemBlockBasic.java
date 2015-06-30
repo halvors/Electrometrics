@@ -9,8 +9,8 @@ import org.halvors.electrometrics.Electrometrics;
  *
  * @author halvors
  */
-public class ItemBlockBasic extends ItemBlock {
-	public ItemBlockBasic(Block block) {
+class ItemBlockBasic extends ItemBlock {
+	ItemBlockBasic(Block block) {
 		super(block);
 
 		setCreativeTab(Electrometrics.tabElectrometrics);

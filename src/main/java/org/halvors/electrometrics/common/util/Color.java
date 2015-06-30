@@ -48,16 +48,16 @@ public enum Color {
 			WHITE};
 
 	/** The color code that will be displayed */
-	public final String code;
+	private final String code;
 
-	public final int[] rgbCode;
+	private final int[] rgbCode;
 
-	public final int mcMeta;
+	private final int mcMeta;
 
 	/** A friendly name of the color. */
-	public final String unlocalizedName;
+	private final String unlocalizedName;
 
-	public final String dyeName;
+	private final String dyeName;
 
 	Color(String s, String n, String dye, int[] rgb, int meta) {
 		code = s;

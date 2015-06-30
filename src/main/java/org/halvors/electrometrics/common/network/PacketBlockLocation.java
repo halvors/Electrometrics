@@ -12,17 +12,13 @@ import org.halvors.electrometrics.common.util.location.BlockLocation;
 public class PacketBlockLocation implements IMessage {
 	private BlockLocation blockLocation;
 
-	public PacketBlockLocation() {
-
-	}
-
 	public PacketBlockLocation(BlockLocation blockLocation) {
 		this.blockLocation = blockLocation;
 	}
 
 	@Override
 	public void fromBytes(ByteBuf dataStream) {
-		blockLocation = new BlockLocation(dataStream.readInt(), dataStream.readInt(), dataStream.readInt(), dataStream.readInt());
+		this.blockLocation = new BlockLocation(dataStream.readInt(), dataStream.readInt(), dataStream.readInt(), dataStream.readInt());
 	}
 
 	@Override

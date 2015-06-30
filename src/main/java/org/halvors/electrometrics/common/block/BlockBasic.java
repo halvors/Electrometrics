@@ -11,8 +11,8 @@ import org.halvors.electrometrics.Electrometrics;
  *
  * @author halvors
  */
-public class BlockBasic extends BlockContainer {
-	protected BlockBasic(Material material) {
+class BlockBasic extends BlockContainer {
+	BlockBasic(Material material) {
 		super(material);
 
 		setCreativeTab(Electrometrics.tabElectrometrics);

@@ -13,10 +13,6 @@ import org.halvors.electrometrics.common.util.UnitDisplay;
  * @author halvors
  */
 public class PacketConfigurationSync implements IMessage, IMessageHandler<PacketConfigurationSync, IMessage> {
-	public PacketConfigurationSync() {
-
-	}
-
 	@Override
 	public void fromBytes(ByteBuf dataStream) {
 		Electrometrics.energyType = UnitDisplay.Unit.values()[dataStream.readInt()];

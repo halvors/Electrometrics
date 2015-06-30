@@ -11,7 +11,7 @@ import org.halvors.electrometrics.Reference;
 
 @SideOnly(Side.CLIENT)
 public class Renderer {
-	private static String[] sides = new String[] { "Bottom", "Top", "Front", "Back", "Left", "Right" };
+	private static final String[] sides = new String[] { "Bottom", "Top", "Front", "Back", "Left", "Right" };
 
 	public static void loadDynamicTextures(IIconRegister iconRegister, String name, IIcon[] textures, DefaultIcon... defaults) {
 		for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
@@ -51,7 +51,7 @@ public class Renderer {
 		}
 	}
 
-	public static boolean blockTextureExists(String texture) {
+	private static boolean blockTextureExists(String texture) {
 		String path = Reference.PREFIX + "textures/blocks/" + texture + ".png"; // Need to add :textures/blocks/?
 
 		try {

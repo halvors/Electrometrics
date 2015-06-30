@@ -7,5 +7,5 @@ import java.util.List;
 
 @SideOnly(Side.CLIENT)
 public interface IInfoHandler {
-    List<String> getInfo();
+	List<String> getInfo();
 }

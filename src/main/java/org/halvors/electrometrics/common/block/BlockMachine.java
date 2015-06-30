@@ -26,16 +26,16 @@ import org.halvors.electrometrics.common.util.render.DefaultIcon;
 import org.halvors.electrometrics.common.util.render.Renderer;
 
 public class BlockMachine extends BlockBasic {
-	private String name;
+	private final String name;
 
 	@SideOnly(Side.CLIENT)
 	private IIcon baseIcon;
 
 	@SideOnly(Side.CLIENT)
-	private IIcon[] icons = new IIcon[16];
+	private final IIcon[] iconList = new IIcon[16];
 
-	protected BlockMachine(String name, Material material) {
-		super(material);
+	BlockMachine(String name) {
+		super(Material.iron);
 
 		this.name = name;
 
@@ -61,7 +61,7 @@ public class BlockMachine extends BlockBasic {
 	public void registerBlockIcons(IIconRegister iconRegister) {
 		baseIcon = iconRegister.registerIcon(Reference.PREFIX + name);
 
-		Renderer.loadDynamicTextures(iconRegister, name, icons, DefaultIcon.getAll(baseIcon));
+		Renderer.loadDynamicTextures(iconRegister, name, iconList, DefaultIcon.getAll(baseIcon));
 	}
 
 	@Override
@@ -81,7 +81,7 @@ public class BlockMachine extends BlockBasic {
 				isActive = activeState.isActive();
 			}
 
-			return icons[Orientation.getBaseOrientation(side, rotatable.getFacing() + (isActive ? 6 : 0))];
+			return iconList[Orientation.getBaseOrientation(side, rotatable.getFacing() + (isActive ? 6 : 0))];
 		}
 
 		return baseIcon;
@@ -90,7 +90,7 @@ public class BlockMachine extends BlockBasic {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int meta) {
-		return icons[side];
+		return iconList[side];
 	}
 
 	@Override
@@ -259,7 +259,7 @@ public class BlockMachine extends BlockBasic {
 			if (tileEntity instanceof TileEntityMachine) {
 				TileEntityMachine tileEntityMachine = (TileEntityMachine) tileEntity;
 
-				tileEntityMachine.onNeighborChange(block);
+				tileEntityMachine.onNeighborChange();
 			}
 		}
 	}

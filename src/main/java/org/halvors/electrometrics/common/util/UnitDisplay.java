@@ -97,7 +97,7 @@ public class UnitDisplay {
 		}
 	}
 
-	public static String getDisplay(double value, Unit unit, int decimalPlaces, boolean isShort) {
+	private static String getDisplay(double value, Unit unit, int decimalPlaces, boolean isShort) {
 		return getDisplay(value, unit, decimalPlaces, isShort, 1);
 	}
 
@@ -106,7 +106,7 @@ public class UnitDisplay {
 	 * front of the output string showing this. Use string.replace to remove the negative sign if
 	 * unwanted
 	 */
-	public static String getDisplay(double value, Unit unit, int decimalPlaces, boolean isShort, double multiplier) {
+	private static String getDisplay(double value, Unit unit, int decimalPlaces, boolean isShort, double multiplier) {
 		String unitName = unit.name;
 		String prefix = "";
 
@@ -193,7 +193,7 @@ public class UnitDisplay {
 	 * @param decimalPlaces The rounded number
 	 * @return the rounded number.
 	 */
-	public static double roundDecimals(double d, int decimalPlaces) {
+	private static double roundDecimals(double d, int decimalPlaces) {
 		int j = (int) (d * Math.pow(10, decimalPlaces));
 
 		return j / Math.pow(10, decimalPlaces);

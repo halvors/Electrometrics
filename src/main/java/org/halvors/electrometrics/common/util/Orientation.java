@@ -39,7 +39,7 @@ public class Orientation {
 	/**
 	 * Gets the left side of a certain orientation.
 	 */
-	public static ForgeDirection getLeft(int orientation) {
+	private static ForgeDirection getLeft(int orientation) {
 		switch (orientation) {
 			case 2:
 				return ForgeDirection.EAST;
@@ -58,7 +58,7 @@ public class Orientation {
 	/**
 	 * Gets the right side of a certain orientation.
 	 */
-	public static ForgeDirection getRight(int orientation) {
+	private static ForgeDirection getRight(int orientation) {
 		return getLeft(orientation).getOpposite();
 	}
 }

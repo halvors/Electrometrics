@@ -15,10 +15,6 @@ import org.halvors.electrometrics.common.network.PacketHandler;
  * @author halvors
  */
 public class PlayerEventHandler {
-	public PlayerEventHandler() {
-
-	}
-
 	@SubscribeEvent
 	public void onPlayerLoginEvent(PlayerLoggedInEvent event) {
 		EntityPlayer player = event.player;
