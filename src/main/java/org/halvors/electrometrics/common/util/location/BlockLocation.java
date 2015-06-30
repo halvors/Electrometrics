@@ -6,10 +6,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 
 public class BlockLocation {
-	private int dimensionId;
-	private int x;
-	private int y;
-	private int z;
+	private final int dimensionId;
+	private final int x;
+	private final int y;
+	private final int z;
 
 	public BlockLocation(int dimensionId, int x, int y, int z) {
 		this.dimensionId = dimensionId;

@@ -26,7 +26,7 @@ import java.util.List;
  * @author halvors
  */
 public class PacketHandler {
-	private static SimpleNetworkWrapper network = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.ID);
+	private static final SimpleNetworkWrapper network = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.ID);
 
 	public PacketHandler() {
 

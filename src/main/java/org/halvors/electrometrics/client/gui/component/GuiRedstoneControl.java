@@ -16,10 +16,10 @@ import org.halvors.electrometrics.common.util.render.Rectangle4i;
 
 @SideOnly(Side.CLIENT)
 public class GuiRedstoneControl extends GuiComponentBase implements IGuiComponent {
-    private IRedstoneControl redstoneControl;
-    private INetworkable networkable;
+    private final IRedstoneControl redstoneControl;
+    private final INetworkable networkable;
 
-    public <Class extends TileEntity & IRedstoneControl & INetworkable> GuiRedstoneControl(IGui gui, Class tileEntity, ResourceLocation defaultResource) {
+    public <T extends TileEntity & IRedstoneControl & INetworkable> GuiRedstoneControl(IGui gui, T tileEntity, ResourceLocation defaultResource) {
         super(new ResourceLocation(Reference.DOMAIN, "gui/elements/guiRedstoneControl.png"), gui, defaultResource);
 
         this.redstoneControl = tileEntity;

@@ -9,7 +9,7 @@ import org.halvors.electrometrics.common.util.render.Rectangle4i;
 
 @SideOnly(Side.CLIENT)
 public class GuiEnergyInfo extends GuiComponentBase implements IGuiComponent {
-    public IInfoHandler infoHandler;
+    public final IInfoHandler infoHandler;
 
     public GuiEnergyInfo(IInfoHandler infoHandler, IGui gui, ResourceLocation defaultResource) {
         super(new ResourceLocation(Reference.DOMAIN, "gui/elements/guiEnergyInfo.png"), gui, defaultResource);

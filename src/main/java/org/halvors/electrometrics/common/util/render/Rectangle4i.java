@@ -43,35 +43,51 @@ public class Rectangle4i {
     public Rectangle4i offset(int dx, int dy) {
         x += dx;
         y += dy;
+
         return this;
     }
 
     public Rectangle4i include(int px, int py) {
-        if (px < x) expand(px - x, 0);
-        if (px >= x + w) expand(px - x - w + 1, 0);
-        if (py < y) expand(0, py - y);
-        if (py >= y + h) expand(0, py - y - h + 1);
+        if (px < x) {
+            expand(px - x, 0);
+        }
+
+        if (px >= x + w) {
+            expand(px - x - w + 1, 0);
+        }
+
+        if (py < y) {
+            expand(0, py - y);
+        }
+
+        if (py >= y + h) {
+            expand(0, py - y - h + 1);
+        }
+
         return this;
     }
 
     public Rectangle4i include(Rectangle4i r) {
         include(r.x, r.y);
+
         return include(r.x2(), r.y2());
     }
 
     public Rectangle4i expand(int px, int py) {
-        if (px > 0)
+        if (px > 0) {
             w += px;
-        else {
+        } else {
             x += px;
             w -= px;
         }
-        if (py > 0)
+
+        if (py > 0) {
             h += py;
-        else {
+        } else {
             y += py;
             h -= py;
         }
+
         return this;
     }
 

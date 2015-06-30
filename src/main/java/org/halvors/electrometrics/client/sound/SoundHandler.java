@@ -9,7 +9,7 @@ import net.minecraft.util.ResourceLocation;
 
 @SideOnly(Side.CLIENT)
 public class SoundHandler {
-    private static Minecraft mc = Minecraft.getMinecraft();
+    private static final Minecraft mc = Minecraft.getMinecraft();
 
     public static void playSound(ISound sound) {
         mc.getSoundHandler().playSound(sound);

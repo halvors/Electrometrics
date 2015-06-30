@@ -11,9 +11,9 @@ import java.util.ArrayList;
  *
  * @author halvors
  */
-public class TileEntityEnergyStorage extends TileEntityMachine implements INetworkable {
+public abstract class TileEntityEnergyStorage extends TileEntityMachine implements INetworkable {
 	// The internal energy storage.
-	protected EnergyStorage storage;
+	protected final EnergyStorage storage;
 
 	public TileEntityEnergyStorage(String name, int maxEnergy) {
 		super(name);

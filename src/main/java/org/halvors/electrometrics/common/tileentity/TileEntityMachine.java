@@ -16,9 +16,9 @@ import java.util.ArrayList;
  *
  * @author halvors
  */
-public class TileEntityMachine extends TileEntity implements IRotatable, INetworkable {
+public abstract class TileEntityMachine extends TileEntity implements IRotatable, INetworkable {
 	// The name of this TileEntity.
-	private String name;
+	private final String name;
 
 	// The direction this TileEntity's block is facing.
 	private int facing;
@@ -103,7 +103,5 @@ public class TileEntityMachine extends TileEntity implements IRotatable, INetwor
 		return name;
 	}
 
-	public void onNeighborChange(Block block) {
-
-	}
+	public abstract void onNeighborChange(Block block);
 }

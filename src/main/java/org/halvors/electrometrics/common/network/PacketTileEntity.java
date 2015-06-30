@@ -51,7 +51,43 @@ public class PacketTileEntity extends PacketBlockLocation implements IMessage, I
 	public void toBytes(ByteBuf dataStream) {
 		super.toBytes(dataStream);
 
-		encode(new Object[] { dataList }, dataStream);
+		try {
+			for (Object data : dataList) {
+				// Language types.
+				if (data instanceof Integer) {
+					dataStream.writeInt((Integer) data);
+				} else if (data instanceof Double) {
+					dataStream.writeDouble((Double) data);
+				} else if (data instanceof Float) {
+					dataStream.writeFloat((Float) data);
+				} else if (data instanceof Boolean) {
+					dataStream.writeBoolean((Boolean) data);
+				} else if (data instanceof Byte) {
+					dataStream.writeByte((Byte) data);
+				} else if (data instanceof String) {
+					ByteBufUtils.writeUTF8String(dataStream, (String) data);
+
+					// Minecraft types.
+				} else if (data instanceof ItemStack) {
+					ByteBufUtils.writeItemStack(dataStream, (ItemStack) data);
+				} else if (data instanceof NBTTagCompound) {
+					ByteBufUtils.writeTag(dataStream, (NBTTagCompound) data);
+
+					// Array types.
+				} else if (data instanceof int[]) {
+					for (int i : (int[]) data) {
+						dataStream.writeInt(i);
+					}
+				} else if (data instanceof byte[]) {
+					for (byte b : (byte[]) data) {
+						dataStream.writeByte(b);
+					}
+				}
+			}
+		} catch (Exception e) {
+			Electrometrics.getLogger().error("An error occurred when sending packet data.");
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -71,55 +107,5 @@ public class PacketTileEntity extends PacketBlockLocation implements IMessage, I
 		}
 
 		return null;
-	}
-
-	/**
-	 * Encodes an Object[] of data into a DataOutputStream.
-	 *
-	 * @param dataList
-	 * @param dataStream
-	 */
-	public static void encode(Object[] dataList, ByteBuf dataStream) {
-		try {
-			for (Object data : dataList) {
-				// Language types.
-				if (data instanceof Integer) {
-					dataStream.writeInt((Integer) data);
-				} else if (data instanceof Double) {
-					dataStream.writeDouble((Double) data);
-				} else if (data instanceof Float) {
-					dataStream.writeFloat((Float) data);
-				} else if (data instanceof Boolean) {
-					dataStream.writeBoolean((Boolean) data);
-				} else if (data instanceof Byte) {
-					dataStream.writeByte((Byte) data);
-				} else if (data instanceof String) {
-					ByteBufUtils.writeUTF8String(dataStream, (String) data);
-
-				// Minecraft types.
-				} else if (data instanceof ItemStack) {
-					ByteBufUtils.writeItemStack(dataStream, (ItemStack) data);
-				} else if (data instanceof NBTTagCompound) {
-					ByteBufUtils.writeTag(dataStream, (NBTTagCompound) data);
-
-				// Array types.
-				} else if (data instanceof int[]) {
-					for (int i : (int[]) data) {
-						dataStream.writeInt(i);
-					}
-				} else if (data instanceof byte[]) {
-					for (byte b : (byte[]) data) {
-						dataStream.writeByte(b);
-					}
-
-				// Umm. Check this? From what i can understand this is to...
-				} else if (data instanceof ArrayList) {
-					encode(((ArrayList) data).toArray(), dataStream);
-				}
-			}
-		} catch (Exception e) {
-			Electrometrics.getLogger().error("An error occurred when sending packet data.");
-			e.printStackTrace();
-		}
 	}
 }

@@ -1,7 +1,7 @@
 package org.halvors.electrometrics.common.component;
 
 public interface IComponentHandler {
-    <Class extends IComponent> Class add(Class component);
+    <Component extends IComponent> Component add(Component component);
 
-    <Class extends IComponent> void remove(Class component);
+    <Component extends IComponent> void remove(Component component);
 }

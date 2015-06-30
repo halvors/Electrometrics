@@ -12,9 +12,9 @@ import net.minecraft.world.chunk.Chunk;
  *
  */
 public class ChunkLocation {
-    private int dimensionId;
-    private int x;
-    private int z;
+    private final int dimensionId;
+    private final int x;
+    private final int z;
 
     /**
      * Creates a ChunkLocation object from the given x and z coordinates, as well as a dimension.

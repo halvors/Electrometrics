@@ -43,16 +43,16 @@ public class Electrometrics {
 	private static CommonProxy proxy;
 
 	// Logger instance.
-	private static Logger logger = LogManager.getLogger(Reference.ID);
+	private static final Logger logger = LogManager.getLogger(Reference.ID);
 
 	// Packet handler.
-	private static PacketHandler packetHandler = new PacketHandler();
+	private static final PacketHandler packetHandler = new PacketHandler();
 
 	// Configuration.
 	private static Configuration configuration;
 
 	// Creative tab.
-	public static CreativeTab tabElectrometrics = new CreativeTab();
+	public static final CreativeTab tabElectrometrics = new CreativeTab();
 
 	// Blocks.
 	public static Block blockElectricityMeter;
@@ -96,8 +96,6 @@ public class Electrometrics {
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
-		proxy.registerRenderers();
-
 		// Packet registrations
 		packetHandler.initialize();
 

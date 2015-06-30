@@ -9,7 +9,7 @@ import org.halvors.electrometrics.common.util.render.Rectangle4i;
 
 @SideOnly(Side.CLIENT)
 public class GuiOwnerInfo extends GuiComponentBase implements IGuiComponent {
-    public IInfoHandler infoHandler;
+    public final IInfoHandler infoHandler;
 
     public GuiOwnerInfo(IInfoHandler infoHandler, IGui gui, ResourceLocation defaultResource) {
         super(new ResourceLocation(Reference.DOMAIN, "gui/elements/guiOwnerInfo.png"), gui, defaultResource);

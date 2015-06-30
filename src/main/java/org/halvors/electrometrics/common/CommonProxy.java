@@ -10,11 +10,6 @@ import net.minecraft.world.World;
  * @author halvors
  */
 public class CommonProxy implements IGuiHandler {
-	// Client stuff
-	public void registerRenderers() {
-		// Nothing here as the server doesn't render graphics or entities!
-	}
-
 	@Override
 	public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
 		return null;

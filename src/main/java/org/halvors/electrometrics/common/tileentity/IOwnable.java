@@ -12,7 +12,7 @@ public interface IOwnable {
 
 	/**
 	 * Check if the player is owning this.
-	 * @param player
+	 * @param player the player to check if is the owner of this.
 	 * @return true if the player is the owner of this.
 	 */
 	boolean isOwner(EntityPlayer player);
@@ -31,7 +31,7 @@ public interface IOwnable {
 
 	/**
 	 * Sets the player owning this.
-	 * @param player
+	 * @param player the player going to be set as owner of this.
 	 */
 	void setOwner(EntityPlayer player);
 }

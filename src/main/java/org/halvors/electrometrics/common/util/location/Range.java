@@ -4,12 +4,12 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.entity.player.EntityPlayer;
 
 public class Range {
-    private int dimensionId;
+    private final int dimensionId;
     private int minX;
-    private int minY;
+    private final int minY;
     private int minZ;
     private int maxX;
-    private int maxY;
+    private final int maxY;
     private int maxZ;
 
     public Range(int minX, int minY, int minZ, int maxX, int maxY, int maxZ, int dimensionId) {

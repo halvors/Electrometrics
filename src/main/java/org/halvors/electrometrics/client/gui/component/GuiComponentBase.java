@@ -6,18 +6,17 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.ResourceLocation;
 import org.halvors.electrometrics.client.gui.IGui;
-import org.halvors.electrometrics.common.util.render.Rectangle4i;
 import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 
 @SideOnly(Side.CLIENT)
 public abstract class GuiComponentBase {
-    protected static Minecraft mc = Minecraft.getMinecraft();
+    protected static final Minecraft mc = Minecraft.getMinecraft();
 
-    protected ResourceLocation resource;
-    protected IGui gui;
-    protected ResourceLocation defaultResource;
+    protected final ResourceLocation resource;
+    protected final IGui gui;
+    protected final ResourceLocation defaultResource;
 
     protected GuiComponentBase(ResourceLocation resource, IGui gui, ResourceLocation defaultResource) {
         this.resource = resource;

@@ -33,10 +33,10 @@ public class UnitDisplay {
 		MINECRAFT_JOULES("Minecraft Joule", "MJ"),
 		ELECTRICAL_UNITS("Electrical Unit", "EU");
 
-		public String name;
-		public String symbol;
+		public final String name;
+		public final String symbol;
 
-		private Unit(String name, String symbol) {
+		Unit(String name, String symbol) {
 			this.name = name;
 			this.symbol = symbol;
 		}
@@ -61,13 +61,13 @@ public class UnitDisplay {
 		YOTTA("Yotta", "Y", 1000000000000000000000000d);
 
 		/** long name for the unit */
-		public String name;
+		public final String name;
 		/** short unit version of the unit */
-		public String symbol;
+		public final String symbol;
 		/** Point by which a number is consider to be of this unit */
-		public double value;
+		public final double value;
 
-		private UnitPrefix(String name, String symbol, double value) {
+		UnitPrefix(String name, String symbol, double value) {
 			this.name = name;
 			this.symbol = symbol;
 			this.value = value;
@@ -188,10 +188,10 @@ public class UnitDisplay {
 	}
 
 	/**
-	 * Rounds a number to a specific number place places
-	 *
-	 * @param The number
-	 * @return The rounded number
+	 * Rounds a number to a specific number place places.
+	 * @param d The number
+	 * @param decimalPlaces The rounded number
+	 * @return the rounded number.
 	 */
 	public static double roundDecimals(double d, int decimalPlaces) {
 		int j = (int) (d * Math.pow(10, decimalPlaces));

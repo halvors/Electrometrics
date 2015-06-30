@@ -11,7 +11,7 @@ import org.halvors.electrometrics.common.util.Utils;
  *
  * @author halvors
  */
-public class TileEntityEnergyProvider extends TileEntityEnergyReceiver implements IEnergyProvider {
+public abstract class TileEntityEnergyProvider extends TileEntityEnergyReceiver implements IEnergyProvider {
 	public TileEntityEnergyProvider(String name, int maxEnergy) {
 		super(name, maxEnergy);
 	}

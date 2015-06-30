@@ -12,21 +12,18 @@ import org.halvors.electrometrics.common.component.IComponentHandler;
 import org.halvors.electrometrics.common.tileentity.TileEntityMachine;
 import org.lwjgl.opengl.GL11;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @SideOnly(Side.CLIENT)
 public abstract class GuiScreen extends net.minecraft.client.gui.GuiScreen implements IGui, IComponentHandler {
-    private Set<IComponent> componentList = new HashSet<IComponent>();
+    private final Set<IComponent> componentList = new HashSet<IComponent>();
 
-    protected ResourceLocation defaultResource = new ResourceLocation(Reference.PREFIX + "gui/guiScreenBlank.png");
-    protected TileEntityMachine tileEntity;
+    protected final ResourceLocation defaultResource = new ResourceLocation(Reference.PREFIX + "gui/guiScreenBlank.png");
+    protected final TileEntityMachine tileEntity;
 
     // This is not present by default in GuiScreen as it is in GuiContainer.
-    protected int xSize = 176;
-    protected int ySize = 166;
+    protected final int xSize = 176;
+    protected final int ySize = 166;
     protected int guiLeft;
     protected int guiTop;
 
@@ -64,13 +61,13 @@ public abstract class GuiScreen extends net.minecraft.client.gui.GuiScreen imple
 
     /**
      * Add a component to this screen.
-     * @param component
-     * @return component
+     * @param component the component object to add.
+     * @return component the component added or null.
      */
     @Override
-    public <Class extends IComponent> Class add(Class component) {
+    public <Component extends IComponent> Component add(Component component) {
         if (component instanceof IGuiComponent) {
-            componentList.add((IGuiComponent) component);
+            componentList.add(component);
 
             return component;
         }
@@ -80,12 +77,10 @@ public abstract class GuiScreen extends net.minecraft.client.gui.GuiScreen imple
 
     /**
      * Remove a component from this screen.
-     *
-     * @param component
-     * @param <Class>
+     * @param component the component object to remove.
      */
     @Override
-    public <Class extends IComponent> void remove(Class component) {
+    public <Component extends IComponent> void remove(Component component) {
         componentList.remove(component);
     }
 
@@ -177,7 +172,7 @@ public abstract class GuiScreen extends net.minecraft.client.gui.GuiScreen imple
 
     @Override
     protected void drawCreativeTabHoveringText(String text, int x, int y) {
-        func_146283_a(Arrays.asList(new String[]{text}), x, y);
+        func_146283_a(Collections.singletonList(text), x, y);
     }
 
     @Override

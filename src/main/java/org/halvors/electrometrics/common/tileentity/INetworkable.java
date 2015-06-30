@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public interface INetworkable {
 	/**
 	 * Receive and manage a packet's data.
-	 * @param dataStream
+	 * @param dataStream the dataStream to read data from.
 	 */
 	void handlePacketData(ByteBuf dataStream) throws Exception;
 

@@ -12,7 +12,7 @@ import java.util.UUID;
 public class Utils {
     /**
      * Converts the energy to the default energy system.
-     * @param energy
+     * @param energy the raw energy.
      * @return the energy as a String.
      */
     public static String getEnergyDisplay(double energy) {
@@ -63,8 +63,8 @@ public class Utils {
 
     /**
      * Get a player from it's unique id.
-     * @param uuid
-     * @return the player with the provided uuid.
+     * @param uuid the uuid of the player.
+     * @return the EntityPlayerMP object.
      */
     public static EntityPlayerMP getPlayerFromUUID(UUID uuid) {
         MinecraftServer server = MinecraftServer.getServer();

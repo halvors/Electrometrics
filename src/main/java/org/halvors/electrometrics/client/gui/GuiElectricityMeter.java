@@ -27,7 +27,6 @@ import java.util.List;
  */
 @SideOnly(Side.CLIENT)
 public class GuiElectricityMeter extends GuiScreen {
-    private GuiButton resetButton;
     private int ticker = 0;
 
     public GuiElectricityMeter(final TileEntityElectricityMeter tileEntity) {
@@ -36,15 +35,10 @@ public class GuiElectricityMeter extends GuiScreen {
         add(new GuiOwnerInfo(new IInfoHandler() {
             @Override
             public List<String> getInfo() {
-                if (tileEntity instanceof IOwnable) {
-                    IOwnable ownable = (IOwnable) tileEntity;
-                    List<String> list = new ArrayList<String>();
-                    list.add(ownable.getOwnerName());
+                List<String> list = new ArrayList<String>();
+                list.add(tileEntity.getOwnerName());
 
-                    return list;
-                }
-
-                return null;
+                return list;
             }
         }, this, defaultResource));
 
@@ -72,7 +66,7 @@ public class GuiElectricityMeter extends GuiScreen {
         int guiHeight = (height - ySize) / 2;
 
         // Create buttons.
-        resetButton = new GuiButton(0, guiWidth + 110, guiHeight + 60, 60, 20, "Reset");
+        GuiButton resetButton = new GuiButton(0, guiWidth + 110, guiHeight + 60, 60, 20, "Reset");
 
         // If this has a owner, restrict the reset button to that player.
         if (tileEntity instanceof IOwnable) {

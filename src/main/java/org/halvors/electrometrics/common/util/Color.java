@@ -55,11 +55,11 @@ public enum Color {
 	public final int mcMeta;
 
 	/** A friendly name of the color. */
-	public String unlocalizedName;
+	public final String unlocalizedName;
 
-	public String dyeName;
+	public final String dyeName;
 
-	private Color(String s, String n, String dye, int[] rgb, int meta) {
+	Color(String s, String n, String dye, int[] rgb, int meta) {
 		code = s;
 		unlocalizedName = n;
 		dyeName = dye;

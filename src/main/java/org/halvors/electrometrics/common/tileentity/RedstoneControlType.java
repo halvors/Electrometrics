@@ -6,7 +6,7 @@ public enum RedstoneControlType {
     LOW("Low"),
     PULSE("Pulse");
 
-    private String display;
+    private final String display;
 
     public String getDisplay() {
         return display;

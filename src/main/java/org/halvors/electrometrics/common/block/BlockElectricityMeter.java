@@ -1,6 +1,5 @@
 package org.halvors.electrometrics.common.block;
 
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -21,7 +20,7 @@ import java.util.Random;
  */
 public class BlockElectricityMeter extends BlockMachine {
 	public BlockElectricityMeter() {
-		super("blockElectricityMeter", Material.iron);
+		super("blockElectricityMeter");
 	}
 
 	@Override

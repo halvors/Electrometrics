@@ -17,10 +17,6 @@ import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
  */
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy implements IGuiHandler {
-	@Override
-	public void registerRenderers() {
-		// This is for rendering entities and so forth later on
-	}
 
 	@Override
 	public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
