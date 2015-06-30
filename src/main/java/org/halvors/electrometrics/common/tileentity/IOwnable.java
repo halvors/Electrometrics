@@ -23,6 +23,10 @@ public interface IOwnable {
 	 */
 	EntityPlayerMP getOwner();
 
+	/**
+	 * Get the name of the player owning this.
+	 * @return name
+	 */
 	String getOwnerName();
 
 	/**
