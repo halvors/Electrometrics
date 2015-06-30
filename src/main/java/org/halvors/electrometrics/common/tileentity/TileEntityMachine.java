@@ -82,12 +82,12 @@ public class TileEntityMachine extends TileEntity implements IRotatable, INetwor
 	}
 
 	@Override
-	public short getFacing() {
-		return (short) facing;
+	public int getFacing() {
+		return facing;
 	}
 
 	@Override
-	public void setFacing(short facing) {
+	public void setFacing(int facing) {
 		if (canSetFacing(facing)) {
 			this.facing = facing;
 		}
