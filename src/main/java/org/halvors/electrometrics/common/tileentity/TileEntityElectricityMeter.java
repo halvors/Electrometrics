@@ -61,6 +61,8 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 
 	@Override
 	public void updateEntity() {
+		super.updateEntity();
+
 		wasPowered = isPowered;
 	}
 
