@@ -84,12 +84,23 @@ public class BlockMachine extends BlockBasic {
 			return iconList[Orientation.getBaseOrientation(side, rotatable.getFacing() + (isActive ? 6 : 0))];
 		}
 
-		return baseIcon;
+		return null;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int meta) {
+		// Workaround to for when block is not rendered in world, by swapping the front and back sides.
+		switch (side) {
+			case 2: // Back (South)
+				side = 3; // Fix.
+				break;
+
+			case 3: // Front (North)
+				side = 2; // Fix.
+				break;
+		}
+
 		return iconList[side];
 	}
 
