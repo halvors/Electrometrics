@@ -7,3 +7,6 @@ jdk:
 before_install: chmod +x gradlew
 install: ./gradlew setupCIWorkspace
 script: ./gradlew build
+
+notifications:
+  email: false
