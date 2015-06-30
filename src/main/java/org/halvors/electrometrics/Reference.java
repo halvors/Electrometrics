@@ -11,7 +11,7 @@ public class Reference {
 	 */
 	public static final String ID = "electrometrics";
 	public static final String NAME = "Electrometrics";
-	public static final String VERSION = "@MOD_VERSION@";
+	public static final String VERSION = "@mod_version@";
 
 	/**
 	 * Directory Information
