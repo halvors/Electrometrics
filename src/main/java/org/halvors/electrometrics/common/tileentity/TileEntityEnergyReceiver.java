@@ -8,7 +8,7 @@ import net.minecraftforge.common.util.ForgeDirection;
  *
  * @author halvors
  */
-abstract class TileEntityEnergyReceiver extends TileEntityEnergyStorage implements IEnergyReceiver {
+public abstract class TileEntityEnergyReceiver extends TileEntityEnergyStorage implements IEnergyReceiver {
 	TileEntityEnergyReceiver(String name, int maxEnergy) {
 		super(name, maxEnergy);
 	}

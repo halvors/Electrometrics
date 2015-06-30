@@ -10,6 +10,10 @@ import org.halvors.electrometrics.common.util.location.BlockLocation;
 import java.util.ArrayList;
 
 public class PacketRequestData extends PacketBlockLocation implements IMessage, IMessageHandler<PacketRequestData, IMessage> {
+	public PacketRequestData() {
+
+	}
+
 	public PacketRequestData(BlockLocation blockLocation) {
 		super(blockLocation);
 	}

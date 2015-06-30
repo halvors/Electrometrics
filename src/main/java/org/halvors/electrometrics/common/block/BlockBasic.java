@@ -11,11 +11,11 @@ import org.halvors.electrometrics.Electrometrics;
  *
  * @author halvors
  */
-class BlockBasic extends BlockContainer {
+public class BlockBasic extends BlockContainer {
 	BlockBasic(Material material) {
 		super(material);
 
-		setCreativeTab(Electrometrics.tabElectrometrics);
+		setCreativeTab(Electrometrics.getTabElectrometrics());
 	}
 
 	@Override

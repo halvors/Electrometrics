@@ -21,8 +21,12 @@ import java.util.List;
  * @author halvors
  */
 public class PacketTileEntity extends PacketBlockLocation implements IMessage, IMessageHandler<PacketTileEntity, IMessage> {
-	private final List<Object> dataList;
+	private List<Object> dataList;
 	private ByteBuf storedBuffer = null;
+
+	public PacketTileEntity() {
+
+	}
 
 	public PacketTileEntity(BlockLocation blockLocation, List<Object> dataList) {
 		super(blockLocation);

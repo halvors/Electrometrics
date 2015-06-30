@@ -6,7 +6,6 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -18,17 +17,16 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.halvors.electrometrics.common.CommonProxy;
 import org.halvors.electrometrics.common.CreativeTab;
-import org.halvors.electrometrics.common.util.UnitDisplay.Unit;
 import org.halvors.electrometrics.common.block.BlockElectricityMeter;
 import org.halvors.electrometrics.common.event.PlayerEventHandler;
 import org.halvors.electrometrics.common.item.ItemBlockElectricityMeter;
-import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
+import org.halvors.electrometrics.common.util.UnitDisplay.Unit;
 
 import java.io.File;
 
 /**
- * This is the Electrometrics class, whick is the main class of this mod.
+ * This is the Electrometrics class, which is the main class of this mod.
  *
  * @author halvors
  */
@@ -36,28 +34,25 @@ import java.io.File;
 public class Electrometrics {
 	// The instance of your mod that Forge uses.
 	@Instance(value = Reference.ID)
-	private static Electrometrics instance;
+	public static Electrometrics instance;
 
 	// Says where the client and server 'proxy' code is loaded.
 	@SidedProxy(clientSide = "org.halvors.electrometrics.client.ClientProxy", serverSide = "org.halvors.electrometrics.common.CommonProxy")
-	private static CommonProxy proxy;
+	public static CommonProxy proxy;
 
 	// Logger instance.
 	private static final Logger logger = LogManager.getLogger(Reference.ID);
 
-	// Packet handler.
-	private static final PacketHandler packetHandler = new PacketHandler();
+	// Creative tab.
+	private static final CreativeTab tabElectrometrics = new CreativeTab();
+
+	// Blocks.
+	public static final Block blockElectricityMeter = new BlockElectricityMeter();
 
 	// Configuration.
 	private static Configuration configuration;
 
-	// Creative tab.
-	public static final CreativeTab tabElectrometrics = new CreativeTab();
-
-	// Blocks.
-	public static Block blockElectricityMeter;
-
-	// Variables.
+	// Configuration variables.
 	public static Unit energyType = Unit.JOULES;
 	public static double toJoules;
 	public static double toMinecraftJoules;
@@ -94,9 +89,6 @@ public class Electrometrics {
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
-		// Packet registrations
-		packetHandler.initialize();
-
 		// Register the our EventHandler.
 		FMLCommonHandler.instance().bus().register(new PlayerEventHandler());
 
@@ -110,9 +102,6 @@ public class Electrometrics {
 	}
 
 	private void addBlocks() {
-		// Create blocks.
-		blockElectricityMeter = new BlockElectricityMeter();
-
 		// Register blocks.
 		GameRegistry.registerBlock(blockElectricityMeter, ItemBlockElectricityMeter.class, "blockElectricityMeter");
 	}
@@ -138,12 +127,12 @@ public class Electrometrics {
 		return instance;
 	}
 
-	public static Logger getLogger() {
+	public static final Logger getLogger() {
 		return logger;
 	}
 
-	public static PacketHandler getPacketHandler() {
-		return packetHandler;
+	public static final CreativeTab getTabElectrometrics() {
+		return tabElectrometrics;
 	}
 
 	public static Configuration getConfiguration() {
