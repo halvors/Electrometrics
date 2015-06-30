@@ -20,6 +20,11 @@ public interface IRedstoneControl {
     boolean isPowered();
 
     /**
+     * Set the block to powered state.
+     */
+    void setPowered(boolean isPowered);
+
+    /**
      * If the block was getting powered or not by redstone, last tick.
      * Used for PULSE mode.
      */

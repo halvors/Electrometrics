@@ -43,8 +43,8 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 	// The amount of energy that has passed thru.
 	private double electricityCount;
 
-	public boolean redstone;
-	public boolean redstoneLastTick;
+	public boolean isPowered;
+	public boolean wasPowered;
 
 	public TileEntityElectricityMeter() {
 		super("Electricity Meter", 25600, 25600, 25600);
@@ -61,7 +61,7 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 
 	@Override
 	public void updateEntity() {
-		redstoneLastTick = redstone;
+		wasPowered = isPowered;
 	}
 
 	@Override
@@ -166,12 +166,17 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 
 	@Override
 	public boolean isPowered() {
-		return redstone;
+		return isPowered;
+	}
+
+	@Override
+	public void setPowered(boolean isPowered) {
+		this.isPowered = isPowered;
 	}
 
 	@Override
 	public boolean wasPowered() {
-		return redstoneLastTick;
+		return wasPowered;
 	}
 
 	@Override
@@ -204,11 +209,11 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 	}
 
 	public void onNeighborChange(Block block) {
-		if(!worldObj.isRemote) {
+		if (!worldObj.isRemote) {
 			boolean power = worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
 
-			if (redstone != power) {
-				redstone = power;
+			if (isPowered != power) {
+				isPowered = power;
 
 				PacketHandler.sendToReceivers(new PacketTileEntity(this), this);
 			}

@@ -20,10 +20,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.Reference;
-import org.halvors.electrometrics.common.tileentity.IActiveState;
-import org.halvors.electrometrics.common.tileentity.IOwnable;
-import org.halvors.electrometrics.common.tileentity.IRotatable;
-import org.halvors.electrometrics.common.tileentity.TileEntityMachine;
+import org.halvors.electrometrics.common.tileentity.*;
 import org.halvors.electrometrics.common.util.Orientation;
 import org.halvors.electrometrics.common.util.render.DefaultIcon;
 import org.halvors.electrometrics.common.util.render.Renderer;
@@ -168,6 +165,12 @@ public class BlockMachine extends BlockBasic {
 			}
 
 			rotatable.setFacing((short) change);
+		}
+
+		// If this TileEntity implements IRedstoneControl, check if it's getting powered.
+		if (tileEntity instanceof IRedstoneControl) {
+			IRedstoneControl redstoneControl = (IRedstoneControl) tileEntity;
+			redstoneControl.setPowered(world.isBlockIndirectlyGettingPowered(x, y, z));
 		}
 
 		// Check if this entity is a player.
