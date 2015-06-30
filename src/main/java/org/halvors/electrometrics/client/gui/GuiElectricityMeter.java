@@ -30,7 +30,7 @@ public class GuiElectricityMeter extends GuiScreen {
     private GuiButton resetButton;
     private int ticker = 0;
 
-    public GuiElectricityMeter(TileEntityElectricityMeter tileEntity) {
+    public GuiElectricityMeter(final TileEntityElectricityMeter tileEntity) {
         super(tileEntity);
 
         add(new GuiOwnerInfo(new IInfoHandler() {
