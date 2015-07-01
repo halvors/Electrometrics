@@ -66,7 +66,7 @@ public class Electrometrics {
 		configuration = new Configuration(config);
 		configuration.load();
 
-		String energyTypeString = configuration.get(Configuration.CATEGORY_GENERAL, "energyType", "J", null, new String[] { "RF", "J", "MJ", "EU" }).getString();
+		String energyTypeString = configuration.get(Configuration.CATEGORY_GENERAL, "energyType", "J", "The default energy system to display.", new String[] { "RF", "J", "MJ", "EU" }).getString();
 
 		if (energyTypeString != null) {
 			if (energyTypeString.trim().equalsIgnoreCase("RF")) {
