@@ -127,11 +127,11 @@ public class Electrometrics {
 		return instance;
 	}
 
-	public static final Logger getLogger() {
+	public static Logger getLogger() {
 		return logger;
 	}
 
-	public static final CreativeTab getTabElectrometrics() {
+	public static CreativeTab getTabElectrometrics() {
 		return tabElectrometrics;
 	}
 

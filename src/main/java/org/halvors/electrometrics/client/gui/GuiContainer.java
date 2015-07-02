@@ -14,7 +14,10 @@ import org.halvors.electrometrics.common.component.IComponentHandler;
 import org.halvors.electrometrics.common.tileentity.TileEntityMachine;
 import org.lwjgl.opengl.GL11;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @SideOnly(Side.CLIENT)
 abstract class GuiContainer extends net.minecraft.client.gui.inventory.GuiContainer implements IGui, IComponentHandler {
