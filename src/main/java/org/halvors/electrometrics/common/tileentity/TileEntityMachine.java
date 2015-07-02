@@ -8,7 +8,7 @@ import net.minecraft.tileentity.TileEntity;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketRequestData;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is a basic TileEntity that is meant to be extended by other TileEntities.
@@ -66,10 +66,10 @@ public abstract class TileEntityMachine extends TileEntity implements IRotatable
 	}
 
 	@Override
-	public ArrayList<Object> getPacketData(ArrayList<Object> data) {
-		data.add(facing);
+	public List<Object> getPacketData(List<Object> list) {
+        list.add(facing);
 
-		return data;
+		return list;
 	}
 
 	/**

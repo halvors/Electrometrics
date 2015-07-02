@@ -13,7 +13,7 @@ import org.halvors.electrometrics.common.network.PacketRequestData;
 import org.halvors.electrometrics.common.network.PacketTileEntity;
 import org.halvors.electrometrics.common.util.Utils;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -117,16 +117,16 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 	}
 
 	@Override
-	public ArrayList<Object> getPacketData(ArrayList<Object> data) {
-		super.getPacketData(data);
+	public List<Object> getPacketData(List<Object> list) {
+		super.getPacketData(list);
 
-		data.add(owner != null ? owner.toString() : "");
-		data.add(!ownerName.isEmpty() ? ownerName : "");
-		data.add(redstoneControlType.ordinal());
-		data.add(isActive);
-		data.add(electricityCount);
+        list.add(owner != null ? owner.toString() : "");
+        list.add(!ownerName.isEmpty() ? ownerName : "");
+        list.add(redstoneControlType.ordinal());
+        list.add(isActive);
+        list.add(electricityCount);
 
-		return data;
+		return list;
 	}
 
 	@Override

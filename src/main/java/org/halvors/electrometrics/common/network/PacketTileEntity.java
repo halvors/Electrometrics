@@ -21,7 +21,7 @@ import java.util.List;
  * @author halvors
  */
 public class PacketTileEntity extends PacketBlockLocation implements IMessage, IMessageHandler<PacketTileEntity, IMessage> {
-	private List<Object> dataList;
+	private List<Object> objectList;
 	private ByteBuf storedBuffer = null;
 
 	public PacketTileEntity() {
@@ -31,14 +31,14 @@ public class PacketTileEntity extends PacketBlockLocation implements IMessage, I
 	public PacketTileEntity(BlockLocation blockLocation, List<Object> dataList) {
 		super(blockLocation);
 
-		this.dataList = dataList;
+		this.objectList = dataList;
 	}
 
 
 	public PacketTileEntity(INetworkable networkable) {
 		super(new BlockLocation((TileEntity) networkable));
 
-		this.dataList = networkable.getPacketData(new ArrayList<>());
+		this.objectList = networkable.getPacketData(new ArrayList<>());
 	}
 
 	@Override
@@ -53,33 +53,32 @@ public class PacketTileEntity extends PacketBlockLocation implements IMessage, I
 		super.toBytes(dataStream);
 
 		try {
-			for (Object data : dataList) {
+			for (Object object : objectList) {
 				// Language types.
-				if (data instanceof Integer) {
-					dataStream.writeInt((Integer) data);
-				} else if (data instanceof Double) {
-					dataStream.writeDouble((Double) data);
-				} else if (data instanceof Float) {
-					dataStream.writeFloat((Float) data);
-				} else if (data instanceof Boolean) {
-					dataStream.writeBoolean((Boolean) data);
-				} else if (data instanceof Byte) {
-					dataStream.writeByte((Byte) data);
-				} else if (data instanceof String) {
-					ByteBufUtils.writeUTF8String(dataStream, (String) data);
-					// Array types.
-				} else if (data instanceof int[]) {
-					for (int i : (int[]) data) {
+				if (object instanceof Integer) {
+					dataStream.writeInt((Integer) object);
+				} else if (object instanceof Double) {
+					dataStream.writeDouble((Double) object);
+				} else if (object instanceof Float) {
+					dataStream.writeFloat((Float) object);
+				} else if (object instanceof Boolean) {
+					dataStream.writeBoolean((Boolean) object);
+				} else if (object instanceof Byte) {
+					dataStream.writeByte((Byte) object);
+				} else if (object instanceof String) {
+					ByteBufUtils.writeUTF8String(dataStream, (String) object);
+				} else if (object instanceof int[]) { // Array types.
+					for (int i : (int[]) object) {
 						dataStream.writeInt(i);
 					}
-				} else if (data instanceof byte[]) {
-					for (byte b : (byte[]) data) {
+				} else if (object instanceof byte[]) {
+					for (byte b : (byte[]) object) {
 						dataStream.writeByte(b);
 					}
-				} else if (data instanceof ItemStack) {
-					ByteBufUtils.writeItemStack(dataStream, (ItemStack) data);
-				} else if (data instanceof NBTTagCompound) {
-					ByteBufUtils.writeTag(dataStream, (NBTTagCompound) data);
+				} else if (object instanceof ItemStack) { // Minecraft specific types.
+					ByteBufUtils.writeItemStack(dataStream, (ItemStack) object);
+				} else if (object instanceof NBTTagCompound) {
+					ByteBufUtils.writeTag(dataStream, (NBTTagCompound) object);
 				}
 			}
 		} catch (Exception e) {

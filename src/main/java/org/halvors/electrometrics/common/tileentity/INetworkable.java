@@ -2,7 +2,7 @@ package org.halvors.electrometrics.common.tileentity;
 
 import io.netty.buffer.ByteBuf;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Internal interface used for TileEntities that sends or receives data.
@@ -18,9 +18,9 @@ public interface INetworkable {
 
 	/**
 	 * Gets an ArrayList of data this tile entity keeps synchronized with the client.
-	 * @param data - list of data
-	 * @return ArrayList<Object>
+	 * @param list - list of objects
+	 * @return List<Object>
 	 */
-	ArrayList<Object> getPacketData(ArrayList<Object> data);
+	List<Object> getPacketData(List<Object> list);
 }
 

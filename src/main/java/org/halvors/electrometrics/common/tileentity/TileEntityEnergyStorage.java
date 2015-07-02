@@ -4,7 +4,7 @@ import cofh.api.energy.EnergyStorage;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This provides electricity storage to a TileEntity when extended.
@@ -55,12 +55,12 @@ public abstract class TileEntityEnergyStorage extends TileEntityMachine implemen
 	}
 
 	@Override
-	public ArrayList<Object> getPacketData(ArrayList<Object> data) {
-		super.getPacketData(data);
+	public List<Object> getPacketData(List<Object> list) {
+		super.getPacketData(list);
 
-		data.add(storage.getEnergyStored());
+        list.add(storage.getEnergyStored());
 
-		return data;
+		return list;
 	}
 
 	public EnergyStorage getStorage() {
