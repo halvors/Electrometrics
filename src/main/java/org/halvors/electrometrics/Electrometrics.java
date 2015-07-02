@@ -16,7 +16,7 @@ import net.minecraftforge.common.config.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.halvors.electrometrics.common.CommonProxy;
-import org.halvors.electrometrics.common.CreativeTab;
+import org.halvors.electrometrics.common.Tab;
 import org.halvors.electrometrics.common.block.BlockElectricityMeter;
 import org.halvors.electrometrics.common.event.PlayerEventHandler;
 import org.halvors.electrometrics.common.item.ItemBlockElectricityMeter;
@@ -44,7 +44,7 @@ public class Electrometrics {
 	private static final Logger logger = LogManager.getLogger(Reference.ID);
 
 	// Creative tab.
-	private static final CreativeTab tabElectrometrics = new CreativeTab();
+	private static final Tab tab = new Tab();
 
 	// Blocks.
 	public static final Block blockElectricityMeter = new BlockElectricityMeter();
@@ -131,8 +131,8 @@ public class Electrometrics {
 		return logger;
 	}
 
-	public static CreativeTab getTabElectrometrics() {
-		return tabElectrometrics;
+	public static Tab getTab() {
+		return tab;
 	}
 
 	public static Configuration getConfiguration() {
