@@ -13,6 +13,6 @@ class ItemBlockBasic extends ItemBlock {
 	ItemBlockBasic(Block block) {
 		super(block);
 
-		setCreativeTab(Electrometrics.getTabElectrometrics());
+		setCreativeTab(Electrometrics.getTab());
 	}
 }

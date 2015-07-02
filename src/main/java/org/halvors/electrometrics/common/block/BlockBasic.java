@@ -15,7 +15,7 @@ public class BlockBasic extends BlockContainer {
 	BlockBasic(Material material) {
 		super(material);
 
-		setCreativeTab(Electrometrics.getTabElectrometrics());
+		setCreativeTab(Electrometrics.getTab());
 	}
 
 	@Override
