@@ -32,30 +32,30 @@ public class GuiElectricityMeter extends GuiScreen {
 	public GuiElectricityMeter(final TileEntityElectricityMeter tileEntity) {
 		super(tileEntity);
 
-		add(new GuiOwnerInfo(new IInfoHandler() {
-			@Override
-			public List<String> getInfo() {
-				List<String> list = new ArrayList<>();
-				list.add(tileEntity.getOwnerName());
+		components.add(new GuiOwnerInfo(new IInfoHandler() {
+            @Override
+            public List<String> getInfo() {
+                List<String> list = new ArrayList<>();
+                list.add(tileEntity.getOwnerName());
 
-				return list;
-			}
-		}, this, defaultResource));
+                return list;
+            }
+        }, this, defaultResource));
 
-		add(new GuiEnergyInfo(new IInfoHandler() {
-			@Override
-			public List<String> getInfo() {
-				String multiplier = Utils.getEnergyDisplay(10);
+        components.add(new GuiEnergyInfo(new IInfoHandler() {
+            @Override
+            public List<String> getInfo() {
+                String multiplier = Utils.getEnergyDisplay(10);
 
-				List<String> list = new ArrayList<>();
-				list.add("Using: " + multiplier + "/t");
-				list.add("Needed: " + Utils.getEnergyDisplay(10));
+                List<String> list = new ArrayList<>();
+                list.add("Using: " + multiplier + "/t");
+                list.add("Needed: " + Utils.getEnergyDisplay(10));
 
-				return list;
-			}
-		}, this, defaultResource));
+                return list;
+            }
+        }, this, defaultResource));
 
-		add(new GuiRedstoneControl(this, tileEntity, defaultResource));
+        components.add(new GuiRedstoneControl(this, tileEntity, defaultResource));
 	}
 
 	@Override

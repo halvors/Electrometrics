@@ -10,7 +10,6 @@ import net.minecraft.util.ResourceLocation;
 import org.halvors.electrometrics.Reference;
 import org.halvors.electrometrics.client.gui.component.IGuiComponent;
 import org.halvors.electrometrics.common.component.IComponent;
-import org.halvors.electrometrics.common.component.IComponentHandler;
 import org.halvors.electrometrics.common.tileentity.TileEntityMachine;
 import org.lwjgl.opengl.GL11;
 
@@ -20,8 +19,8 @@ import java.util.List;
 import java.util.Set;
 
 @SideOnly(Side.CLIENT)
-abstract class GuiContainer extends net.minecraft.client.gui.inventory.GuiContainer implements IGui, IComponentHandler {
-	private final Set<IComponent> componentList = new HashSet<>();
+abstract class GuiContainer extends net.minecraft.client.gui.inventory.GuiContainer implements IGui {
+	protected final Set<IComponent> components = new HashSet<>();
 
 	protected final ResourceLocation defaultResource = new ResourceLocation(Reference.PREFIX + "gui/guiContainerBlank.png");
 	protected final TileEntityMachine tileEntity;
@@ -30,41 +29,6 @@ abstract class GuiContainer extends net.minecraft.client.gui.inventory.GuiContai
 		super(container);
 
 		this.tileEntity = tileEntity;
-	}
-
-	/**
-	 * Add a component to this screen.
-	 * @param component the component object to add.
-	 * @return component the component added or null.
-	 */
-	@Override
-	public <Component extends IComponent> Component add(Component component) {
-		if (component instanceof IGuiComponent) {
-			componentList.add(component);
-
-			return component;
-		}
-
-		return null;
-	}
-
-	/**
-	 * Remove a component from this screen.
-	 * @param component the component object to remove.
-	 */
-	@Override
-	public <Component extends IComponent> void remove(Component component) {
-		componentList.remove(component);
-	}
-
-	public float getNeededScale(String text, int maxX) {
-		int length = fontRendererObj.getStringWidth(text);
-
-		if (length <= maxX) {
-			return 1;
-		} else {
-			return (float) maxX / length;
-		}
 	}
 
 	public void renderScaledText(String text, int x, int y, int color, int maxX) {
@@ -96,7 +60,7 @@ abstract class GuiContainer extends net.minecraft.client.gui.inventory.GuiContai
 		int xAxis = (mouseX - (width - xSize) / 2);
 		int yAxis = (mouseY - (height - ySize) / 2);
 
-		for (IComponent component : componentList) {
+		for (IComponent component : components) {
 			if (component instanceof IGuiComponent) {
 				IGuiComponent guiComponent = (IGuiComponent) component;
 				guiComponent.renderForeground(xAxis, yAxis);
@@ -122,7 +86,7 @@ abstract class GuiContainer extends net.minecraft.client.gui.inventory.GuiContai
 		int xAxis = mouseX - guiWidth;
 		int yAxis = mouseY - guiHeight;
 
-		for (IComponent component : componentList) {
+		for (IComponent component : components) {
 			if (component instanceof IGuiComponent) {
 				IGuiComponent guiComponent = (IGuiComponent) component;
 				guiComponent.renderBackground(xAxis, yAxis, guiWidth, guiHeight);
@@ -135,7 +99,7 @@ abstract class GuiContainer extends net.minecraft.client.gui.inventory.GuiContai
 		int xAxis = (mouseX - (width - xSize) / 2);
 		int yAxis = (mouseY - (height - ySize) / 2);
 
-		for (IComponent component : componentList) {
+		for (IComponent component : components) {
 			if (component instanceof IGuiComponent) {
 				IGuiComponent guiComponent = (IGuiComponent) component;
 				guiComponent.preMouseClicked(xAxis, yAxis, button);
@@ -144,7 +108,7 @@ abstract class GuiContainer extends net.minecraft.client.gui.inventory.GuiContai
 
 		super.mouseClicked(mouseX, mouseY, button);
 
-		for (IComponent component : componentList) {
+		for (IComponent component : components) {
 			if (component instanceof IGuiComponent) {
 				IGuiComponent guiComponent = (IGuiComponent) component;
 				guiComponent.mouseClicked(xAxis, yAxis, button);
@@ -171,7 +135,7 @@ abstract class GuiContainer extends net.minecraft.client.gui.inventory.GuiContai
 		int xAxis = (mouseX - (width - xSize) / 2);
 		int yAxis = (mouseY - (height - ySize) / 2);
 
-		for (IComponent component : componentList) {
+		for (IComponent component : components) {
 			if (component instanceof IGuiComponent) {
 				IGuiComponent guiComponent = (IGuiComponent) component;
 				guiComponent.mouseClickMove(xAxis, yAxis, button, ticks);
@@ -186,7 +150,7 @@ abstract class GuiContainer extends net.minecraft.client.gui.inventory.GuiContai
 		int xAxis = (mouseX - (width - xSize) / 2);
 		int yAxis = (mouseY - (height - ySize) / 2);
 
-		for (IComponent component : componentList) {
+		for (IComponent component : components) {
 			if (component instanceof IGuiComponent) {
 				IGuiComponent guiComponent = (IGuiComponent) component;
 				guiComponent.mouseMovedOrUp(xAxis, yAxis, type);

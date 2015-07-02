@@ -8,7 +8,6 @@ import net.minecraft.util.ResourceLocation;
 import org.halvors.electrometrics.Reference;
 import org.halvors.electrometrics.client.gui.component.IGuiComponent;
 import org.halvors.electrometrics.common.component.IComponent;
-import org.halvors.electrometrics.common.component.IComponentHandler;
 import org.halvors.electrometrics.common.tileentity.TileEntityMachine;
 import org.lwjgl.opengl.GL11;
 
@@ -18,8 +17,8 @@ import java.util.List;
 import java.util.Set;
 
 @SideOnly(Side.CLIENT)
-abstract class GuiScreen extends net.minecraft.client.gui.GuiScreen implements IGui, IComponentHandler {
-	private final Set<IComponent> componentList = new HashSet<>();
+abstract class GuiScreen extends net.minecraft.client.gui.GuiScreen implements IGui {
+	protected final Set<IComponent> components = new HashSet<>();
 
 	protected final ResourceLocation defaultResource = new ResourceLocation(Reference.PREFIX + "gui/guiScreenBlank.png");
 	protected final TileEntityMachine tileEntity;
@@ -62,31 +61,6 @@ abstract class GuiScreen extends net.minecraft.client.gui.GuiScreen implements I
 		drawGuiScreenForegroundLayer(mouseX, mouseY);
 	}
 
-	/**
-	 * Add a component to this screen.
-	 * @param component the component object to add.
-	 * @return component the component added or null.
-	 */
-	@Override
-	public <Component extends IComponent> Component add(Component component) {
-		if (component instanceof IGuiComponent) {
-			componentList.add(component);
-
-			return component;
-		}
-
-		return null;
-	}
-
-	/**
-	 * Remove a component from this screen.
-	 * @param component the component object to remove.
-	 */
-	@Override
-	public <Component extends IComponent> void remove(Component component) {
-		componentList.remove(component);
-	}
-
 	public float getNeededScale(String text, int maxX) {
 		int length = fontRendererObj.getStringWidth(text);
 
@@ -122,7 +96,7 @@ abstract class GuiScreen extends net.minecraft.client.gui.GuiScreen implements I
 		int xAxis = (mouseX - (width - xSize) / 2);
 		int yAxis = (mouseY - (height - ySize) / 2);
 
-		for (IComponent component : componentList) {
+		for (IComponent component : components) {
 			if (component instanceof IGuiComponent) {
 				IGuiComponent guiComponent = (IGuiComponent) component;
 				guiComponent.renderForeground(xAxis, yAxis);
@@ -143,7 +117,7 @@ abstract class GuiScreen extends net.minecraft.client.gui.GuiScreen implements I
 		int xAxis = mouseX - guiWidth;
 		int yAxis = mouseY - guiHeight;
 
-		for (IComponent component : componentList) {
+		for (IComponent component : components) {
 			if (component instanceof IGuiComponent) {
 				IGuiComponent guiComponent = (IGuiComponent) component;
 				guiComponent.renderBackground(xAxis, yAxis, guiWidth, guiHeight);
@@ -156,7 +130,7 @@ abstract class GuiScreen extends net.minecraft.client.gui.GuiScreen implements I
 		int xAxis = (mouseX - (width - xSize) / 2);
 		int yAxis = (mouseY - (height - ySize) / 2);
 
-		for (IComponent component : componentList) {
+		for (IComponent component : components) {
 			if (component instanceof IGuiComponent) {
 				IGuiComponent guiComponent = (IGuiComponent) component;
 				guiComponent.preMouseClicked(xAxis, yAxis, button);
@@ -165,7 +139,7 @@ abstract class GuiScreen extends net.minecraft.client.gui.GuiScreen implements I
 
 		super.mouseClicked(mouseX, mouseY, button);
 
-		for (IComponent component : componentList) {
+		for (IComponent component : components) {
 			if (component instanceof IGuiComponent) {
 				IGuiComponent guiComponent = (IGuiComponent) component;
 				guiComponent.mouseClicked(xAxis, yAxis, button);
@@ -192,7 +166,7 @@ abstract class GuiScreen extends net.minecraft.client.gui.GuiScreen implements I
 		int xAxis = (mouseX - (width - xSize) / 2);
 		int yAxis = (mouseY - (height - ySize) / 2);
 
-		for (IComponent component : componentList) {
+		for (IComponent component : components) {
 			if (component instanceof IGuiComponent) {
 				IGuiComponent guiComponent = (IGuiComponent) component;
 				guiComponent.mouseClickMove(xAxis, yAxis, button, ticks);
@@ -207,7 +181,7 @@ abstract class GuiScreen extends net.minecraft.client.gui.GuiScreen implements I
 		int xAxis = (mouseX - (width - xSize) / 2);
 		int yAxis = (mouseY - (height - ySize) / 2);
 
-		for (IComponent component : componentList) {
+		for (IComponent component : components) {
 			if (component instanceof IGuiComponent) {
 				IGuiComponent guiComponent = (IGuiComponent) component;
 				guiComponent.mouseMovedOrUp(xAxis, yAxis, type);
