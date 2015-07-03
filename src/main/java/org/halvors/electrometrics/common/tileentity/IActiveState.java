@@ -12,7 +12,7 @@ public interface IActiveState {
 	boolean isActive();
 
 	/**
-	 * Sets the active state to a new value.
+	 * Sets the active state to a new boolean value.
 	 */
 	void setActive(boolean isActive);
 }

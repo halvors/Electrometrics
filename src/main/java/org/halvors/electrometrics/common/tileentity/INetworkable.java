@@ -17,7 +17,7 @@ public interface INetworkable {
 	void handlePacketData(ByteBuf dataStream) throws Exception;
 
 	/**
-	 * Gets an ArrayList of data this tile entity keeps synchronized with the client.
+	 * Gets a list of data this tile entity keeps synchronized with the client.
 	 * @param list - list of objects
 	 * @return List<Object>
 	 */
