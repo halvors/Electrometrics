@@ -15,10 +15,7 @@ import java.util.List;
  *
  * @author halvors
  */
-public abstract class TileEntityMachine extends TileEntity implements IRotatable, INetworkable {
-	// The name of this TileEntity.
-	private final String name;
-
+public abstract class TileEntityMachine extends TileEntityBasic implements IRotatable, INetworkable {
 	// The direction this TileEntity's block is facing.
 	private int facing;
 
@@ -27,7 +24,7 @@ public abstract class TileEntityMachine extends TileEntity implements IRotatable
 	private int clientFacing;
 
 	TileEntityMachine(String name) {
-		this.name = name;
+		super(name);
 	}
 
 	@Override
@@ -72,10 +69,7 @@ public abstract class TileEntityMachine extends TileEntity implements IRotatable
 		return list;
 	}
 
-	/**
-	 * Whether or not this block's orientation can be changed to a specific direction. True by default.
-	 */
-	@Override
+    @Override
 	public boolean canSetFacing(int facing) {
 		return true;
 	}
@@ -96,10 +90,6 @@ public abstract class TileEntityMachine extends TileEntity implements IRotatable
 			markDirty();
 		}
 		*/
-	}
-
-	public String getName() {
-		return name;
 	}
 
 	public abstract void onNeighborChange();
