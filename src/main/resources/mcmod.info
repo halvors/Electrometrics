@@ -4,7 +4,7 @@
   		"name": "Electrometrics",
   		"description": "Electrometrics is a Minecraft mod that brings content that lets you monitor the electricity flow of your grid.",
   		"version": "${version}",
-  		"mcversion": "${mcversion}",
+  		"mcversion": "${mc_version}",
   		"url": "https://github.com/halvors/Electrometrics/",
   		"updateUrl": "",
   		"authorList": [
