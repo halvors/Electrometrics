@@ -30,7 +30,7 @@ import java.io.File;
  *
  * @author halvors
  */
-@Mod(modid = Reference.ID, name = Reference.NAME, version = Reference.VERSION, dependencies = "after:CoFHCore")
+@Mod(modid = Reference.ID, name = Reference.NAME, version = Reference.VERSION, dependencies = "after:ForgeMultipart;after:CoFHCore")
 public class Electrometrics {
 	// The instance of your mod that Forge uses.
 	@Instance(value = Reference.ID)
@@ -42,6 +42,8 @@ public class Electrometrics {
 
 	// Logger instance.
 	private static final Logger logger = LogManager.getLogger(Reference.ID);
+
+    //private static final Multipart multipart = new Multipart();
 
 	// Creative tab.
 	private static final Tab tab = new Tab();
@@ -99,6 +101,8 @@ public class Electrometrics {
 		addBlocks();
 		addTileEntities();
 		addRecipes();
+
+        //multipart.addMultiparts();
 	}
 
 	private void addBlocks() {

@@ -10,6 +10,7 @@ buildscript {
             url = "https://oss.sonatype.org/content/repositories/snapshots/"
         }
     }
+
     dependencies {
         classpath "net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT"
     }
@@ -27,14 +28,14 @@ configFile.withReader {
     ext.config = new ConfigSlurper().parse prop
 }
 
-version = config.minecraft_version + "-" + config.mod_version
+version = config.mc_version + "-" + config.mod_version
 group= "org.halvors.electrometrics"
 archivesBaseName = "Electrometrics"
 sourceCompatibility = "7"
 targetCompatibility = "7"
 
 minecraft {
-	version = config.minecraft_version + "-" + config.forge_version
+	version = config.mc_version + "-" + config.forge_version
 
     // Replace version in Reference.java
     replace "@version@", config.mod_version
@@ -43,7 +44,15 @@ minecraft {
 }
 
 dependencies {
+    compile "codechicken:CodeChickenLib:" + config.mc_version + "-" + config.ccl_version + ":dev"
+    compile "codechicken:ForgeMultipart:" + config.mc_version + "-" + config.fmp_version + ":dev"
+}
 
+jar {
+    manifest {
+        attributes 'FMLCorePlugin': 'codechicken.core.launch.DepLoader'
+        attributes 'FMLCorePluginContainsFMLMod': 'true'
+    }
 }
 
 // Fix for resources not loading when running from IntelliJ
@@ -55,19 +64,23 @@ idea {
 
 processResources {
     // This will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
+    inputs.property "mc_version", config.mc_version
+    inputs.property "forge_version", config.forge_version
+    inputs.property "mod_version", config.mod_version
+    inputs.property "fmp_version", config.fmp_version
 
     // Replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
-        include "mcmod.info"
+        include "*.info"
                 
         // Replace version and mcversion
-        expand "version" :project.version, "mcversion":project.minecraft.version
+        expand "version":project.version,
+                "mc_version":config.mc_version,
+                "fmp_version":config.fmp_version
     }
-        
-    // Copy everything else, thats not the mcmod.info
+
+    // Copy everything else
     from(sourceSets.main.resources.srcDirs) {
-        exclude "mcmod.info"
+        include 'assets/**/*.*'
     }
 }
