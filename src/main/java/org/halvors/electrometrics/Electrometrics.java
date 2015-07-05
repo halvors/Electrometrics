@@ -1,6 +1,7 @@
 package org.halvors.electrometrics;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -9,10 +10,13 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
+import mekanism.api.ItemRetriever;
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.halvors.electrometrics.common.CommonProxy;
@@ -30,7 +34,8 @@ import java.io.File;
  *
  * @author halvors
  */
-@Mod(modid = Reference.ID, name = Reference.NAME, version = Reference.VERSION, dependencies = "after:CoFHCore")
+@Mod(modid = Reference.ID, name = Reference.NAME, version = Reference.VERSION, dependencies = "after:CoFHCore;" +
+																							  "after:Mekanism")
 public class Electrometrics {
 	// The instance of your mod that Forge uses.
 	@Instance(value = Reference.ID)
@@ -58,6 +63,9 @@ public class Electrometrics {
 	public static double toMinecraftJoules;
 	public static double toElectricalUnits;
 
+	// Mod integration.
+	private boolean isMekanismIntegrationEnabled;
+
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		File config = event.getSuggestedConfigurationFile();
@@ -66,7 +74,9 @@ public class Electrometrics {
 		configuration = new Configuration(config);
 		configuration.load();
 
-		String energyTypeString = configuration.get(Configuration.CATEGORY_GENERAL, "energyType", "J", "The default energy system to display.", new String[] { "RF", "J", "MJ", "EU" }).getString();
+		isMekanismIntegrationEnabled = configuration.get(Configuration.CATEGORY_GENERAL, "MekanismIntegration", Loader.isModLoaded("Mekanism")).getBoolean();
+
+		String energyTypeString = configuration.get(Configuration.CATEGORY_GENERAL, "EnergyType", "J", "The default energy system to display.", new String[] { "RF", "J", "MJ", "EU" }).getString();
 
 		if (energyTypeString != null) {
 			if (energyTypeString.trim().equalsIgnoreCase("RF")) {
@@ -99,6 +109,9 @@ public class Electrometrics {
 		addBlocks();
 		addTileEntities();
 		addRecipes();
+
+		// Mod integration.
+		logger.log(Level.INFO,  "Mekanism integration is " + (isMekanismIntegrationEnabled ? "enabled" : "disabled") + ".");
 	}
 
 	private void addBlocks() {
@@ -113,10 +126,23 @@ public class Electrometrics {
 
 	private void addRecipes() {
 		// Register recipes.
-		GameRegistry.addRecipe(new ItemStack(blockElectricityMeter),
+		if (isMekanismIntegrationEnabled) {
+			// Add recipe for all types of universal cables.
+			for (int i = 0; i <= 3; i++)  {
+				ItemStack universalCable = new ItemStack(ItemRetriever.getItem("PartTransmitter").getItem(), 8, i);
+
+				// Register recipes.
+				GameRegistry.addRecipe(new ItemStack(blockElectricityMeter),
+						"III",
+						"UCU",
+						"III", 'I', Items.iron_ingot, 'U', universalCable, 'C', Items.clock);
+			}
+		} else {
+			GameRegistry.addRecipe(new ItemStack(blockElectricityMeter),
 				"III",
 				"RCR",
-				"III", 'I', Items.iron_ingot, 'C', Items.clock, 'R', Items.redstone);
+				"III", 'I', Items.iron_ingot, 'R', Items.redstone, 'C', Items.clock);
+		}
 	}
 
 	public static CommonProxy getProxy() {
