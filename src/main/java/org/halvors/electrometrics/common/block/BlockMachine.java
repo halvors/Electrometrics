@@ -141,17 +141,19 @@ public class BlockMachine extends BlockBasic {
 					return true;
 				}
 
-				int change = ForgeDirection.ROTATION_MATRIX[ForgeDirection.UP.ordinal()][tileEntityMachine.getFacing()];
+				if (tileEntity instanceof IRotatable) {
+					int change = ForgeDirection.ROTATION_MATRIX[ForgeDirection.UP.ordinal()][tileEntityMachine.getFacing()];
 
-				tileEntityMachine.setFacing(change);
-				world.notifyBlocksOfNeighborChange(x, y, z, this);
+					tileEntityMachine.setFacing(change);
+					world.notifyBlocksOfNeighborChange(x, y, z, this);
 
-				return true;
+					return true;
+				}
 			}
 
 			if (!player.isSneaking()) {
 				// Check whether or not this IOwnable has a owner, if not set the current player as owner.
-				if (tileEntityMachine instanceof IOwnable) {
+				if (tileEntity instanceof IOwnable) {
 					IOwnable ownable = (IOwnable) tileEntityMachine;
 
 					if (!ownable.hasOwner()) {

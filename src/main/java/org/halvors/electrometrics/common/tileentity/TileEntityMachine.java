@@ -82,13 +82,9 @@ public abstract class TileEntityMachine extends TileEntityBasic implements IRota
 	public void setFacing(int facing) {
 		if (canSetFacing(facing)) {
 			this.facing = facing;
-		}
 
-		/*
-		if(!worldObj.isRemote) {
-			markDirty();
+			PacketHandler.sendToServer(new PacketRequestData(this));
 		}
-		*/
 	}
 
 	public abstract void onNeighborChange();
