@@ -1,15 +1,18 @@
 package org.halvors.electrometrics.common.block;
 
+import cpw.mods.fml.common.Optional.Method;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import mekanism.api.IMekWrench;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
@@ -22,6 +25,7 @@ import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.Reference;
 import org.halvors.electrometrics.common.tileentity.*;
 import org.halvors.electrometrics.common.util.Orientation;
+import org.halvors.electrometrics.common.util.Utils;
 import org.halvors.electrometrics.common.util.render.DefaultIcon;
 import org.halvors.electrometrics.common.util.render.Renderer;
 
@@ -114,10 +118,7 @@ public class BlockMachine extends BlockBasic {
 				IOwnable ownable = (IOwnable) tileEntity;
 
 				if (!ownable.isOwner(player)) {
-					EntityPlayerMP playerOwner = ownable.getOwner();
-					String name = playerOwner != null ? playerOwner.getDisplayName() : ownable.getOwnerName();
-
-					player.addChatMessage(new ChatComponentText("This block is owned by " + name + ", you cannot remove this block."));
+					player.addChatMessage(new ChatComponentText("This block is owned by " + ownable.getOwnerName() + ", you cannot remove this block."));
 				}
 			}
 		}
@@ -125,22 +126,44 @@ public class BlockMachine extends BlockBasic {
 
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int facing, float playerX, float playerY, float playerZ) {
-		if (!player.isSneaking()) {
-			TileEntity tileEntity = world.getTileEntity(x, y, z);
+		TileEntity tileEntity = world.getTileEntity(x, y, z);
 
-			// Check whether or not this IOwnable has a owner, if not set the current player as owner.
-			if (tileEntity instanceof IOwnable) {
-				IOwnable ownable = (IOwnable) tileEntity;
+		if (tileEntity instanceof TileEntityMachine) {
+			TileEntityMachine tileEntityMachine = (TileEntityMachine) world.getTileEntity(x, y, z);
 
-				if (!ownable.hasOwner()) {
-					ownable.setOwner(player);
+			// Handle wrenching.
+			if (player.getCurrentEquippedItem() != null && Utils.hasUsableWrench(player, x, y, z)) {
+				Item item = player.getCurrentEquippedItem().getItem();
+
+				if (player.isSneaking()) {
+					dismantleBlock(world, x, y, z, false);
+
+					return true;
 				}
+
+				int change = ForgeDirection.ROTATION_MATRIX[ForgeDirection.UP.ordinal()][tileEntityMachine.getFacing()];
+
+				tileEntityMachine.setFacing(change);
+				world.notifyBlocksOfNeighborChange(x, y, z, this);
+
+				return true;
 			}
 
-			// Open the GUI.
-			player.openGui(Electrometrics.getInstance(), 0, world, x, y, z);
+			if (!player.isSneaking()) {
+				// Check whether or not this IOwnable has a owner, if not set the current player as owner.
+				if (tileEntityMachine instanceof IOwnable) {
+					IOwnable ownable = (IOwnable) tileEntityMachine;
 
-			return true;
+					if (!ownable.hasOwner()) {
+						ownable.setOwner(player);
+					}
+				}
+
+				// Open the GUI.
+				player.openGui(Electrometrics.getInstance(), 0, world, x, y, z);
+
+				return true;
+			}
 		}
 
 		return false;
@@ -175,7 +198,7 @@ public class BlockMachine extends BlockBasic {
 				}
 			}
 
-			rotatable.setFacing((short) change);
+			rotatable.setFacing(change);
 		}
 
 		// If this TileEntity implements IRedstoneControl, check if it's getting powered.
@@ -233,6 +256,36 @@ public class BlockMachine extends BlockBasic {
 		return super.rotateBlock(world, x, y, z, axis);
 	}
 
+	public ItemStack dismantleBlock(World world, int x, int y, int z, boolean returnBlock) {
+		ItemStack itemStack = getPickBlock(null, world, x, y, z, null);
+		world.setBlockToAir(x, y, z);
+
+		if (!returnBlock) {
+			float motion = 0.7F;
+			double motionX = (world.rand.nextFloat() * motion) + (1.0F - motion) * 0.5D;
+			double motionY = (world.rand.nextFloat() * motion) + (1.0F - motion) * 0.5D;
+			double motionZ = (world.rand.nextFloat() * motion) + (1.0F - motion) * 0.5D;
+
+			EntityItem entityItem = new EntityItem(world, x + motionX, y + motionY, z + motionZ, itemStack);
+			world.spawnEntityInWorld(entityItem);
+		}
+
+		return itemStack;
+	}
+
+	@Override
+	public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
+		if (!world.isRemote) {
+			TileEntity tileEntity = world.getTileEntity(x, y, z);
+
+			if (tileEntity instanceof TileEntityMachine) {
+				TileEntityMachine tileEntityMachine = (TileEntityMachine) tileEntity;
+
+				tileEntityMachine.onNeighborChange();
+			}
+		}
+	}
+
 	@Override
 	public float getBlockHardness(World world, int x, int y, int z) {
 		TileEntity tileEntity = world.getTileEntity(x, y, z);
@@ -260,18 +313,5 @@ public class BlockMachine extends BlockBasic {
 		}
 
 		return blockResistance;
-	}
-
-	@Override
-	public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
-		if (!world.isRemote) {
-			TileEntity tileEntity = world.getTileEntity(x, y, z);
-
-			if (tileEntity instanceof TileEntityMachine) {
-				TileEntityMachine tileEntityMachine = (TileEntityMachine) tileEntity;
-
-				tileEntityMachine.onNeighborChange();
-			}
-		}
 	}
 }
