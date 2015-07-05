@@ -128,44 +128,42 @@ public class BlockMachine extends BlockBasic {
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int facing, float playerX, float playerY, float playerZ) {
 		TileEntity tileEntity = world.getTileEntity(x, y, z);
 
-		if (tileEntity instanceof TileEntityMachine) {
-			TileEntityMachine tileEntityMachine = (TileEntityMachine) world.getTileEntity(x, y, z);
+		// Handle wrenching.
+		if (player.getCurrentEquippedItem() != null && Utils.hasUsableWrench(player, x, y, z)) {
+			Item item = player.getCurrentEquippedItem().getItem();
 
-			// Handle wrenching.
-			if (player.getCurrentEquippedItem() != null && Utils.hasUsableWrench(player, x, y, z)) {
-				Item item = player.getCurrentEquippedItem().getItem();
-
-				if (player.isSneaking()) {
-					dismantleBlock(world, x, y, z, false);
-
-					return true;
-				}
-
-				if (tileEntity instanceof IRotatable) {
-					int change = ForgeDirection.ROTATION_MATRIX[ForgeDirection.UP.ordinal()][tileEntityMachine.getFacing()];
-
-					tileEntityMachine.setFacing(change);
-					world.notifyBlocksOfNeighborChange(x, y, z, this);
-
-					return true;
-				}
-			}
-
-			if (!player.isSneaking()) {
-				// Check whether or not this IOwnable has a owner, if not set the current player as owner.
-				if (tileEntity instanceof IOwnable) {
-					IOwnable ownable = (IOwnable) tileEntityMachine;
-
-					if (!ownable.hasOwner()) {
-						ownable.setOwner(player);
-					}
-				}
-
-				// Open the GUI.
-				player.openGui(Electrometrics.getInstance(), 0, world, x, y, z);
+			if (player.isSneaking()) {
+				dismantleBlock(world, x, y, z, false);
 
 				return true;
 			}
+
+			if (tileEntity instanceof IRotatable) {
+				IRotatable rotatable = (IRotatable) tileEntity;
+
+				int change = ForgeDirection.ROTATION_MATRIX[ForgeDirection.UP.ordinal()][rotatable.getFacing()];
+
+				rotatable.setFacing(change);
+				world.notifyBlocksOfNeighborChange(x, y, z, this);
+
+				return true;
+			}
+		}
+
+		if (!player.isSneaking()) {
+			// Check whether or not this IOwnable has a owner, if not set the current player as owner.
+			if (tileEntity instanceof IOwnable) {
+				IOwnable ownable = (IOwnable) tileEntity;
+
+				if (!ownable.hasOwner()) {
+					ownable.setOwner(player);
+				}
+			}
+
+			// Open the GUI.
+			player.openGui(Electrometrics.getInstance(), 0, world, x, y, z);
+
+			return true;
 		}
 
 		return false;
