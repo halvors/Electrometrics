@@ -20,6 +20,7 @@ import org.halvors.electrometrics.common.Tab;
 import org.halvors.electrometrics.common.block.BlockElectricityMeter;
 import org.halvors.electrometrics.common.event.PlayerEventHandler;
 import org.halvors.electrometrics.common.item.ItemBlockElectricityMeter;
+import org.halvors.electrometrics.common.multipart.Multipart;
 import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.util.UnitDisplay.Unit;
 
@@ -43,7 +44,7 @@ public class Electrometrics {
 	// Logger instance.
 	private static final Logger logger = LogManager.getLogger(Reference.ID);
 
-    //private static final Multipart multipart = new Multipart();
+    private static final Multipart multipart = new Multipart();
 
 	// Creative tab.
 	private static final Tab tab = new Tab();
@@ -102,7 +103,7 @@ public class Electrometrics {
 		addTileEntities();
 		addRecipes();
 
-        //multipart.addMultiparts();
+        multipart.addMultiparts();
 	}
 
 	private void addBlocks() {
@@ -133,6 +134,10 @@ public class Electrometrics {
 
 	public static Logger getLogger() {
 		return logger;
+	}
+
+	public static Multipart getMultipart() {
+		return multipart;
 	}
 
 	public static Tab getTab() {
