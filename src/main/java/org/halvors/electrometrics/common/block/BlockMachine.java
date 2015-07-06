@@ -1,47 +1,29 @@
 package org.halvors.electrometrics.common.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.halvors.electrometrics.Electrometrics;
-import org.halvors.electrometrics.Reference;
-import org.halvors.electrometrics.common.tileentity.*;
-import org.halvors.electrometrics.common.util.Orientation;
+import org.halvors.electrometrics.common.tileentity.IOwnable;
+import org.halvors.electrometrics.common.tileentity.IRedstoneControl;
+import org.halvors.electrometrics.common.tileentity.IRotatable;
+import org.halvors.electrometrics.common.tileentity.TileEntityMachine;
 import org.halvors.electrometrics.common.util.Utils;
-import org.halvors.electrometrics.common.util.render.DefaultIcon;
-import org.halvors.electrometrics.common.util.render.Renderer;
 
-public class BlockMachine extends BlockBasic {
-	private final String name;
-
-	@SideOnly(Side.CLIENT)
-	private IIcon baseIcon;
-
-	@SideOnly(Side.CLIENT)
-	private final IIcon[] iconList = new IIcon[16];
-
+public class BlockMachine extends BlockTextured {
 	BlockMachine(String name) {
-		super(Material.iron);
+		super(name, Material.iron);
 
-		this.name = name;
-
-		setBlockName(name);
 		setHardness(2F);
 		setResistance(4F);
 		setStepSound(soundTypeMetal);
@@ -50,60 +32,6 @@ public class BlockMachine extends BlockBasic {
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
 		return null;
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public boolean isOpaqueCube() {
-		return false;
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister iconRegister) {
-		baseIcon = iconRegister.registerIcon(Reference.PREFIX + name);
-
-		Renderer.loadDynamicTextures(iconRegister, name, iconList, DefaultIcon.getAll(baseIcon));
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
-		TileEntity tileEntity = world.getTileEntity(x, y, z);
-
-		// Check if this implements IRotatable.
-		if (tileEntity instanceof IRotatable) {
-			IRotatable rotatable = (IRotatable) tileEntity;
-			boolean isActive = false;
-
-			// Check if this implements IActiveState, if it do we get the state from it.
-			if (tileEntity instanceof IActiveState) {
-				IActiveState activeState = (IActiveState) tileEntity;
-
-				isActive = activeState.isActive();
-			}
-
-			return iconList[Orientation.getBaseOrientation(side, rotatable.getFacing()) + (isActive ? 6 : 0)];
-		}
-
-		return null;
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public IIcon getIcon(int side, int meta) {
-		// Workaround to for when block is not rendered in world, by swapping the front and back sides.
-		switch (side) {
-			case 2: // Back
-				side = 3;
-				break;
-
-			case 3: // Front
-				side = 2;
-				break;
-		}
-
-		return iconList[side];
 	}
 
 	@Override
@@ -243,7 +171,7 @@ public class BlockMachine extends BlockBasic {
 			IRotatable rotatable = (IRotatable) tileEntity;
 
 			if (rotatable.canSetFacing(axis.ordinal())) {
-				rotatable.setFacing((short) axis.ordinal());
+				rotatable.setFacing(axis.ordinal());
 
 				return true;
 			}
