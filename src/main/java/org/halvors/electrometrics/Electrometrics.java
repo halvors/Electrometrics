@@ -112,7 +112,7 @@ public class Electrometrics {
 		addRecipes();
 
 		// Mod integration.
-		logger.log(Level.INFO,  "Mekanism integration is " + (isMekanismIntegrationEnabled ? "enabled" : "disabled") + ".");
+		logger.log(Level.INFO, "Mekanism integration is " + (isMekanismIntegrationEnabled ? "enabled" : "disabled") + ".");
 	}
 
 	private void addBlocks() {
@@ -129,19 +129,19 @@ public class Electrometrics {
 		// Register recipes.
 		if (isMekanismIntegrationEnabled) {
 			// Add recipe for all types of universal cables.
-			for (int i = 0; i <= 3; i++)  {
+			for (ElectricityMeterTier tier : ElectricityMeterTier.values()) {
                 ItemStack electricityMeter = new ItemStack(blockElectricityMeter);
                 ItemBlockElectricityMeter itemBlockElectricityMeter = (ItemBlockElectricityMeter) electricityMeter.getItem();
                 itemBlockElectricityMeter.setTier(electricityMeter, ElectricityMeterTier.values()[i]);
 
-				ItemStack universalCable = new ItemStack(ItemRetriever.getItem("PartTransmitter").getItem(), 8, i);
+                ItemStack universalCable = new ItemStack(ItemRetriever.getItem("PartTransmitter").getItem(), 8, tier.ordinal());
 
-				// Register recipes.
-				GameRegistry.addRecipe(electricityMeter,
-						"III",
-						"UCU",
-						"III", 'I', Items.iron_ingot, 'U', universalCable, 'C', Items.clock);
-			}
+                // Register recipes.
+                GameRegistry.addRecipe(electricityMeter,
+                        "III",
+                        "UCU",
+                        "III", 'I', Items.iron_ingot, 'U', universalCable, 'C', Items.clock);
+            }
 		} else {
 			GameRegistry.addRecipe(new ItemStack(blockElectricityMeter),
 				"III",
