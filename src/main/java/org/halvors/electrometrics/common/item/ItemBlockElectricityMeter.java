@@ -3,12 +3,14 @@ package org.halvors.electrometrics.common.item;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
+import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import org.halvors.electrometrics.client.key.Key;
 import org.halvors.electrometrics.client.key.KeyHandler;
 import org.halvors.electrometrics.common.base.ElectricityMeterTier;
 import org.halvors.electrometrics.common.block.BlockElectricityMeter;
@@ -37,12 +39,17 @@ public class ItemBlockElectricityMeter extends ItemBlockBasic {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack itemStack, EntityPlayer entityplayer, List list, boolean flag) {
-		list.add(Color.BRIGHT_GREEN + "Measured energy: " + Color.GREY + Utils.getEnergyDisplay(getElectricityCount(itemStack)));
+		if (!KeyHandler.getIsKeyPressed(Key.sneakKey)) {
+			list.add(Utils.translate("tooltip.hold") + " " + Color.AQUA + GameSettings.getKeyDisplayString(Key.sneakKey.getKeyCode()) + Color.GREY + " " + Utils.translate("tooltip.forDetails") + ".");
+		} else {
+			list.add(Color.BRIGHT_GREEN + Utils.translate("tooltip.measuredEnergy") + ": " + Color.GREY + Utils.getEnergyDisplay(getElectricityCount(itemStack)));
+			list.add(Color.AQUA + Utils.translate("tooltip.storedEnergy") + ": " + Color.GREY + Utils.getEnergyDisplay(getElectricityStored(itemStack)));
+		}
 	}
 
 	@Override
 	public String getItemStackDisplayName(ItemStack itemStack) {
-		return getTier(itemStack).getBaseTier().getName() + " " + blockElectricityMeter.getName();
+		return Utils.translate("tile." + blockElectricityMeter.getName() + getTier(itemStack).getBaseTier().getName() + ".name");
 	}
 
 	@Override
@@ -56,6 +63,7 @@ public class ItemBlockElectricityMeter extends ItemBlockBasic {
 				TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
 				tileEntityElectricityMeter.setTier(getTier(itemStack));
 				tileEntityElectricityMeter.setElectricityCount(getElectricityCount(itemStack));
+				tileEntityElectricityMeter.getStorage().setEnergyStored(getElectricityStored(itemStack));
 			}
 		}
 
@@ -64,9 +72,9 @@ public class ItemBlockElectricityMeter extends ItemBlockBasic {
 
 	public ElectricityMeterTier getTier(ItemStack itemStack) {
 		if (itemStack.stackTagCompound != null) {
-			String tier = itemStack.stackTagCompound.getString("tier");
+			int tier = itemStack.stackTagCompound.getInteger("tier");
 
-			return ElectricityMeterTier.getFromName(tier);
+			return ElectricityMeterTier.values()[tier];
 		}
 
 		return ElectricityMeterTier.BASIC;
@@ -77,7 +85,7 @@ public class ItemBlockElectricityMeter extends ItemBlockBasic {
 			itemStack.setTagCompound(new NBTTagCompound());
 		}
 
-		itemStack.stackTagCompound.setString("tier", tier.getBaseTier().getName());
+		itemStack.stackTagCompound.setInteger("tier", tier.getBaseTier().ordinal());
 	}
 
 	public double getElectricityCount(ItemStack itemStack) {
@@ -94,5 +102,21 @@ public class ItemBlockElectricityMeter extends ItemBlockBasic {
 		}
 
 		itemStack.stackTagCompound.setDouble("electricityCount", electricityCount);
+	}
+
+	public int getElectricityStored(ItemStack itemStack) {
+		if (itemStack.stackTagCompound != null) {
+			return itemStack.stackTagCompound.getInteger("electricityStored");
+		}
+
+		return 0;
+	}
+
+	public void setElectricityStored(ItemStack itemStack, int electricityStored) {
+		if (itemStack.stackTagCompound == null) {
+			itemStack.setTagCompound(new NBTTagCompound());
+		}
+
+		itemStack.stackTagCompound.setInteger("electricityStored", electricityStored);
 	}
 }

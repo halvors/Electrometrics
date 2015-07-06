@@ -1,7 +1,20 @@
 # Electrometrics Language Properties
 
-// Blocks
-tile.blockElectricityMeter.name=Electricity Meter
-
 // Creative tab
 itemGroup.tabElectrometrics=Electrometrics
+
+// Blocks
+tile.blockElectricityMeter.name=Electricity Meter
+tile.blockElectricityMeterBasic.name=Basic Electricity Meter
+tile.blockElectricityMeterAdvanced.name=Advanced Electricity Meter
+tile.blockElectricityMeterElite.name=Elite Electricity Meter
+tile.blockElectricityMeterUltimate.name=Ultimate Electricity Meter
+tile.blockElectricityMeterCreative.name=Creative Electricity Meter
+
+// Items
+
+// Tooltip
+tooltip.hold=Hold
+tooltip.forDetails=for details
+tooltip.measuredEnergy=Measured energy
+tooltip.storedEnergy=Stored energy

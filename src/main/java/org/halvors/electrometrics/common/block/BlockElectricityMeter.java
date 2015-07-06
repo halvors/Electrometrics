@@ -53,7 +53,9 @@ public class BlockElectricityMeter extends BlockMachine {
 		ItemStack itemStack = new ItemStack(Electrometrics.blockElectricityMeter);
 
 		ItemBlockElectricityMeter itemBlockElectricityMeter = (ItemBlockElectricityMeter) itemStack.getItem();
+		itemBlockElectricityMeter.setTier(itemStack, tileEntityElectricityMeter.getTier());
 		itemBlockElectricityMeter.setElectricityCount(itemStack, tileEntityElectricityMeter.getElectricityCount());
+		itemBlockElectricityMeter.setElectricityStored(itemStack, tileEntityElectricityMeter.getStorage().getEnergyStored());
 
 		return itemStack;
 	}

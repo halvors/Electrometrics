@@ -8,6 +8,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.common.base.tile.IRedstoneControl;
 
@@ -15,6 +16,10 @@ import java.util.List;
 import java.util.UUID;
 
 public class Utils {
+	public static String translate(String text) {
+		return StatCollector.translateToLocal(text);
+	}
+
 	/**
 	 * Whether or not a certain TileEntity can function with redstone logic. Illogical to use unless the defined TileEntity implements
 	 * IRedstoneControl.
