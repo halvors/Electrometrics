@@ -42,7 +42,7 @@ public class ItemBlockElectricityMeter extends ItemBlockBasic {
 
 			if (tileEntity instanceof TileEntityElectricityMeter) {
 				TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
-                tileEntityElectricityMeter.setTier(getTier(itemStack));
+				tileEntityElectricityMeter.setTier(getTier(itemStack));
 				tileEntityElectricityMeter.setElectricityCount(getElectricityCount(itemStack));
 			}
 		}
@@ -50,23 +50,23 @@ public class ItemBlockElectricityMeter extends ItemBlockBasic {
 		return placed;
 	}
 
-    public ElectricityMeterTier getTier(ItemStack itemStack) {
-        if (itemStack.stackTagCompound != null) {
-            String tier = itemStack.stackTagCompound.getString("tier");
+	public ElectricityMeterTier getTier(ItemStack itemStack) {
+		if (itemStack.stackTagCompound != null) {
+			String tier = itemStack.stackTagCompound.getString("tier");
 
-            return ElectricityMeterTier.getFromName(tier);
-        }
+			return ElectricityMeterTier.getFromName(tier);
+		}
 
-        return ElectricityMeterTier.BASIC;
-    }
+		return ElectricityMeterTier.BASIC;
+	}
 
-    public void setTier(ItemStack itemStack, ElectricityMeterTier tier) {
-        if (itemStack.stackTagCompound == null) {
-            itemStack.setTagCompound(new NBTTagCompound());
-        }
+	public void setTier(ItemStack itemStack, ElectricityMeterTier tier) {
+		if (itemStack.stackTagCompound == null) {
+			itemStack.setTagCompound(new NBTTagCompound());
+		}
 
-        itemStack.stackTagCompound.setString("tier", tier.getBaseTier().getName());
-    }
+		itemStack.stackTagCompound.setString("tier", tier.getBaseTier().getName());
+	}
 
 	public double getElectricityCount(ItemStack itemStack) {
 		if (itemStack.stackTagCompound != null) {

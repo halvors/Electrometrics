@@ -204,7 +204,6 @@ public class BlockMachine extends BlockTextured {
 
 			if (tileEntity instanceof TileEntityMachine) {
 				TileEntityMachine tileEntityMachine = (TileEntityMachine) tileEntity;
-
 				tileEntityMachine.onNeighborChange();
 			}
 		}

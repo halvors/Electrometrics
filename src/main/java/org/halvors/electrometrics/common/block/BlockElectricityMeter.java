@@ -58,16 +58,16 @@ public class BlockElectricityMeter extends BlockMachine {
 		return itemStack;
 	}
 
-    @SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	@Override
-    @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item item, CreativeTabs creativetabs, List list) {
-        for (ElectricityMeterTier tier : ElectricityMeterTier.values()) {
-            ItemStack itemStack = new ItemStack(this);
-            ItemBlockElectricityMeter itemBlockElectricityMeter = (ItemBlockElectricityMeter) itemStack.getItem();
-            itemBlockElectricityMeter.setTier(itemStack, tier);
+	@SideOnly(Side.CLIENT)
+	public void getSubBlocks(Item item, CreativeTabs creativetabs, List list) {
+		for (ElectricityMeterTier tier : ElectricityMeterTier.values()) {
+			ItemStack itemStack = new ItemStack(this);
+			ItemBlockElectricityMeter itemBlockElectricityMeter = (ItemBlockElectricityMeter) itemStack.getItem();
+			itemBlockElectricityMeter.setTier(itemStack, tier);
 
 			list.add(itemStack);
-        }
-    }
+		}
+	}
 }

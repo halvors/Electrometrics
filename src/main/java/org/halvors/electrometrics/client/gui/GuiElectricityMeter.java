@@ -33,29 +33,29 @@ public class GuiElectricityMeter extends GuiScreen {
 		super(tileEntity);
 
 		components.add(new GuiOwnerInfo(new IInfoHandler() {
-            @Override
-            public List<String> getInfo() {
-                List<String> list = new ArrayList<>();
-                list.add(tileEntity.getOwnerName());
+			@Override
+			public List<String> getInfo() {
+				List<String> list = new ArrayList<>();
+				list.add(tileEntity.getOwnerName());
 
-                return list;
-            }
-        }, this, defaultResource));
+				return list;
+			}
+		}, this, defaultResource));
 
-        components.add(new GuiEnergyInfo(new IInfoHandler() {
-            @Override
-            public List<String> getInfo() {
-                String multiplier = Utils.getEnergyDisplay(10);
+		components.add(new GuiEnergyInfo(new IInfoHandler() {
+			@Override
+			public List<String> getInfo() {
+				String multiplier = Utils.getEnergyDisplay(10);
 
-                List<String> list = new ArrayList<>();
-                list.add("Using: " + multiplier + "/t");
-                list.add("Needed: " + Utils.getEnergyDisplay(10));
+				List<String> list = new ArrayList<>();
+				list.add("Using: " + multiplier + "/t");
+				list.add("Needed: " + Utils.getEnergyDisplay(10));
 
-                return list;
-            }
-        }, this, defaultResource));
+				return list;
+			}
+		}, this, defaultResource));
 
-        components.add(new GuiRedstoneControl(this, tileEntity, defaultResource));
+		components.add(new GuiRedstoneControl(this, tileEntity, defaultResource));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -105,9 +105,9 @@ public class GuiElectricityMeter extends GuiScreen {
 		if (tileEntity instanceof TileEntityElectricityMeter) {
 			TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
 
-            // The name of this machine.
-            String name = tileEntityElectricityMeter.getTier().getBaseTier().getName() + " " + tileEntity.getName();
-            fontRendererObj.drawString(name, (xSize / 2) - (fontRendererObj.getStringWidth(name) / 2), 6, 0x404040);
+			// The name of this machine.
+			String name = tileEntityElectricityMeter.getTier().getBaseTier().getName() + " " + tileEntity.getName();
+			fontRendererObj.drawString(name, (xSize / 2) - (fontRendererObj.getStringWidth(name) / 2), 6, 0x404040);
 
 			// Formatting energy to the correct energy unit.
 			String measuredEnergy = Utils.getEnergyDisplay(tileEntityElectricityMeter.getElectricityCount());
