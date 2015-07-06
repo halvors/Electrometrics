@@ -16,11 +16,11 @@ import java.util.List;
  */
 public abstract class TileEntityMachine extends TileEntityBasic implements IRotatable, INetworkable {
 	// The direction this TileEntity's block is facing.
-	private int facing;
+	protected int facing;
 
 	// The direction this TileEntity's block is facing, client side.
 	@SideOnly(Side.CLIENT)
-	private int clientFacing;
+	protected int clientFacing;
 
 	TileEntityMachine(String name) {
 		super(name);
@@ -63,12 +63,12 @@ public abstract class TileEntityMachine extends TileEntityBasic implements IRota
 
 	@Override
 	public List<Object> getPacketData(List<Object> list) {
-        list.add(facing);
+		list.add(facing);
 
 		return list;
 	}
 
-    @Override
+	@Override
 	public boolean canSetFacing(int facing) {
 		return true;
 	}
