@@ -58,6 +58,7 @@ public class GuiElectricityMeter extends GuiScreen {
         components.add(new GuiRedstoneControl(this, tileEntity, defaultResource));
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void initGui() {
 		super.initGui();

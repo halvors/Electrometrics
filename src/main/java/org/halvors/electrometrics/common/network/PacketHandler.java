@@ -70,6 +70,7 @@ public class PacketHandler {
 	 * @param cuboid - the AABB cuboid to send the packet in
 	 * @param dimId - the dimension the cuboid is in
 	 */
+	@SuppressWarnings("unchecked")
 	public static void sendToCuboid(IMessage message, AxisAlignedBB cuboid, int dimId) {
 		MinecraftServer server = MinecraftServer.getServer();
 
@@ -82,6 +83,7 @@ public class PacketHandler {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void sendToReceivers(IMessage message, Range range) {
 		MinecraftServer server = MinecraftServer.getServer();
 

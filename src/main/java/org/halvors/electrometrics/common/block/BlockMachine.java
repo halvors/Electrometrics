@@ -1,9 +1,7 @@
 package org.halvors.electrometrics.common.block;
 
-import cpw.mods.fml.common.Optional.Method;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import mekanism.api.IMekWrench;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -130,8 +128,6 @@ public class BlockMachine extends BlockBasic {
 
 		// Handle wrenching.
 		if (player.getCurrentEquippedItem() != null && Utils.hasUsableWrench(player, x, y, z)) {
-			Item item = player.getCurrentEquippedItem().getItem();
-
 			if (player.isSneaking()) {
 				dismantleBlock(world, x, y, z, false);
 

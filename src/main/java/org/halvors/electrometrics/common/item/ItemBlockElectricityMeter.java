@@ -26,6 +26,7 @@ public class ItemBlockElectricityMeter extends ItemBlockBasic {
 		super(block);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack itemStack, EntityPlayer entityplayer, List list, boolean flag) {

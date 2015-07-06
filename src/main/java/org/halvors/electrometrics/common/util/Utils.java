@@ -108,6 +108,7 @@ public class Utils {
 	 * @param uuid the uuid of the player.
 	 * @return the EntityPlayerMP object.
 	 */
+	@SuppressWarnings("unchecked")
 	public static EntityPlayerMP getPlayerFromUUID(UUID uuid) {
 		MinecraftServer server = MinecraftServer.getServer();
 
