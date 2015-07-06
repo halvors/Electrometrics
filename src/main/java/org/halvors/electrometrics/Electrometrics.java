@@ -128,16 +128,15 @@ public class Electrometrics {
 	private void addRecipes() {
 		// Register recipes.
 		if (isMekanismIntegrationEnabled) {
-			// Add recipe for all types of universal cables.
+			// Add recipe for all tiers.
 			for (ElectricityMeterTier tier : ElectricityMeterTier.values()) {
-                ItemStack electricityMeter = new ItemStack(blockElectricityMeter);
-                ItemBlockElectricityMeter itemBlockElectricityMeter = (ItemBlockElectricityMeter) electricityMeter.getItem();
-                itemBlockElectricityMeter.setTier(electricityMeter, ElectricityMeterTier.values()[i]);
+                ItemStack itemStackElectricityMeter = new ItemStack(blockElectricityMeter);
+                ItemBlockElectricityMeter itemBlockElectricityMeter = (ItemBlockElectricityMeter) itemStackElectricityMeter.getItem();
+                itemBlockElectricityMeter.setTier(itemStackElectricityMeter, tier);
 
                 ItemStack universalCable = new ItemStack(ItemRetriever.getItem("PartTransmitter").getItem(), 8, tier.ordinal());
 
-                // Register recipes.
-                GameRegistry.addRecipe(electricityMeter,
+                GameRegistry.addRecipe(itemStackElectricityMeter,
                         "III",
                         "UCU",
                         "III", 'I', Items.iron_ingot, 'U', universalCable, 'C', Items.clock);

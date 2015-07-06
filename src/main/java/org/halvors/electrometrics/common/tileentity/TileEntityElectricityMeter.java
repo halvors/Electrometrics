@@ -45,11 +45,16 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 	// The amount of energy that has passed thru.
 	private double electricityCount;
 
+    // The current and past redstone state.
 	private boolean isPowered;
 	private boolean wasPowered;
 
-	public TileEntityElectricityMeter() {
-		super("Electricity Meter", 25600, 25600, 25600);
+    public TileEntityElectricityMeter() {
+        this(ElectricityMeterTier.BASIC);
+    }
+
+	public TileEntityElectricityMeter(ElectricityMeterTier electricityMeterTier) {
+		super("Electricity Meter", electricityMeterTier.getMaxEnergy(), electricityMeterTier.getMaxReceive(), electricityMeterTier.getMaxExtract());
 	}
 
 	@Override
@@ -65,6 +70,7 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 	public void updateEntity() {
 		super.updateEntity();
 
+        // Update wasPowered to the current isPowered.
 		wasPowered = isPowered;
 	}
 
