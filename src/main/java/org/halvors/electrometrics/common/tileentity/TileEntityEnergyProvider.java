@@ -6,6 +6,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.halvors.electrometrics.common.util.Utils;
 
+import java.util.EnumSet;
+
 /**
  * When extended, this makes a TileEntity able to provide electricity.
  *
@@ -37,7 +39,25 @@ public abstract class TileEntityEnergyProvider extends TileEntityEnergyReceiver 
 
 	@Override
 	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
-		return storage.extractEnergy(maxExtract, simulate);
+		if (getExtractingSides().contains(from)) {
+			return storage.extractEnergy(maxExtract, simulate);
+		}
+
+		return 0;
+	}
+
+	@Override
+	public EnumSet<ForgeDirection> getReceivingSides() {
+		EnumSet<ForgeDirection> directions = EnumSet.allOf(ForgeDirection.class);
+		directions.removeAll(getExtractingSides());
+		directions.remove(ForgeDirection.UNKNOWN);
+
+		return directions;
+	}
+
+	@Override
+	public EnumSet<ForgeDirection> getExtractingSides() {
+		return EnumSet.of(ForgeDirection.getOrientation(facing));
 	}
 
 	/**

@@ -58,7 +58,7 @@ public abstract class TileEntityEnergyStorage extends TileEntityMachine implemen
 	public List<Object> getPacketData(List<Object> list) {
 		super.getPacketData(list);
 
-        list.add(storage.getEnergyStored());
+		list.add(storage.getEnergyStored());
 
 		return list;
 	}

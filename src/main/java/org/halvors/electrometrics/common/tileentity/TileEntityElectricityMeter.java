@@ -14,6 +14,7 @@ import org.halvors.electrometrics.common.network.PacketRequestData;
 import org.halvors.electrometrics.common.network.PacketTileEntity;
 import org.halvors.electrometrics.common.util.Utils;
 
+import java.util.EnumSet;
 import java.util.List;
 import java.util.UUID;
 
@@ -40,12 +41,12 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 	@SideOnly(Side.CLIENT)
 	private boolean clientIsActive;
 
-    private ElectricityMeterTier electricityMeterTier = ElectricityMeterTier.BASIC;
+	private ElectricityMeterTier electricityMeterTier = ElectricityMeterTier.BASIC;
 
 	// The amount of energy that has passed thru.
 	private double electricityCount;
 
-    // The current and past redstone state.
+	// The current and past redstone state.
 	private boolean isPowered;
 	private boolean wasPowered;
 
@@ -66,7 +67,7 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 	public void updateEntity() {
 		super.updateEntity();
 
-        // Update wasPowered to the current isPowered.
+		// Update wasPowered to the current isPowered.
 		wasPowered = isPowered;
 	}
 
@@ -79,11 +80,11 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 		redstoneControlType = RedstoneControlType.values()[nbtTags.getInteger("redstoneControlType")];
 		isActive = nbtTags.getBoolean("isActive");
 
-        electricityMeterTier = ElectricityMeterTier.getFromName(nbtTags.getString("tier"));
-        storage.setCapacity(electricityMeterTier.getMaxEnergy());
-        storage.setMaxTransfer(electricityMeterTier.getMaxTransfer());
+		electricityMeterTier = ElectricityMeterTier.values()[nbtTags.getInteger("tier")];
+		storage.setCapacity(electricityMeterTier.getMaxEnergy());
+		storage.setMaxTransfer(electricityMeterTier.getMaxTransfer());
 
-        electricityCount = nbtTags.getDouble("electricityCount");
+		electricityCount = nbtTags.getDouble("electricityCount");
 	}
 
 	@Override
@@ -95,7 +96,7 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 		nbtTags.setInteger("redstoneControlType", redstoneControlType.ordinal());
 		nbtTags.setBoolean("isActive", isActive);
 
-        nbtTags.setString("electricityMeterTier", electricityMeterTier.getBaseTier().getName());
+		nbtTags.setInteger("tier", electricityMeterTier.ordinal());
 		nbtTags.setDouble("electricityCount", electricityCount);
 	}
 
@@ -115,7 +116,7 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		}
 
-        electricityMeterTier = ElectricityMeterTier.values()[dataStream.readInt()];
+		electricityMeterTier = ElectricityMeterTier.values()[dataStream.readInt()];
 		electricityCount = dataStream.readDouble();
 	}
 
@@ -123,26 +124,33 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 	public List<Object> getPacketData(List<Object> list) {
 		super.getPacketData(list);
 
-        list.add(owner != null ? owner.toString() : "");
-        list.add(!ownerName.isEmpty() ? ownerName : "");
-        list.add(redstoneControlType.ordinal());
-        list.add(isActive);
+		list.add(owner != null ? owner.toString() : "");
+		list.add(!ownerName.isEmpty() ? ownerName : "");
+		list.add(redstoneControlType.ordinal());
+		list.add(isActive);
 
-        list.add(electricityMeterTier.ordinal());
-        list.add(electricityCount);
+		list.add(electricityMeterTier.ordinal());
+		list.add(electricityCount);
 
 		return list;
 	}
 
-    @Override
-    public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
-        // Add the amount of energy we're extracting to the counter.
-        if (!simulate) {
-            electricityCount += maxExtract;
-        }
+	@Override
+	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+		if (getExtractingSides().contains(from)) {
+			// Add the amount of energy we're extracting to the counter.
+			if (!simulate) {
+				electricityCount += maxExtract;
+			}
+		}
 
-        return super.extractEnergy(from, maxExtract, simulate);
-    }
+		return super.extractEnergy(from, maxExtract, simulate);
+	}
+
+	@Override
+	public EnumSet<ForgeDirection> getExtractingSides() {
+		return EnumSet.of(ForgeDirection.getOrientation(facing).getRotation(ForgeDirection.DOWN));
+	}
 
 	@Override
 	public boolean hasOwner() {
@@ -210,13 +218,13 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 		this.isActive = isActive;
 	}
 
-    public ElectricityMeterTier getTier() {
-        return electricityMeterTier;
-    }
+	public ElectricityMeterTier getTier() {
+		return electricityMeterTier;
+	}
 
-    public void setTier(ElectricityMeterTier electricityMeterTier) {
-        this.electricityMeterTier = electricityMeterTier;
-    }
+	public void setTier(ElectricityMeterTier electricityMeterTier) {
+		this.electricityMeterTier = electricityMeterTier;
+	}
 
 	/**
 	 * Returns the amount of energy that this block has totally received.
