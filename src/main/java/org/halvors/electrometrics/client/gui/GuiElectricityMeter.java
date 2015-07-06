@@ -110,15 +110,20 @@ public class GuiElectricityMeter extends GuiScreen {
             fontRendererObj.drawString(name, (xSize / 2) - (fontRendererObj.getStringWidth(name) / 2), 6, 0x404040);
 
 			// Formatting energy to the correct energy unit.
-			String energyCount = Utils.getEnergyDisplay(tileEntityElectricityMeter.getElectricityCount());
+			String measuredEnergy = Utils.getEnergyDisplay(tileEntityElectricityMeter.getElectricityCount());
+			String storedEnergy = Utils.getEnergyDisplay(tileEntityElectricityMeter.getStorage().getEnergyStored());
 			String maxOutput = Utils.getEnergyDisplay(tileEntityElectricityMeter.getStorage().getMaxEnergyStored());
 
 			fontRendererObj.drawString("Measured:", 8, ySize - 140, 0x404040);
-			fontRendererObj.drawString(energyCount, 72, ySize - 140, 0x404040);
+			fontRendererObj.drawString(measuredEnergy, 72, ySize - 140, 0x404040);
+
+			// Stored energy.
+			fontRendererObj.drawString("Stored:", 8, ySize - 128, 0x404040);
+			fontRendererObj.drawString(storedEnergy, 72, ySize - 128, 0x404040);
 
 			// Current output.
-			fontRendererObj.drawString("Max output:", 8, ySize - 128, 0x404040);
-			fontRendererObj.drawString(maxOutput + "/t", 72, ySize - 128, 0x404040);
+			fontRendererObj.drawString("Max output:", 8, ySize - 116, 0x404040);
+			fontRendererObj.drawString(maxOutput + "/t", 72, ySize - 116, 0x404040);
 
 			if (ticker == 0) {
 				ticker = 5;
