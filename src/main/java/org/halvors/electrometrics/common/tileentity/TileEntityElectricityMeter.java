@@ -116,9 +116,6 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 		}
 
         electricityMeterTier = ElectricityMeterTier.values()[dataStream.readInt()];
-        storage.setCapacity(electricityMeterTier.getMaxEnergy());
-        storage.setMaxTransfer(electricityMeterTier.getMaxTransfer());
-
 		electricityCount = dataStream.readDouble();
 	}
 
