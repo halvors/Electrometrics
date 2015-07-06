@@ -90,7 +90,7 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 		nbtTags.setInteger("redstoneControlType", redstoneControlType.ordinal());
 		nbtTags.setBoolean("isActive", isActive);
 
-        nbtTags.setString("electricityMeterTier", electricityMeterTier.getTier().getName());
+        nbtTags.setString("electricityMeterTier", electricityMeterTier.getBaseTier().getName());
 		nbtTags.setDouble("electricityCount", electricityCount);
 	}
 

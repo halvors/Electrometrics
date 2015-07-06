@@ -64,7 +64,7 @@ public class ItemBlockElectricityMeter extends ItemBlockBasic {
             itemStack.setTagCompound(new NBTTagCompound());
         }
 
-        itemStack.stackTagCompound.setString("tier", tier.getTier().getName());
+        itemStack.stackTagCompound.setString("tier", tier.getBaseTier().getName());
     }
 
 	public double getElectricityCount(ItemStack itemStack) {

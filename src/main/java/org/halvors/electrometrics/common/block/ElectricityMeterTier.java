@@ -20,7 +20,7 @@ public enum ElectricityMeterTier {
 
     public static ElectricityMeterTier getFromName(String tierName) {
         for (ElectricityMeterTier tier : values()) {
-            if (tierName.contains(tier.getTier().getName())) {
+            if (tierName.contains(tier.getBaseTier().getName())) {
                 return tier;
             }
         }
