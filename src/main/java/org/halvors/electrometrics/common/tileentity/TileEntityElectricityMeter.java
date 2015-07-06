@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
+import org.halvors.electrometrics.common.block.ElectricityMeterTier;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketRequestData;
 import org.halvors.electrometrics.common.network.PacketTileEntity;
@@ -38,6 +39,8 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 	// The client's current active state.
 	@SideOnly(Side.CLIENT)
 	private boolean clientIsActive;
+
+    private ElectricityMeterTier electricityMeterTier = ElectricityMeterTier.BASIC;
 
 	// The amount of energy that has passed thru.
 	private double electricityCount;
@@ -73,6 +76,8 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 		ownerName = nbtTags.getString("ownerName");
 		redstoneControlType = RedstoneControlType.values()[nbtTags.getInteger("redstoneControlType")];
 		isActive = nbtTags.getBoolean("isActive");
+
+        electricityMeterTier = ElectricityMeterTier.getFromName(nbtTags.getString("tier"));
 		electricityCount = nbtTags.getDouble("electricityCount");
 	}
 
@@ -84,17 +89,9 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 		nbtTags.setString("ownerName", !ownerName.isEmpty() ? ownerName : "");
 		nbtTags.setInteger("redstoneControlType", redstoneControlType.ordinal());
 		nbtTags.setBoolean("isActive", isActive);
+
+        nbtTags.setString("electricityMeterTier", electricityMeterTier.getTier().getName());
 		nbtTags.setDouble("electricityCount", electricityCount);
-	}
-
-	@Override
-	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
-		// Add the amount of energy we're extracting to the counter.
-		if (!simulate) {
-			electricityCount += maxExtract;
-		}
-
-		return super.extractEnergy(from, maxExtract, simulate);
 	}
 
 	@Override
@@ -113,6 +110,7 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		}
 
+        electricityMeterTier = ElectricityMeterTier.values()[dataStream.readInt()];
 		electricityCount = dataStream.readDouble();
 	}
 
@@ -124,10 +122,22 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
         list.add(!ownerName.isEmpty() ? ownerName : "");
         list.add(redstoneControlType.ordinal());
         list.add(isActive);
+
+        list.add(electricityMeterTier.ordinal());
         list.add(electricityCount);
 
 		return list;
 	}
+
+    @Override
+    public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+        // Add the amount of energy we're extracting to the counter.
+        if (!simulate) {
+            electricityCount += maxExtract;
+        }
+
+        return super.extractEnergy(from, maxExtract, simulate);
+    }
 
 	@Override
 	public boolean hasOwner() {
@@ -194,6 +204,14 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
 	}
+
+    public ElectricityMeterTier getTier() {
+        return electricityMeterTier;
+    }
+
+    public void setTier(ElectricityMeterTier electricityMeterTier) {
+        this.electricityMeterTier = electricityMeterTier;
+    }
 
 	/**
 	 * Returns the amount of energy that this block has totally received.

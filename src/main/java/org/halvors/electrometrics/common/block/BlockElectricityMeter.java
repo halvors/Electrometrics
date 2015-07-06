@@ -1,5 +1,8 @@
 package org.halvors.electrometrics.common.block;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -11,6 +14,7 @@ import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.common.item.ItemBlockElectricityMeter;
 import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
 
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -53,4 +57,16 @@ public class BlockElectricityMeter extends BlockMachine {
 
 		return itemStack;
 	}
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void getSubBlocks(Item item, CreativeTabs creativetabs, List list) {
+        for (ElectricityMeterTier tier : ElectricityMeterTier.values()) {
+            ItemStack itemStack = new ItemStack(this);
+            ItemBlockElectricityMeter itemBlockElectricityMeter = (ItemBlockElectricityMeter) itemStack.getItem();
+            itemBlockElectricityMeter.setTier(itemStack, tier);
+
+            list.add(itemStack);
+        };
+    }
 }

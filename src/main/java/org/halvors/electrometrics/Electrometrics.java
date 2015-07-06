@@ -22,6 +22,7 @@ import org.apache.logging.log4j.Logger;
 import org.halvors.electrometrics.common.CommonProxy;
 import org.halvors.electrometrics.common.Tab;
 import org.halvors.electrometrics.common.block.BlockElectricityMeter;
+import org.halvors.electrometrics.common.block.ElectricityMeterTier;
 import org.halvors.electrometrics.common.event.PlayerEventHandler;
 import org.halvors.electrometrics.common.item.ItemBlockElectricityMeter;
 import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
@@ -129,10 +130,14 @@ public class Electrometrics {
 		if (isMekanismIntegrationEnabled) {
 			// Add recipe for all types of universal cables.
 			for (int i = 0; i <= 3; i++)  {
+                ItemStack electricityMeter = new ItemStack(blockElectricityMeter);
+                ItemBlockElectricityMeter itemBlockElectricityMeter = (ItemBlockElectricityMeter) electricityMeter.getItem();
+                itemBlockElectricityMeter.setTier(electricityMeter, ElectricityMeterTier.values()[i]);
+
 				ItemStack universalCable = new ItemStack(ItemRetriever.getItem("PartTransmitter").getItem(), 8, i);
 
 				// Register recipes.
-				GameRegistry.addRecipe(new ItemStack(blockElectricityMeter),
+				GameRegistry.addRecipe(electricityMeter,
 						"III",
 						"UCU",
 						"III", 'I', Items.iron_ingot, 'U', universalCable, 'C', Items.clock);
@@ -143,6 +148,22 @@ public class Electrometrics {
 				"RCR",
 				"III", 'I', Items.iron_ingot, 'R', Items.redstone, 'C', Items.clock);
 		}
+
+        /*
+        //Energy Cube recipes
+        CraftingManager.getInstance().getRecipeList().add(new MekanismRecipe(MekanismUtils.getEnergyCube(EnergyCubeTier.BASIC), new Object[] {
+                "RTR", "iIi", "RTR", Character.valueOf('R'), "alloyBasic", Character.valueOf('i'), "ingotIron", Character.valueOf('T'), MekanismItems.EnergyTablet.getUnchargedItem(), Character.valueOf('I'), new ItemStack(MekanismBlocks.BasicBlock, 1, 8)
+        }));
+        CraftingManager.getInstance().getRecipeList().add(new MekanismRecipe(MekanismUtils.getEnergyCube(EnergyCubeTier.ADVANCED), new Object[] {
+                "ETE", "oBo", "ETE", Character.valueOf('E'), "alloyAdvanced", Character.valueOf('o'), "ingotOsmium", Character.valueOf('T'), MekanismItems.EnergyTablet.getUnchargedItem(), Character.valueOf('B'), MekanismUtils.getEnergyCube(EnergyCubeTier.BASIC)
+        }));
+        CraftingManager.getInstance().getRecipeList().add(new MekanismRecipe(MekanismUtils.getEnergyCube(EnergyCubeTier.ELITE), new Object[] {
+                "RTR", "gAg", "RTR", Character.valueOf('R'), "alloyElite", Character.valueOf('g'), "ingotGold", Character.valueOf('T'), MekanismItems.EnergyTablet.getUnchargedItem(), Character.valueOf('A'), MekanismUtils.getEnergyCube(EnergyCubeTier.ADVANCED)
+        }));
+        CraftingManager.getInstance().getRecipeList().add(new MekanismRecipe(MekanismUtils.getEnergyCube(EnergyCubeTier.ULTIMATE), new Object[] {
+                "ATA", "dEd", "ATA", Character.valueOf('A'), "alloyUltimate", Character.valueOf('d'), "gemDiamond", Character.valueOf('T'), MekanismItems.EnergyTablet.getUnchargedItem(), Character.valueOf('E'), MekanismUtils.getEnergyCube(EnergyCubeTier.ELITE)
+        }));
+        */
 	}
 
 	public static CommonProxy getProxy() {

@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import org.halvors.electrometrics.common.block.ElectricityMeterTier;
 import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.util.Color;
 import org.halvors.electrometrics.common.util.Utils;
@@ -40,12 +41,31 @@ public class ItemBlockElectricityMeter extends ItemBlockBasic {
 
 			if (tileEntity instanceof TileEntityElectricityMeter) {
 				TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
+                tileEntityElectricityMeter.setTier(getTier(itemStack));
 				tileEntityElectricityMeter.setElectricityCount(getElectricityCount(itemStack));
 			}
 		}
 
 		return placed;
 	}
+
+    public ElectricityMeterTier getTier(ItemStack itemStack) {
+        if (itemStack.stackTagCompound != null) {
+            String tier = itemStack.stackTagCompound.getString("tier");
+
+            return ElectricityMeterTier.getFromName(tier);
+        }
+
+        return ElectricityMeterTier.BASIC;
+    }
+
+    public void setTier(ItemStack itemStack, ElectricityMeterTier tier) {
+        if (itemStack.stackTagCompound == null) {
+            itemStack.setTagCompound(new NBTTagCompound());
+        }
+
+        itemStack.stackTagCompound.setString("tier", tier.getTier().getName());
+    }
 
 	public double getElectricityCount(ItemStack itemStack) {
 		if (itemStack.stackTagCompound != null) {
