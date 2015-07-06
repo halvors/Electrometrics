@@ -7,8 +7,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import org.halvors.electrometrics.client.key.KeyHandler;
 import org.halvors.electrometrics.common.base.ElectricityMeterTier;
+import org.halvors.electrometrics.common.block.BlockElectricityMeter;
 import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.util.Color;
 import org.halvors.electrometrics.common.util.Utils;
@@ -22,8 +25,12 @@ import java.util.List;
  * @author halvors
  */
 public class ItemBlockElectricityMeter extends ItemBlockBasic {
+	private final BlockElectricityMeter blockElectricityMeter;
+
 	public ItemBlockElectricityMeter(Block block) {
 		super(block);
+
+		this.blockElectricityMeter = (BlockElectricityMeter) block;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -31,6 +38,11 @@ public class ItemBlockElectricityMeter extends ItemBlockBasic {
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack itemStack, EntityPlayer entityplayer, List list, boolean flag) {
 		list.add(Color.BRIGHT_GREEN + "Measured energy: " + Color.GREY + Utils.getEnergyDisplay(getElectricityCount(itemStack)));
+	}
+
+	@Override
+	public String getItemStackDisplayName(ItemStack itemStack) {
+		return getTier(itemStack).getBaseTier().getName() + " " + blockElectricityMeter.getName();
 	}
 
 	@Override

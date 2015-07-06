@@ -15,15 +15,11 @@ import org.halvors.electrometrics.common.util.render.DefaultIcon;
 import org.halvors.electrometrics.common.util.render.Renderer;
 
 public class BlockTextured extends BlockBasic {
-	private final String name;
-
 	@SideOnly(Side.CLIENT)
-	private final IIcon[] iconList = new IIcon[16];
+	private final IIcon[][] iconList = new IIcon[16][16];
 
 	BlockTextured(String name, Material material) {
-		super(material);
-
-		this.name = name;
+		super(name, material);
 
 		setBlockName(name);
 	}
@@ -39,30 +35,31 @@ public class BlockTextured extends BlockBasic {
 	public void registerBlockIcons(IIconRegister iconRegister) {
 		IIcon baseIcon = iconRegister.registerIcon(Reference.PREFIX + name);
 
-		Renderer.loadDynamicTextures(iconRegister, name, iconList, DefaultIcon.getAll(baseIcon));
+		Renderer.loadDynamicTextures(iconRegister, name, iconList[0], DefaultIcon.getAll(baseIcon));
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
 		TileEntity tileEntity = world.getTileEntity(x, y, z);
+		int meta = world.getBlockMetadata(x, y, z);
+		boolean isActive = false;
+
+		// Check if this implements IActiveState, if it do we get the state from it.
+		if (tileEntity instanceof IActiveState) {
+			IActiveState activeState = (IActiveState) tileEntity;
+
+			isActive = activeState.isActive();
+		}
 
 		// Check if this implements IRotatable.
 		if (tileEntity instanceof IRotatable) {
 			IRotatable rotatable = (IRotatable) tileEntity;
-			boolean isActive = false;
 
-			// Check if this implements IActiveState, if it do we get the state from it.
-			if (tileEntity instanceof IActiveState) {
-				IActiveState activeState = (IActiveState) tileEntity;
-
-				isActive = activeState.isActive();
-			}
-
-			return iconList[Orientation.getBaseOrientation(side, rotatable.getFacing()) + (isActive ? 6 : 0)];
+			return iconList[meta][Orientation.getBaseOrientation(side, rotatable.getFacing()) + (isActive ? 6 : 0)];
 		}
 
-		return null;
+		return iconList[meta][side + (isActive ? 6 : 0)];
 	}
 
 	@Override
@@ -79,6 +76,6 @@ public class BlockTextured extends BlockBasic {
 				break;
 		}
 
-		return iconList[side];
+		return iconList[meta][side];
 	}
 }

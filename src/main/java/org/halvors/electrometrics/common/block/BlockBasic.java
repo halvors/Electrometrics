@@ -12,8 +12,12 @@ import org.halvors.electrometrics.Electrometrics;
  * @author halvors
  */
 public class BlockBasic extends BlockContainer {
-	BlockBasic(Material material) {
+	protected final String name;
+
+	BlockBasic(String name, Material material) {
 		super(material);
+
+		this.name = name;
 
 		setCreativeTab(Electrometrics.getTab());
 	}
@@ -21,5 +25,9 @@ public class BlockBasic extends BlockContainer {
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
 		return null;
+	}
+
+	public String getName() {
+		return name;
 	}
 }
