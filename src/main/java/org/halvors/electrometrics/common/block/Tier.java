@@ -1,5 +1,6 @@
 package org.halvors.electrometrics.common.block;
 
+import net.minecraft.util.StatCollector;
 import org.halvors.electrometrics.common.util.Color;
 
 public enum Tier {
@@ -21,11 +22,9 @@ public enum Tier {
         return name;
     }
 
-    /*
     public String getLocalizedName() {
-        return LangUtils.localize("tier." + getName());
+        return StatCollector.translateToLocal("tier." + getName());
     }
-    */
 
     public Color getColor() {
         return color;
