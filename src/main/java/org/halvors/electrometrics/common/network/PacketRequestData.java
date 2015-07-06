@@ -4,7 +4,7 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import net.minecraft.tileentity.TileEntity;
-import org.halvors.electrometrics.common.tileentity.INetworkable;
+import org.halvors.electrometrics.common.base.tile.INetworkable;
 import org.halvors.electrometrics.common.util.location.BlockLocation;
 
 import java.util.ArrayList;

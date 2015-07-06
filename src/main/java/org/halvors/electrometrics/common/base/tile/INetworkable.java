@@ -1,11 +1,11 @@
-package org.halvors.electrometrics.common.tileentity;
+package org.halvors.electrometrics.common.base.tile;
 
 import io.netty.buffer.ByteBuf;
 
 import java.util.List;
 
 /**
- * Internal interface used for TileEntities that sends or receives data.
+ * Implement this to enable your TileEntity to send and receive data.
  *
  * @author halvors
  */

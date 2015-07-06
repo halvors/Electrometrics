@@ -4,13 +4,12 @@ import buildcraft.api.tools.IToolWrench;
 import cofh.api.item.IToolHammer;
 import mekanism.api.IMekWrench;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import org.halvors.electrometrics.Electrometrics;
-import org.halvors.electrometrics.common.tileentity.IRedstoneControl;
+import org.halvors.electrometrics.common.base.tile.IRedstoneControl;
 
 import java.util.List;
 import java.util.UUID;
@@ -109,13 +108,13 @@ public class Utils {
 	 * @return the EntityPlayerMP object.
 	 */
 	@SuppressWarnings("unchecked")
-	public static EntityPlayerMP getPlayerFromUUID(UUID uuid) {
+	public static EntityPlayer getPlayerFromUUID(UUID uuid) {
 		MinecraftServer server = MinecraftServer.getServer();
 
 		if (server != null) {
-			List<EntityPlayerMP> playerList = (List<EntityPlayerMP>) server.getConfigurationManager().playerEntityList;
+			List<EntityPlayer> playerList = (List<EntityPlayer>) server.getConfigurationManager().playerEntityList;
 
-			for (EntityPlayerMP player : playerList)  {
+			for (EntityPlayer player : playerList)  {
 				if (uuid.equals(player.getPersistentID())) {
 					return player;
 				}

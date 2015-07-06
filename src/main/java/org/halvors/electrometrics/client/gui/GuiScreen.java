@@ -8,7 +8,7 @@ import net.minecraft.util.ResourceLocation;
 import org.halvors.electrometrics.Reference;
 import org.halvors.electrometrics.client.gui.component.IGuiComponent;
 import org.halvors.electrometrics.common.component.IComponent;
-import org.halvors.electrometrics.common.tileentity.TileEntityMachine;
+import org.halvors.electrometrics.common.tile.TileEntityMachine;
 import org.lwjgl.opengl.GL11;
 
 import java.util.Collections;

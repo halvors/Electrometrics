@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.common.base.ElectricityMeterTier;
 import org.halvors.electrometrics.common.item.ItemBlockElectricityMeter;
-import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
+import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
 
 import java.util.List;
 import java.util.Random;

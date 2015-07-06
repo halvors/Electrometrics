@@ -1,4 +1,4 @@
-package org.halvors.electrometrics.common.tileentity;
+package org.halvors.electrometrics.common.tile;
 
 import cofh.api.energy.IEnergyProvider;
 import cofh.api.energy.IEnergyReceiver;

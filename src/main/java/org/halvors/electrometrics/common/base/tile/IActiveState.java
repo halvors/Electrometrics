@@ -1,4 +1,4 @@
-package org.halvors.electrometrics.common.tileentity;
+package org.halvors.electrometrics.common.base.tile;
 
 /**
  * Implement this if your TileEntity has some form of active state.

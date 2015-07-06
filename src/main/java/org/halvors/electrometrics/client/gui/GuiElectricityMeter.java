@@ -9,11 +9,11 @@ import org.halvors.electrometrics.client.gui.component.GuiEnergyInfo;
 import org.halvors.electrometrics.client.gui.component.GuiOwnerInfo;
 import org.halvors.electrometrics.client.gui.component.GuiRedstoneControl;
 import org.halvors.electrometrics.client.gui.component.IInfoHandler;
+import org.halvors.electrometrics.common.base.tile.IOwnable;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketRequestData;
 import org.halvors.electrometrics.common.network.PacketTileEntity;
-import org.halvors.electrometrics.common.tileentity.IOwnable;
-import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
+import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.util.Utils;
 
 import java.util.ArrayList;

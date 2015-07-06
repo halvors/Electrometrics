@@ -1,7 +1,6 @@
-package org.halvors.electrometrics.common.tileentity;
+package org.halvors.electrometrics.common.base.tile;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 
 public interface IOwnable {
 	/**
@@ -21,7 +20,7 @@ public interface IOwnable {
 	 * Get the player owning this.
 	 * @return player
 	 */
-	EntityPlayerMP getOwner();
+	EntityPlayer getOwner();
 
 	/**
 	 * Get the name of the player owning this.

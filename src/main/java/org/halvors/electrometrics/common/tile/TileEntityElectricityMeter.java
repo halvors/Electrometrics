@@ -1,14 +1,18 @@
-package org.halvors.electrometrics.common.tileentity;
+package org.halvors.electrometrics.common.tile;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.halvors.electrometrics.common.base.ElectricityMeterTier;
+import org.halvors.electrometrics.common.base.tile.RedstoneControlType;
+import org.halvors.electrometrics.common.base.tile.IActiveState;
+import org.halvors.electrometrics.common.base.tile.INetworkable;
+import org.halvors.electrometrics.common.base.tile.IOwnable;
+import org.halvors.electrometrics.common.base.tile.IRedstoneControl;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketRequestData;
 import org.halvors.electrometrics.common.network.PacketTileEntity;
@@ -163,7 +167,7 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 	}
 
 	@Override
-	public EntityPlayerMP getOwner() {
+	public EntityPlayer getOwner() {
 		return Utils.getPlayerFromUUID(owner);
 	}
 

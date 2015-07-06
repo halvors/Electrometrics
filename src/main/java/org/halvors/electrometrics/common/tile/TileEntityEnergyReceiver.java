@@ -1,4 +1,4 @@
-package org.halvors.electrometrics.common.tileentity;
+package org.halvors.electrometrics.common.tile;
 
 import cofh.api.energy.IEnergyReceiver;
 import net.minecraftforge.common.util.ForgeDirection;

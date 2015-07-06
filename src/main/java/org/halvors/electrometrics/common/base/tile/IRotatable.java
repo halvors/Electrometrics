@@ -1,4 +1,4 @@
-package org.halvors.electrometrics.common.tileentity;
+package org.halvors.electrometrics.common.base.tile;
 
 /**
  * This makes a TileEntity rotatable, it's meant to be extended.

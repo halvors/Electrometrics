@@ -1,8 +1,9 @@
-package org.halvors.electrometrics.common.tileentity;
+package org.halvors.electrometrics.common.tile;
 
 import cofh.api.energy.EnergyStorage;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
+import org.halvors.electrometrics.common.base.tile.INetworkable;
 
 import java.util.List;
 

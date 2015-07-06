@@ -14,10 +14,10 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.halvors.electrometrics.Electrometrics;
-import org.halvors.electrometrics.common.tileentity.IOwnable;
-import org.halvors.electrometrics.common.tileentity.IRedstoneControl;
-import org.halvors.electrometrics.common.tileentity.IRotatable;
-import org.halvors.electrometrics.common.tileentity.TileEntityMachine;
+import org.halvors.electrometrics.common.base.tile.IOwnable;
+import org.halvors.electrometrics.common.base.tile.IRedstoneControl;
+import org.halvors.electrometrics.common.base.tile.IRotatable;
+import org.halvors.electrometrics.common.tile.TileEntityMachine;
 import org.halvors.electrometrics.common.util.Utils;
 
 public class BlockMachine extends BlockTextured {

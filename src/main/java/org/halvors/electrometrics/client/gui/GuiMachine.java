@@ -1,6 +1,6 @@
 package org.halvors.electrometrics.client.gui;
 
-import org.halvors.electrometrics.common.tileentity.TileEntityMachine;
+import org.halvors.electrometrics.common.tile.TileEntityMachine;
 
 public class GuiMachine extends GuiScreen {
 	protected GuiMachine(TileEntityMachine tileEntity) {
