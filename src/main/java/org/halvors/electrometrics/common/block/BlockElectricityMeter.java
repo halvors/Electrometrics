@@ -3,7 +3,6 @@ package org.halvors.electrometrics.common.block;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -11,6 +10,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import org.halvors.electrometrics.Electrometrics;
+import org.halvors.electrometrics.common.base.ElectricityMeterTier;
 import org.halvors.electrometrics.common.item.ItemBlockElectricityMeter;
 import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
 

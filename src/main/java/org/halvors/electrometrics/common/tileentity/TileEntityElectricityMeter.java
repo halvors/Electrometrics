@@ -8,7 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
-import org.halvors.electrometrics.common.block.ElectricityMeterTier;
+import org.halvors.electrometrics.common.base.ElectricityMeterTier;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketRequestData;
 import org.halvors.electrometrics.common.network.PacketTileEntity;
@@ -49,12 +49,8 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 	private boolean isPowered;
 	private boolean wasPowered;
 
-    public TileEntityElectricityMeter() {
-        this(ElectricityMeterTier.BASIC);
-    }
-
-	public TileEntityElectricityMeter(ElectricityMeterTier electricityMeterTier) {
-		super("Electricity Meter", electricityMeterTier.getMaxEnergy(), electricityMeterTier.getMaxReceive(), electricityMeterTier.getMaxExtract());
+	public TileEntityElectricityMeter() {
+		super("Electricity Meter", ElectricityMeterTier.BASIC.getMaxEnergy(), ElectricityMeterTier.BASIC.getMaxTransfer(), ElectricityMeterTier.BASIC.getMaxTransfer());
 	}
 
 	@Override
@@ -84,7 +80,10 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 		isActive = nbtTags.getBoolean("isActive");
 
         electricityMeterTier = ElectricityMeterTier.getFromName(nbtTags.getString("tier"));
-		electricityCount = nbtTags.getDouble("electricityCount");
+        storage.setCapacity(electricityMeterTier.getMaxEnergy());
+        storage.setMaxTransfer(electricityMeterTier.getMaxTransfer());
+
+        electricityCount = nbtTags.getDouble("electricityCount");
 	}
 
 	@Override
@@ -117,6 +116,9 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 		}
 
         electricityMeterTier = ElectricityMeterTier.values()[dataStream.readInt()];
+        storage.setCapacity(electricityMeterTier.getMaxEnergy());
+        storage.setMaxTransfer(electricityMeterTier.getMaxTransfer());
+
 		electricityCount = dataStream.readDouble();
 	}
 

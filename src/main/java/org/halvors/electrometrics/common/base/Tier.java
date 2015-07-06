@@ -1,4 +1,4 @@
-package org.halvors.electrometrics.common.block;
+package org.halvors.electrometrics.common.base;
 
 import net.minecraft.util.StatCollector;
 import org.halvors.electrometrics.common.util.Color;
