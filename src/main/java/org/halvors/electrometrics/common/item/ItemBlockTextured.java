@@ -1,5 +1,6 @@
 package org.halvors.electrometrics.common.item;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import org.halvors.electrometrics.common.block.BlockBasic;
 import org.halvors.electrometrics.common.util.Utils;
@@ -7,10 +8,10 @@ import org.halvors.electrometrics.common.util.Utils;
 public class ItemBlockTextured extends ItemBlockBasic {
     protected final BlockBasic block;
 
-    ItemBlockTextured(BlockBasic block) {
+    ItemBlockTextured(Block block) {
         super(block);
 
-        this.block = block;
+        this.block = (BlockBasic) block;
 
         setHasSubtypes(true);
     }

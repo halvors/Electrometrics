@@ -2,6 +2,7 @@ package org.halvors.electrometrics.common.item;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.Block;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -11,7 +12,6 @@ import net.minecraft.world.World;
 import org.halvors.electrometrics.client.key.Key;
 import org.halvors.electrometrics.client.key.KeyHandler;
 import org.halvors.electrometrics.common.base.ElectricityMeterTier;
-import org.halvors.electrometrics.common.block.BlockBasic;
 import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.util.Color;
 import org.halvors.electrometrics.common.util.Utils;
@@ -25,7 +25,7 @@ import java.util.List;
  * @author halvors
  */
 public class ItemBlockElectricityMeter extends ItemBlockTextured {
-	public ItemBlockElectricityMeter(BlockBasic block) {
+	public ItemBlockElectricityMeter(Block block) {
 		super(block);
 	}
 
