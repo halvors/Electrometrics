@@ -7,8 +7,8 @@ public enum ElectricityMeterTier {
 	ULTIMATE(320000000, 128000), // 51200
 	CREATIVE(Integer.MAX_VALUE, Integer.MAX_VALUE);
 
-	private int maxEnergy;
-	private int maxTransfer;
+	private final int maxEnergy;
+	private final int maxTransfer;
 
 	ElectricityMeterTier(int maxEnergy, int maxTransfer) {
 		this.maxEnergy = maxEnergy;

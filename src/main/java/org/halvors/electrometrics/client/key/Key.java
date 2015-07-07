@@ -5,8 +5,8 @@ import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
 
 public class Key {
-    public static GameSettings gameSettings = Minecraft.getMinecraft().gameSettings;
+    private static final GameSettings gameSettings = Minecraft.getMinecraft().gameSettings;
 
-    public static KeyBinding sneakKey = gameSettings.keyBindSneak;
-    public static KeyBinding jumpKey = gameSettings.keyBindJump;
+    public static final KeyBinding sneakKey = gameSettings.keyBindSneak;
+    public static final KeyBinding jumpKey = gameSettings.keyBindJump;
 }

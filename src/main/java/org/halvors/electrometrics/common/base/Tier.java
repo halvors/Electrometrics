@@ -10,8 +10,8 @@ public enum Tier {
 	ULTIMATE("Ultimate", Color.PURPLE),
 	CREATIVE("Creative", Color.BLACK);
 
-	private String name;
-	private Color color;
+	private final String name;
+	private final Color color;
 
 	Tier(String name, Color color) {
 		this.name = name;
