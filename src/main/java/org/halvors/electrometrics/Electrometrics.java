@@ -11,7 +11,6 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import mekanism.api.ItemRetriever;
-import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
@@ -22,6 +21,7 @@ import org.halvors.electrometrics.common.CommonProxy;
 import org.halvors.electrometrics.common.Tab;
 import org.halvors.electrometrics.common.base.Tier.ElectricityMeterTier;
 import org.halvors.electrometrics.common.block.BlockElectricityMeter;
+import org.halvors.electrometrics.common.block.BlockMachine;
 import org.halvors.electrometrics.common.event.PlayerEventHandler;
 import org.halvors.electrometrics.common.item.ItemBlockElectricityMeter;
 import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
@@ -52,7 +52,7 @@ public class Electrometrics {
 	private static final Tab tab = new Tab();
 
 	// Blocks.
-	public static final Block blockElectricityMeter = new BlockElectricityMeter("ElectricityMeter");
+	public static final BlockMachine blockElectricityMeter = new BlockElectricityMeter("ElectricityMeter");
 
 	// Configuration.
 	private static Configuration configuration;

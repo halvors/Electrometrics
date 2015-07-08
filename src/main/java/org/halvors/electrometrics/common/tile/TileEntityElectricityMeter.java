@@ -50,8 +50,8 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 	private boolean isPowered;
 	private boolean wasPowered;
 
-	public TileEntityElectricityMeter() {
-		super(ElectricityMeterTier.BASIC.getBaseTier().getName() + " Electricity Meter", ElectricityMeterTier.BASIC.getMaxEnergy(), ElectricityMeterTier.BASIC.getMaxTransfer(), ElectricityMeterTier.BASIC.getMaxTransfer());
+	public TileEntityElectricityMeter(String name, ElectricityMeterTier electricityMeterTier) {
+		super(name, electricityMeterTier.getMaxEnergy(), electricityMeterTier.getMaxTransfer(), electricityMeterTier.getMaxTransfer());
 	}
 
 	@Override
@@ -81,10 +81,6 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 		isActive = nbtTags.getBoolean("isActive");
 
 		electricityMeterTier = ElectricityMeterTier.values()[nbtTags.getInteger("tier")];
-		setName(electricityMeterTier.getBaseTier().getName());
-		storage.setCapacity(electricityMeterTier.getMaxEnergy());
-		storage.setMaxTransfer(electricityMeterTier.getMaxTransfer());
-
 		electricityCount = nbtTags.getDouble("electricityCount");
 	}
 

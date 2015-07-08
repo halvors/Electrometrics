@@ -14,15 +14,14 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import org.halvors.electrometrics.Electrometrics;
-import org.halvors.electrometrics.Reference;
 import org.halvors.electrometrics.common.base.MachineType;
+import org.halvors.electrometrics.common.base.Tier.ElectricityMeterTier;
 import org.halvors.electrometrics.common.base.tile.IOwnable;
 import org.halvors.electrometrics.common.base.tile.IRedstoneControl;
+import org.halvors.electrometrics.common.item.ItemBlockElectricityMeter;
 import org.halvors.electrometrics.common.tile.TileEntityMachine;
-import org.halvors.electrometrics.common.util.render.DefaultIcon;
 import org.halvors.electrometrics.common.util.render.Renderer;
 
 import java.util.List;
@@ -36,26 +35,18 @@ public class BlockMachine extends BlockRotatable {
 		setStepSound(soundTypeMetal);
 	}
 
-	/*
-	@SuppressWarnings("unchecked")
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(Item item, CreativeTabs creativetabs, List list) {
-		for (ElectricityMeterTier tier : ElectricityMeterTier.values()) {
-			ItemStack itemStack = new ItemStack(this);
-			ItemBlockElectricityMeter itemBlockElectricityMeter = (ItemBlockElectricityMeter) itemStack.getItem();
-			itemBlockElectricityMeter.setTier(itemStack, tier);
+	public TileEntity createNewTileEntity(World world, int metadata) {
+		MachineType machineType = MachineType.getType(this, metadata);
 
-			list.add(itemStack);
-		}
+		return machineType.getTileEntity();
 	}
-	*/
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
 		super.registerBlockIcons(iconRegister);
-		
+
 		// Adding machine types.
 		for (MachineType type : MachineType.values()) {
 			Renderer.loadDynamicTextures(iconRegister, type.getName(), iconList[type.getMetadata()], defaultIcon);
@@ -68,22 +59,30 @@ public class BlockMachine extends BlockRotatable {
 	public void getSubBlocks(Item item, CreativeTabs creativetabs, List list) {
 		// Making all MachineTypes available in creative mode.
 		for (MachineType type : MachineType.values()) {
-			list.add(type.getItemStack());
+			switch (type) {
+				case BASIC_ELECTRICITY_METER:
+				case ADVANCED_ELECTRICITY_METER:
+				case ELITE_ELECTRICITY_METER:
+				case ULTIMATE_ELECTRICITY_METER:
+				case CREATIVE_ELECTRICITY_METER:
+					ItemStack itemStack = type.getItemStack();
+					ItemBlockElectricityMeter itemBlockElectricityMeter = (ItemBlockElectricityMeter) itemStack.getItem();
+					itemBlockElectricityMeter.setTier(itemStack, ElectricityMeterTier.values()[type.getMetadata()]); // Get tier here in a better way?
+
+					list.add(itemStack);
+					break;
+
+				default:
+					list.add(type.getItemStack());
+					break;
+			}
 		}
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int metadata) {
-		MachineType machineType = MachineType.getType(this, metadata);
-
-		return machineType.getTileEntity();
+	public int damageDropped (int metadata) {
+		return metadata;
 	}
-
-	@Override
-	public int damageDropped (int meta) {
-		return meta;
-	}
-
 
 	@Override
 	public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player) {
