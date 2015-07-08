@@ -1,36 +1,66 @@
 package org.halvors.electrometrics.common.base;
 
-import net.minecraft.util.StatCollector;
 import org.halvors.electrometrics.common.util.Color;
+import org.halvors.electrometrics.common.util.Utils;
 
-public enum Tier {
-	BASIC("Basic", Color.BRIGHT_GREEN),
-	ADVANCED("Advanced", Color.DARK_RED),
-	ELITE("Elite", Color.DARK_BLUE),
-	ULTIMATE("Ultimate", Color.PURPLE),
-	CREATIVE("Creative", Color.BLACK);
+public class Tier {
+	public enum BaseTier {
+		BASIC("Basic", Color.BRIGHT_GREEN),
+		ADVANCED("Advanced", Color.DARK_RED),
+		ELITE("Elite", Color.DARK_BLUE),
+		ULTIMATE("Ultimate", Color.PURPLE),
+		CREATIVE("Creative", Color.BLACK);
 
-	private final String name;
-	private final Color color;
+		private final String name;
+		private final Color color;
 
-	Tier(String name, Color color) {
-		this.name = name;
-		this.color = color;
+		BaseTier(String name, Color color) {
+			this.name = name;
+			this.color = color;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public String getLocalizedName() {
+			return Utils.translate("tier." + getName());
+		}
+
+		public Color getColor() {
+			return color;
+		}
+
+		public boolean isObtainable() {
+			return this != CREATIVE;
+		}
 	}
 
-	public String getName() {
-		return name;
-	}
+	public enum ElectricityMeterTier {
+		BASIC(5000000, 2000), // 800 J
+		ADVANCED(20000000, 8000), // 3200 J
+		ELITE(80000000, 32000), // 12800 J
+		ULTIMATE(320000000, 128000), // 51200 J
+		CREATIVE(Integer.MAX_VALUE, Integer.MAX_VALUE);
 
-	public String getLocalizedName() {
-		return StatCollector.translateToLocal("tier." + getName());
-	}
+		private final int maxEnergy;
+		private final int maxTransfer;
 
-	public Color getColor() {
-		return color;
-	}
+		ElectricityMeterTier(int maxEnergy, int maxTransfer) {
+			this.maxEnergy = maxEnergy;
+			this.maxTransfer = maxTransfer;
+		}
 
-	public boolean isObtainable() {
-		return this != CREATIVE;
+		public BaseTier getBaseTier() {
+			return BaseTier.values()[ordinal()];
+		}
+
+		public int getMaxEnergy() {
+			return maxEnergy;
+		}
+
+		public int getMaxTransfer() {
+			return maxTransfer;
+		}
 	}
 }
