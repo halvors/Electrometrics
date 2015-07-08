@@ -1,21 +1,12 @@
 package org.halvors.electrometrics.common.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import org.halvors.electrometrics.Electrometrics;
-import org.halvors.electrometrics.common.base.ElectricityMeterTier;
 import org.halvors.electrometrics.common.item.ItemBlockElectricityMeter;
 import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
-
-import java.util.List;
-import java.util.Random;
 
 /**
  * This is the Block of the Electricity Meter which provides a simple way to keep count of the electricity you use.
@@ -26,16 +17,6 @@ import java.util.Random;
 public class BlockElectricityMeter extends BlockMachine {
 	public BlockElectricityMeter() {
 		super("blockElectricityMeter");
-	}
-
-	@Override
-	public TileEntity createNewTileEntity(World world, int metadata) {
-		return new TileEntityElectricityMeter();
-	}
-
-	@Override
-	public Item getItemDropped(int meta, Random random, int fortune) {
-		return null;
 	}
 
 	@Override
@@ -58,18 +39,5 @@ public class BlockElectricityMeter extends BlockMachine {
 		itemBlockElectricityMeter.setElectricityStored(itemStack, tileEntityElectricityMeter.getStorage().getEnergyStored());
 
 		return itemStack;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(Item item, CreativeTabs creativetabs, List list) {
-		for (ElectricityMeterTier tier : ElectricityMeterTier.values()) {
-			ItemStack itemStack = new ItemStack(this);
-			ItemBlockElectricityMeter itemBlockElectricityMeter = (ItemBlockElectricityMeter) itemStack.getItem();
-			itemBlockElectricityMeter.setTier(itemStack, tier);
-
-			list.add(itemStack);
-		}
 	}
 }

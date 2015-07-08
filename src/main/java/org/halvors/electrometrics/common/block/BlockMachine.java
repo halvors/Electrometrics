@@ -1,26 +1,33 @@
 package org.halvors.electrometrics.common.block;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import org.halvors.electrometrics.Electrometrics;
+import org.halvors.electrometrics.Reference;
+import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.base.tile.IOwnable;
 import org.halvors.electrometrics.common.base.tile.IRedstoneControl;
-import org.halvors.electrometrics.common.base.tile.IRotatable;
 import org.halvors.electrometrics.common.tile.TileEntityMachine;
-import org.halvors.electrometrics.common.util.Utils;
+import org.halvors.electrometrics.common.util.render.DefaultIcon;
+import org.halvors.electrometrics.common.util.render.Renderer;
 
-public class BlockMachine extends BlockTextured {
+import java.util.List;
+
+public class BlockMachine extends BlockRotatable {
 	BlockMachine(String name) {
 		super(name, Material.iron);
 
@@ -29,10 +36,55 @@ public class BlockMachine extends BlockTextured {
 		setStepSound(soundTypeMetal);
 	}
 
+	/*
+	@SuppressWarnings("unchecked")
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void getSubBlocks(Item item, CreativeTabs creativetabs, List list) {
+		for (ElectricityMeterTier tier : ElectricityMeterTier.values()) {
+			ItemStack itemStack = new ItemStack(this);
+			ItemBlockElectricityMeter itemBlockElectricityMeter = (ItemBlockElectricityMeter) itemStack.getItem();
+			itemBlockElectricityMeter.setTier(itemStack, tier);
+
+			list.add(itemStack);
+		}
+	}
+	*/
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerBlockIcons(IIconRegister iconRegister) {
+		IIcon baseIcon = iconRegister.registerIcon(Reference.PREFIX + name);
+		DefaultIcon defaultIcon = DefaultIcon.getAll(baseIcon);
+
+		// Adding machine types.
+		for (MachineType type : MachineType.values()) {
+			Renderer.loadDynamicTextures(iconRegister, type.getName(), iconList[type.getMetadata()], defaultIcon);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void getSubBlocks(Item item, CreativeTabs creativetabs, List list) {
+		// Making all MachineTypes available in creative mode.
+		for (MachineType type : MachineType.values()) {
+			list.add(type.getItemStack());
+		}
+	}
+
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
-		return null;
+		MachineType machineType = MachineType.getType(this, metadata);
+
+		return machineType.getTileEntity();
 	}
+
+	@Override
+	public int damageDropped (int meta) {
+		return meta;
+	}
+
 
 	@Override
 	public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player) {
@@ -54,26 +106,6 @@ public class BlockMachine extends BlockTextured {
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int facing, float playerX, float playerY, float playerZ) {
 		TileEntity tileEntity = world.getTileEntity(x, y, z);
 
-		// Handle wrenching.
-		if (player.getCurrentEquippedItem() != null && Utils.hasUsableWrench(player, x, y, z)) {
-			if (player.isSneaking()) {
-				dismantleBlock(world, x, y, z, false);
-
-				return true;
-			}
-
-			if (tileEntity instanceof IRotatable) {
-				IRotatable rotatable = (IRotatable) tileEntity;
-
-				int change = ForgeDirection.ROTATION_MATRIX[ForgeDirection.UP.ordinal()][rotatable.getFacing()];
-
-				rotatable.setFacing(change);
-				world.notifyBlocksOfNeighborChange(x, y, z, this);
-
-				return true;
-			}
-		}
-
 		if (!player.isSneaking()) {
 			// Check whether or not this IOwnable has a owner, if not set the current player as owner.
 			if (tileEntity instanceof IOwnable) {
@@ -90,40 +122,12 @@ public class BlockMachine extends BlockTextured {
 			return true;
 		}
 
-		return false;
+		return super.onBlockActivated(world, x, y, z, player, facing, playerX, playerY, playerZ);
 	}
 
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemStack) {
 		TileEntity tileEntity = world.getTileEntity(x, y, z);
-
-		// If this TileEntity implements IRotatable, we do our rotations.
-		if (tileEntity instanceof IRotatable) {
-			IRotatable rotatable = (IRotatable) tileEntity;
-
-			int side = MathHelper.floor_double((entity.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-			int height = Math.round(entity.rotationPitch);
-			int change = 3;
-
-			if (rotatable.canSetFacing(0) && rotatable.canSetFacing(1)) {
-				if (height >= 65) {
-					change = 1;
-				} else if (height <= -65) {
-					change = 0;
-				}
-			}
-
-			if (change != 0 && change != 1) {
-				switch (side) {
-					case 0: change = 2; break;
-					case 1: change = 5; break;
-					case 2: change = 3; break;
-					case 3: change = 4; break;
-				}
-			}
-
-			rotatable.setFacing(change);
-		}
 
 		// If this TileEntity implements IRedstoneControl, check if it's getting powered.
 		if (tileEntity instanceof IRedstoneControl) {
@@ -141,60 +145,8 @@ public class BlockMachine extends BlockTextured {
 				ownable.setOwner(player);
 			}
 		}
-	}
 
-	@Override
-	public ForgeDirection[] getValidRotations(World world, int x, int y, int z) {
-		TileEntity tileEntity = world.getTileEntity(x, y, z);
-		ForgeDirection[] valid = new ForgeDirection[6];
-
-		// If this TileEntity implements IRotatable, we do our rotations.
-		if (tileEntity instanceof IRotatable) {
-			IRotatable rotatable = (IRotatable) tileEntity;
-
-			for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
-				if (rotatable.canSetFacing(direction.ordinal())) {
-					valid[direction.ordinal()] = direction;
-				}
-			}
-		}
-
-		return valid;
-	}
-
-	@Override
-	public boolean rotateBlock(World world, int x, int y, int z, ForgeDirection axis) {
-		TileEntity tileEntity = world.getTileEntity(x, y, z);
-
-		// If this TileEntity implements IRotatable, we do our rotations.
-		if (tileEntity instanceof IRotatable) {
-			IRotatable rotatable = (IRotatable) tileEntity;
-
-			if (rotatable.canSetFacing(axis.ordinal())) {
-				rotatable.setFacing(axis.ordinal());
-
-				return true;
-			}
-		}
-
-		return super.rotateBlock(world, x, y, z, axis);
-	}
-
-	public ItemStack dismantleBlock(World world, int x, int y, int z, boolean returnBlock) {
-		ItemStack itemStack = getPickBlock(null, world, x, y, z, null);
-		world.setBlockToAir(x, y, z);
-
-		if (!returnBlock) {
-			float motion = 0.7F;
-			double motionX = (world.rand.nextFloat() * motion) + (1.0F - motion) * 0.5D;
-			double motionY = (world.rand.nextFloat() * motion) + (1.0F - motion) * 0.5D;
-			double motionZ = (world.rand.nextFloat() * motion) + (1.0F - motion) * 0.5D;
-
-			EntityItem entityItem = new EntityItem(world, x + motionX, y + motionY, z + motionZ, itemStack);
-			world.spawnEntityInWorld(entityItem);
-		}
-
-		return itemStack;
+		super.onBlockPlacedBy(world, x, y, z, entity, itemStack);
 	}
 
 	@Override
