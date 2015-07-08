@@ -30,7 +30,7 @@ public class PacketRequestData extends PacketBlockLocation implements IMessage, 
 			if (tileEntity instanceof INetworkable) {
 				INetworkable networkable = (INetworkable) tileEntity;
 
-				return new PacketTileEntity(message.getBlockLocation(), networkable.getPacketData(new ArrayList<>()));
+				return new PacketTileEntity(networkable);
 			}
 		}
 
