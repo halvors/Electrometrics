@@ -11,18 +11,28 @@ import org.lwjgl.opengl.GL11;
 import java.util.List;
 
 @SideOnly(Side.CLIENT)
-abstract class GuiComponentBase {
+abstract class GuiComponent implements IGuiComponent {
 	static final Minecraft mc = Minecraft.getMinecraft();
 
 	final ResourceLocation resource;
 	final IGui gui;
 	final ResourceLocation defaultResource;
 
-	GuiComponentBase(ResourceLocation resource, IGui gui, ResourceLocation defaultResource) {
+	GuiComponent(ResourceLocation resource, IGui gui, ResourceLocation defaultResource) {
 		this.resource = resource;
 		this.gui = gui;
 		this.defaultResource = defaultResource;
 	}
+
+    @Override
+    public void renderBackground(int xAxis, int yAxis, int guiWidth, int guiHeight) {
+        mc.renderEngine.bindTexture(defaultResource);
+    }
+
+    @Override
+    public void renderForeground(int xAxis, int yAxis) {
+        mc.renderEngine.bindTexture(defaultResource);
+    }
 
 	void displayTooltip(String text, int xAxis, int yAxis) {
 		gui.displayTooltip(text, xAxis, yAxis);
