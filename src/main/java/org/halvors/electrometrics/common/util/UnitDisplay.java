@@ -33,13 +33,21 @@ public class UnitDisplay {
 		MINECRAFT_JOULES("Minecraft Joule", "MJ"),
 		ELECTRICAL_UNITS("Electrical Unit", "EU");
 
-		public final String name;
-		public final String symbol;
+        private final String name;
+        private final String symbol;
 
 		Unit(String name, String symbol) {
 			this.name = name;
 			this.symbol = symbol;
 		}
+
+        public String getName() {
+            return name;
+        }
+
+        public String getSymbol() {
+            return symbol;
+        }
 
 		public String getPlural() {
 			return this.name + "s";
@@ -60,12 +68,12 @@ public class UnitDisplay {
 		ZETTA("Zetta", "Z", 1000000000000000000000d),
 		YOTTA("Yotta", "Y", 1000000000000000000000000d);
 
-		/** long name for the unit */
-		public final String name;
+        /** long name for the unit */
+        private final String name;
 		/** short unit version of the unit */
-		public final String symbol;
+        private final String symbol;
 		/** Point by which a number is consider to be of this unit */
-		public final double value;
+        private final double value;
 
 		UnitPrefix(String name, String symbol, double value) {
 			this.name = name;
@@ -80,6 +88,18 @@ public class UnitDisplay {
 				return name;
 			}
 		}
+
+        public double getValue() {
+            return value;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getSymbol() {
+            return symbol;
+        }
 
 		/** Divides the value by the unit value start */
 		public double process(double value) {
