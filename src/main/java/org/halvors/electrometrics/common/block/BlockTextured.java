@@ -29,24 +29,16 @@ public class BlockTextured extends BlockContainer {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean isOpaqueCube() {
-		return false;
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
 		baseIcon = iconRegister.registerIcon(Reference.PREFIX + name);
 		defaultIcon = DefaultIcon.getAll(baseIcon);
-
-		// Register textures here.
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
 		TileEntity tileEntity = world.getTileEntity(x, y, z);
-		int meta = world.getBlockMetadata(x, y, z);
+		int metadata = world.getBlockMetadata(x, y, z);
 		boolean isActive = false;
 
 		// Check if this implements IActiveState, if it do we get the state from it.
@@ -60,15 +52,15 @@ public class BlockTextured extends BlockContainer {
 		if (tileEntity instanceof IRotatable) {
 			IRotatable rotatable = (IRotatable) tileEntity;
 
-			return iconList[meta][Orientation.getBaseOrientation(side, rotatable.getFacing()) + (isActive ? 6 : 0)];
+			return iconList[metadata][Orientation.getBaseOrientation(side, rotatable.getFacing()) + (isActive ? 6 : 0)];
 		}
 
-		return iconList[meta][side + (isActive ? 6 : 0)];
+		return iconList[metadata][side + (isActive ? 6 : 0)];
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public IIcon getIcon(int side, int meta) {
+	public IIcon getIcon(int side, int metadata) {
 		// Workaround to for when block is not rendered in world, by swapping the front and back sides.
 		switch (side) {
 			case 2: // Back
@@ -80,6 +72,12 @@ public class BlockTextured extends BlockContainer {
 				break;
 		}
 
-		return iconList[meta][side];
+		return iconList[metadata][side];
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean isOpaqueCube() {
+		return false;
 	}
 }

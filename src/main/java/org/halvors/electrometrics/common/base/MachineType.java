@@ -50,6 +50,10 @@ public enum MachineType {
         return null;
     }
 
+    public Class<? extends TileEntityMachine> getTileEntityClass() {
+        return tileEntityClass;
+    }
+
     public static MachineType getType(Block block, int meta) {
         if (block instanceof BlockMachine) {
             for (MachineType type : values()) {

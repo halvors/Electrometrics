@@ -106,8 +106,7 @@ public class GuiElectricityMeter extends GuiScreen {
 			TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
 
 			// The name of this machine.
-			String name = tileEntityElectricityMeter.getTier().getBaseTier().getName() + " " + tileEntity.getName();
-			fontRendererObj.drawString(name, (xSize / 2) - (fontRendererObj.getStringWidth(name) / 2), 6, 0x404040);
+			fontRendererObj.drawString(tileEntity.getName(), (xSize / 2) - (fontRendererObj.getStringWidth(tileEntity.getName()) / 2), 6, 0x404040);
 
 			// Formatting energy to the correct energy unit.
 			String measuredEnergy = Utils.getEnergyDisplay(tileEntityElectricityMeter.getElectricityCount());

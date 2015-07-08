@@ -51,7 +51,7 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 	private boolean wasPowered;
 
 	public TileEntityElectricityMeter() {
-		super(ElectricityMeterTier.BASIC.getBaseTier().getName() + "Electricity Meter", ElectricityMeterTier.BASIC.getMaxEnergy(), ElectricityMeterTier.BASIC.getMaxTransfer(), ElectricityMeterTier.BASIC.getMaxTransfer());
+		super(ElectricityMeterTier.BASIC.getBaseTier().getName() + " Electricity Meter", ElectricityMeterTier.BASIC.getMaxEnergy(), ElectricityMeterTier.BASIC.getMaxTransfer(), ElectricityMeterTier.BASIC.getMaxTransfer());
 	}
 
 	@Override
