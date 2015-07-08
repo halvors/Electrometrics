@@ -17,3 +17,10 @@ tooltip.hold=Hold
 tooltip.forDetails=for details
 tooltip.measuredEnergy=Measured energy
 tooltip.storedEnergy=Stored energy
+
+// Tier names
+tier.Basic=Basic
+tier.Advanced=Advanced
+tier.Elite=Elite
+tier.Ultimate=Ultimate
+tier.Creative=Creative
