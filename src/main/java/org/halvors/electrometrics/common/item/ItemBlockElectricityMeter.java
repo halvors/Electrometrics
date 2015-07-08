@@ -11,7 +11,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import org.halvors.electrometrics.client.key.Key;
 import org.halvors.electrometrics.client.key.KeyHandler;
-import org.halvors.electrometrics.common.base.ElectricityMeterTier;
+import org.halvors.electrometrics.common.base.Tier.BaseTier;
+import org.halvors.electrometrics.common.base.Tier.ElectricityMeterTier;
 import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.util.Color;
 import org.halvors.electrometrics.common.util.Utils;
@@ -24,7 +25,7 @@ import java.util.List;
  *
  * @author halvors
  */
-public class ItemBlockElectricityMeter extends ItemBlockTextured {
+public class ItemBlockElectricityMeter extends ItemBlockMachine {
 	public ItemBlockElectricityMeter(Block block) {
 		super(block);
 	}
@@ -43,7 +44,9 @@ public class ItemBlockElectricityMeter extends ItemBlockTextured {
 
     @Override
     public String getItemStackDisplayName(ItemStack itemStack) {
-        return Utils.translate("tile." + block.getName() + getTier(itemStack).getBaseTier().getName() + ".name");
+		BaseTier baseTier = getTier(itemStack).getBaseTier();
+
+        return Utils.translate("tile." + baseTier.getName() + block.getName() +  ".name");
     }
 
 	@Override
