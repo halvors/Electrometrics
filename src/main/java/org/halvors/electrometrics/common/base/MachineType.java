@@ -52,7 +52,7 @@ public enum MachineType {
                     ElectricityMeterTier electricityMeterTier = ElectricityMeterTier.values()[metadata];
                     String name = Utils.translate("tile." + electricityMeterTier.getBaseTier().getName() + block.getName() + ".name");
 
-                    return tileEntityClass.getConstructor(tileEntityClass).newInstance(name, electricityMeterTier);
+                    return tileEntityClass.getConstructor(new Class[] { String.class, ElectricityMeterTier.class }).newInstance(name, electricityMeterTier);
 
                 default:
                     return tileEntityClass.newInstance();
