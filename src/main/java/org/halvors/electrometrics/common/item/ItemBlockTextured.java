@@ -17,8 +17,8 @@ public class ItemBlockTextured extends ItemBlockBasic {
     }
 
     @Override
-    public int getMetadata(int damageValue) {
-        return damageValue;
+    public int getMetadata(int meta) {
+        return meta;
     }
 
     @Override

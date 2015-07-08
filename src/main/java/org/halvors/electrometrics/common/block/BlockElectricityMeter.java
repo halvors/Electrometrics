@@ -48,7 +48,7 @@ public class BlockElectricityMeter extends BlockMachine {
 	}
 
 	@Override
-	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
+	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player) {
 		TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) world.getTileEntity(x, y, z);
 		ItemStack itemStack = new ItemStack(Electrometrics.blockElectricityMeter);
 
