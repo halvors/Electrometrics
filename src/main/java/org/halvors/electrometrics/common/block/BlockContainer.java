@@ -1,6 +1,5 @@
 package org.halvors.electrometrics.common.block;
 
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -11,10 +10,10 @@ import org.halvors.electrometrics.Electrometrics;
  *
  * @author halvors
  */
-public class BlockBasic extends BlockContainer {
+public class BlockContainer extends net.minecraft.block.BlockContainer {
 	protected final String name;
 
-	BlockBasic(String name, Material material) {
+	BlockContainer(String name, Material material) {
 		super(material);
 
 		this.name = name;
