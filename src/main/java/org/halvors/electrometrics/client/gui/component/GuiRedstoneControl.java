@@ -15,7 +15,7 @@ import org.halvors.electrometrics.common.network.PacketTileEntity;
 import org.halvors.electrometrics.common.util.render.Rectangle4i;
 
 @SideOnly(Side.CLIENT)
-public class GuiRedstoneControl extends GuiComponentBase implements IGuiComponent {
+public class GuiRedstoneControl extends GuiComponent implements IGuiComponent {
 	private final IRedstoneControl redstoneControl;
 	private final INetworkable networkable;
 
@@ -45,7 +45,7 @@ public class GuiRedstoneControl extends GuiComponentBase implements IGuiComponen
 			gui.drawTexturedRect(guiWidth + 179, guiHeight + 142, renderX, 18, 18, 18);
 		}
 
-		mc.renderEngine.bindTexture(defaultResource);
+        super.renderBackground(xAxis, yAxis, guiWidth, guiHeight);
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class GuiRedstoneControl extends GuiComponentBase implements IGuiComponen
 			displayTooltip(redstoneControl.getControlType().getDisplay(), xAxis, yAxis);
 		}
 
-		mc.renderEngine.bindTexture(defaultResource);
+        super.renderForeground(xAxis, yAxis);
 	}
 
 	@Override

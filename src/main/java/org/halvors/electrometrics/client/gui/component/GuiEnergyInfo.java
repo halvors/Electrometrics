@@ -8,7 +8,7 @@ import org.halvors.electrometrics.client.gui.IGui;
 import org.halvors.electrometrics.common.util.render.Rectangle4i;
 
 @SideOnly(Side.CLIENT)
-public class GuiEnergyInfo extends GuiComponentBase implements IGuiComponent {
+public class GuiEnergyInfo extends GuiComponent implements IGuiComponent {
 	private final IInfoHandler infoHandler;
 
 	public GuiEnergyInfo(IInfoHandler infoHandler, IGui gui, ResourceLocation defaultResource) {
@@ -28,7 +28,7 @@ public class GuiEnergyInfo extends GuiComponentBase implements IGuiComponent {
 
 		gui.drawTexturedRect(guiWidth - 26, guiHeight + 138, 0, 0, 26, 26);
 
-		mc.renderEngine.bindTexture(defaultResource);
+        super.renderBackground(xAxis, yAxis, guiWidth, guiHeight);
 	}
 
 	@Override
@@ -36,6 +36,8 @@ public class GuiEnergyInfo extends GuiComponentBase implements IGuiComponent {
 		if (xAxis >= -21 && xAxis <= -3 && yAxis >= 142 && yAxis <= 160) {
 			displayTooltips(infoHandler.getInfo(), xAxis, yAxis);
 		}
+
+        super.renderForeground(xAxis, yAxis);
 	}
 
 	@Override
