@@ -15,8 +15,8 @@ import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
  * @author halvors
  */
 public class BlockElectricityMeter extends BlockMachine {
-	public BlockElectricityMeter() {
-		super("blockElectricityMeter");
+	public BlockElectricityMeter(String name) {
+		super(name);
 	}
 
 	@Override

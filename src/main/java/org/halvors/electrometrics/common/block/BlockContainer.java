@@ -18,6 +18,7 @@ public class BlockContainer extends net.minecraft.block.BlockContainer {
 
 		this.name = name;
 
+		setBlockName(name);
 		setCreativeTab(Electrometrics.getTab());
 	}
 
