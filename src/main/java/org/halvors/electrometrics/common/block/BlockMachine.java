@@ -54,9 +54,8 @@ public class BlockMachine extends BlockRotatable {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
-		IIcon baseIcon = iconRegister.registerIcon(Reference.PREFIX + name);
-		DefaultIcon defaultIcon = DefaultIcon.getAll(baseIcon);
-
+		super.registerBlockIcons(iconRegister);
+		
 		// Adding machine types.
 		for (MachineType type : MachineType.values()) {
 			Renderer.loadDynamicTextures(iconRegister, type.getName(), iconList[type.getMetadata()], defaultIcon);

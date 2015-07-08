@@ -17,10 +17,14 @@ public class BlockTextured extends BlockContainer {
 	@SideOnly(Side.CLIENT)
 	protected final IIcon[][] iconList = new IIcon[16][16];
 
+	@SideOnly(Side.CLIENT)
+	protected IIcon baseIcon;
+
+	@SideOnly(Side.CLIENT)
+	protected DefaultIcon defaultIcon;
+
 	BlockTextured(String name, Material material) {
 		super(name, material);
-
-		setBlockName(name);
 	}
 
 	@Override
@@ -32,8 +36,8 @@ public class BlockTextured extends BlockContainer {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
-		IIcon baseIcon = iconRegister.registerIcon(Reference.PREFIX + name);
-        DefaultIcon defaultIcon = DefaultIcon.getAll(baseIcon);
+		baseIcon = iconRegister.registerIcon(Reference.PREFIX + name);
+		defaultIcon = DefaultIcon.getAll(baseIcon);
 
 		// Register textures here.
 	}
@@ -44,8 +48,6 @@ public class BlockTextured extends BlockContainer {
 		TileEntity tileEntity = world.getTileEntity(x, y, z);
 		int meta = world.getBlockMetadata(x, y, z);
 		boolean isActive = false;
-
-		System.out.println("Block at " + x + ", " + y + ", " + z + ", has metadata: " + meta);
 
 		// Check if this implements IActiveState, if it do we get the state from it.
 		if (tileEntity instanceof IActiveState) {
