@@ -21,14 +21,18 @@ import org.halvors.electrometrics.common.base.Tier.ElectricityMeterTier;
 import org.halvors.electrometrics.common.base.tile.IOwnable;
 import org.halvors.electrometrics.common.base.tile.IRedstoneControl;
 import org.halvors.electrometrics.common.item.ItemBlockElectricityMeter;
-import org.halvors.electrometrics.common.tile.TileEntityElectricMachine;
+import org.halvors.electrometrics.common.tile.TileEntityElectricBlock;
 import org.halvors.electrometrics.common.util.render.Renderer;
 
 import java.util.List;
 
 public class BlockMachine extends BlockRotatable {
-	BlockMachine(String name) {
-		super(name, Material.iron);
+    private final MachineType machineType;
+
+	BlockMachine(MachineType machineType) {
+		super(machineType.getName(), Material.iron);
+
+        this.machineType = machineType;
 
 		setHardness(2F);
 		setResistance(4F);
@@ -37,8 +41,6 @@ public class BlockMachine extends BlockRotatable {
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
-		MachineType machineType = MachineType.getType(this, metadata);
-
 		return machineType.getTileEntity();
 	}
 
@@ -152,9 +154,9 @@ public class BlockMachine extends BlockRotatable {
 		if (!world.isRemote) {
 			TileEntity tileEntity = world.getTileEntity(x, y, z);
 
-			if (tileEntity instanceof TileEntityElectricMachine) {
-				TileEntityElectricMachine tileEntityElectricMachine = (TileEntityElectricMachine) tileEntity;
-				tileEntityElectricMachine.onNeighborChange();
+			if (tileEntity instanceof TileEntityElectricBlock) {
+				TileEntityElectricBlock tileEntityElectricBlock = (TileEntityElectricBlock) tileEntity;
+				tileEntityElectricBlock.onNeighborChange();
 			}
 		}
 	}

@@ -5,6 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import org.halvors.electrometrics.Electrometrics;
+import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.item.ItemBlockElectricityMeter;
 import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
 
@@ -15,8 +16,8 @@ import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
  * @author halvors
  */
 public class BlockElectricityMeter extends BlockMachine {
-	public BlockElectricityMeter(String name) {
-		super(name);
+	public BlockElectricityMeter() {
+		super(MachineType.BASIC_ELECTRICITY_METER);
 	}
 
 	@Override
