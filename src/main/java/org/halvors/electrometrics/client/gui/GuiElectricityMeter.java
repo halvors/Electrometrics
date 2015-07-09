@@ -5,10 +5,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
-import org.halvors.electrometrics.client.gui.component.GuiEnergyInfo;
-import org.halvors.electrometrics.client.gui.component.GuiOwnerInfo;
-import org.halvors.electrometrics.client.gui.component.GuiRedstoneControl;
-import org.halvors.electrometrics.client.gui.component.IInfoHandler;
+import org.halvors.electrometrics.client.gui.component.*;
 import org.halvors.electrometrics.common.base.tile.IOwnable;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketRequestData;
@@ -33,28 +30,28 @@ public class GuiElectricityMeter extends GuiScreen {
 		super(tileEntity);
 
 		components.add(new GuiOwnerInfo(new IInfoHandler() {
-			@Override
-			public List<String> getInfo() {
-				List<String> list = new ArrayList<>();
-				list.add(tileEntity.getOwnerName());
+            @Override
+            public List<String> getInfo() {
+                List<String> list = new ArrayList<>();
+                list.add(tileEntity.getOwnerName());
 
-				return list;
-			}
-		}, this, defaultResource));
+                return list;
+            }
+        }, this, defaultResource));
 
+        // TODO: Get currect energy usage here.
 		components.add(new GuiEnergyInfo(new IInfoHandler() {
 			@Override
 			public List<String> getInfo() {
-				String multiplier = Utils.getEnergyDisplay(10);
-
 				List<String> list = new ArrayList<>();
-				list.add("Using: " + multiplier + "/t");
+				list.add("Using: " + Utils.getEnergyDisplay(10) + "/t");
 				list.add("Needed: " + Utils.getEnergyDisplay(10));
 
 				return list;
 			}
 		}, this, defaultResource));
 
+        components.add(new GuiEnergyDisplay(this, tileEntity, defaultResource));
 		components.add(new GuiRedstoneControl(this, tileEntity, defaultResource));
 	}
 
