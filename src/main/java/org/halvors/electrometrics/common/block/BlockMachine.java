@@ -50,8 +50,8 @@ public class BlockMachine extends BlockRotatable {
 		super.registerBlockIcons(iconRegister);
 
 		// Adding machine types.
-		for (MachineType type : MachineType.values()) {
-			Renderer.loadDynamicTextures(iconRegister, type.getName(), iconList[type.getMetadata()], defaultIcon);
+		for (MachineType machineType : MachineType.values()) {
+			Renderer.loadDynamicTextures(iconRegister, machineType.getName(), iconList[machineType.getMetadata()], defaultIcon);
 		}
 	}
 
@@ -67,7 +67,7 @@ public class BlockMachine extends BlockRotatable {
 				case ELITE_ELECTRICITY_METER:
 				case ULTIMATE_ELECTRICITY_METER:
 				case CREATIVE_ELECTRICITY_METER:
-					ItemStack itemStack = machineType.getItemStack();
+					ItemStack itemStack = new ItemStack(item, 1, machineType.getMetadata());
 					ItemBlockElectricityMeter itemBlockElectricityMeter = (ItemBlockElectricityMeter) itemStack.getItem();
 					itemBlockElectricityMeter.setTier(itemStack, ElectricityMeterTier.values()[machineType.getMetadata()]); // Get tier here in a better way?
 
@@ -75,7 +75,7 @@ public class BlockMachine extends BlockRotatable {
 					break;
 
 				default:
-					list.add(machineType.getItemStack());
+					list.add(new ItemStack(item, 1, machineType.getMetadata()));
 					break;
 			}
 		}
