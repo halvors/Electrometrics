@@ -1,14 +1,10 @@
 package org.halvors.electrometrics.common.tile;
 
-import net.minecraft.tileentity.TileEntity;
-
-public class TileEntityBasic extends TileEntity {
+public class TileEntity extends net.minecraft.tileentity.TileEntity {
 	// The name of this TileEntity.
 	private String name;
 
-	public TileEntityBasic(String name) {
-		super();
-
+	public TileEntity(String name) {
 		this.name = name;
 	}
 

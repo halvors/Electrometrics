@@ -3,8 +3,8 @@ package org.halvors.electrometrics.common.network;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import net.minecraft.tileentity.TileEntity;
 import org.halvors.electrometrics.common.base.tile.INetworkable;
+import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.util.location.BlockLocation;
 
 public class PacketRequestData extends PacketBlockLocation implements IMessage, IMessageHandler<PacketRequestData, IMessage> {

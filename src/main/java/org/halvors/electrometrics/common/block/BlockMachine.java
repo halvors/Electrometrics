@@ -21,7 +21,7 @@ import org.halvors.electrometrics.common.base.Tier.ElectricityMeterTier;
 import org.halvors.electrometrics.common.base.tile.IOwnable;
 import org.halvors.electrometrics.common.base.tile.IRedstoneControl;
 import org.halvors.electrometrics.common.item.ItemBlockElectricityMeter;
-import org.halvors.electrometrics.common.tile.TileEntityMachine;
+import org.halvors.electrometrics.common.tile.TileEntityElectricMachine;
 import org.halvors.electrometrics.common.util.render.Renderer;
 
 import java.util.List;
@@ -152,9 +152,9 @@ public class BlockMachine extends BlockRotatable {
 		if (!world.isRemote) {
 			TileEntity tileEntity = world.getTileEntity(x, y, z);
 
-			if (tileEntity instanceof TileEntityMachine) {
-				TileEntityMachine tileEntityMachine = (TileEntityMachine) tileEntity;
-				tileEntityMachine.onNeighborChange();
+			if (tileEntity instanceof TileEntityElectricMachine) {
+				TileEntityElectricMachine tileEntityElectricMachine = (TileEntityElectricMachine) tileEntity;
+				tileEntityElectricMachine.onNeighborChange();
 			}
 		}
 	}

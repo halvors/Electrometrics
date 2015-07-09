@@ -10,11 +10,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import org.halvors.electrometrics.Reference;
+import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.util.location.BlockLocation;
 import org.halvors.electrometrics.common.util.location.Range;
 
