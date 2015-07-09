@@ -6,8 +6,6 @@ import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.util.Utils;
 
 public class ItemBlockMachine extends ItemBlockContainer {
-    private final MachineType machineType = MachineType.getType(new ItemStack(this));
-
     ItemBlockMachine(Block block) {
         super(block);
 
@@ -21,6 +19,8 @@ public class ItemBlockMachine extends ItemBlockContainer {
 
     @Override
     public String getItemStackDisplayName(ItemStack itemStack) {
+        MachineType machineType = MachineType.getType(itemStack);
+
         switch (machineType) {
             case BASIC_ELECTRICITY_METER:
             case ADVANCED_ELECTRICITY_METER:
@@ -28,7 +28,7 @@ public class ItemBlockMachine extends ItemBlockContainer {
             case ULTIMATE_ELECTRICITY_METER:
             case CREATIVE_ELECTRICITY_METER:
                 if (this instanceof ItemBlockElectricityMeter) {
-                    ItemBlockElectricityMeter itemBlockElectricityMeter = (ItemBlockElectricityMeter) this;
+                    ItemBlockElectricityMeter itemBlockElectricityMeter = (ItemBlockElectricityMeter) itemStack.getItem();
 
                     return Utils.translate("tile." + itemBlockElectricityMeter.getTier(itemStack).getBaseTier().getName() + block.getName() + ".name");
                 }
