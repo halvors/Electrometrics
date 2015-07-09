@@ -11,7 +11,7 @@ import org.halvors.electrometrics.common.block.BlockContainer;
  * @author halvors
  */
 class ItemBlockContainer extends ItemBlock {
-	protected final BlockContainer block;
+	final BlockContainer block;
 
 	ItemBlockContainer(Block block) {
 		super(block);

@@ -11,12 +11,13 @@ import org.lwjgl.opengl.GL11;
 import java.util.List;
 
 @SideOnly(Side.CLIENT)
-abstract class GuiComponent implements IGuiComponent {
-	static final Minecraft mc = Minecraft.getMinecraft();
+public abstract class GuiComponent implements IGuiComponent {
+    private final ResourceLocation defaultResource;
+
+    static final Minecraft game = Minecraft.getMinecraft();
 
 	final ResourceLocation resource;
 	final IGui gui;
-	final ResourceLocation defaultResource;
 
 	GuiComponent(ResourceLocation resource, IGui gui, ResourceLocation defaultResource) {
 		this.resource = resource;
@@ -26,12 +27,12 @@ abstract class GuiComponent implements IGuiComponent {
 
     @Override
     public void renderBackground(int xAxis, int yAxis, int guiWidth, int guiHeight) {
-        mc.renderEngine.bindTexture(defaultResource);
+        game.renderEngine.bindTexture(defaultResource);
     }
 
     @Override
     public void renderForeground(int xAxis, int yAxis) {
-        mc.renderEngine.bindTexture(defaultResource);
+        game.renderEngine.bindTexture(defaultResource);
     }
 
 	void displayTooltip(String text, int xAxis, int yAxis) {
@@ -61,7 +62,7 @@ abstract class GuiComponent implements IGuiComponent {
 		}
 	}
 
-	FontRenderer getFontRenderer() {
+	private FontRenderer getFontRenderer() {
 		return gui.getFontRenderer();
 	}
 }

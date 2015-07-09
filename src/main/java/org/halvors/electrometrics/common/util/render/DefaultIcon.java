@@ -12,7 +12,7 @@ public class DefaultIcon {
 	private final IIcon defaultIcon;
 	private final List<Integer> icons = new ArrayList<>();
 
-	public DefaultIcon(IIcon defaultIcon, int ...is) {
+	private DefaultIcon(IIcon defaultIcon, int ...is) {
 		this.defaultIcon = defaultIcon;
 
 		for (int i : is) {

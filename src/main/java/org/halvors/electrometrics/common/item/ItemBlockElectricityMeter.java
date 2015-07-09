@@ -67,7 +67,7 @@ public class ItemBlockElectricityMeter extends ItemBlockMachine {
 		return placed;
 	}
 
-	public ElectricityMeterTier getTier(ItemStack itemStack) {
+	private ElectricityMeterTier getTier(ItemStack itemStack) {
 		if (itemStack.stackTagCompound != null) {
 			int tier = itemStack.stackTagCompound.getInteger("tier");
 
@@ -85,7 +85,7 @@ public class ItemBlockElectricityMeter extends ItemBlockMachine {
 		itemStack.stackTagCompound.setInteger("tier", tier.getBaseTier().ordinal());
 	}
 
-	public double getElectricityCount(ItemStack itemStack) {
+	private double getElectricityCount(ItemStack itemStack) {
 		if (itemStack.stackTagCompound != null) {
 			return itemStack.stackTagCompound.getDouble("electricityCount");
 		}
@@ -101,7 +101,7 @@ public class ItemBlockElectricityMeter extends ItemBlockMachine {
 		itemStack.stackTagCompound.setDouble("electricityCount", electricityCount);
 	}
 
-	public int getElectricityStored(ItemStack itemStack) {
+	private int getElectricityStored(ItemStack itemStack) {
 		if (itemStack.stackTagCompound != null) {
 			return itemStack.stackTagCompound.getInteger("electricityStored");
 		}

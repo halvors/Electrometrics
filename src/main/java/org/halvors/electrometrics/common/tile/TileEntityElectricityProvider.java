@@ -47,7 +47,7 @@ public abstract class TileEntityElectricityProvider extends TileEntityElectricit
 	}
 
 	@Override
-	public EnumSet<ForgeDirection> getReceivingSides() {
+	EnumSet<ForgeDirection> getReceivingSides() {
 		EnumSet<ForgeDirection> directions = EnumSet.allOf(ForgeDirection.class);
 		directions.removeAll(getExtractingSides());
 		directions.remove(ForgeDirection.UNKNOWN);
@@ -56,7 +56,7 @@ public abstract class TileEntityElectricityProvider extends TileEntityElectricit
 	}
 
 	@Override
-	public EnumSet<ForgeDirection> getExtractingSides() {
+	EnumSet<ForgeDirection> getExtractingSides() {
 		return EnumSet.of(ForgeDirection.getOrientation(facing));
 	}
 

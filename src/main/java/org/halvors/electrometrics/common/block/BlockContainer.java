@@ -11,7 +11,7 @@ import org.halvors.electrometrics.Electrometrics;
  * @author halvors
  */
 public class BlockContainer extends net.minecraft.block.BlockContainer {
-	protected final String name;
+	final String name;
 
 	BlockContainer(String name, Material material) {
 		super(material);

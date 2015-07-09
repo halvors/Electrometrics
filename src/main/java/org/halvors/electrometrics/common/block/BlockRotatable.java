@@ -122,8 +122,7 @@ public class BlockRotatable extends BlockTextured {
         return super.rotateBlock(world, x, y, z, axis);
     }
 
-    public ItemStack dismantleBlock(World world, int x, int y, int z, boolean returnBlock) {
-        ItemStack itemStack = getPickBlock(null, world, x, y, z, null);
+    void dismantleBlock(World world, int x, int y, int z, boolean returnBlock) {
         world.setBlockToAir(x, y, z);
 
         if (!returnBlock) {
@@ -131,11 +130,10 @@ public class BlockRotatable extends BlockTextured {
             double motionX = (world.rand.nextFloat() * motion) + (1.0F - motion) * 0.5D;
             double motionY = (world.rand.nextFloat() * motion) + (1.0F - motion) * 0.5D;
             double motionZ = (world.rand.nextFloat() * motion) + (1.0F - motion) * 0.5D;
+            ItemStack itemStack = getPickBlock(null, world, x, y, z, null);
 
             EntityItem entityItem = new EntityItem(world, x + motionX, y + motionY, z + motionZ, itemStack);
             world.spawnEntityInWorld(entityItem);
         }
-
-        return itemStack;
     }
 }

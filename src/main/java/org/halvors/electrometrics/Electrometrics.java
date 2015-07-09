@@ -52,7 +52,7 @@ public class Electrometrics {
 	private static final Tab tab = new Tab();
 
 	// Blocks.
-	public static final BlockMachine blockElectricityMeter = new BlockElectricityMeter("ElectricityMeter");
+	public static final BlockMachine blockElectricityMeter = new BlockElectricityMeter();
 
 	// Configuration.
 	private static Configuration configuration;

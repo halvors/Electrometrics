@@ -33,7 +33,7 @@ public class GuiRedstoneControl extends GuiComponent implements IGuiComponent {
 
 	@Override
 	public void renderBackground(int xAxis, int yAxis, int guiWidth, int guiHeight) {
-		mc.renderEngine.bindTexture(resource);
+		game.renderEngine.bindTexture(resource);
 
 		gui.drawTexturedRect(guiWidth + 176, guiHeight + 138, 0, 0, 26, 26);
 
@@ -50,7 +50,7 @@ public class GuiRedstoneControl extends GuiComponent implements IGuiComponent {
 
 	@Override
 	public void renderForeground(int xAxis, int yAxis) {
-		mc.renderEngine.bindTexture(resource);
+		game.renderEngine.bindTexture(resource);
 
 		if (xAxis >= 179 && xAxis <= 197 && yAxis >= 142 && yAxis <= 160) {
 			displayTooltip(redstoneControl.getControlType().getDisplay(), xAxis, yAxis);

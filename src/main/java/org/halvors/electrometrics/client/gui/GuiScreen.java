@@ -9,7 +9,6 @@ import org.halvors.electrometrics.Reference;
 import org.halvors.electrometrics.client.gui.component.IGuiComponent;
 import org.halvors.electrometrics.common.component.IComponent;
 import org.halvors.electrometrics.common.tile.TileEntity;
-import org.halvors.electrometrics.common.tile.TileEntityElectricMachine;
 import org.lwjgl.opengl.GL11;
 
 import java.util.Collections;
@@ -18,19 +17,20 @@ import java.util.List;
 import java.util.Set;
 
 @SideOnly(Side.CLIENT)
-abstract class GuiScreen extends net.minecraft.client.gui.GuiScreen implements IGui {
-	protected final Set<IComponent> components = new HashSet<>();
+public abstract class GuiScreen extends net.minecraft.client.gui.GuiScreen implements IGui {
+	final Set<IComponent> components = new HashSet<>();
 
-	protected final ResourceLocation defaultResource = new ResourceLocation(Reference.PREFIX + "gui/guiScreenBlank.png");
-	protected final TileEntity tileEntity;
+	final ResourceLocation defaultResource = new ResourceLocation(Reference.PREFIX + "gui/guiScreenBlank.png");
+	final TileEntity tileEntity;
 
 	// This is not present by default in GuiScreen as it is in GuiContainer.
-	protected final int xSize = 176;
-	protected final int ySize = 166;
+	final int xSize = 176;
+	final int ySize = 166;
+
 	private int guiLeft;
 	private int guiTop;
 
-	protected GuiScreen(TileEntity tileEntity) {
+	GuiScreen(TileEntity tileEntity) {
 		this.tileEntity = tileEntity;
 	}
 

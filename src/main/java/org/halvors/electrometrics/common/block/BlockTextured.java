@@ -15,13 +15,10 @@ import org.halvors.electrometrics.common.util.render.DefaultIcon;
 
 public class BlockTextured extends BlockContainer {
 	@SideOnly(Side.CLIENT)
-	protected final IIcon[][] iconList = new IIcon[16][16];
+	final IIcon[][] iconList = new IIcon[16][16];
 
 	@SideOnly(Side.CLIENT)
-	protected IIcon baseIcon;
-
-	@SideOnly(Side.CLIENT)
-	protected DefaultIcon defaultIcon;
+    DefaultIcon defaultIcon;
 
 	BlockTextured(String name, Material material) {
 		super(name, material);
@@ -30,7 +27,7 @@ public class BlockTextured extends BlockContainer {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
-		baseIcon = iconRegister.registerIcon(Reference.PREFIX + name);
+		IIcon baseIcon = iconRegister.registerIcon(Reference.PREFIX + name);
 		defaultIcon = DefaultIcon.getAll(baseIcon);
 	}
 

@@ -15,11 +15,11 @@ public abstract class TileEntityElectricityReceiver extends TileEntityElectricit
 		super(name, maxEnergy);
 	}
 
-	TileEntityElectricityReceiver(String name, int maxEnergy, int maxTransfer) {
+    TileEntityElectricityReceiver(String name, int maxEnergy, int maxTransfer) {
 		super(name, maxEnergy, maxTransfer);
 	}
 
-	TileEntityElectricityReceiver(String name, int maxEnergy, int maxReceive, int maxExtract) {
+    TileEntityElectricityReceiver(String name, int maxEnergy, int maxReceive, int maxExtract) {
 		super(name, maxEnergy, maxReceive, maxExtract);
 	}
 
@@ -47,14 +47,14 @@ public abstract class TileEntityElectricityReceiver extends TileEntityElectricit
 		return getReceivingSides().contains(from) || getExtractingSides().contains(from);
 	}
 
-	public EnumSet<ForgeDirection> getReceivingSides() {
+	EnumSet<ForgeDirection> getReceivingSides() {
 		EnumSet<ForgeDirection> directions = EnumSet.allOf(ForgeDirection.class);
 		directions.remove(ForgeDirection.UNKNOWN);
 
 		return directions;
 	}
 
-	public EnumSet<ForgeDirection> getExtractingSides() {
+	EnumSet<ForgeDirection> getExtractingSides() {
 		return EnumSet.noneOf(ForgeDirection.class);
 	}
 }

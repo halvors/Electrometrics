@@ -1,10 +1,10 @@
 package org.halvors.electrometrics.common.util.render;
 
 public class Rectangle4i {
-	public int x;
-	public int y;
-	public int w;
-	public int h;
+    private int x;
+    private int y;
+    private int w;
+    private int h;
 
 	public Rectangle4i() {
 
@@ -17,20 +17,29 @@ public class Rectangle4i {
 		this.h = h;
 	}
 
+    public int getX1() {
+        return x;
+    }
+
+    public int getY1() {
+        return y;
+    }
+
+    public int getX2() {
+        return x + w - 1;
+    }
+
+    public int getY2() {
+        return y + h - 1;
+    }
+
+
 	public int x1() {
 		return x;
 	}
 
 	public int y1() {
 		return y;
-	}
-
-	public int x2() {
-		return x + w - 1;
-	}
-
-	public int y2() {
-		return y + h - 1;
 	}
 
 	public void set(int x, int y, int w, int h) {
@@ -70,7 +79,7 @@ public class Rectangle4i {
 	public Rectangle4i include(Rectangle4i r) {
 		include(r.x, r.y);
 
-		return include(r.x2(), r.y2());
+		return include(r.getX2(), r.getY2());
 	}
 
 	public Rectangle4i expand(int px, int py) {

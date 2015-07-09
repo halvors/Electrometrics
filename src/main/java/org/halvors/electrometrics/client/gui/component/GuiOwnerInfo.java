@@ -24,7 +24,7 @@ public class GuiOwnerInfo extends GuiComponent implements IGuiComponent {
 
 	@Override
 	public void renderBackground(int xAxis, int yAxis, int guiWidth, int guiHeight) {
-		mc.renderEngine.bindTexture(resource);
+		game.renderEngine.bindTexture(resource);
 
 		gui.drawTexturedRect(guiWidth - 26, guiHeight + 1, 0, 0, 26, 26);
 
