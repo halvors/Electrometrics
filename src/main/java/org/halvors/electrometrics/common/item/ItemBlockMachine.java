@@ -13,11 +13,4 @@ public class ItemBlockMachine extends ItemBlockContainer {
     public int getMetadata(int metadata) {
         return metadata;
     }
-
-    /*
-    @Override
-    public String getItemStackDisplayName(ItemStack itemStack) {
-        return Utils.translate("tile." + block.getName() + ".name");
-    }
-    */
 }

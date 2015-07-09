@@ -3,12 +3,11 @@ package org.halvors.electrometrics.client;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import org.halvors.electrometrics.client.gui.GuiElectricityMeter;
 import org.halvors.electrometrics.common.CommonProxy;
-import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
+import org.halvors.electrometrics.common.base.MachineType;
 
 /**
  * This is the client proxy used only by the client.
@@ -25,12 +24,10 @@ public class ClientProxy extends CommonProxy implements IGuiHandler {
 
 	@Override
 	public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
-		TileEntity tileEntity = world.getTileEntity(x, y, z);
+		Block block = world.getBlock(x, y, z);
+        int metadata = world.getBlockMetadata(x, y, z);
+        MachineType type = MachineType.getType(block, metadata);
 
-		if (tileEntity instanceof TileEntityElectricityMeter) {
-			return new GuiElectricityMeter((TileEntityElectricityMeter) tileEntity);
-		}
-
-		return null;
+        return type.getGui();
 	}
 }

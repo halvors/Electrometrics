@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author halvors
  */
-public abstract class TileEntityElectricityStorage extends TileEntityElectricMachine implements INetworkable {
+public abstract class TileEntityElectricityStorage extends TileEntityElectricBlock implements INetworkable {
 	// The internal energy storage.
 	final EnergyStorage storage;
 
