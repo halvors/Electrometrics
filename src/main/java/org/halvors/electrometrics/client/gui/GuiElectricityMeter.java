@@ -101,7 +101,7 @@ public class GuiElectricityMeter extends GuiComponentScreen {
 	}
 
 	@Override
-	protected void drawGuiScreenForegroundLayer(int mouseX, int mouseY) {
+	void drawGuiScreenForegroundLayer(int mouseX, int mouseY) {
 		if (tileEntity instanceof TileEntityElectricityMeter) {
 			TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
 

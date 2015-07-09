@@ -16,7 +16,6 @@ import org.halvors.electrometrics.common.base.MachineType;
  */
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy implements IGuiHandler {
-
 	@Override
 	public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
 		return null;
@@ -26,8 +25,8 @@ public class ClientProxy extends CommonProxy implements IGuiHandler {
 	public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
 		Block block = world.getBlock(x, y, z);
         int metadata = world.getBlockMetadata(x, y, z);
-        MachineType type = MachineType.getType(block, metadata);
+        MachineType machineType = MachineType.getType(block, metadata);
 
-        return type.getGui();
+        return machineType.getGui();
 	}
 }

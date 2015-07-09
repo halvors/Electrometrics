@@ -26,6 +26,15 @@ import org.halvors.electrometrics.common.util.render.Renderer;
 
 import java.util.List;
 
+/**
+ * Block class for handling multiple machine block IDs.
+ *
+ * 0:0: Basic Electricity Meter
+ * 0:1: Advanced Electricity Meter
+ * 0:2: Elite Electricity Meter
+ * 0:3: Ultimate Electricity Meter
+ * 0:4: Creative Electricity Meter
+ */
 public class BlockMachine extends BlockRotatable {
     private final MachineType machineType;
 
