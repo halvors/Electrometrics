@@ -11,6 +11,7 @@ import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketRequestData;
 import org.halvors.electrometrics.common.network.PacketTileEntity;
 import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
+import org.halvors.electrometrics.common.tile.TileEntityMachine;
 import org.halvors.electrometrics.common.util.Utils;
 
 import java.util.ArrayList;
@@ -26,18 +27,20 @@ import java.util.List;
 public class GuiElectricityMeter extends GuiComponentScreen {
 	private int ticker = 0;
 
-	public GuiElectricityMeter(final TileEntityElectricityMeter tileEntity) {
+	public GuiElectricityMeter(TileEntityMachine tileEntity) {
 		super(tileEntity);
 
-		components.add(new GuiOwnerInfo(new IInfoHandler() {
-            @Override
-            public List<String> getInfo() {
-                List<String> list = new ArrayList<>();
-                list.add(tileEntity.getOwnerName());
+		final TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
 
-                return list;
-            }
-        }, this, defaultResource));
+		components.add(new GuiOwnerInfo(new IInfoHandler() {
+			@Override
+			public List<String> getInfo() {
+				List<String> list = new ArrayList<>();
+				list.add(tileEntityElectricityMeter.getOwnerName());
+
+				return list;
+			}
+		}, this, defaultResource));
 
         // TODO: Get currect energy usage here.
 		components.add(new GuiEnergyInfo(new IInfoHandler() {
@@ -52,7 +55,7 @@ public class GuiElectricityMeter extends GuiComponentScreen {
 		}, this, defaultResource));
 
         components.add(new GuiEnergyDisplay(this, defaultResource));
-		components.add(new GuiRedstoneControl(this, tileEntity, defaultResource));
+		components.add(new GuiRedstoneControl(this, tileEntityElectricityMeter, defaultResource));
 	}
 
 	@SuppressWarnings("unchecked")

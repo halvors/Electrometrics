@@ -3,16 +3,12 @@ package org.halvors.electrometrics.common.base;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import org.halvors.electrometrics.Electrometrics;
-import org.halvors.electrometrics.client.gui.GuiComponentScreen;
 import org.halvors.electrometrics.client.gui.GuiElectricityMeter;
-import org.halvors.electrometrics.client.gui.GuiMachine;
 import org.halvors.electrometrics.client.gui.IGui;
 import org.halvors.electrometrics.common.base.Tier.ElectricityMeterTier;
 import org.halvors.electrometrics.common.block.BlockMachine;
-import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.tile.TileEntityMachine;
 import org.halvors.electrometrics.common.util.Utils;
@@ -61,7 +57,7 @@ public enum MachineType {
                     ElectricityMeterTier electricityMeterTier = ElectricityMeterTier.values()[metadata];
                     String name = Utils.translate("tile." + electricityMeterTier.getBaseTier().getName() + block.getName() + ".name");
 
-                    return tileEntityClass.getConstructor(new Class[] { String.class, ElectricityMeterTier.class }).newInstance("lol", electricityMeterTier);
+                    return (TileEntityMachine) tileEntityClass.getConstructor(new Class[] { String.class, ElectricityMeterTier.class }).newInstance("lol", electricityMeterTier);
 
                 default:
                     return tileEntityClass.newInstance();
