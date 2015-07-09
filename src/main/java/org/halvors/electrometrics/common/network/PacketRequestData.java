@@ -7,8 +7,6 @@ import net.minecraft.tileentity.TileEntity;
 import org.halvors.electrometrics.common.base.tile.INetworkable;
 import org.halvors.electrometrics.common.util.location.BlockLocation;
 
-import java.util.ArrayList;
-
 public class PacketRequestData extends PacketBlockLocation implements IMessage, IMessageHandler<PacketRequestData, IMessage> {
 	public PacketRequestData() {
 
@@ -28,9 +26,7 @@ public class PacketRequestData extends PacketBlockLocation implements IMessage, 
 
 		if (tileEntity != null) {
 			if (tileEntity instanceof INetworkable) {
-				INetworkable networkable = (INetworkable) tileEntity;
-
-				return new PacketTileEntity(networkable);
+				return new PacketTileEntity((INetworkable) tileEntity);
 			}
 		}
 
