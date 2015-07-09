@@ -6,7 +6,7 @@ import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.util.Utils;
 
 public class ItemBlockMachine extends ItemBlockContainer {
-    final MachineType machineType = MachineType.getType(new ItemStack(this));
+    private final MachineType machineType = MachineType.getType(new ItemStack(this));
 
     ItemBlockMachine(Block block) {
         super(block);

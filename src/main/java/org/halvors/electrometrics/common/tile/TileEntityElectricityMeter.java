@@ -122,7 +122,7 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 	}
 
 	@Override
-	public EnumSet<ForgeDirection> getExtractingSides() {
+	EnumSet<ForgeDirection> getExtractingSides() {
 		return EnumSet.of(ForgeDirection.getOrientation(facing).getRotation(ForgeDirection.DOWN));
 	}
 

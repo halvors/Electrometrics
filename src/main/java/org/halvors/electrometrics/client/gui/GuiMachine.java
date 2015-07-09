@@ -5,7 +5,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import org.halvors.electrometrics.common.tile.TileEntityElectricBlock;
 
 @SideOnly(Side.CLIENT)
-public class GuiMachine extends GuiScreen {
+public class GuiMachine extends GuiComponentScreen {
 	protected GuiMachine(TileEntityElectricBlock tileEntity) {
 		super(tileEntity);
 	}

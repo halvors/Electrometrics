@@ -9,7 +9,6 @@ import cpw.mods.fml.relauncher.Side;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
@@ -18,8 +17,6 @@ import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.util.Utils;
 import org.halvors.electrometrics.common.util.location.BlockLocation;
 import org.halvors.electrometrics.common.util.location.Range;
-
-import java.util.List;
 
 /**
  * This is the PacketHandler which is responsible for registering the packet that we are going to use.

@@ -2,7 +2,6 @@ package org.halvors.electrometrics.common.util;
 
 import buildcraft.api.tools.IToolWrench;
 import cofh.api.item.IToolHammer;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import mekanism.api.IMekWrench;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -13,7 +12,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.common.base.tile.IRedstoneControl;
-import org.halvors.electrometrics.common.util.location.Range;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -5,9 +5,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import org.halvors.electrometrics.Electrometrics;
+import org.halvors.electrometrics.client.gui.GuiComponentScreen;
 import org.halvors.electrometrics.client.gui.GuiElectricityMeter;
 import org.halvors.electrometrics.client.gui.GuiMachine;
-import org.halvors.electrometrics.client.gui.GuiScreen;
 import org.halvors.electrometrics.common.base.Tier.ElectricityMeterTier;
 import org.halvors.electrometrics.common.block.BlockMachine;
 import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
@@ -25,9 +25,9 @@ public enum MachineType {
     private final String name;
     private final int metadata;
     private final Class<? extends TileEntityMachine> tileEntityClass;
-    private final Class<? extends GuiScreen> guiClass;
+    private final Class<? extends GuiComponentScreen> guiClass;
 
-    MachineType(BlockMachine block, String name, int metadata, Class<? extends TileEntityMachine> tileEntityClass, Class<? extends GuiScreen> guiClass) {
+    MachineType(BlockMachine block, String name, int metadata, Class<? extends TileEntityMachine> tileEntityClass, Class<? extends GuiComponentScreen> guiClass) {
         this.block = block;
         this.name = name;
         this.metadata = metadata;
