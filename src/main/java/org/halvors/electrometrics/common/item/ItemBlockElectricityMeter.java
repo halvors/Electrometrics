@@ -11,7 +11,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import org.halvors.electrometrics.client.key.Key;
 import org.halvors.electrometrics.client.key.KeyHandler;
-import org.halvors.electrometrics.common.base.Tier.BaseTier;
 import org.halvors.electrometrics.common.base.Tier.ElectricityMeterTier;
 import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.util.Color;
@@ -42,13 +41,6 @@ public class ItemBlockElectricityMeter extends ItemBlockMachine {
 		}
 	}
 
-    @Override
-    public String getItemStackDisplayName(ItemStack itemStack) {
-		BaseTier baseTier = getTier(itemStack).getBaseTier();
-
-        return Utils.translate("tile." + baseTier.getName() + block.getName() +  ".name");
-    }
-
 	@Override
 	public boolean placeBlockAt(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata) {
 		boolean placed = super.placeBlockAt(itemStack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata);
@@ -67,7 +59,7 @@ public class ItemBlockElectricityMeter extends ItemBlockMachine {
 		return placed;
 	}
 
-	private ElectricityMeterTier getTier(ItemStack itemStack) {
+	public ElectricityMeterTier getTier(ItemStack itemStack) {
 		if (itemStack.stackTagCompound != null) {
 			int tier = itemStack.stackTagCompound.getInteger("tier");
 

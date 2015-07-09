@@ -60,22 +60,22 @@ public class BlockMachine extends BlockRotatable {
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item item, CreativeTabs creativetabs, List list) {
 		// Making all MachineTypes available in creative mode.
-		for (MachineType type : MachineType.values()) {
-			switch (type) {
+		for (MachineType machineType : MachineType.values()) {
+			switch (machineType) {
 				case BASIC_ELECTRICITY_METER:
 				case ADVANCED_ELECTRICITY_METER:
 				case ELITE_ELECTRICITY_METER:
 				case ULTIMATE_ELECTRICITY_METER:
 				case CREATIVE_ELECTRICITY_METER:
-					ItemStack itemStack = type.getItemStack();
+					ItemStack itemStack = machineType.getItemStack();
 					ItemBlockElectricityMeter itemBlockElectricityMeter = (ItemBlockElectricityMeter) itemStack.getItem();
-					itemBlockElectricityMeter.setTier(itemStack, ElectricityMeterTier.values()[type.getMetadata()]); // Get tier here in a better way?
+					itemBlockElectricityMeter.setTier(itemStack, ElectricityMeterTier.values()[machineType.getMetadata()]); // Get tier here in a better way?
 
 					list.add(itemStack);
 					break;
 
 				default:
-					list.add(type.getItemStack());
+					list.add(machineType.getItemStack());
 					break;
 			}
 		}
