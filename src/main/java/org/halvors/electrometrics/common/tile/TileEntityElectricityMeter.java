@@ -66,8 +66,8 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 		super.writeToNBT(nbtTags);
 
         nbtTags.setBoolean("isActive", isActive);
-		nbtTags.setString("owner", owner != null ? owner.toString() : "");
-        nbtTags.setString("ownerName", ownerName != null /*!ownerName.isEmpty()*/ ? ownerName : "");
+		nbtTags.setString("owner", hasOwner() ? owner.toString() : "");
+        nbtTags.setString("ownerName", hasOwner() ? ownerName : "");
         nbtTags.setInteger("redstoneControlType", redstoneControlType.ordinal());
 
 		nbtTags.setInteger("tier", electricityMeterTier.ordinal());
@@ -79,7 +79,8 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 		super.handlePacketData(dataStream);
 
         isActive = dataStream.readBoolean();
-        owner = UUID.fromString(ByteBufUtils.readUTF8String(dataStream));
+        String ownerString = ByteBufUtils.readUTF8String(dataStream);
+		owner = ownerString != null ? UUID.fromString(ownerString) : null;
 		ownerName = ByteBufUtils.readUTF8String(dataStream);
 		redstoneControlType = RedstoneControlType.values()[dataStream.readInt()];
 
@@ -100,7 +101,7 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 
         list.add(isActive);
 		list.add(hasOwner() ? owner.toString() : "");
-		list.add(ownerName != null ? ownerName : "");
+		list.add(hasOwner() ? ownerName : "");
 		list.add(redstoneControlType.ordinal());
 
 		list.add(electricityMeterTier.ordinal());
@@ -138,12 +139,12 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 
 	@Override
 	public boolean hasOwner() {
-		return owner != null;
+		return owner != null && ownerName != null;
 	}
 
 	@Override
 	public boolean isOwner(EntityPlayer player) {
-		return owner.equals(player.getPersistentID());
+		return hasOwner() && owner.equals(player.getPersistentID());
 	}
 
 	@Override
