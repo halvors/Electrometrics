@@ -10,16 +10,16 @@ import java.util.EnumSet;
  *
  * @author halvors
  */
-public abstract class TileEntityEnergyReceiver extends TileEntityEnergyStorage implements IEnergyReceiver {
-	TileEntityEnergyReceiver(String name, int maxEnergy) {
+public abstract class TileEntityElectricityReceiver extends TileEntityElectricityStorage implements IEnergyReceiver {
+	TileEntityElectricityReceiver(String name, int maxEnergy) {
 		super(name, maxEnergy);
 	}
 
-	TileEntityEnergyReceiver(String name, int maxEnergy, int maxReceive) {
-		super(name, maxEnergy, maxReceive);
+	TileEntityElectricityReceiver(String name, int maxEnergy, int maxTransfer) {
+		super(name, maxEnergy, maxTransfer);
 	}
 
-	TileEntityEnergyReceiver(String name, int maxEnergy, int maxReceive, int maxExtract) {
+	TileEntityElectricityReceiver(String name, int maxEnergy, int maxReceive, int maxExtract) {
 		super(name, maxEnergy, maxReceive, maxExtract);
 	}
 

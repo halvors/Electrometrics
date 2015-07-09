@@ -13,16 +13,16 @@ import java.util.EnumSet;
  *
  * @author halvors
  */
-public abstract class TileEntityEnergyProvider extends TileEntityEnergyReceiver implements IEnergyProvider {
-	public TileEntityEnergyProvider(String name, int maxEnergy) {
+public abstract class TileEntityElectricityProvider extends TileEntityElectricityReceiver implements IEnergyProvider {
+	TileEntityElectricityProvider(String name, int maxEnergy) {
 		super(name, maxEnergy);
 	}
 
-	public TileEntityEnergyProvider(String name, int maxEnergy, int maxReceive) {
-		super(name, maxEnergy, maxReceive);
+	TileEntityElectricityProvider(String name, int maxEnergy, int maxTransfer) {
+		super(name, maxEnergy, maxTransfer);
 	}
 
-	TileEntityEnergyProvider(String name, int maxEnergy, int maxReceive, int maxExtract) {
+	TileEntityElectricityProvider(String name, int maxEnergy, int maxReceive, int maxExtract) {
 		super(name, maxEnergy, maxReceive, maxExtract);
 	}
 

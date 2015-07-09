@@ -24,7 +24,7 @@ import java.util.UUID;
  *
  * @author halvors
  */
-public class TileEntityElectricityMeter extends TileEntityEnergyProvider implements INetworkable, IOwnable, IRedstoneControl, IActiveState {
+public class TileEntityElectricityMeter extends TileEntityElectricityProvider implements INetworkable, IOwnable, IRedstoneControl, IActiveState {
 	// The UUID of the player owning this.
 	private UUID owner;
 
@@ -51,7 +51,7 @@ public class TileEntityElectricityMeter extends TileEntityEnergyProvider impleme
 	private boolean wasPowered;
 
 	public TileEntityElectricityMeter(String name, ElectricityMeterTier electricityMeterTier) {
-		super(name, electricityMeterTier.getMaxEnergy(), electricityMeterTier.getMaxTransfer(), electricityMeterTier.getMaxTransfer());
+		super(name, electricityMeterTier.getMaxEnergy(), electricityMeterTier.getMaxTransfer());
 	}
 
 	@Override

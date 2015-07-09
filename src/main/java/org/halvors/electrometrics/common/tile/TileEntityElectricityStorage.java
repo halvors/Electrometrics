@@ -12,26 +12,27 @@ import java.util.List;
  *
  * @author halvors
  */
-public abstract class TileEntityEnergyStorage extends TileEntityMachine implements INetworkable {
+public abstract class TileEntityElectricityStorage extends TileEntityMachine implements INetworkable {
 	// The internal energy storage.
 	final EnergyStorage storage;
 
-	TileEntityEnergyStorage(String name, int maxEnergy) {
+	TileEntityElectricityStorage(String name, int maxEnergy) {
 		super(name);
 
 		storage = new EnergyStorage(maxEnergy);
 	}
 
-	TileEntityEnergyStorage(String name, int maxEnergy, int maxReceive) {
+    TileEntityElectricityStorage(String name, int maxEnergy, int maxReceive, int maxExtract) {
+        this(name, maxEnergy);
+
+        storage.setMaxReceive(maxReceive);
+        storage.setMaxExtract(maxExtract);
+    }
+
+	TileEntityElectricityStorage(String name, int maxEnergy, int maxTransfer) {
 		this(name, maxEnergy);
 
-		storage.setMaxReceive(maxReceive);
-	}
-
-	TileEntityEnergyStorage(String name, int maxEnergy, int maxReceive, int maxExtract) {
-		this(name, maxEnergy, maxReceive);
-
-		storage.setMaxExtract(maxExtract);
+		storage.setMaxTransfer(maxTransfer);
 	}
 
 	@Override
