@@ -23,22 +23,26 @@ public class Utils {
 	/**
 	 * Whether or not a certain TileEntity can function with redstone logic. Illogical to use unless the defined TileEntity implements
 	 * IRedstoneControl.
-	 * @param redstoneControl - TileEntity to check
+	 * @param tileEntity - TileEntity to check
 	 * @return if the TileEntity can function with redstone logic
 	 */
-	public static <T extends TileEntity & IRedstoneControl> boolean canFunction(T redstoneControl) {
-        switch (redstoneControl.getControlType()) {
-            case DISABLED:
-                return true;
+	public static boolean canFunction(TileEntity tileEntity) {
+        if (tileEntity instanceof IRedstoneControl) {
+            IRedstoneControl redstoneControl = (IRedstoneControl) tileEntity;
 
-            case HIGH:
-                return redstoneControl.isPowered();
+            switch (redstoneControl.getControlType()) {
+                case DISABLED:
+                    return true;
 
-            case LOW:
-                return !redstoneControl.isPowered();
+                case HIGH:
+                    return redstoneControl.isPowered();
 
-            case PULSE:
-                return redstoneControl.isPowered() && !redstoneControl.wasPowered();
+                case LOW:
+                    return !redstoneControl.isPowered();
+
+                case PULSE:
+                    return redstoneControl.isPowered() && !redstoneControl.wasPowered();
+            }
         }
 
 		return false;
