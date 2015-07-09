@@ -67,7 +67,7 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 
         nbtTags.setBoolean("isActive", isActive);
 		nbtTags.setString("owner", owner != null ? owner.toString() : "");
-        nbtTags.setString("ownerName", !ownerName.isEmpty() ? ownerName : "");
+        nbtTags.setString("ownerName", ownerName != null /*!ownerName.isEmpty()*/ ? ownerName : "");
         nbtTags.setInteger("redstoneControlType", redstoneControlType.ordinal());
 
 		nbtTags.setInteger("tier", electricityMeterTier.ordinal());
@@ -100,7 +100,7 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 
         list.add(isActive);
 		list.add(hasOwner() ? owner.toString() : "");
-		list.add(!ownerName.isEmpty() ? ownerName : "");
+		list.add(ownerName != null ? ownerName : "");
 		list.add(redstoneControlType.ordinal());
 
 		list.add(electricityMeterTier.ordinal());
