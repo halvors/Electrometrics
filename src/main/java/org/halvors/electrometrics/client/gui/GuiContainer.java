@@ -10,7 +10,8 @@ import net.minecraft.util.ResourceLocation;
 import org.halvors.electrometrics.Reference;
 import org.halvors.electrometrics.client.gui.component.IGuiComponent;
 import org.halvors.electrometrics.common.component.IComponent;
-import org.halvors.electrometrics.common.tile.TileEntityMachine;
+import org.halvors.electrometrics.common.tile.TileEntity;
+import org.halvors.electrometrics.common.tile.TileEntityElectricMachine;
 import org.lwjgl.opengl.GL11;
 
 import java.util.Collections;
@@ -23,9 +24,9 @@ abstract class GuiContainer extends net.minecraft.client.gui.inventory.GuiContai
 	protected final Set<IComponent> components = new HashSet<>();
 
 	protected final ResourceLocation defaultResource = new ResourceLocation(Reference.PREFIX + "gui/guiContainerBlank.png");
-	protected final TileEntityMachine tileEntity;
+	protected final TileEntity tileEntity;
 
-	protected GuiContainer(TileEntityMachine tileEntity, Container container) {
+	protected GuiContainer(TileEntity tileEntity, Container container) {
 		super(container);
 
 		this.tileEntity = tileEntity;

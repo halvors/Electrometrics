@@ -7,7 +7,7 @@ import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.common.base.Tier.ElectricityMeterTier;
 import org.halvors.electrometrics.common.block.BlockMachine;
 import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
-import org.halvors.electrometrics.common.tile.TileEntityMachine;
+import org.halvors.electrometrics.common.tile.TileEntityElectricMachine;
 import org.halvors.electrometrics.common.util.Utils;
 
 public enum MachineType {
@@ -20,9 +20,9 @@ public enum MachineType {
     private final String name;
     private final BlockMachine block;
     private final int metadata;
-    private final Class<? extends TileEntityMachine> tileEntityClass;
+    private final Class<? extends TileEntityElectricMachine> tileEntityClass;
 
-    MachineType(BlockMachine block, String name, int metadata, Class<? extends TileEntityMachine> tileEntityClass) {
+    MachineType(BlockMachine block, String name, int metadata, Class<? extends TileEntityElectricMachine> tileEntityClass) {
         this.name = name;
         this.block = block;
         this.metadata = metadata;
@@ -65,7 +65,7 @@ public enum MachineType {
         return null;
     }
 
-    public Class<? extends TileEntityMachine> getTileEntityClass() {
+    public Class<? extends TileEntityElectricMachine> getTileEntityClass() {
         return tileEntityClass;
     }
 

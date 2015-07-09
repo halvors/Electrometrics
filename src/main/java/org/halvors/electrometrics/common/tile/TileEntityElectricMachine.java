@@ -8,6 +8,7 @@ import org.halvors.electrometrics.common.base.tile.INetworkable;
 import org.halvors.electrometrics.common.base.tile.IRotatable;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketRequestData;
+import org.halvors.electrometrics.common.network.PacketTileEntity;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ import java.util.List;
  *
  * @author halvors
  */
-public abstract class TileEntityMachine extends TileEntityBasic implements IRotatable, INetworkable {
+public class TileEntityElectricMachine extends TileEntity implements INetworkable, IRotatable {
 	// The direction this TileEntity's block is facing.
 	protected int facing;
 
@@ -24,7 +25,11 @@ public abstract class TileEntityMachine extends TileEntityBasic implements IRota
 	@SideOnly(Side.CLIENT)
 	protected int clientFacing;
 
-	TileEntityMachine(String name) {
+    // The current and past redstone state.
+    protected boolean isPowered;
+    protected boolean wasPowered;
+
+	TileEntityElectricMachine(String name) {
 		super(name);
 	}
 
@@ -32,10 +37,16 @@ public abstract class TileEntityMachine extends TileEntityBasic implements IRota
 	public void validate() {
 		super.validate();
 
-		if (worldObj.isRemote) {
-			PacketHandler.sendToServer(new PacketRequestData(this));
-		}
+        PacketHandler.sendToServer(new PacketRequestData(this));
 	}
+
+    @Override
+    public void updateEntity() {
+        super.updateEntity();
+
+        // Update wasPowered to the current isPowered.
+        wasPowered = isPowered;
+    }
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbtTags) {
@@ -56,7 +67,7 @@ public abstract class TileEntityMachine extends TileEntityBasic implements IRota
 		facing = dataStream.readInt();
 
 		// Check if client is in sync with the server, if not update it.
-		if (clientFacing != facing) {
+		if (worldObj.isRemote && clientFacing != facing) {
 			clientFacing = facing;
 
 			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
@@ -89,5 +100,15 @@ public abstract class TileEntityMachine extends TileEntityBasic implements IRota
 		}
 	}
 
-	public abstract void onNeighborChange();
+    public void onNeighborChange() {
+        if (!worldObj.isRemote) {
+            boolean redstonePower = worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
+
+            if (isPowered != redstonePower) {
+                isPowered = redstonePower;
+
+                PacketHandler.sendToReceivers(new PacketTileEntity(this), this);
+            }
+        }
+    }
 }

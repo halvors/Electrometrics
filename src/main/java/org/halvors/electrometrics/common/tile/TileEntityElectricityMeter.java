@@ -24,7 +24,14 @@ import java.util.UUID;
  *
  * @author halvors
  */
-public class TileEntityElectricityMeter extends TileEntityElectricityProvider implements INetworkable, IOwnable, IRedstoneControl, IActiveState {
+public class TileEntityElectricityMeter extends TileEntityElectricityProvider implements INetworkable, IActiveState, IOwnable, IRedstoneControl {
+    // Whether or not this TileEntity's block is in it's active state.
+    private boolean isActive;
+
+    // The client's current active state.
+    @SideOnly(Side.CLIENT)
+    private boolean clientIsActive;
+
 	// The UUID of the player owning this.
 	private UUID owner;
 
@@ -34,51 +41,24 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 	// The current RedstoneControlType of this TileEntity.
 	private RedstoneControlType redstoneControlType = RedstoneControlType.DISABLED;
 
-	// Whether or not this TileEntity's block is in it's active state.
-	private boolean isActive;
-
-	// The client's current active state.
-	@SideOnly(Side.CLIENT)
-	private boolean clientIsActive;
-
+    // The tier of this TileEntity.
 	private ElectricityMeterTier electricityMeterTier = ElectricityMeterTier.BASIC;
 
 	// The amount of energy that has passed thru.
 	private double electricityCount;
-
-	// The current and past redstone state.
-	private boolean isPowered;
-	private boolean wasPowered;
 
 	public TileEntityElectricityMeter(String name, ElectricityMeterTier electricityMeterTier) {
 		super(name, electricityMeterTier.getMaxEnergy(), electricityMeterTier.getMaxTransfer());
 	}
 
 	@Override
-	public void validate() {
-		super.validate();
-
-		if (worldObj.isRemote) {
-			PacketHandler.sendToServer(new PacketRequestData(this));
-		}
-	}
-
-	@Override
-	public void updateEntity() {
-		super.updateEntity();
-
-		// Update wasPowered to the current isPowered.
-		wasPowered = isPowered;
-	}
-
-	@Override
 	public void readFromNBT(NBTTagCompound nbtTags) {
 		super.readFromNBT(nbtTags);
 
-		owner = UUID.fromString(nbtTags.getString("owner"));
+        isActive = nbtTags.getBoolean("isActive");
+        owner = UUID.fromString(nbtTags.getString("owner"));
 		ownerName = nbtTags.getString("ownerName");
 		redstoneControlType = RedstoneControlType.values()[nbtTags.getInteger("redstoneControlType")];
-		isActive = nbtTags.getBoolean("isActive");
 
 		electricityMeterTier = ElectricityMeterTier.values()[nbtTags.getInteger("tier")];
 		electricityCount = nbtTags.getDouble("electricityCount");
@@ -88,10 +68,10 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 	public void writeToNBT(NBTTagCompound nbtTags) {
 		super.writeToNBT(nbtTags);
 
+        nbtTags.setBoolean("isActive", isActive);
 		nbtTags.setString("owner", owner != null ? owner.toString() : "");
-		nbtTags.setString("ownerName", !ownerName.isEmpty() ? ownerName : "");
-		nbtTags.setInteger("redstoneControlType", redstoneControlType.ordinal());
-		nbtTags.setBoolean("isActive", isActive);
+        nbtTags.setString("ownerName", !ownerName.isEmpty() ? ownerName : "");
+        nbtTags.setInteger("redstoneControlType", redstoneControlType.ordinal());
 
 		nbtTags.setInteger("tier", electricityMeterTier.ordinal());
 		nbtTags.setDouble("electricityCount", electricityCount);
@@ -101,13 +81,13 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 	public void handlePacketData(ByteBuf dataStream) throws Exception {
 		super.handlePacketData(dataStream);
 
-		owner = UUID.fromString(ByteBufUtils.readUTF8String(dataStream));
+        isActive = dataStream.readBoolean();
+        owner = UUID.fromString(ByteBufUtils.readUTF8String(dataStream));
 		ownerName = ByteBufUtils.readUTF8String(dataStream);
 		redstoneControlType = RedstoneControlType.values()[dataStream.readInt()];
-		isActive = dataStream.readBoolean();
 
 		// Check if client is in sync with the server, if not update it.
-		if (clientIsActive != isActive) {
+		if (worldObj.isRemote && clientIsActive != isActive) {
 			clientIsActive = isActive;
 
 			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
@@ -121,10 +101,10 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 	public List<Object> getPacketData(List<Object> list) {
 		super.getPacketData(list);
 
-		list.add(owner != null ? owner.toString() : "");
+        list.add(isActive);
+		list.add(hasOwner() ? owner.toString() : "");
 		list.add(!ownerName.isEmpty() ? ownerName : "");
 		list.add(redstoneControlType.ordinal());
-		list.add(isActive);
 
 		list.add(electricityMeterTier.ordinal());
 		list.add(electricityCount);
@@ -148,6 +128,16 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 	public EnumSet<ForgeDirection> getExtractingSides() {
 		return EnumSet.of(ForgeDirection.getOrientation(facing).getRotation(ForgeDirection.DOWN));
 	}
+
+    @Override
+    public boolean isActive() {
+        return isActive;
+    }
+
+    @Override
+    public void setActive(boolean isActive) {
+        this.isActive = isActive;
+    }
 
 	@Override
 	public boolean hasOwner() {
@@ -205,16 +195,6 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 		return false;
 	}
 
-	@Override
-	public boolean isActive() {
-		return isActive;
-	}
-
-	@Override
-	public void setActive(boolean isActive) {
-		this.isActive = isActive;
-	}
-
 	public ElectricityMeterTier getTier() {
 		return electricityMeterTier;
 	}
@@ -235,17 +215,5 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 	 */
 	public void setElectricityCount(double electricityCount) {
 		this.electricityCount = electricityCount;
-	}
-
-	public void onNeighborChange() {
-		if (!worldObj.isRemote) {
-			boolean power = worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
-
-			if (isPowered != power) {
-				isPowered = power;
-
-				PacketHandler.sendToReceivers(new PacketTileEntity(this), this);
-			}
-		}
 	}
 }
