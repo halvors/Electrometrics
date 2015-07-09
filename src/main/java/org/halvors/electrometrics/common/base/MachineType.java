@@ -1,7 +1,5 @@
 package org.halvors.electrometrics.common.base;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import org.halvors.electrometrics.Electrometrics;
@@ -14,20 +12,18 @@ import org.halvors.electrometrics.common.tile.TileEntityMachine;
 import org.halvors.electrometrics.common.util.Utils;
 
 public enum MachineType {
-    BASIC_ELECTRICITY_METER(Electrometrics.blockElectricityMeter, "ElectricityMeter", 0, TileEntityElectricityMeter.class, GuiElectricityMeter.class),
-    ADVANCED_ELECTRICITY_METER(Electrometrics.blockElectricityMeter, "ElectricityMeter", 1, TileEntityElectricityMeter.class, GuiElectricityMeter.class),
-    ELITE_ELECTRICITY_METER(Electrometrics.blockElectricityMeter, "ElectricityMeter", 2, TileEntityElectricityMeter.class, GuiElectricityMeter.class),
-    ULTIMATE_ELECTRICITY_METER(Electrometrics.blockElectricityMeter, "ElectricityMeter", 3, TileEntityElectricityMeter.class, GuiElectricityMeter.class),
-    CREATIVE_ELECTRICITY_METER(Electrometrics.blockElectricityMeter, "ElectricityMeter", 4, TileEntityElectricityMeter.class, GuiElectricityMeter.class);
+    BASIC_ELECTRICITY_METER("ElectricityMeter", 0, TileEntityElectricityMeter.class, GuiElectricityMeter.class),
+    ADVANCED_ELECTRICITY_METER("ElectricityMeter", 1, TileEntityElectricityMeter.class, GuiElectricityMeter.class),
+    ELITE_ELECTRICITY_METER("ElectricityMeter", 2, TileEntityElectricityMeter.class, GuiElectricityMeter.class),
+    ULTIMATE_ELECTRICITY_METER("ElectricityMeter", 3, TileEntityElectricityMeter.class, GuiElectricityMeter.class),
+    CREATIVE_ELECTRICITY_METER("ElectricityMeter", 4, TileEntityElectricityMeter.class, GuiElectricityMeter.class);
 
-    private final BlockMachine block;
     private final String name;
     private final int metadata;
     private final Class<? extends TileEntityMachine> tileEntityClass;
     private final Class<? extends IGui> guiClass;
 
-    MachineType(BlockMachine block, String name, int metadata, Class<? extends TileEntityMachine> tileEntityClass, Class<? extends IGui> guiClass) {
-        this.block = block;
+    MachineType(String name, int metadata, Class<? extends TileEntityMachine> tileEntityClass, Class<? extends IGui> guiClass) {
         this.name = name;
         this.metadata = metadata;
         this.tileEntityClass = tileEntityClass;
@@ -38,8 +34,20 @@ public enum MachineType {
         return name;
     }
 
-    public BlockMachine getBlock() {
-        return block;
+    public String getLocalizedName() {
+        String localizedName = name;
+
+        switch (this) {
+            case BASIC_ELECTRICITY_METER:
+            case ADVANCED_ELECTRICITY_METER:
+            case ELITE_ELECTRICITY_METER:
+            case ULTIMATE_ELECTRICITY_METER:
+            case CREATIVE_ELECTRICITY_METER:
+                ElectricityMeterTier electricityMeterTier = ElectricityMeterTier.values()[metadata];
+                localizedName = electricityMeterTier.getBaseTier().getName() + name;
+        }
+
+        return Utils.translate("tile." + localizedName + ".name");
     }
 
     public int getMetadata() {
@@ -55,9 +63,8 @@ public enum MachineType {
                 case ULTIMATE_ELECTRICITY_METER:
                 case CREATIVE_ELECTRICITY_METER:
                     ElectricityMeterTier electricityMeterTier = ElectricityMeterTier.values()[metadata];
-                    String name = Utils.translate("tile." + electricityMeterTier.getBaseTier().getName() + block.getName() + ".name");
 
-                    return (TileEntityMachine) tileEntityClass.getConstructor(new Class[] { String.class, ElectricityMeterTier.class }).newInstance("lol", electricityMeterTier);
+                    return tileEntityClass.getConstructor(String.class, ElectricityMeterTier.class).newInstance(getLocalizedName(), electricityMeterTier);
 
                 default:
                     return tileEntityClass.newInstance();
@@ -70,10 +77,9 @@ public enum MachineType {
         return null;
     }
 
-    @SideOnly(Side.CLIENT)
     public IGui getGui() {
         try {
-            return (IGui) guiClass.getConstructor(new Class[] { tileEntityClass }).newInstance(getTileEntity());
+            return guiClass.getConstructor(TileEntityMachine.class).newInstance(getTileEntity());
         } catch(Exception e) {
             e.printStackTrace();
             Electrometrics.getLogger().error("Unable to indirectly create gui.");
@@ -99,6 +105,6 @@ public enum MachineType {
     }
 
     public ItemStack getItemStack() {
-        return new ItemStack(block, 1, metadata);
+        return new ItemStack(Electrometrics.blockElectricityMeter, 1, metadata);
     }
 }
