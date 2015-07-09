@@ -15,6 +15,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import org.halvors.electrometrics.Reference;
 import org.halvors.electrometrics.common.tile.TileEntity;
+import org.halvors.electrometrics.common.util.Utils;
 import org.halvors.electrometrics.common.util.location.BlockLocation;
 import org.halvors.electrometrics.common.util.location.Range;
 
@@ -70,11 +71,9 @@ public class PacketHandler {
 	 * @param cuboid - the AABB cuboid to send the packet in
 	 * @param dimId - the dimension the cuboid is in
 	 */
-	public static void sendToCuboid(IMessage message, AxisAlignedBB cuboid, int dimId) {
-		MinecraftServer server = MinecraftServer.getServer();
-
-		if (server != null && cuboid != null) {
-			for (EntityPlayerMP player : (List<EntityPlayerMP>) server.getConfigurationManager().playerEntityList) {
+    public static void sendToCuboid(IMessage message, AxisAlignedBB cuboid, int dimId) {
+		if (cuboid != null) {
+			for (EntityPlayerMP player : Utils.getPlayers()) {
 				if (player.dimension == dimId && cuboid.isVecInside(Vec3.createVectorHelper(player.posX, player.posY, player.posZ))) {
 					sendTo(message, player);
 				}
@@ -82,16 +81,12 @@ public class PacketHandler {
 		}
 	}
 
-	public static void sendToReceivers(IMessage message, Range range) {
-		MinecraftServer server = MinecraftServer.getServer();
-
-		if (server != null) {
-			for (EntityPlayerMP player : (List<EntityPlayerMP>) server.getConfigurationManager().playerEntityList) {
-				if (player.dimension == range.getDimensionId() && Range.getChunkRange(player).intersects(range)) {
-					sendTo(message, player);
-				}
-			}
-		}
+    public static void sendToReceivers(IMessage message, Range range) {
+        for (EntityPlayerMP player : Utils.getPlayers()) {
+            if (player.dimension == range.getDimensionId() && Range.getChunkRange(player).intersects(range)) {
+                sendTo(message, player);
+            }
+        }
 	}
 
 	public static void sendToReceivers(IMessage message, TileEntity tileEntity) {
