@@ -19,18 +19,26 @@ public class PacketConfigurationSync implements IMessage, IMessageHandler<Packet
 
 	@Override
 	public void fromBytes(ByteBuf dataStream) {
-		Electrometrics.energyType = UnitDisplay.Unit.values()[dataStream.readInt()];
+        // General.
+        Electrometrics.energyType = UnitDisplay.Unit.values()[dataStream.readInt()];
 		Electrometrics.toJoules = dataStream.readDouble();
 		Electrometrics.toMinecraftJoules = dataStream.readDouble();
 		Electrometrics.toElectricalUnits = dataStream.readDouble();
+
+        // Mod integration.
+        Electrometrics.isMekanismIntegrationEnabled = dataStream.readBoolean();
 	}
 
 	@Override
 	public void toBytes(ByteBuf dataStream) {
-		dataStream.writeInt(Electrometrics.energyType.ordinal());
+        // General.
+        dataStream.writeInt(Electrometrics.energyType.ordinal());
 		dataStream.writeDouble(Electrometrics.toJoules);
 		dataStream.writeDouble(Electrometrics.toMinecraftJoules);
 		dataStream.writeDouble(Electrometrics.toElectricalUnits);
+
+        // Mod integration.
+        dataStream.writeBoolean(Electrometrics.isMekanismIntegrationEnabled);
 	}
 
 	@Override

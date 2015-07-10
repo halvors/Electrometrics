@@ -58,13 +58,15 @@ public class Electrometrics {
 	private static Configuration configuration;
 
 	// Configuration variables.
-	public static Unit energyType = Unit.JOULES;
+
+    // General.
+    public static Unit energyType = Unit.JOULES;
 	public static double toJoules;
 	public static double toMinecraftJoules;
 	public static double toElectricalUnits;
 
 	// Mod integration.
-	private boolean isMekanismIntegrationEnabled;
+	public static boolean isMekanismIntegrationEnabled;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
