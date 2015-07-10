@@ -19,6 +19,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.halvors.electrometrics.common.CommonProxy;
 import org.halvors.electrometrics.common.Tab;
+import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.base.Tier.ElectricityMeterTier;
 import org.halvors.electrometrics.common.block.BlockElectricityMeter;
 import org.halvors.electrometrics.common.block.BlockMachine;
@@ -131,22 +132,24 @@ public class Electrometrics {
 		if (isMekanismIntegrationEnabled) {
 			// Add recipe for all tiers.
 			for (ElectricityMeterTier tier : ElectricityMeterTier.values()) {
-				ItemStack itemStackElectricityMeter = new ItemStack(blockElectricityMeter);
+				ItemStack itemStackElectricityMeter = tier.getMachineType().getItemStack();
 				ItemBlockElectricityMeter itemBlockElectricityMeter = (ItemBlockElectricityMeter) itemStackElectricityMeter.getItem();
 				itemBlockElectricityMeter.setTier(itemStackElectricityMeter, tier);
 
-				ItemStack universalCable = new ItemStack(ItemRetriever.getItem("PartTransmitter").getItem(), 8, tier.ordinal());
+				ItemStack cable = new ItemStack(ItemRetriever.getItem("PartTransmitter").getItem(), 8, tier.ordinal());
 
 				GameRegistry.addRecipe(itemStackElectricityMeter,
 						"III",
-						"UCU",
-						"III", 'I', Items.iron_ingot, 'U', universalCable, 'C', Items.clock);
+						"CDC",
+						"III", 'I', Items.iron_ingot, 'U', cable, 'D', Items.clock);
 			}
-		} else {
-			GameRegistry.addRecipe(new ItemStack(blockElectricityMeter),
+        } else {
+            MachineType machineType = MachineType.BASIC_ELECTRICITY_METER;
+
+			GameRegistry.addRecipe(machineType.getItemStack(),
 				"III",
-				"RCR",
-				"III", 'I', Items.iron_ingot, 'R', Items.redstone, 'C', Items.clock);
+				"CDC",
+				"III", 'I', Items.iron_ingot, 'C', Items.redstone, 'D', Items.clock);
 		}
 	}
 
