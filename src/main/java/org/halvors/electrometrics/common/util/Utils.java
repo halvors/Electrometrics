@@ -94,23 +94,23 @@ public class Utils {
      */
     public static String getEnergyDisplay(double energy) {
         Unit energyType = Electrometrics.energyType;
-        double energyMultiplier = 0;
+        double multiplier = 0;
 
         switch (energyType) {
             case JOULES:
-                energyMultiplier = Electrometrics.toJoules;
+                multiplier = Electrometrics.toJoules;
                 break;
 
             case MINECRAFT_JOULES:
-                energyMultiplier = Electrometrics.toMinecraftJoules;
+                multiplier = Electrometrics.toMinecraftJoules;
                 break;
 
             case ELECTRICAL_UNITS:
-                energyMultiplier = Electrometrics.toElectricalUnits;
+                multiplier = Electrometrics.toElectricalUnits;
                 break;
         }
 
-        return UnitDisplay.getDisplayShort(energy * energyMultiplier, energyType);
+        return UnitDisplay.getDisplayShort(energy * multiplier, energyType);
     }
 
 	/**
