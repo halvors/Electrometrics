@@ -44,8 +44,7 @@ public enum MachineType {
             case ELITE_ELECTRICITY_METER:
             case ULTIMATE_ELECTRICITY_METER:
             case CREATIVE_ELECTRICITY_METER:
-                ElectricityMeterTier electricityMeterTier = ElectricityMeterTier.values()[metadata];
-                localizedName = electricityMeterTier.getBaseTier().getName() + name;
+                localizedName = ElectricityMeterTier.getFromMachineType(this).getBaseTier().getName() + name;
         }
 
         return Utils.translate("tile." + localizedName + ".name");
@@ -63,9 +62,7 @@ public enum MachineType {
                 case ELITE_ELECTRICITY_METER:
                 case ULTIMATE_ELECTRICITY_METER:
                 case CREATIVE_ELECTRICITY_METER:
-                    ElectricityMeterTier electricityMeterTier = ElectricityMeterTier.values()[metadata];
-
-                    return tileEntityClass.getConstructor(String.class, ElectricityMeterTier.class).newInstance(getLocalizedName(), electricityMeterTier);
+                    return tileEntityClass.getConstructor(String.class, ElectricityMeterTier.class).newInstance(getLocalizedName(), ElectricityMeterTier.getFromMachineType(this));
 
                 default:
                     return tileEntityClass.newInstance();

@@ -6,8 +6,6 @@ import net.minecraft.item.ItemStack;
 import org.halvors.electrometrics.Reference;
 import org.halvors.electrometrics.common.base.MachineType;
 
-import javax.crypto.Mac;
-
 /**
  * This is a custom creative tab used only by this mod.
  *

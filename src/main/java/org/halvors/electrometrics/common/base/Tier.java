@@ -62,5 +62,13 @@ public class Tier {
 		public int getMaxTransfer() {
 			return maxTransfer;
 		}
+
+        public MachineType getMachineType() {
+            return MachineType.values()[ordinal()];
+        }
+
+        public static ElectricityMeterTier getFromMachineType(MachineType machineType) {
+            return values()[machineType.getMetadata()];
+        }
 	}
 }
