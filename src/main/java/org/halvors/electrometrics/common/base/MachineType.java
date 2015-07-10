@@ -1,6 +1,7 @@
 package org.halvors.electrometrics.common.base;
 
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.client.gui.GuiElectricityMeter;
@@ -106,5 +107,9 @@ public enum MachineType {
 
     public ItemStack getItemStack() {
         return new ItemStack(Electrometrics.blockElectricityMeter, 1, metadata);
+    }
+
+    public Item getItem() {
+        return getItemStack().getItem();
     }
 }
