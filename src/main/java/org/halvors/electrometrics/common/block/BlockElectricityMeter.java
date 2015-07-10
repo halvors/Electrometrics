@@ -4,8 +4,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
-import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.common.base.MachineType;
+import org.halvors.electrometrics.common.base.Tier.ElectricityMeterTier;
 import org.halvors.electrometrics.common.item.ItemBlockElectricityMeter;
 import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
 
@@ -21,7 +21,7 @@ public class BlockElectricityMeter extends BlockMachine {
 	}
 
 	@Override
-	 public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean willHarvest) {
+    public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean willHarvest) {
 		if (!player.capabilities.isCreativeMode && !world.isRemote && canHarvestBlock(player, world.getBlockMetadata(x, y, z))) {
 			dismantleBlock(world, x, y, z, false);
 		}
@@ -32,10 +32,11 @@ public class BlockElectricityMeter extends BlockMachine {
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player) {
 		TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) world.getTileEntity(x, y, z);
-		ItemStack itemStack = new ItemStack(Electrometrics.blockElectricityMeter);
+        ElectricityMeterTier tier = tileEntityElectricityMeter.getTier();
+        ItemStack itemStack = tier.getMachineType().getItemStack();
 
 		ItemBlockElectricityMeter itemBlockElectricityMeter = (ItemBlockElectricityMeter) itemStack.getItem();
-		itemBlockElectricityMeter.setTier(itemStack, tileEntityElectricityMeter.getTier());
+		itemBlockElectricityMeter.setTier(itemStack, tier);
 		itemBlockElectricityMeter.setElectricityCount(itemStack, tileEntityElectricityMeter.getElectricityCount());
 		itemBlockElectricityMeter.setElectricityStored(itemStack, tileEntityElectricityMeter.getStorage().getEnergyStored());
 

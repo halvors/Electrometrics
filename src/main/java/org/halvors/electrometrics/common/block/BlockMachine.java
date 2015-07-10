@@ -76,15 +76,15 @@ public class BlockMachine extends BlockRotatable {
 				case ELITE_ELECTRICITY_METER:
 				case ULTIMATE_ELECTRICITY_METER:
 				case CREATIVE_ELECTRICITY_METER:
-					ItemStack itemStack = new ItemStack(item, 1, machineType.getMetadata());
+					ItemStack itemStack = machineType.getItemStack();
 					ItemBlockElectricityMeter itemBlockElectricityMeter = (ItemBlockElectricityMeter) itemStack.getItem();
-					itemBlockElectricityMeter.setTier(itemStack, ElectricityMeterTier.values()[machineType.getMetadata()]); // Get tier here in a better way?
+					itemBlockElectricityMeter.setTier(itemStack, ElectricityMeterTier.getFromMachineType(machineType));
 
 					list.add(itemStack);
 					break;
 
 				default:
-					list.add(new ItemStack(item, 1, machineType.getMetadata()));
+					list.add(machineType.getItemStack());
 					break;
 			}
 		}
@@ -125,7 +125,7 @@ public class BlockMachine extends BlockRotatable {
 				}
 			}
 
-			// Open the GUI.
+            // Open the GUI.
 			player.openGui(Electrometrics.getInstance(), 0, world, x, y, z);
 
 			return true;

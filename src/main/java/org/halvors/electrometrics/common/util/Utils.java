@@ -12,6 +12,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.common.base.tile.IRedstoneControl;
+import org.halvors.electrometrics.common.util.UnitDisplay.Unit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,29 +22,6 @@ public class Utils {
 	public static String translate(String text) {
 		return StatCollector.translateToLocal(text);
 	}
-
-    /**
-     * Converts the energy to the default energy system.
-     * @param energy the raw energy.
-     * @return the energy as a String.
-     */
-    public static String getEnergyDisplay(double energy) {
-        switch (Electrometrics.energyType) {
-            case REDSTONE_FLUX:
-                return UnitDisplay.getDisplayShort(energy, UnitDisplay.Unit.REDSTONE_FLUX);
-
-            case JOULES:
-                return UnitDisplay.getDisplayShort(energy * Electrometrics.toJoules, UnitDisplay.Unit.JOULES);
-
-            case MINECRAFT_JOULES:
-                return UnitDisplay.getDisplayShort(energy * Electrometrics.toMinecraftJoules, UnitDisplay.Unit.MINECRAFT_JOULES);
-
-            case ELECTRICAL_UNITS:
-                return UnitDisplay.getDisplayShort(energy * Electrometrics.toElectricalUnits, UnitDisplay.Unit.MINECRAFT_JOULES);
-        }
-
-        return null;
-    }
 
     /**
      * Whether or not the player has a usable wrench for a block at the coordinates given.
@@ -81,13 +59,13 @@ public class Utils {
         return false;
     }
 
-	/**
-	 * Whether or not a certain TileEntity can function with redstone logic. Illogical to use unless the defined TileEntity implements
-	 * IRedstoneControl.
-	 * @param tileEntity - TileEntity to check
-	 * @return if the TileEntity can function with redstone logic
-	 */
-	public static boolean canFunction(TileEntity tileEntity) {
+    /**
+     * Whether or not a certain TileEntity can function with redstone logic. Illogical to use unless the defined TileEntity implements
+     * IRedstoneControl.
+     * @param tileEntity - TileEntity to check
+     * @return if the TileEntity can function with redstone logic
+     */
+    public static boolean canFunction(TileEntity tileEntity) {
         if (tileEntity instanceof IRedstoneControl) {
             IRedstoneControl redstoneControl = (IRedstoneControl) tileEntity;
 
@@ -106,8 +84,34 @@ public class Utils {
             }
         }
 
-		return false;
-	}
+        return false;
+    }
+
+    /**
+     * Converts the energy to the default energy system.
+     * @param energy the raw energy.
+     * @return the energy as a String.
+     */
+    public static String getEnergyDisplay(double energy) {
+        Unit energyType = Electrometrics.energyType;
+        double energyMultiplier = 0;
+
+        switch (energyType) {
+            case JOULES:
+                energyMultiplier = Electrometrics.toJoules;
+                break;
+
+            case MINECRAFT_JOULES:
+                energyMultiplier = Electrometrics.toMinecraftJoules;
+                break;
+
+            case ELECTRICAL_UNITS:
+                energyMultiplier = Electrometrics.toElectricalUnits;
+                break;
+        }
+
+        return UnitDisplay.getDisplayShort(energy * energyMultiplier, energyType);
+    }
 
 	/**
 	 * Get a player from it's unique id.

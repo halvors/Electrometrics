@@ -105,15 +105,15 @@ public class Electrometrics {
 		// Register the our EventHandler.
 		FMLCommonHandler.instance().bus().register(new PlayerEventHandler());
 
-		// Register the proxy as our GuiHandler to NetworkRegistry.
-		NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
-
 		// Call functions for adding blocks, items, etc.
 		addBlocks();
 		addTileEntities();
 		addRecipes();
 
-		// Mod integration.
+        // Register the proxy as our GuiHandler to NetworkRegistry.
+        NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
+
+        // Mod integration.
 		logger.log(Level.INFO, "Mekanism integration is " + (isMekanismIntegrationEnabled ? "enabled" : "disabled") + ".");
 	}
 
