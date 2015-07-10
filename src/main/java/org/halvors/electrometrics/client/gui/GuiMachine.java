@@ -2,11 +2,11 @@ package org.halvors.electrometrics.client.gui;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import org.halvors.electrometrics.common.tile.TileEntityElectricBlock;
+import org.halvors.electrometrics.common.tile.TileEntityMachine;
 
 @SideOnly(Side.CLIENT)
 public class GuiMachine extends GuiComponentScreen {
-	GuiMachine(TileEntityElectricBlock tileEntity) {
+	GuiMachine(TileEntityMachine tileEntity) {
 		super(tileEntity);
 	}
 

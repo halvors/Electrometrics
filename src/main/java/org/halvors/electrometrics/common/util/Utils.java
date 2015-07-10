@@ -22,6 +22,65 @@ public class Utils {
 		return StatCollector.translateToLocal(text);
 	}
 
+    /**
+     * Converts the energy to the default energy system.
+     * @param energy the raw energy.
+     * @return the energy as a String.
+     */
+    public static String getEnergyDisplay(double energy) {
+        switch (Electrometrics.energyType) {
+            case REDSTONE_FLUX:
+                return UnitDisplay.getDisplayShort(energy, UnitDisplay.Unit.REDSTONE_FLUX);
+
+            case JOULES:
+                return UnitDisplay.getDisplayShort(energy * Electrometrics.toJoules, UnitDisplay.Unit.JOULES);
+
+            case MINECRAFT_JOULES:
+                return UnitDisplay.getDisplayShort(energy * Electrometrics.toMinecraftJoules, UnitDisplay.Unit.MINECRAFT_JOULES);
+
+            case ELECTRICAL_UNITS:
+                return UnitDisplay.getDisplayShort(energy * Electrometrics.toElectricalUnits, UnitDisplay.Unit.MINECRAFT_JOULES);
+        }
+
+        return null;
+    }
+
+    /**
+     * Whether or not the player has a usable wrench for a block at the coordinates given.
+     * @param player - the player using the wrench
+     * @param x - the x coordinate of the block being wrenched
+     * @param y - the y coordinate of the block being wrenched
+     * @param z - the z coordinate of the block being wrenched
+     * @return if the player can use the wrench
+     */
+    public static boolean hasUsableWrench(EntityPlayer player, int x, int y, int z) {
+        ItemStack itemStack = player.getCurrentEquippedItem();
+        Item item = itemStack.getItem();
+
+        // Check if item is a Buildcraft wrench.
+        if (item instanceof IToolWrench) {
+            IToolWrench wrench = (IToolWrench) item;
+
+            return wrench.canWrench(player, x, y, z);
+        }
+
+        // Check if item is a CoFH wrench.
+        if (item instanceof IToolHammer) {
+            IToolHammer wrench = (IToolHammer) item;
+
+            return wrench.isUsable(itemStack, player, x, y, z);
+        }
+
+        // Check if item is a Mekanism wrench.
+        if (item instanceof IMekWrench) {
+            IMekWrench wrench = (IMekWrench) item;
+
+            return wrench.canUseWrench(player, x, y, z);
+        }
+
+        return false;
+    }
+
 	/**
 	 * Whether or not a certain TileEntity can function with redstone logic. Illogical to use unless the defined TileEntity implements
 	 * IRedstoneControl.
@@ -48,65 +107,6 @@ public class Utils {
         }
 
 		return false;
-	}
-
-	/**
-	 * Whether or not the player has a usable wrench for a block at the coordinates given.
-	 * @param player - the player using the wrench
-	 * @param x - the x coordinate of the block being wrenched
-	 * @param y - the y coordinate of the block being wrenched
-	 * @param z - the z coordinate of the block being wrenched
-	 * @return if the player can use the wrench
-	 */
-	public static boolean hasUsableWrench(EntityPlayer player, int x, int y, int z) {
-		ItemStack itemStack = player.getCurrentEquippedItem();
-		Item item = itemStack.getItem();
-
-		// Check if item is a Buildcraft wrench.
-		if (item instanceof IToolWrench) {
-			IToolWrench wrench = (IToolWrench) item;
-
-			return wrench.canWrench(player, x, y, z);
-		}
-
-		// Check if item is a CoFH wrench.
-		if (item instanceof IToolHammer) {
-			IToolHammer wrench = (IToolHammer) item;
-
-			return wrench.isUsable(itemStack, player, x, y, z);
-		}
-
-		// Check if item is a Mekanism wrench.
-		if (item instanceof IMekWrench) {
-			IMekWrench wrench = (IMekWrench) item;
-
-			return wrench.canUseWrench(player, x, y, z);
-		}
-
-		return false;
-	}
-
-	/**
-	 * Converts the energy to the default energy system.
-	 * @param energy the raw energy.
-	 * @return the energy as a String.
-	 */
-	public static String getEnergyDisplay(double energy) {
-		switch (Electrometrics.energyType) {
-			case REDSTONE_FLUX:
-				return UnitDisplay.getDisplayShort(energy, UnitDisplay.Unit.REDSTONE_FLUX);
-
-			case JOULES:
-				return UnitDisplay.getDisplayShort(energy * Electrometrics.toJoules, UnitDisplay.Unit.JOULES);
-
-			case MINECRAFT_JOULES:
-				return UnitDisplay.getDisplayShort(energy * Electrometrics.toMinecraftJoules, UnitDisplay.Unit.MINECRAFT_JOULES);
-
-			case ELECTRICAL_UNITS:
-				return UnitDisplay.getDisplayShort(energy * Electrometrics.toElectricalUnits, UnitDisplay.Unit.MINECRAFT_JOULES);
-		}
-
-		return null;
 	}
 
 	/**

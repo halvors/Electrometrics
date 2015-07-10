@@ -12,11 +12,11 @@ import org.halvors.electrometrics.common.tile.TileEntityMachine;
 import org.halvors.electrometrics.common.util.Utils;
 
 public enum MachineType {
-    BASIC_ELECTRICITY_METER("ElectricityMeter", 0, TileEntityElectricityMeter.class, GuiElectricityMeter.class),
-    ADVANCED_ELECTRICITY_METER("ElectricityMeter", 1, TileEntityElectricityMeter.class, GuiElectricityMeter.class),
-    ELITE_ELECTRICITY_METER("ElectricityMeter", 2, TileEntityElectricityMeter.class, GuiElectricityMeter.class),
-    ULTIMATE_ELECTRICITY_METER("ElectricityMeter", 3, TileEntityElectricityMeter.class, GuiElectricityMeter.class),
-    CREATIVE_ELECTRICITY_METER("ElectricityMeter", 4, TileEntityElectricityMeter.class, GuiElectricityMeter.class);
+    BASIC_ELECTRICITY_METER("BasicElectricityMeter", 0, TileEntityElectricityMeter.class, GuiElectricityMeter.class),
+    ADVANCED_ELECTRICITY_METER("AdvancedElectricityMeter", 1, TileEntityElectricityMeter.class, GuiElectricityMeter.class),
+    ELITE_ELECTRICITY_METER("EliteElectricityMeter", 2, TileEntityElectricityMeter.class, GuiElectricityMeter.class),
+    ULTIMATE_ELECTRICITY_METER("UltimateElectricityMeter", 3, TileEntityElectricityMeter.class, GuiElectricityMeter.class),
+    CREATIVE_ELECTRICITY_METER("CreativeElectricityMeter", 4, TileEntityElectricityMeter.class, GuiElectricityMeter.class);
 
     private final String name;
     private final int metadata;
