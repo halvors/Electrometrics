@@ -20,21 +20,21 @@ public class GuiEnergyDisplay extends GuiComponent implements IGuiComponent {
 
 	@Override
 	public Rectangle4i getBounds(int guiWidth, int guiHeight) {
-		return new Rectangle4i(guiWidth + 176, guiHeight + 138, 26, 26);
+		return new Rectangle4i(guiWidth + 176, guiHeight + 1, 26, 26);
 	}
 
 	@Override
 	public void renderBackground(int xAxis, int yAxis, int guiWidth, int guiHeight) {
 		game.renderEngine.bindTexture(resource);
 
-		gui.drawTexturedRect(guiWidth + 176, guiHeight + 138, 0, 0, 26, 26);
+		gui.drawTexturedRect(guiWidth + 176, guiHeight + 1, 0, 0, 26, 26);
 
 		int renderX = 26 + (18 * energyType.ordinal());
 
-		if (xAxis >= 179 && xAxis <= 197 && yAxis >= 142 && yAxis <= 160) {
-			gui.drawTexturedRect(guiWidth + 179, guiHeight + 142, renderX, 0, 18, 18);
+		if (xAxis >= 179 && xAxis <= 197 && yAxis >= 5 && yAxis <= 23) {
+			gui.drawTexturedRect(guiWidth + 179, guiHeight + 5, renderX, 0, 18, 18);
 		} else {
-			gui.drawTexturedRect(guiWidth + 179, guiHeight + 142, renderX, 18, 18, 18);
+			gui.drawTexturedRect(guiWidth + 179, guiHeight + 5, renderX, 18, 18, 18);
 		}
 
 		super.renderBackground(xAxis, yAxis, guiWidth, guiHeight);
@@ -44,7 +44,7 @@ public class GuiEnergyDisplay extends GuiComponent implements IGuiComponent {
 	public void renderForeground(int xAxis, int yAxis) {
 		game.renderEngine.bindTexture(resource);
 
-		if (xAxis >= 179 && xAxis <= 197 && yAxis >= 142 && yAxis <= 160) {
+        if (xAxis >= 179 && xAxis <= 197 && yAxis >= 5 && yAxis <= 23) {
 			displayTooltip(energyType.getName(), xAxis, yAxis);
 		}
 
@@ -60,7 +60,7 @@ public class GuiEnergyDisplay extends GuiComponent implements IGuiComponent {
 	public void mouseClicked(int xAxis, int yAxis, int button) {
 		switch (button) {
 			case 0:
-				if (xAxis >= 179 && xAxis <= 197 && yAxis >= 142 && yAxis <= 160) {
+                if (xAxis >= 179 && xAxis <= 197 && yAxis >= 5 && yAxis <= 23) {
                     Unit current = energyType;
                     int ordinalToSet = current.ordinal() < (Unit.values().length - 1) ? current.ordinal() + 1 : 0;
 
