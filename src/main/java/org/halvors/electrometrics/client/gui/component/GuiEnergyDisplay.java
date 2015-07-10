@@ -8,7 +8,7 @@ import org.halvors.electrometrics.Reference;
 import org.halvors.electrometrics.client.gui.IGui;
 import org.halvors.electrometrics.client.sound.SoundHandler;
 import org.halvors.electrometrics.common.util.UnitDisplay.Unit;
-import org.halvors.electrometrics.common.util.render.Rectangle4i;
+import org.halvors.electrometrics.client.render.Rectangle4i;
 
 @SideOnly(Side.CLIENT)
 public class GuiEnergyDisplay extends GuiComponent implements IGuiComponent {

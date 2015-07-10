@@ -1,4 +1,4 @@
-package org.halvors.electrometrics.common.util.render;
+package org.halvors.electrometrics.client.render;
 
 public class Rectangle4i {
     private int x;

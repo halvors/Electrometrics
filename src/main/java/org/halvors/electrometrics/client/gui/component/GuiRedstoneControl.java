@@ -12,7 +12,7 @@ import org.halvors.electrometrics.common.base.tile.IRedstoneControl;
 import org.halvors.electrometrics.common.base.tile.RedstoneControlType;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketTileEntity;
-import org.halvors.electrometrics.common.util.render.Rectangle4i;
+import org.halvors.electrometrics.client.render.Rectangle4i;
 
 @SideOnly(Side.CLIENT)
 public class GuiRedstoneControl extends GuiComponent implements IGuiComponent {

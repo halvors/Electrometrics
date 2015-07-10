@@ -1,4 +1,4 @@
-package org.halvors.electrometrics.common.util.render;
+package org.halvors.electrometrics.client.render;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

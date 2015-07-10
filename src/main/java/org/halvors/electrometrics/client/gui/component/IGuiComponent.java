@@ -3,7 +3,7 @@ package org.halvors.electrometrics.client.gui.component;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import org.halvors.electrometrics.common.component.IComponent;
-import org.halvors.electrometrics.common.util.render.Rectangle4i;
+import org.halvors.electrometrics.client.render.Rectangle4i;
 
 @SideOnly(Side.CLIENT)
 public interface IGuiComponent extends IComponent {

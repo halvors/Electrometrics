@@ -11,7 +11,7 @@ import org.halvors.electrometrics.Reference;
 import org.halvors.electrometrics.common.base.tile.IActiveState;
 import org.halvors.electrometrics.common.base.tile.IRotatable;
 import org.halvors.electrometrics.common.util.Orientation;
-import org.halvors.electrometrics.common.util.render.DefaultIcon;
+import org.halvors.electrometrics.client.render.DefaultIcon;
 
 public class BlockTextured extends BlockContainer {
 	@SideOnly(Side.CLIENT)
