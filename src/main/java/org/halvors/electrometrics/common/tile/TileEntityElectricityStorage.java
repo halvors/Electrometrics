@@ -4,6 +4,8 @@ import cofh.api.energy.EnergyStorage;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 import org.halvors.electrometrics.common.base.tile.INetworkable;
+import org.halvors.electrometrics.common.network.PacketHandler;
+import org.halvors.electrometrics.common.network.PacketRequestData;
 
 import java.util.List;
 
@@ -33,6 +35,13 @@ public abstract class TileEntityElectricityStorage extends TileEntityElectricBlo
 		this(name, maxEnergy);
 
 		storage.setMaxTransfer(maxTransfer);
+	}
+
+	@Override
+	public void validate() {
+		super.validate();
+
+		PacketHandler.sendToServer(new PacketRequestData(this));
 	}
 
 	@Override

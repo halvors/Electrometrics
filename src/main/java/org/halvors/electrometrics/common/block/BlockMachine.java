@@ -14,15 +14,18 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import org.halvors.electrometrics.Electrometrics;
+import org.halvors.electrometrics.Reference;
 import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.base.Tier.ElectricityMeterTier;
 import org.halvors.electrometrics.common.base.tile.IOwnable;
 import org.halvors.electrometrics.common.base.tile.IRedstoneControl;
 import org.halvors.electrometrics.common.item.ItemBlockElectricityMeter;
 import org.halvors.electrometrics.common.tile.TileEntityElectricBlock;
-import org.halvors.electrometrics.common.util.render.Renderer;
+import org.halvors.electrometrics.client.render.DefaultIcon;
+import org.halvors.electrometrics.client.render.Renderer;
 
 import java.util.List;
 
@@ -56,7 +59,8 @@ public class BlockMachine extends BlockRotatable {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
-		super.registerBlockIcons(iconRegister);
+		IIcon baseIcon = iconRegister.registerIcon(Reference.PREFIX + "Machine");
+		defaultIcon = DefaultIcon.getAll(baseIcon);
 
 		// Adding machine types.
 		for (MachineType machineType : MachineType.values()) {

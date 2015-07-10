@@ -7,8 +7,11 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
+import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.base.Tier.ElectricityMeterTier;
 import org.halvors.electrometrics.common.base.tile.*;
+import org.halvors.electrometrics.common.network.PacketHandler;
+import org.halvors.electrometrics.common.network.PacketRequestData;
 import org.halvors.electrometrics.common.util.Utils;
 
 import java.util.EnumSet;
@@ -49,11 +52,20 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 	}
 
 	@Override
+	public void validate() {
+		super.validate();
+
+		PacketHandler.sendToServer(new PacketRequestData(this));
+	}
+
+	@Override
 	public void readFromNBT(NBTTagCompound nbtTags) {
 		super.readFromNBT(nbtTags);
 
         isActive = nbtTags.getBoolean("isActive");
-        ownerUUID = UUID.fromString(nbtTags.getString("ownerUUID"));
+
+		String ownerUUIDString = nbtTags.getString("ownerUUID");
+		ownerUUID = ownerUUIDString != null ? UUID.fromString(ownerUUIDString) : null;
 		ownerName = nbtTags.getString("ownerName");
 		redstoneControlType = RedstoneControlType.values()[nbtTags.getInteger("redstoneControlType")];
 
@@ -66,7 +78,7 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 		super.writeToNBT(nbtTags);
 
         nbtTags.setBoolean("isActive", isActive);
-        nbtTags.setString("ownerUUID", hasOwner() ? ownerUUID.toString() : "");
+        nbtTags.setString("ownerUUID", ownerUUID != null ? ownerUUID.toString() : "");
         nbtTags.setString("ownerName", ownerName);
         nbtTags.setInteger("redstoneControlType", redstoneControlType.ordinal());
 
@@ -80,8 +92,8 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 
         isActive = dataStream.readBoolean();
 
-        String ownerString = ByteBufUtils.readUTF8String(dataStream);
-        ownerUUID = ownerString != null ? UUID.fromString(ownerString) : null;
+        String ownerUUIDString = ByteBufUtils.readUTF8String(dataStream);
+        ownerUUID = ownerUUIDString != null ? UUID.fromString(ownerUUIDString) : null;
 		ownerName = ByteBufUtils.readUTF8String(dataStream);
 		redstoneControlType = RedstoneControlType.values()[dataStream.readInt()];
 
@@ -101,7 +113,7 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 		super.getPacketData(list);
 
         list.add(isActive);
-		list.add(hasOwner() ? ownerUUID.toString() : "");
+		list.add(ownerUUID != null ? ownerUUID.toString() : "");
 		list.add(ownerName);
 		list.add(redstoneControlType.ordinal());
 
