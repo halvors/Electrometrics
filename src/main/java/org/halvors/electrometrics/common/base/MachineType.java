@@ -1,6 +1,7 @@
 package org.halvors.electrometrics.common.base;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import org.halvors.electrometrics.Electrometrics;
@@ -13,18 +14,18 @@ import org.halvors.electrometrics.common.tile.TileEntityMachine;
 import org.halvors.electrometrics.common.util.Utils;
 
 public enum MachineType {
-    BASIC_ELECTRICITY_METER("BasicElectricityMeter", 0, TileEntityElectricityMeter.class, GuiElectricityMeter.class),
-    ADVANCED_ELECTRICITY_METER("AdvancedElectricityMeter", 1, TileEntityElectricityMeter.class, GuiElectricityMeter.class),
-    ELITE_ELECTRICITY_METER("EliteElectricityMeter", 2, TileEntityElectricityMeter.class, GuiElectricityMeter.class),
-    ULTIMATE_ELECTRICITY_METER("UltimateElectricityMeter", 3, TileEntityElectricityMeter.class, GuiElectricityMeter.class),
-    CREATIVE_ELECTRICITY_METER("CreativeElectricityMeter", 4, TileEntityElectricityMeter.class, GuiElectricityMeter.class);
+    BASIC_ELECTRICITY_METER("ElectricityMeter", 0, TileEntityElectricityMeter.class, GuiElectricityMeter.class),
+    ADVANCED_ELECTRICITY_METER("ElectricityMeter", 1, TileEntityElectricityMeter.class, GuiElectricityMeter.class),
+    ELITE_ELECTRICITY_METER("ElectricityMeter", 2, TileEntityElectricityMeter.class, GuiElectricityMeter.class),
+    ULTIMATE_ELECTRICITY_METER("ElectricityMeter", 3, TileEntityElectricityMeter.class, GuiElectricityMeter.class),
+    CREATIVE_ELECTRICITY_METER("ElectricityMeter", 4, TileEntityElectricityMeter.class, GuiElectricityMeter.class);
 
     private final String name;
     private final int metadata;
     private final Class<? extends TileEntityMachine> tileEntityClass;
-    private final Class<? extends IGui> guiClass;
+    private final Class<? extends GuiScreen> guiClass;
 
-    MachineType(String name, int metadata, Class<? extends TileEntityMachine> tileEntityClass, Class<? extends IGui> guiClass) {
+    MachineType(String name, int metadata, Class<? extends TileEntityMachine> tileEntityClass, Class<? extends GuiScreen> guiClass) {
         this.name = name;
         this.metadata = metadata;
         this.tileEntityClass = tileEntityClass;
@@ -75,7 +76,7 @@ public enum MachineType {
         return null;
     }
 
-    public IGui getGui() {
+    public GuiScreen getGui() {
         try {
             return guiClass.getConstructor(TileEntityMachine.class).newInstance(getTileEntity());
         } catch(Exception e) {
