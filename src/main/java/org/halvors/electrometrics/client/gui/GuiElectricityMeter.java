@@ -27,18 +27,16 @@ import java.util.List;
 public class GuiElectricityMeter extends GuiComponentScreen {
 	private int ticker = 0;
 
-	public GuiElectricityMeter(final TileEntityElectricityMeter tileEntity) {
+	public GuiElectricityMeter(TileEntityMachine tileEntity) {
 		super(tileEntity);
 
-		System.out.println("The owner name is set here: " + tileEntity.getOwnerName());
+		final TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
 
 		components.add(new GuiOwnerInfo(new IInfoHandler() {
 			@Override
 			public List<String> getInfo() {
 				List<String> list = new ArrayList<>();
-				list.add(tileEntity.getOwnerName());
-
-				System.out.println("The owner name is set here: " + tileEntity.getOwnerName());
+				list.add(tileEntityElectricityMeter.getOwnerName());
 
 				return list;
 			}
@@ -57,7 +55,7 @@ public class GuiElectricityMeter extends GuiComponentScreen {
 		}, this, defaultResource));
 
 		components.add(new GuiEnergyDisplay(this, defaultResource));
-		components.add(new GuiRedstoneControl(this, tileEntity, defaultResource));
+		components.add(new GuiRedstoneControl(this, tileEntityElectricityMeter, defaultResource));
 	}
 
 	@SuppressWarnings("unchecked")
