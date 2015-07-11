@@ -6,6 +6,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.client.gui.GuiElectricityMeter;
+import org.halvors.electrometrics.common.base.Tier.BaseTier;
 import org.halvors.electrometrics.common.base.Tier.ElectricityMeterTier;
 import org.halvors.electrometrics.common.block.BlockMachine;
 import org.halvors.electrometrics.common.tile.TileEntity;
@@ -14,11 +15,11 @@ import org.halvors.electrometrics.common.tile.TileEntityMachine;
 import org.halvors.electrometrics.common.util.Utils;
 
 public enum MachineType {
-    BASIC_ELECTRICITY_METER("BasicElectricityMeter", 0, TileEntityElectricityMeter.class, GuiElectricityMeter.class),
-    ADVANCED_ELECTRICITY_METER("AdvancedElectricityMeter", 1, TileEntityElectricityMeter.class, GuiElectricityMeter.class),
-    ELITE_ELECTRICITY_METER("EliteElectricityMeter", 2, TileEntityElectricityMeter.class, GuiElectricityMeter.class),
-    ULTIMATE_ELECTRICITY_METER("UltimateElectricityMeter", 3, TileEntityElectricityMeter.class, GuiElectricityMeter.class),
-    CREATIVE_ELECTRICITY_METER("CreativeElectricityMeter", 4, TileEntityElectricityMeter.class, GuiElectricityMeter.class);
+    BASIC_ELECTRICITY_METER("ElectricityMeter", 0, TileEntityElectricityMeter.class, GuiElectricityMeter.class),
+    ADVANCED_ELECTRICITY_METER("ElectricityMeter", 1, TileEntityElectricityMeter.class, GuiElectricityMeter.class),
+    ELITE_ELECTRICITY_METER("ElectricityMeter", 2, TileEntityElectricityMeter.class, GuiElectricityMeter.class),
+    ULTIMATE_ELECTRICITY_METER("ElectricityMeter", 3, TileEntityElectricityMeter.class, GuiElectricityMeter.class),
+    CREATIVE_ELECTRICITY_METER("ElectricityMeter", 4, TileEntityElectricityMeter.class, GuiElectricityMeter.class);
 
     private final String name;
     private final int metadata;
@@ -32,12 +33,43 @@ public enum MachineType {
         this.guiClass = guiClass;
     }
 
-    public String getName() {
-        return name;
+    public String getUnlocalizedName() {
+        switch (this) {
+            case BASIC_ELECTRICITY_METER:
+            case ADVANCED_ELECTRICITY_METER:
+            case ELITE_ELECTRICITY_METER:
+            case ULTIMATE_ELECTRICITY_METER:
+            case CREATIVE_ELECTRICITY_METER:
+                ElectricityMeterTier electricityMeterTier = ElectricityMeterTier.getFromMachineType(this);
+                BaseTier baseTier = electricityMeterTier.getBaseTier();
+
+                return baseTier.getUnlocalizedName() + name;
+
+            default:
+                return name;
+        }
     }
 
     public String getLocalizedName() {
-        return Utils.translate("tile." + name + ".name");
+        String localizedName;
+
+        switch (this) {
+            case BASIC_ELECTRICITY_METER:
+            case ADVANCED_ELECTRICITY_METER:
+            case ELITE_ELECTRICITY_METER:
+            case ULTIMATE_ELECTRICITY_METER:
+            case CREATIVE_ELECTRICITY_METER:
+                BaseTier baseTier = ElectricityMeterTier.getFromMachineType(this).getBaseTier();
+
+                localizedName = baseTier.getLocalizedName() + name;
+                break;
+
+            default:
+                localizedName = name;
+                break;
+        }
+
+        return Utils.translate("tile." + localizedName + ".name");
     }
 
     public int getMetadata() {
@@ -52,7 +84,9 @@ public enum MachineType {
                 case ELITE_ELECTRICITY_METER:
                 case ULTIMATE_ELECTRICITY_METER:
                 case CREATIVE_ELECTRICITY_METER:
-                    return tileEntityClass.getConstructor(String.class, ElectricityMeterTier.class).newInstance(getLocalizedName(), ElectricityMeterTier.getFromMachineType(this));
+                    ElectricityMeterTier electricityMeterTier = ElectricityMeterTier.getFromMachineType(this);
+
+                    return tileEntityClass.getConstructor(String.class, ElectricityMeterTier.class).newInstance(getLocalizedName(), electricityMeterTier);
 
                 default:
                     return tileEntityClass.newInstance();

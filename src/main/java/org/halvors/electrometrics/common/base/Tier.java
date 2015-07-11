@@ -19,12 +19,12 @@ public class Tier {
 			this.color = color;
 		}
 
-		public String getName() {
+		public String getUnlocalizedName() {
 			return name;
 		}
 
 		public String getLocalizedName() {
-			return Utils.translate("tier." + getName());
+			return Utils.translate("tier." + name);
 		}
 
 		public Color getColor() {

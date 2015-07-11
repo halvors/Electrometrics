@@ -26,8 +26,4 @@ public class BlockContainer extends net.minecraft.block.BlockContainer {
 	public TileEntity createNewTileEntity(World world, int metadata) {
 		return null;
 	}
-
-	public String getName() {
-		return name;
-	}
 }

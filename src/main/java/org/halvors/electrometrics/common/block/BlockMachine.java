@@ -42,7 +42,7 @@ public class BlockMachine extends BlockRotatable {
     private final MachineType machineType;
 
 	BlockMachine(MachineType machineType) {
-		super(machineType.getName(), Material.iron);
+		super(machineType.getUnlocalizedName(), Material.iron);
 
         this.machineType = machineType;
 
@@ -64,7 +64,7 @@ public class BlockMachine extends BlockRotatable {
 
 		// Adding machine types.
 		for (MachineType machineType : MachineType.values()) {
-			Renderer.loadDynamicTextures(iconRegister, machineType.getName(), iconList[machineType.getMetadata()], defaultIcon);
+			Renderer.loadDynamicTextures(iconRegister, machineType.getUnlocalizedName(), iconList[machineType.getMetadata()], defaultIcon);
 		}
 	}
 

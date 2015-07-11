@@ -2,7 +2,7 @@ package org.halvors.electrometrics.common.item;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import org.halvors.electrometrics.common.util.Utils;
+import org.halvors.electrometrics.common.base.MachineType;
 
 public class ItemBlockMachine extends ItemBlockContainer {
     ItemBlockMachine(Block block) {
@@ -17,7 +17,16 @@ public class ItemBlockMachine extends ItemBlockContainer {
     }
 
     @Override
+    public String getUnlocalizedName(ItemStack itemStack) {
+        MachineType machineType = MachineType.getType(itemStack);
+
+        return machineType.getUnlocalizedName();
+    }
+
+    @Override
     public String getItemStackDisplayName(ItemStack itemStack) {
-        return Utils.translate("tile." + block.getName() + ".name");
+        MachineType machineType = MachineType.getType(itemStack);
+
+        return machineType.getLocalizedName();
     }
 }
