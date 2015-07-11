@@ -19,21 +19,21 @@ public class GuiOwnerInfo extends GuiComponent implements IGuiComponent {
 
 	@Override
 	public Rectangle4i getBounds(int guiWidth, int guiHeight) {
-		return new Rectangle4i(guiWidth - 26, guiHeight + 1, 26, 26);
+		return new Rectangle4i(guiWidth - 26, guiHeight + 2, 26, 26);
 	}
 
 	@Override
 	public void renderBackground(int xAxis, int yAxis, int guiWidth, int guiHeight) {
 		game.renderEngine.bindTexture(resource);
 
-		gui.drawTexturedRect(guiWidth - 26, guiHeight + 1, 0, 0, 26, 26);
+		gui.drawTexturedRect(guiWidth - 26, guiHeight + 2, 0, 0, 26, 26);
 
         super.renderBackground(xAxis, yAxis, guiWidth, guiHeight);
 	}
 
 	@Override
 	public void renderForeground(int xAxis, int yAxis) {
-		if (xAxis >= -21 && xAxis <= -3 && yAxis >= 5 && yAxis <= 23) {
+		if (xAxis >= -21 && xAxis <= -3 && yAxis >= 6 && yAxis <= 24) {
 			displayTooltips(infoHandler.getInfo(), xAxis, yAxis);
 		}
 
