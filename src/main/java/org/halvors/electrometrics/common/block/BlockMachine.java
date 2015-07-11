@@ -26,6 +26,7 @@ import org.halvors.electrometrics.common.item.ItemBlockElectricityMeter;
 import org.halvors.electrometrics.common.tile.TileEntityElectricBlock;
 import org.halvors.electrometrics.client.render.DefaultIcon;
 import org.halvors.electrometrics.client.render.Renderer;
+import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
 
 import java.util.List;
 
@@ -53,7 +54,17 @@ public class BlockMachine extends BlockRotatable {
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
-		return machineType.getTileEntity();
+		switch (machineType) {
+			case BASIC_ELECTRICITY_METER:
+			case ADVANCED_ELECTRICITY_METER:
+			case ELITE_ELECTRICITY_METER:
+			case ULTIMATE_ELECTRICITY_METER:
+			case CREATIVE_ELECTRICITY_METER:
+				return new TileEntityElectricityMeter(machineType.getLocalizedName(), ElectricityMeterTier.getFromMachineType(machineType));
+
+			default:
+				return null;
+		}
 	}
 
 	@Override

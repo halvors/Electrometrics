@@ -26,7 +26,7 @@ public class BlockLocation {
 	}
 
 	public BlockLocation(TileEntity tileEntity) {
-		this.dimensionId = 0; //tileEntity.getWorldObj().provider.dimensionId;
+		this.dimensionId = tileEntity.getWorldObj().provider.dimensionId;
 		this.x = tileEntity.xCoord;
 		this.y = tileEntity.yCoord;
 		this.z = tileEntity.zCoord;
