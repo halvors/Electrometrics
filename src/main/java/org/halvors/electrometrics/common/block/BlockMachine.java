@@ -12,21 +12,20 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.Reference;
+import org.halvors.electrometrics.client.render.DefaultIcon;
+import org.halvors.electrometrics.client.render.Renderer;
 import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.base.Tier.ElectricityMeterTier;
 import org.halvors.electrometrics.common.base.tile.IOwnable;
 import org.halvors.electrometrics.common.base.tile.IRedstoneControl;
 import org.halvors.electrometrics.common.item.ItemBlockElectricityMeter;
+import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.tile.TileEntityElectricBlock;
-import org.halvors.electrometrics.client.render.DefaultIcon;
-import org.halvors.electrometrics.client.render.Renderer;
-import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
 
 import java.util.List;
 
@@ -54,17 +53,7 @@ public class BlockMachine extends BlockRotatable {
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
-		switch (machineType) {
-			case BASIC_ELECTRICITY_METER:
-			case ADVANCED_ELECTRICITY_METER:
-			case ELITE_ELECTRICITY_METER:
-			case ULTIMATE_ELECTRICITY_METER:
-			case CREATIVE_ELECTRICITY_METER:
-				return new TileEntityElectricityMeter(machineType.getLocalizedName(), ElectricityMeterTier.getFromMachineType(machineType));
-
-			default:
-				return null;
-		}
+		return machineType.getTileEntity();
 	}
 
 	@Override
@@ -113,7 +102,7 @@ public class BlockMachine extends BlockRotatable {
 	@Override
 	public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player) {
 		if (!world.isRemote) {
-			TileEntity tileEntity = world.getTileEntity(x, y, z);
+			TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
 
 			// Display a message the the player clicking this block if not the owner.
 			if (tileEntity instanceof IOwnable) {
@@ -128,7 +117,7 @@ public class BlockMachine extends BlockRotatable {
 
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int facing, float playerX, float playerY, float playerZ) {
-		TileEntity tileEntity = world.getTileEntity(x, y, z);
+		TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
 
 		if (!player.isSneaking()) {
 			// Check whether or not this IOwnable has a owner, if not set the current player as owner.
@@ -151,7 +140,7 @@ public class BlockMachine extends BlockRotatable {
 
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemStack) {
-		TileEntity tileEntity = world.getTileEntity(x, y, z);
+		TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
 
 		// If this TileEntity implements IRedstoneControl, check if it's getting powered.
 		if (tileEntity instanceof IRedstoneControl) {
@@ -176,7 +165,7 @@ public class BlockMachine extends BlockRotatable {
 	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
 		if (!world.isRemote) {
-			TileEntity tileEntity = world.getTileEntity(x, y, z);
+			TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
 
 			if (tileEntity instanceof TileEntityElectricBlock) {
 				TileEntityElectricBlock tileEntityElectricBlock = (TileEntityElectricBlock) tileEntity;
@@ -187,7 +176,7 @@ public class BlockMachine extends BlockRotatable {
 
 	@Override
 	public float getBlockHardness(World world, int x, int y, int z) {
-		TileEntity tileEntity = world.getTileEntity(x, y, z);
+		TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
 
 		// If this TileEntity implements IOwnable, we check if there is a owner.
 		if (tileEntity instanceof IOwnable) {
@@ -202,7 +191,7 @@ public class BlockMachine extends BlockRotatable {
 
 	@Override
 	public float getExplosionResistance(Entity entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ) {
-		TileEntity tileEntity = world.getTileEntity(x, y, z);
+		TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
 
 		if (tileEntity instanceof IOwnable) {
 			IOwnable ownable = (IOwnable) tileEntity;

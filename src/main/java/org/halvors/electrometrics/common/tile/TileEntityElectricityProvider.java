@@ -2,7 +2,6 @@ package org.halvors.electrometrics.common.tile;
 
 import cofh.api.energy.IEnergyProvider;
 import cofh.api.energy.IEnergyReceiver;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketRequestData;
@@ -26,13 +25,6 @@ public abstract class TileEntityElectricityProvider extends TileEntityElectricit
 
 	TileEntityElectricityProvider(String name, int maxEnergy, int maxReceive, int maxExtract) {
 		super(name, maxEnergy, maxReceive, maxExtract);
-	}
-
-	@Override
-	public void validate() {
-		super.validate();
-
-		PacketHandler.sendToServer(new PacketRequestData(this));
 	}
 
 	@Override
@@ -75,7 +67,7 @@ public abstract class TileEntityElectricityProvider extends TileEntityElectricit
 	 */
 	private void transferEnergy() {
 		for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
-			TileEntity tileEntity = worldObj.getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
+			TileEntity tileEntity = TileEntity.getTileEntity(worldObj, xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
 
 			if (tileEntity instanceof IEnergyReceiver) {
 				IEnergyReceiver receiver = (IEnergyReceiver) tileEntity;

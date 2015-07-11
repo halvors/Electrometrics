@@ -7,6 +7,7 @@ import net.minecraft.world.World;
 import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.base.Tier.ElectricityMeterTier;
 import org.halvors.electrometrics.common.item.ItemBlockElectricityMeter;
+import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
 
 /**
@@ -31,7 +32,8 @@ public class BlockElectricityMeter extends BlockMachine {
 
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player) {
-		TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) world.getTileEntity(x, y, z);
+		TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
+		TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
         ElectricityMeterTier tier = tileEntityElectricityMeter.getTier();
         ItemStack itemStack = tier.getMachineType().getItemStack();
 

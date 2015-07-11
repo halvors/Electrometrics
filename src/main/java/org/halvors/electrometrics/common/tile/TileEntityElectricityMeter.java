@@ -7,14 +7,12 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
-import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.base.Tier.ElectricityMeterTier;
 import org.halvors.electrometrics.common.base.tile.*;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketRequestData;
 import org.halvors.electrometrics.common.network.PacketTileEntity;
 import org.halvors.electrometrics.common.util.Utils;
-import org.lwjgl.Sys;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -51,13 +49,6 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 
 	public TileEntityElectricityMeter(String name, ElectricityMeterTier electricityMeterTier) {
 		super(name, electricityMeterTier.getMaxEnergy(), electricityMeterTier.getMaxTransfer());
-	}
-
-	@Override
-	public void validate() {
-		super.validate();
-
-		PacketHandler.sendToServer(new PacketRequestData(this));
 	}
 
 	@Override
@@ -160,15 +151,11 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 
 	@Override
 	public EntityPlayer getOwner() {
-		System.out.println("ownerUUID is: " + ownerUUID);
-
 		return Utils.getPlayerFromUUID(ownerUUID);
 	}
 
 	@Override
 	public String getOwnerName() {
-		System.out.println("ownerName is: " + ownerName);
-
 		return ownerName;
 	}
 
@@ -176,9 +163,6 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 	public void setOwner(EntityPlayer player) {
 		this.ownerUUID = player.getPersistentID();
 		this.ownerName = player.getDisplayName();
-
-		System.out.println("ownerUUID is: " + ownerUUID);
-		System.out.println("ownerName is: " + ownerName);
 
 		PacketHandler.sendToServer(new PacketTileEntity(this));
 	}

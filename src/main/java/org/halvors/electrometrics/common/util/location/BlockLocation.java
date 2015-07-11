@@ -53,6 +53,6 @@ public class BlockLocation {
 	}
 
 	public TileEntity getTileEntity(IBlockAccess world) {
-		return (TileEntity) world.getTileEntity(x, y, z);
+		return TileEntity.getTileEntity(world, x, y, z);
 	}
 }

@@ -8,10 +8,10 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.common.base.tile.IRedstoneControl;
+import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.util.UnitDisplay.Unit;
 
 import java.util.ArrayList;

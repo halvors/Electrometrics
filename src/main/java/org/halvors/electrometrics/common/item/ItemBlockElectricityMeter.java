@@ -7,11 +7,11 @@ import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import org.halvors.electrometrics.client.key.Key;
 import org.halvors.electrometrics.client.key.KeyHandler;
 import org.halvors.electrometrics.common.base.Tier.ElectricityMeterTier;
+import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.util.Color;
 import org.halvors.electrometrics.common.util.Utils;
@@ -46,7 +46,7 @@ public class ItemBlockElectricityMeter extends ItemBlockMachine {
 		boolean placed = super.placeBlockAt(itemStack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata);
 
 		if (placed) {
-			TileEntity tileEntity = world.getTileEntity(x, y, z);
+			TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
 
 			if (tileEntity instanceof TileEntityElectricityMeter) {
 				TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;

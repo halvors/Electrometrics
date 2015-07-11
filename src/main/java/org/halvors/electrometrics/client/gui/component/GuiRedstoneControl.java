@@ -2,17 +2,17 @@ package org.halvors.electrometrics.client.gui.component;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import org.halvors.electrometrics.Reference;
 import org.halvors.electrometrics.client.gui.IGui;
+import org.halvors.electrometrics.client.render.Rectangle4i;
 import org.halvors.electrometrics.client.sound.SoundHandler;
 import org.halvors.electrometrics.common.base.tile.INetworkable;
 import org.halvors.electrometrics.common.base.tile.IRedstoneControl;
 import org.halvors.electrometrics.common.base.tile.RedstoneControlType;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketTileEntity;
-import org.halvors.electrometrics.client.render.Rectangle4i;
+import org.halvors.electrometrics.common.tile.TileEntity;
 
 @SideOnly(Side.CLIENT)
 public class GuiRedstoneControl extends GuiComponent implements IGuiComponent {
