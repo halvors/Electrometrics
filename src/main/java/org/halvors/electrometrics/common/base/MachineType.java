@@ -8,6 +8,7 @@ import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.client.gui.GuiElectricityMeter;
 import org.halvors.electrometrics.common.base.Tier.ElectricityMeterTier;
 import org.halvors.electrometrics.common.block.BlockMachine;
+import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.tile.TileEntityMachine;
 import org.halvors.electrometrics.common.util.Utils;
@@ -21,10 +22,10 @@ public enum MachineType {
 
     private final String name;
     private final int metadata;
-    private final Class<? extends TileEntityElectricityMeter> tileEntityClass;
+    private final Class<? extends TileEntityMachine> tileEntityClass;
     private final Class<? extends GuiScreen> guiClass;
 
-    MachineType(String name, int metadata, Class<? extends TileEntityElectricityMeter> tileEntityClass, Class<? extends GuiScreen> guiClass) {
+    MachineType(String name, int metadata, Class<? extends TileEntityMachine> tileEntityClass, Class<? extends GuiScreen> guiClass) {
         this.name = name;
         this.metadata = metadata;
         this.tileEntityClass = tileEntityClass;
@@ -43,7 +44,7 @@ public enum MachineType {
         return metadata;
     }
 
-    public TileEntityElectricityMeter getTileEntity() {
+    public TileEntityMachine getTileEntity() {
         try {
             switch (this) {
                 case BASIC_ELECTRICITY_METER:
@@ -51,7 +52,7 @@ public enum MachineType {
                 case ELITE_ELECTRICITY_METER:
                 case ULTIMATE_ELECTRICITY_METER:
                 case CREATIVE_ELECTRICITY_METER:
-                    return (TileEntityElectricityMeter) tileEntityClass.getConstructor(new Class[] { String.class, ElectricityMeterTier.class }).newInstance(getLocalizedName(), ElectricityMeterTier.getFromMachineType(this));
+                    return tileEntityClass.getConstructor(String.class, ElectricityMeterTier.class).newInstance(getLocalizedName(), ElectricityMeterTier.getFromMachineType(this));
 
                 default:
                     return tileEntityClass.newInstance();
@@ -64,9 +65,9 @@ public enum MachineType {
         return null;
     }
 
-    public GuiScreen getGui() {
+    public GuiScreen getGui(TileEntity tileEntity) {
         try {
-            return guiClass.getConstructor(TileEntityElectricityMeter.class).newInstance(getTileEntity());
+            return guiClass.getConstructor(TileEntityMachine.class).newInstance(tileEntity);
         } catch(Exception e) {
             e.printStackTrace();
             Electrometrics.getLogger().error("Unable to indirectly create gui.");

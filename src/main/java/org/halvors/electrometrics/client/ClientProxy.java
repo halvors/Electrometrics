@@ -8,6 +8,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import org.halvors.electrometrics.common.CommonProxy;
 import org.halvors.electrometrics.common.base.MachineType;
+import org.halvors.electrometrics.common.tile.TileEntity;
+import org.halvors.electrometrics.common.tile.TileEntityMachine;
 
 /**
  * This is the client proxy used only by the client.
@@ -26,7 +28,12 @@ public class ClientProxy extends CommonProxy implements IGuiHandler {
 		Block block = world.getBlock(x, y, z);
         int metadata = world.getBlockMetadata(x, y, z);
         MachineType machineType = MachineType.getType(block, metadata);
+		TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
 
-        return machineType.getGui();
+		if (tileEntity instanceof TileEntityMachine) {
+			return machineType.getGui(tileEntity);
+		}
+
+		return null;
 	}
 }
