@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
-import org.halvors.electrometrics.Reference;
+import org.halvors.electrometrics.common.Reference;
 
 @SideOnly(Side.CLIENT)
 public class Renderer {

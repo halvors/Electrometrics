@@ -3,7 +3,6 @@ package org.halvors.electrometrics.common;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import org.halvors.electrometrics.Reference;
 import org.halvors.electrometrics.common.base.MachineType;
 
 /**

@@ -16,7 +16,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import org.halvors.electrometrics.Electrometrics;
-import org.halvors.electrometrics.Reference;
+import org.halvors.electrometrics.common.Reference;
 import org.halvors.electrometrics.client.render.DefaultIcon;
 import org.halvors.electrometrics.client.render.Renderer;
 import org.halvors.electrometrics.common.base.MachineType;

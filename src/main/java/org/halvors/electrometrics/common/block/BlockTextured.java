@@ -6,7 +6,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
-import org.halvors.electrometrics.Reference;
+import org.halvors.electrometrics.common.Reference;
 import org.halvors.electrometrics.client.render.DefaultIcon;
 import org.halvors.electrometrics.common.base.tile.IActiveState;
 import org.halvors.electrometrics.common.base.tile.IRotatable;

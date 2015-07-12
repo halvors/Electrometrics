@@ -12,7 +12,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import org.halvors.electrometrics.Reference;
+import org.halvors.electrometrics.common.Reference;
 import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.util.Utils;
 import org.halvors.electrometrics.common.util.location.BlockLocation;
