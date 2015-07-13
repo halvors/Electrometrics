@@ -11,7 +11,7 @@ import org.halvors.electrometrics.common.network.PacketRequestData;
 
 import java.util.List;
 
-public class TileEntityMachine extends TileEntity implements INetworkable, IRotatable {
+public class TileEntityRotatable extends TileEntity implements INetworkable, IRotatable {
     // The direction this TileEntity's block is facing.
     int facing;
 
@@ -19,7 +19,7 @@ public class TileEntityMachine extends TileEntity implements INetworkable, IRota
     @SideOnly(Side.CLIENT)
     private int clientFacing;
 
-    TileEntityMachine(String name) {
+    TileEntityRotatable(String name) {
         super(name);
     }
 
@@ -27,7 +27,9 @@ public class TileEntityMachine extends TileEntity implements INetworkable, IRota
     public void validate() {
         super.validate();
 
-        PacketHandler.sendToServer(new PacketRequestData(this));
+        if (worldObj.isRemote) {
+            PacketHandler.sendToServer(new PacketRequestData(this));
+        }
     }
 
     @Override

@@ -38,13 +38,6 @@ public abstract class TileEntityElectricityStorage extends TileEntityElectricBlo
 	}
 
 	@Override
-	public void validate() {
-		super.validate();
-
-		PacketHandler.sendToServer(new PacketRequestData(this));
-	}
-
-	@Override
 	public void readFromNBT(NBTTagCompound nbtTags) {
 		super.readFromNBT(nbtTags);
 

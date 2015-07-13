@@ -8,7 +8,7 @@ import org.halvors.electrometrics.common.network.PacketTileEntity;
  *
  * @author halvors
  */
-public class TileEntityElectricBlock extends TileEntityMachine {
+public class TileEntityElectricBlock extends TileEntityRotatable {
     // The current and past redstone state.
     boolean isPowered;
     boolean wasPowered;
