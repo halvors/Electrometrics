@@ -16,9 +16,9 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import org.halvors.electrometrics.Electrometrics;
-import org.halvors.electrometrics.common.Reference;
 import org.halvors.electrometrics.client.render.DefaultIcon;
 import org.halvors.electrometrics.client.render.Renderer;
+import org.halvors.electrometrics.common.Reference;
 import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.base.Tier.ElectricityMeterTier;
 import org.halvors.electrometrics.common.base.tile.IOwnable;
@@ -140,6 +140,8 @@ public class BlockMachine extends BlockRotatable {
 
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemStack) {
+		super.onBlockPlacedBy(world, x, y, z, entity, itemStack);
+
 		TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
 
 		// If this TileEntity implements IRedstoneControl, check if it's getting powered.
@@ -158,8 +160,6 @@ public class BlockMachine extends BlockRotatable {
 				ownable.setOwner(player);
 			}
 		}
-
-		super.onBlockPlacedBy(world, x, y, z, entity, itemStack);
 	}
 
 	@Override
