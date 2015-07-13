@@ -3,8 +3,6 @@ package org.halvors.electrometrics.common.tile;
 import cofh.api.energy.IEnergyProvider;
 import cofh.api.energy.IEnergyReceiver;
 import net.minecraftforge.common.util.ForgeDirection;
-import org.halvors.electrometrics.common.network.PacketHandler;
-import org.halvors.electrometrics.common.network.PacketRequestData;
 import org.halvors.electrometrics.common.util.Utils;
 
 import java.util.EnumSet;

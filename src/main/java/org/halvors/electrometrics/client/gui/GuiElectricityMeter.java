@@ -11,7 +11,7 @@ import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketRequestData;
 import org.halvors.electrometrics.common.network.PacketTileEntity;
 import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
-import org.halvors.electrometrics.common.tile.TileEntityMachine;
+import org.halvors.electrometrics.common.tile.TileEntityRotatable;
 import org.halvors.electrometrics.common.util.Utils;
 
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ import java.util.List;
 public class GuiElectricityMeter extends GuiComponentScreen {
 	private int ticker = 0;
 
-	public GuiElectricityMeter(TileEntityMachine tileEntity) {
+	public GuiElectricityMeter(TileEntityRotatable tileEntity) {
 		super(tileEntity);
 
 		final TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
