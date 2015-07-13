@@ -1,5 +1,6 @@
 package org.halvors.electrometrics.common.tile;
 
+import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketTileEntity;
 
@@ -8,13 +9,13 @@ import org.halvors.electrometrics.common.network.PacketTileEntity;
  *
  * @author halvors
  */
-public class TileEntityElectricBlock extends TileEntityRotatable {
+public class TileEntityElectricBlock extends TileEntityMachine {
     // The current and past redstone state.
     boolean isPowered;
     boolean wasPowered;
 
-	TileEntityElectricBlock(String name) {
-		super(name);
+	TileEntityElectricBlock(MachineType machineType) {
+		super(machineType);
 	}
 
     @Override

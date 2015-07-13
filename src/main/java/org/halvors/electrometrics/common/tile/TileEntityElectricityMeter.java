@@ -7,6 +7,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
+import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.base.Tier.ElectricityMeterTier;
 import org.halvors.electrometrics.common.base.tile.*;
 import org.halvors.electrometrics.common.network.PacketHandler;
@@ -47,8 +48,8 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 	// The amount of energy that has passed thru.
 	private double electricityCount;
 
-	public TileEntityElectricityMeter(String name, ElectricityMeterTier electricityMeterTier) {
-		super(name, electricityMeterTier.getMaxEnergy(), electricityMeterTier.getMaxTransfer());
+	public TileEntityElectricityMeter(MachineType machineType) {
+		super(machineType, ElectricityMeterTier.getFromMachineType(machineType).getMaxEnergy(), ElectricityMeterTier.getFromMachineType(machineType).getMaxTransfer());
 	}
 
 	@Override

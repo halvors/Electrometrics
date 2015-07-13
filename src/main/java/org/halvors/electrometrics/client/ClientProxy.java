@@ -9,6 +9,7 @@ import net.minecraft.world.World;
 import org.halvors.electrometrics.common.CommonProxy;
 import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.tile.TileEntity;
+import org.halvors.electrometrics.common.tile.TileEntityMachine;
 import org.halvors.electrometrics.common.tile.TileEntityRotatable;
 
 /**
@@ -25,13 +26,12 @@ public class ClientProxy extends CommonProxy implements IGuiHandler {
 
 	@Override
 	public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
-		Block block = world.getBlock(x, y, z);
-        int metadata = world.getBlockMetadata(x, y, z);
-        MachineType machineType = MachineType.getType(block, metadata);
 		TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
 
-		if (tileEntity instanceof TileEntityRotatable) {
-			return machineType.getGui(tileEntity);
+		if (tileEntity instanceof TileEntityMachine) {
+			TileEntityMachine tileEntityMachine = (TileEntityMachine) tileEntity;
+
+			return tileEntityMachine.getMachineType().getGui(tileEntityMachine);
 		}
 
 		return null;
