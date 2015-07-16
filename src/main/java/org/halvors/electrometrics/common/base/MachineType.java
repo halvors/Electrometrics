@@ -4,16 +4,11 @@ import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.client.gui.GuiElectricityMeter;
-import org.halvors.electrometrics.common.base.Tier.BaseTier;
-import org.halvors.electrometrics.common.base.Tier.ElectricityMeterTier;
 import org.halvors.electrometrics.common.block.BlockMachine;
-import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.tile.TileEntityMachine;
-import org.halvors.electrometrics.common.tile.TileEntityRotatable;
 import org.halvors.electrometrics.common.util.Utils;
 
 public enum MachineType {
@@ -36,24 +31,25 @@ public enum MachineType {
     }
 
     public String getUnlocalizedName() {
+        return name;
+    }
+
+    public String getLocalizedName() {
+        String name = Utils.translate("tile." + getUnlocalizedName() + ".name");
+
         switch (this) {
             case BASIC_ELECTRICITY_METER:
             case ADVANCED_ELECTRICITY_METER:
             case ELITE_ELECTRICITY_METER:
             case ULTIMATE_ELECTRICITY_METER:
             case CREATIVE_ELECTRICITY_METER:
-                ElectricityMeterTier electricityMeterTier = ElectricityMeterTier.getFromMachineType(this);
-                BaseTier baseTier = electricityMeterTier.getBaseTier();
+                Tier.Base baseTier = Tier.ElectricityMeter.getFromMachineType(this).getBaseTier();
 
-                return baseTier.getUnlocalizedName() + name;
+                return baseTier.getLocalizedName() + " " + name;
 
             default:
                 return name;
         }
-    }
-
-    public String getLocalizedName() {
-        return Utils.translate("tile." + getUnlocalizedName() + ".name");
     }
 
     public int getMetadata() {
