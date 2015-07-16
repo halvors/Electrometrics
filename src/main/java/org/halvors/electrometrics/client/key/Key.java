@@ -1,12 +1,19 @@
 package org.halvors.electrometrics.client.key;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
 
-public class Key {
-    private static final GameSettings gameSettings = Minecraft.getMinecraft().gameSettings;
+public enum Key {
+    SNEAK(Minecraft.getMinecraft().gameSettings.keyBindSneak),
+    JUMP(Minecraft.getMinecraft().gameSettings.keyBindJump);
 
-    public static final KeyBinding sneakKey = gameSettings.keyBindSneak;
-    public static final KeyBinding jumpKey = gameSettings.keyBindJump;
+    private KeyBinding keyBinding;
+
+    Key(KeyBinding keyBinding) {
+        this.keyBinding = keyBinding;
+    }
+
+    public KeyBinding getKeyBinding() {
+        return keyBinding;
+    }
 }

@@ -33,8 +33,8 @@ public class ItemBlockElectricityMeter extends ItemBlockMachine {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack itemStack, EntityPlayer entityplayer, List list, boolean flag) {
-		if (!KeyHandler.getIsKeyPressed(Key.sneakKey)) {
-			list.add(Utils.translate("tooltip.hold") + " " + Color.AQUA + GameSettings.getKeyDisplayString(Key.sneakKey.getKeyCode()) + Color.GREY + " " + Utils.translate("tooltip.forDetails") + ".");
+		if (!KeyHandler.getIsKeyPressed(Key.SNEAK.getKeyBinding())) {
+			list.add(Utils.translate("tooltip.hold") + " " + Color.AQUA + GameSettings.getKeyDisplayString(Key.SNEAK.getKeyBinding().getKeyCode()) + Color.GREY + " " + Utils.translate("tooltip.forDetails") + ".");
 		} else {
 			list.add(Color.BRIGHT_GREEN + Utils.translate("tooltip.measuredEnergy") + ": " + Color.GREY + Utils.getEnergyDisplay(getElectricityCount(itemStack)));
 			list.add(Color.AQUA + Utils.translate("tooltip.storedEnergy") + ": " + Color.GREY + Utils.getEnergyDisplay(getElectricityStored(itemStack)));
