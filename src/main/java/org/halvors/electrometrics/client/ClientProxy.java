@@ -3,14 +3,11 @@ package org.halvors.electrometrics.client;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import org.halvors.electrometrics.common.CommonProxy;
-import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.tile.TileEntityMachine;
-import org.halvors.electrometrics.common.tile.TileEntityRotatable;
 
 /**
  * This is the client proxy used only by the client.

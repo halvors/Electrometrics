@@ -21,7 +21,7 @@ import org.halvors.electrometrics.common.CommonProxy;
 import org.halvors.electrometrics.common.Reference;
 import org.halvors.electrometrics.common.Tab;
 import org.halvors.electrometrics.common.base.MachineType;
-import org.halvors.electrometrics.common.base.Tier.ElectricityMeterTier;
+import org.halvors.electrometrics.common.base.Tier;
 import org.halvors.electrometrics.common.block.BlockElectricityMeter;
 import org.halvors.electrometrics.common.block.BlockMachine;
 import org.halvors.electrometrics.common.event.PlayerEventHandler;
@@ -132,7 +132,7 @@ public class Electrometrics {
 		// Register recipes.
 		if (isMekanismIntegrationEnabled) {
 			// Add recipe for all tiers.
-			for (ElectricityMeterTier tier : ElectricityMeterTier.values()) {
+			for (Tier.ElectricityMeter tier : Tier.ElectricityMeter.values()) {
 				ItemStack itemStackElectricityMeter = tier.getMachineType().getItemStack();
 				ItemBlockElectricityMeter itemBlockElectricityMeter = (ItemBlockElectricityMeter) itemStackElectricityMeter.getItem();
 				itemBlockElectricityMeter.setTier(itemStackElectricityMeter, tier);

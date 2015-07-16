@@ -20,7 +20,7 @@ import org.halvors.electrometrics.client.render.DefaultIcon;
 import org.halvors.electrometrics.client.render.Renderer;
 import org.halvors.electrometrics.common.Reference;
 import org.halvors.electrometrics.common.base.MachineType;
-import org.halvors.electrometrics.common.base.Tier.ElectricityMeterTier;
+import org.halvors.electrometrics.common.base.Tier;
 import org.halvors.electrometrics.common.base.tile.IOwnable;
 import org.halvors.electrometrics.common.base.tile.IRedstoneControl;
 import org.halvors.electrometrics.common.item.ItemBlockElectricityMeter;
@@ -82,7 +82,7 @@ public class BlockMachine extends BlockRotatable {
 				case CREATIVE_ELECTRICITY_METER:
 					ItemStack itemStack = machineType.getItemStack();
 					ItemBlockElectricityMeter itemBlockElectricityMeter = (ItemBlockElectricityMeter) itemStack.getItem();
-					itemBlockElectricityMeter.setTier(itemStack, ElectricityMeterTier.getFromMachineType(machineType));
+					itemBlockElectricityMeter.setTier(itemStack, Tier.ElectricityMeter.getFromMachineType(machineType));
 
 					list.add(itemStack);
 					break;

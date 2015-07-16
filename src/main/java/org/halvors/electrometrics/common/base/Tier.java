@@ -4,7 +4,7 @@ import org.halvors.electrometrics.common.util.Color;
 import org.halvors.electrometrics.common.util.Utils;
 
 public class Tier {
-	public enum BaseTier {
+	public enum Base {
 		BASIC("Basic", Color.BRIGHT_GREEN),
 		ADVANCED("Advanced", Color.DARK_RED),
 		ELITE("Elite", Color.DARK_BLUE),
@@ -14,7 +14,7 @@ public class Tier {
 		private final String name;
 		private final Color color;
 
-		BaseTier(String name, Color color) {
+		Base(String name, Color color) {
 			this.name = name;
 			this.color = color;
 		}
@@ -36,7 +36,7 @@ public class Tier {
 		}
 	}
 
-	public enum ElectricityMeterTier {
+	public enum ElectricityMeter {
 		BASIC(5000000, 2000), // 800 J
 		ADVANCED(20000000, 8000), // 3200 J
 		ELITE(80000000, 32000), // 12800 J
@@ -46,13 +46,13 @@ public class Tier {
 		private final int maxEnergy;
 		private final int maxTransfer;
 
-		ElectricityMeterTier(int maxEnergy, int maxTransfer) {
+		ElectricityMeter(int maxEnergy, int maxTransfer) {
 			this.maxEnergy = maxEnergy;
 			this.maxTransfer = maxTransfer;
 		}
 
-		public BaseTier getBaseTier() {
-			return BaseTier.values()[ordinal()];
+		public Base getBaseTier() {
+			return Base.values()[ordinal()];
 		}
 
 		public int getMaxEnergy() {
@@ -67,7 +67,7 @@ public class Tier {
             return MachineType.values()[ordinal()];
         }
 
-        public static ElectricityMeterTier getFromMachineType(MachineType machineType) {
+        public static ElectricityMeter getFromMachineType(MachineType machineType) {
             return values()[machineType.getMetadata()];
         }
 	}

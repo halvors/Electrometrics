@@ -8,10 +8,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.halvors.electrometrics.common.base.MachineType;
-import org.halvors.electrometrics.common.base.Tier.ElectricityMeterTier;
+import org.halvors.electrometrics.common.base.Tier;
 import org.halvors.electrometrics.common.base.tile.*;
 import org.halvors.electrometrics.common.network.PacketHandler;
-import org.halvors.electrometrics.common.network.PacketRequestData;
 import org.halvors.electrometrics.common.network.PacketTileEntity;
 import org.halvors.electrometrics.common.util.Utils;
 
@@ -43,13 +42,13 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 	private RedstoneControlType redstoneControlType = RedstoneControlType.DISABLED;
 
     // The tier of this TileEntity.
-	private ElectricityMeterTier electricityMeterTier = ElectricityMeterTier.BASIC;
+	private Tier.ElectricityMeter electricityMeterTier = Tier.ElectricityMeter.BASIC;
 
 	// The amount of energy that has passed thru.
 	private double electricityCount;
 
 	public TileEntityElectricityMeter(MachineType machineType) {
-		super(machineType, ElectricityMeterTier.getFromMachineType(machineType).getMaxEnergy(), ElectricityMeterTier.getFromMachineType(machineType).getMaxTransfer());
+		super(machineType, Tier.ElectricityMeter.getFromMachineType(machineType).getMaxEnergy(), Tier.ElectricityMeter.getFromMachineType(machineType).getMaxTransfer());
 	}
 
 	@Override
@@ -61,7 +60,7 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 		ownerName = nbtTags.getString("ownerName");
 		redstoneControlType = RedstoneControlType.values()[nbtTags.getInteger("redstoneControlType")];
 
-		electricityMeterTier = ElectricityMeterTier.values()[nbtTags.getInteger("tier")];
+		electricityMeterTier = Tier.ElectricityMeter.values()[nbtTags.getInteger("tier")];
 		electricityCount = nbtTags.getDouble("electricityCount");
 	}
 
@@ -94,7 +93,7 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		}
 
-		electricityMeterTier = ElectricityMeterTier.values()[dataStream.readInt()];
+		electricityMeterTier = Tier.ElectricityMeter.values()[dataStream.readInt()];
 		electricityCount = dataStream.readDouble();
 	}
 
@@ -198,11 +197,11 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 		return false;
 	}
 
-	public ElectricityMeterTier getTier() {
+	public Tier.ElectricityMeter getTier() {
 		return electricityMeterTier;
 	}
 
-	public void setTier(ElectricityMeterTier electricityMeterTier) {
+	public void setTier(Tier.ElectricityMeter electricityMeterTier) {
 		this.electricityMeterTier = electricityMeterTier;
 	}
 

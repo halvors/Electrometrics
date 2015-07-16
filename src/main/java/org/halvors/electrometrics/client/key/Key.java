@@ -7,7 +7,7 @@ public enum Key {
     SNEAK(Minecraft.getMinecraft().gameSettings.keyBindSneak),
     JUMP(Minecraft.getMinecraft().gameSettings.keyBindJump);
 
-    private KeyBinding keyBinding;
+    private final KeyBinding keyBinding;
 
     Key(KeyBinding keyBinding) {
         this.keyBinding = keyBinding;
