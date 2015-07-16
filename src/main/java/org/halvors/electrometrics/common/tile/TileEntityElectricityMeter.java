@@ -56,8 +56,8 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 		super.readFromNBT(nbtTags);
 
         isActive = nbtTags.getBoolean("isActive");
-		ownerUUID = UUID.fromString(nbtTags.getString("ownerUUID"));
-		ownerName = nbtTags.getString("ownerName");
+		ownerUUID = nbtTags.hasKey("ownerUUID") ? UUID.fromString(nbtTags.getString("ownerUUID")) : null;
+		ownerName = nbtTags.hasKey("ownerName") ? nbtTags.getString("ownerName") : null;
 		redstoneControlType = RedstoneControlType.values()[nbtTags.getInteger("redstoneControlType")];
 
 		electricityMeterTier = Tier.ElectricityMeter.values()[nbtTags.getInteger("tier")];
@@ -69,8 +69,15 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 		super.writeToNBT(nbtTags);
 
         nbtTags.setBoolean("isActive", isActive);
-		nbtTags.setString("ownerUUID", ownerUUID != null ? ownerUUID.toString() : "");
-		nbtTags.setString("ownerName", ownerName != null ? ownerName : "");
+
+		if (ownerUUID != null) {
+			nbtTags.setString("ownerUUID", ownerUUID.toString());
+		}
+
+		if (ownerName != null) {
+			nbtTags.setString("ownerName", ownerName);
+		}
+
         nbtTags.setInteger("redstoneControlType", redstoneControlType.ordinal());
 
 		nbtTags.setInteger("tier", electricityMeterTier.ordinal());
@@ -82,7 +89,13 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 		super.handlePacketData(dataStream);
 
         isActive = dataStream.readBoolean();
-        ownerUUID = UUID.fromString(ByteBufUtils.readUTF8String(dataStream));
+
+		String ownerUUIDString = ByteBufUtils.readUTF8String(dataStream);
+
+		if (ownerUUIDString!= null) {
+			ownerUUID = UUID.fromString(ownerUUIDString);
+		}
+
 		ownerName = ByteBufUtils.readUTF8String(dataStream);
 		redstoneControlType = RedstoneControlType.values()[dataStream.readInt()];
 
@@ -102,8 +115,8 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 		super.getPacketData(list);
 
 		list.add(isActive);
-		list.add(ownerUUID != null ? ownerUUID.toString() : "");
-		list.add(ownerName != null ? ownerName : "");
+		list.add(ownerUUID);
+		list.add(ownerName);
 		list.add(redstoneControlType.ordinal());
 
 		list.add(electricityMeterTier.ordinal());
