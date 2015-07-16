@@ -10,10 +10,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import org.halvors.electrometrics.client.key.Key;
 import org.halvors.electrometrics.client.key.KeyHandler;
-import org.halvors.electrometrics.common.base.Tier.ElectricityMeterTier;
+import org.halvors.electrometrics.common.base.Tier;
 import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.util.Color;
+import org.halvors.electrometrics.common.util.MachineUtils;
 import org.halvors.electrometrics.common.util.Utils;
 
 import java.util.List;
@@ -36,8 +37,8 @@ public class ItemBlockElectricityMeter extends ItemBlockMachine {
 		if (!KeyHandler.getIsKeyPressed(Key.SNEAK.getKeyBinding())) {
 			list.add(Utils.translate("tooltip.hold") + " " + Color.AQUA + GameSettings.getKeyDisplayString(Key.SNEAK.getKeyBinding().getKeyCode()) + Color.GREY + " " + Utils.translate("tooltip.forDetails") + ".");
 		} else {
-			list.add(Color.BRIGHT_GREEN + Utils.translate("tooltip.measuredEnergy") + ": " + Color.GREY + Utils.getEnergyDisplay(getElectricityCount(itemStack)));
-			list.add(Color.AQUA + Utils.translate("tooltip.storedEnergy") + ": " + Color.GREY + Utils.getEnergyDisplay(getElectricityStored(itemStack)));
+			list.add(Color.BRIGHT_GREEN + Utils.translate("tooltip.measuredEnergy") + ": " + Color.GREY + MachineUtils.getEnergyDisplay(getElectricityCount(itemStack)));
+			list.add(Color.AQUA + Utils.translate("tooltip.storedEnergy") + ": " + Color.GREY + MachineUtils.getEnergyDisplay(getElectricityStored(itemStack)));
 		}
 	}
 
@@ -59,17 +60,17 @@ public class ItemBlockElectricityMeter extends ItemBlockMachine {
 		return placed;
 	}
 
-	public ElectricityMeterTier getTier(ItemStack itemStack) {
+	public Tier.ElectricityMeter getTier(ItemStack itemStack) {
 		if (itemStack.stackTagCompound != null) {
 			int tier = itemStack.stackTagCompound.getInteger("tier");
 
-			return ElectricityMeterTier.values()[tier];
+			return Tier.ElectricityMeter.values()[tier];
 		}
 
-		return ElectricityMeterTier.BASIC;
+		return Tier.ElectricityMeter.BASIC;
 	}
 
-	public void setTier(ItemStack itemStack, ElectricityMeterTier tier) {
+	public void setTier(ItemStack itemStack, Tier.ElectricityMeter tier) {
 		if (itemStack.stackTagCompound == null) {
 			itemStack.setTagCompound(new NBTTagCompound());
 		}

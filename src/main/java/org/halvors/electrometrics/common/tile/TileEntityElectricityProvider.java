@@ -4,7 +4,7 @@ import cofh.api.energy.IEnergyProvider;
 import cofh.api.energy.IEnergyReceiver;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.halvors.electrometrics.common.base.MachineType;
-import org.halvors.electrometrics.common.util.Utils;
+import org.halvors.electrometrics.common.util.MachineUtils;
 
 import java.util.EnumSet;
 
@@ -30,7 +30,7 @@ public abstract class TileEntityElectricityProvider extends TileEntityElectricit
 	public void updateEntity() {
 		super.updateEntity();
 
-		if (!worldObj.isRemote && Utils.canFunction(this)) {
+		if (!worldObj.isRemote && MachineUtils.canFunction(this)) {
 			if (storage.getEnergyStored() > 0) {
 				transferEnergy();
 			}

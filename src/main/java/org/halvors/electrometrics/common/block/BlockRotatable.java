@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.halvors.electrometrics.common.base.tile.IRotatable;
 import org.halvors.electrometrics.common.tile.TileEntity;
-import org.halvors.electrometrics.common.util.Utils;
+import org.halvors.electrometrics.common.util.MachineUtils;
 
 public class BlockRotatable extends BlockTextured {
     BlockRotatable(String name, Material material) {
@@ -63,7 +63,7 @@ public class BlockRotatable extends BlockTextured {
         TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
 
         // Handle wrenching.
-        if (player.getCurrentEquippedItem() != null && Utils.hasUsableWrench(player, x, y, z)) {
+        if (player.getCurrentEquippedItem() != null && MachineUtils.hasUsableWrench(player, x, y, z)) {
             if (player.isSneaking()) {
                 dismantleBlock(world, x, y, z, false);
 
