@@ -31,11 +31,23 @@ public enum MachineType {
     }
 
     public String getUnlocalizedName() {
-        return name;
+        switch (this) {
+            case BASIC_ELECTRICITY_METER:
+            case ADVANCED_ELECTRICITY_METER:
+            case ELITE_ELECTRICITY_METER:
+            case ULTIMATE_ELECTRICITY_METER:
+            case CREATIVE_ELECTRICITY_METER:
+                Tier.Base baseTier = Tier.ElectricityMeter.getFromMachineType(this).getBaseTier();
+
+                return baseTier.getUnlocalizedName() + name;
+
+            default:
+                return name;
+        }
     }
 
     public String getLocalizedName() {
-        String name = LanguageUtils.translate("tile." + getUnlocalizedName() + ".name");
+        String localizedName = LanguageUtils.translate("tile." + name + ".name");
 
         switch (this) {
             case BASIC_ELECTRICITY_METER:
@@ -45,10 +57,10 @@ public enum MachineType {
             case CREATIVE_ELECTRICITY_METER:
                 Tier.Base baseTier = Tier.ElectricityMeter.getFromMachineType(this).getBaseTier();
 
-                return baseTier.getLocalizedName() + " " + name;
+                return baseTier.getLocalizedName() + " " + localizedName;
 
             default:
-                return name;
+                return localizedName;
         }
     }
 
