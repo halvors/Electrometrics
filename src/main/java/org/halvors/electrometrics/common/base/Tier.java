@@ -1,7 +1,7 @@
 package org.halvors.electrometrics.common.base;
 
-import org.halvors.electrometrics.common.util.Color;
 import org.halvors.electrometrics.common.util.LanguageUtils;
+import org.halvors.electrometrics.common.util.render.Color;
 
 public class Tier {
 	public enum Base {

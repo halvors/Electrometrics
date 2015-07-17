@@ -13,9 +13,9 @@ import org.halvors.electrometrics.client.key.KeyHandler;
 import org.halvors.electrometrics.common.base.Tier;
 import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
-import org.halvors.electrometrics.common.util.Color;
 import org.halvors.electrometrics.common.util.LanguageUtils;
 import org.halvors.electrometrics.common.util.energy.EnergyUtils;
+import org.halvors.electrometrics.common.util.render.Color;
 
 import java.util.List;
 

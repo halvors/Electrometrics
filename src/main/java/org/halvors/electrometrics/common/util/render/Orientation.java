@@ -1,4 +1,4 @@
-package org.halvors.electrometrics.common.util;
+package org.halvors.electrometrics.common.util.render;
 
 import net.minecraftforge.common.util.ForgeDirection;
 
