@@ -19,8 +19,8 @@ public class TileEntityRotatable extends TileEntity implements INetworkable, IRo
     @SideOnly(Side.CLIENT)
     private int clientFacing;
 
-    TileEntityRotatable(String name) {
-        super(name);
+    TileEntityRotatable(String inventoryName) {
+        super(inventoryName);
     }
 
     @Override
