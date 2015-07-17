@@ -5,14 +5,13 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.util.ResourceLocation;
 import org.halvors.electrometrics.client.gui.IGui;
 import org.halvors.electrometrics.client.render.Rectangle4i;
-import org.halvors.electrometrics.common.Reference;
 
 @SideOnly(Side.CLIENT)
 public class GuiOwnerInfo extends GuiComponent implements IGuiComponent {
 	private final IInfoHandler infoHandler;
 
 	public GuiOwnerInfo(IInfoHandler infoHandler, IGui gui, ResourceLocation defaultResource) {
-		super(new ResourceLocation(Reference.DOMAIN, "gui/elements/guiOwnerInfo.png"), gui, defaultResource);
+		super("OwnerInfo.png", gui, defaultResource);
 
 		this.infoHandler = infoHandler;
 	}

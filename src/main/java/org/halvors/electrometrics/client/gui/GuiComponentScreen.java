@@ -2,12 +2,14 @@ package org.halvors.electrometrics.client.gui;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import org.halvors.electrometrics.client.gui.component.IGuiComponent;
 import org.halvors.electrometrics.common.Reference;
+import org.halvors.electrometrics.common.base.ResourceType;
 import org.halvors.electrometrics.common.component.IComponent;
 import org.halvors.electrometrics.common.tile.TileEntity;
 import org.lwjgl.opengl.GL11;
@@ -19,9 +21,10 @@ import java.util.Set;
 
 @SideOnly(Side.CLIENT)
 public abstract class GuiComponentScreen extends GuiScreen implements IGui {
-	final Set<IComponent> components = new HashSet<>();
+	static final Minecraft game = Minecraft.getMinecraft();
 
-	final ResourceLocation defaultResource = new ResourceLocation(Reference.PREFIX + "gui/guiScreenBlank.png");
+	final Set<IComponent> components = new HashSet<>();
+	final ResourceLocation defaultResource = new ResourceLocation(Reference.DOMAIN, ResourceType.GUI.getPrefix() + "Screen.png");
 	final TileEntity tileEntity;
 
 	// This is not present by default in GuiComponentScreen as it is in GuiComponentContainer.
@@ -94,7 +97,6 @@ public abstract class GuiComponentScreen extends GuiScreen implements IGui {
 
 	void drawGuiScreenForegroundLayer(int mouseX, int mouseY) {
 		fontRendererObj.drawString(tileEntity.getInventoryName(), (xSize / 2) - (fontRendererObj.getStringWidth(tileEntity.getInventoryName()) / 2), 6, 0x404040);
-		fontRendererObj.drawString("Inventory", 8, (ySize - 96) + 2, 0x404040);
 
 		int xAxis = (mouseX - (width - xSize) / 2);
 		int yAxis = (mouseY - (height - ySize) / 2);
@@ -108,7 +110,7 @@ public abstract class GuiComponentScreen extends GuiScreen implements IGui {
 	}
 
 	void drawGuiScreenBackgroundLayer(float partialTick, int mouseX, int mouseY) {
-		mc.renderEngine.bindTexture(defaultResource);
+		game.renderEngine.bindTexture(defaultResource);
 
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 

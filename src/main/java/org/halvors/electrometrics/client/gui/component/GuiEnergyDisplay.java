@@ -7,7 +7,6 @@ import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.client.gui.IGui;
 import org.halvors.electrometrics.client.render.Rectangle4i;
 import org.halvors.electrometrics.client.sound.SoundHandler;
-import org.halvors.electrometrics.common.Reference;
 import org.halvors.electrometrics.common.util.energy.Unit;
 
 @SideOnly(Side.CLIENT)
@@ -15,7 +14,7 @@ public class GuiEnergyDisplay extends GuiComponent implements IGuiComponent {
     private Unit energyType = Electrometrics.energyType;
 
 	public GuiEnergyDisplay(IGui gui, ResourceLocation defaultResource) {
-		super(new ResourceLocation(Reference.DOMAIN, "gui/elements/guiEnergyDisplay.png"), gui, defaultResource);
+		super("EnergyDisplay.png", gui, defaultResource);
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package org.halvors.electrometrics.client.gui;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Container;
@@ -10,6 +11,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import org.halvors.electrometrics.client.gui.component.IGuiComponent;
 import org.halvors.electrometrics.common.Reference;
+import org.halvors.electrometrics.common.base.ResourceType;
 import org.halvors.electrometrics.common.component.IComponent;
 import org.halvors.electrometrics.common.tile.TileEntity;
 import org.lwjgl.opengl.GL11;
@@ -21,9 +23,10 @@ import java.util.Set;
 
 @SideOnly(Side.CLIENT)
 public abstract class GuiComponentContainer extends GuiContainer implements IGui {
-	final Set<IComponent> components = new HashSet<>();
+	static final Minecraft game = Minecraft.getMinecraft();
 
-	final ResourceLocation defaultResource = new ResourceLocation(Reference.PREFIX + "gui/guiContainerBlank.png");
+	final Set<IComponent> components = new HashSet<>();
+	final ResourceLocation defaultResource = new ResourceLocation(Reference.DOMAIN, ResourceType.GUI.getPrefix() + "Container.png");
 	final TileEntity tileEntity;
 
 	GuiComponentContainer(TileEntity tileEntity, Container container) {
@@ -75,7 +78,7 @@ public abstract class GuiComponentContainer extends GuiContainer implements IGui
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTick, int mouseX, int mouseY) {
-		mc.renderEngine.bindTexture(defaultResource);
+		game.renderEngine.bindTexture(defaultResource);
 
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 

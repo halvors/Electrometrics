@@ -16,14 +16,16 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import org.halvors.electrometrics.Electrometrics;
+import org.halvors.electrometrics.client.render.BlockRenderer;
 import org.halvors.electrometrics.client.render.DefaultIcon;
-import org.halvors.electrometrics.client.render.Renderer;
 import org.halvors.electrometrics.common.Reference;
 import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.base.Tier;
 import org.halvors.electrometrics.common.base.tile.IOwnable;
 import org.halvors.electrometrics.common.base.tile.IRedstoneControl;
 import org.halvors.electrometrics.common.item.ItemBlockElectricityMeter;
+import org.halvors.electrometrics.common.network.PacketHandler;
+import org.halvors.electrometrics.common.network.PacketRequestData;
 import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.tile.TileEntityElectricBlock;
 
@@ -62,9 +64,9 @@ public class BlockMachine extends BlockRotatable {
 		IIcon baseIcon = iconRegister.registerIcon(Reference.PREFIX + "Machine");
 		defaultIcon = DefaultIcon.getAll(baseIcon);
 
-		// Adding machine types.
+		// Adding all icons for the machine types.
 		for (MachineType machineType : MachineType.values()) {
-			Renderer.loadDynamicTextures(iconRegister, machineType.getUnlocalizedName(), iconList[machineType.getMetadata()], defaultIcon);
+			BlockRenderer.loadDynamicTextures(iconRegister, machineType.getUnlocalizedName(), iconList[machineType.getMetadata()], defaultIcon);
 		}
 	}
 
