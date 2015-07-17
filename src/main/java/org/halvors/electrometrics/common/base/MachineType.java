@@ -9,7 +9,7 @@ import org.halvors.electrometrics.client.gui.GuiElectricityMeter;
 import org.halvors.electrometrics.common.block.BlockMachine;
 import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.tile.TileEntityMachine;
-import org.halvors.electrometrics.common.util.Utils;
+import org.halvors.electrometrics.common.util.LanguageUtils;
 
 public enum MachineType {
     BASIC_ELECTRICITY_METER("ElectricityMeter", 0, TileEntityElectricityMeter.class, GuiElectricityMeter.class),
@@ -35,7 +35,7 @@ public enum MachineType {
     }
 
     public String getLocalizedName() {
-        String name = Utils.translate("tile." + getUnlocalizedName() + ".name");
+        String name = LanguageUtils.translate("tile." + getUnlocalizedName() + ".name");
 
         switch (this) {
             case BASIC_ELECTRICITY_METER:

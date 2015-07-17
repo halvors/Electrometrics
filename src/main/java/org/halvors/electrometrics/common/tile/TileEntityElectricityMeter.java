@@ -12,7 +12,7 @@ import org.halvors.electrometrics.common.base.Tier;
 import org.halvors.electrometrics.common.base.tile.*;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketTileEntity;
-import org.halvors.electrometrics.common.util.Utils;
+import org.halvors.electrometrics.common.util.PlayerUtils;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -164,7 +164,7 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 
 	@Override
 	public EntityPlayer getOwner() {
-		return Utils.getPlayerFromUUID(ownerUUID);
+		return PlayerUtils.getPlayerFromUUID(ownerUUID);
 	}
 
 	@Override

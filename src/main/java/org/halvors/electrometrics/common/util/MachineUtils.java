@@ -6,7 +6,6 @@ import mekanism.api.IMekWrench;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.common.base.tile.IRedstoneControl;
 import org.halvors.electrometrics.common.tile.TileEntity;
 
@@ -73,31 +72,5 @@ public class MachineUtils {
         }
 
         return false;
-    }
-
-    /**
-     * Converts the energy to the default energy system.
-     * @param energy the raw energy.
-     * @return the energy as a String.
-     */
-    public static String getEnergyDisplay(double energy) {
-        UnitDisplay.Unit energyType = Electrometrics.energyType;
-        double multiplier = 0;
-
-        switch (energyType) {
-            case JOULES:
-                multiplier = Electrometrics.toJoules;
-                break;
-
-            case MINECRAFT_JOULES:
-                multiplier = Electrometrics.toMinecraftJoules;
-                break;
-
-            case ELECTRICAL_UNITS:
-                multiplier = Electrometrics.toElectricalUnits;
-                break;
-        }
-
-        return UnitDisplay.getDisplayShort(energy * multiplier, energyType);
     }
 }

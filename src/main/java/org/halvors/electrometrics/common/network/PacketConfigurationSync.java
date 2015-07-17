@@ -5,7 +5,7 @@ import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 import org.halvors.electrometrics.Electrometrics;
-import org.halvors.electrometrics.common.util.UnitDisplay;
+import org.halvors.electrometrics.common.util.energy.Unit;
 
 /**
  * This is a packet that synchronizes the configuration from the server to the clients.
@@ -20,7 +20,7 @@ public class PacketConfigurationSync implements IMessage, IMessageHandler<Packet
 	@Override
 	public void fromBytes(ByteBuf dataStream) {
         // General.
-        Electrometrics.energyType = UnitDisplay.Unit.values()[dataStream.readInt()];
+        Electrometrics.energyType = Unit.values()[dataStream.readInt()];
 		Electrometrics.toJoules = dataStream.readDouble();
 		Electrometrics.toMinecraftJoules = dataStream.readDouble();
 		Electrometrics.toElectricalUnits = dataStream.readDouble();

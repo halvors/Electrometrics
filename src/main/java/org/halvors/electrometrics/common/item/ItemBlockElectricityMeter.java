@@ -14,8 +14,8 @@ import org.halvors.electrometrics.common.base.Tier;
 import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.util.Color;
-import org.halvors.electrometrics.common.util.MachineUtils;
-import org.halvors.electrometrics.common.util.Utils;
+import org.halvors.electrometrics.common.util.LanguageUtils;
+import org.halvors.electrometrics.common.util.energy.EnergyUtils;
 
 import java.util.List;
 
@@ -35,10 +35,10 @@ public class ItemBlockElectricityMeter extends ItemBlockMachine {
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack itemStack, EntityPlayer entityplayer, List list, boolean flag) {
 		if (!KeyHandler.getIsKeyPressed(Key.SNEAK.getKeyBinding())) {
-			list.add(Utils.translate("tooltip.hold") + " " + Color.AQUA + GameSettings.getKeyDisplayString(Key.SNEAK.getKeyBinding().getKeyCode()) + Color.GREY + " " + Utils.translate("tooltip.forDetails") + ".");
+			list.add(LanguageUtils.translate("tooltip.hold") + " " + Color.AQUA + GameSettings.getKeyDisplayString(Key.SNEAK.getKeyBinding().getKeyCode()) + Color.GREY + " " + LanguageUtils.translate("tooltip.forDetails") + ".");
 		} else {
-			list.add(Color.BRIGHT_GREEN + Utils.translate("tooltip.measuredEnergy") + ": " + Color.GREY + MachineUtils.getEnergyDisplay(getElectricityCount(itemStack)));
-			list.add(Color.AQUA + Utils.translate("tooltip.storedEnergy") + ": " + Color.GREY + MachineUtils.getEnergyDisplay(getElectricityStored(itemStack)));
+			list.add(Color.BRIGHT_GREEN + LanguageUtils.translate("tooltip.measuredEnergy") + ": " + Color.GREY + EnergyUtils.getEnergyDisplay(getElectricityCount(itemStack)));
+			list.add(Color.AQUA + LanguageUtils.translate("tooltip.storedEnergy") + ": " + Color.GREY + EnergyUtils.getEnergyDisplay(getElectricityStored(itemStack)));
 		}
 	}
 

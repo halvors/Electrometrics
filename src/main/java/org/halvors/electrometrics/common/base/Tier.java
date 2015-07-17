@@ -1,7 +1,7 @@
 package org.halvors.electrometrics.common.base;
 
 import org.halvors.electrometrics.common.util.Color;
-import org.halvors.electrometrics.common.util.Utils;
+import org.halvors.electrometrics.common.util.LanguageUtils;
 
 public class Tier {
 	public enum Base {
@@ -24,7 +24,7 @@ public class Tier {
 		}
 
 		public String getLocalizedName() {
-			return Utils.translate("tier." + name);
+			return LanguageUtils.translate("tier." + name);
 		}
 
 		public Color getColor() {
