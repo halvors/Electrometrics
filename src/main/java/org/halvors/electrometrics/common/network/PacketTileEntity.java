@@ -88,7 +88,7 @@ public class PacketTileEntity extends PacketBlockLocation implements IMessage, I
 	public IMessage onMessage(PacketTileEntity message, MessageContext context) {
 		TileEntity tileEntity = message.getBlockLocation().getTileEntity(PacketHandler.getWorld(context));
 
-		if (tileEntity instanceof INetworkable) {
+		if (tileEntity != null && tileEntity instanceof INetworkable) {
 			INetworkable networkable = (INetworkable) tileEntity;
 
 			try {
