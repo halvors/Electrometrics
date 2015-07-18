@@ -10,14 +10,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.base.Tier;
 import org.halvors.electrometrics.common.base.tile.*;
-import org.halvors.electrometrics.common.network.PacketHandler;
-import org.halvors.electrometrics.common.network.PacketRequestData;
-import org.halvors.electrometrics.common.network.PacketTileEntity;
 import org.halvors.electrometrics.common.util.PlayerUtils;
 
 import java.util.EnumSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -64,7 +60,6 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 		/*
 		if (nbtTags.hasKey("ownerUUIDM")) {
 			ownerUUID = new UUID(nbtTags.getLong("ownerUUIDM"), nbtTags.getLong("ownerUUIDL"));
-			o
 
 			System.out.println("ownerUUID is: " + ownerUUID.toString());
 			System.out.println("ownerName is: " + ownerName);
@@ -73,7 +68,10 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 		}
 		*/
 
-		ownerName = nbtTags.getString("ownerName");
+		if (nbtTags.hasKey("ownerName")) {
+			ownerName = nbtTags.getString("ownerName");
+		}
+
 		redstoneControlType = RedstoneControlType.values()[nbtTags.getInteger("redstoneControlType")];
 		electricityMeterTier = Tier.ElectricityMeter.values()[nbtTags.getInteger("tier")];
 		electricityCount = nbtTags.getDouble("electricityCount");
@@ -98,7 +96,10 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 		}
 		*/
 
-		nbtTags.setString("ownerName", ownerName);
+		if (ownerName != null) {
+			nbtTags.setString("ownerName", ownerName);
+		}
+
         nbtTags.setInteger("redstoneControlType", redstoneControlType.ordinal());
 		nbtTags.setInteger("tier", electricityMeterTier.ordinal());
 		nbtTags.setDouble("electricityCount", electricityCount);
@@ -141,7 +142,7 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 
 		list.add(isActive);
 		//list.add(ownerUUID.toString());
-		list.add(ownerName);
+		list.add(ownerName != null ? ownerName : "");
 		list.add(redstoneControlType.ordinal());
 		list.add(electricityMeterTier.ordinal());
 		list.add(electricityCount);
@@ -204,11 +205,6 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 	public void setOwner(EntityPlayer player) {
 		this.ownerUUID = player.getPersistentID();
 		this.ownerName = player.getDisplayName();
-
-		System.out.println("ownerUUID is: " + ownerUUID);
-		System.out.println("ownerName is: " + ownerName);
-
-		PacketHandler.sendToServer(new PacketTileEntity(this));
 	}
 
 	@Override
