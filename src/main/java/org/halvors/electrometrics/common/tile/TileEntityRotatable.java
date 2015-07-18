@@ -27,7 +27,9 @@ public class TileEntityRotatable extends TileEntity implements INetworkable, IRo
     public void validate() {
         super.validate();
 
-        PacketHandler.sendToServer(new PacketRequestData(this));
+        if (worldObj.isRemote) {
+            PacketHandler.sendToServer(new PacketRequestData(this));
+        }
     }
 
     @Override
