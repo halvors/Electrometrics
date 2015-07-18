@@ -18,11 +18,10 @@ import org.halvors.electrometrics.common.util.LanguageUtils;
 import org.halvors.electrometrics.common.util.energy.EnergyUtils;
 import org.halvors.electrometrics.common.util.render.Color;
 
-import javax.crypto.Mac;
 import java.util.List;
 
-public class ItemBlockMachine extends ItemBlockContainer {
-    ItemBlockMachine(Block block) {
+public class ItemBlockMachine extends ItemBlock {
+    public ItemBlockMachine(Block block) {
         super(block);
 
         setHasSubtypes(true);
