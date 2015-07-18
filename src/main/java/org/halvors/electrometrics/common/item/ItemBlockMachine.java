@@ -1,8 +1,25 @@
 package org.halvors.electrometrics.common.item;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
+import net.minecraft.client.settings.GameSettings;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+import org.halvors.electrometrics.client.key.Key;
+import org.halvors.electrometrics.client.key.KeyHandler;
 import org.halvors.electrometrics.common.base.MachineType;
+import org.halvors.electrometrics.common.base.Tier;
+import org.halvors.electrometrics.common.tile.TileEntity;
+import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
+import org.halvors.electrometrics.common.util.LanguageUtils;
+import org.halvors.electrometrics.common.util.energy.EnergyUtils;
+import org.halvors.electrometrics.common.util.render.Color;
+
+import javax.crypto.Mac;
+import java.util.List;
 
 public class ItemBlockMachine extends ItemBlockContainer {
     ItemBlockMachine(Block block) {
@@ -28,5 +45,139 @@ public class ItemBlockMachine extends ItemBlockContainer {
         MachineType machineType = MachineType.getType(itemStack);
 
         return machineType.getLocalizedName();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean flag) {
+        MachineType machineType = MachineType.getType(itemStack);
+
+        if (!KeyHandler.getIsKeyPressed(Key.SNEAK.getKeyBinding())) {
+            list.add(LanguageUtils.translate("tooltip.hold") + " " + Color.AQUA + GameSettings.getKeyDisplayString(Key.SNEAK.getKeyBinding().getKeyCode()) + Color.GREY + " " + LanguageUtils.translate("tooltip.forDetails") + ".");
+        } else {
+            switch (machineType) {
+                case BASIC_ELECTRICITY_METER:
+                case ADVANCED_ELECTRICITY_METER:
+                case ELITE_ELECTRICITY_METER:
+                case ULTIMATE_ELECTRICITY_METER:
+                case CREATIVE_ELECTRICITY_METER:
+                    list.add(Color.BRIGHT_GREEN + LanguageUtils.translate("tooltip.measuredEnergy") + ": " + Color.GREY + EnergyUtils.getEnergyDisplay(getElectricityCount(itemStack)));
+                    list.add(Color.AQUA + LanguageUtils.translate("tooltip.storedEnergy") + ": " + Color.GREY + EnergyUtils.getEnergyDisplay(getElectricityStored(itemStack)));
+                    break;
+
+                default:
+                    list.add(Color.RED + LanguageUtils.translate("tooltip.noInformation"));
+                    break;
+            }
+        }
+    }
+
+    @Override
+    public boolean placeBlockAt(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata) {
+        boolean placed = super.placeBlockAt(itemStack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata);
+
+        if (placed) {
+            TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
+
+            if (tileEntity instanceof TileEntityElectricityMeter) {
+                TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
+                tileEntityElectricityMeter.setTier(getElectricityMeterTier(itemStack));
+                tileEntityElectricityMeter.setElectricityCount(getElectricityCount(itemStack));
+                tileEntityElectricityMeter.getStorage().setEnergyStored(getElectricityStored(itemStack));
+            }
+        }
+
+        return placed;
+    }
+
+    private Tier.ElectricityMeter getElectricityMeterTier(ItemStack itemStack) {
+        if (itemStack.stackTagCompound != null) {
+            int tier = itemStack.stackTagCompound.getInteger("tier");
+
+            return Tier.ElectricityMeter.values()[tier];
+        }
+
+        return Tier.ElectricityMeter.BASIC;
+    }
+
+    public void setElectricityMeterTier(ItemStack itemStack, Tier.ElectricityMeter tier) {
+        if (itemStack.stackTagCompound == null) {
+            itemStack.setTagCompound(new NBTTagCompound());
+        }
+
+        itemStack.stackTagCompound.setInteger("tier", tier.getBaseTier().ordinal());
+    }
+
+    private double getElectricityCount(ItemStack itemStack) {
+        MachineType machineType = MachineType.getType(itemStack);
+
+        switch (machineType) {
+            case BASIC_ELECTRICITY_METER:
+            case ADVANCED_ELECTRICITY_METER:
+            case ELITE_ELECTRICITY_METER:
+            case ULTIMATE_ELECTRICITY_METER:
+            case CREATIVE_ELECTRICITY_METER:
+                if (itemStack.stackTagCompound != null) {
+                    return itemStack.stackTagCompound.getDouble("electricityCount");
+                }
+
+            default:
+                return 0;
+        }
+    }
+
+    public void setElectricityCount(ItemStack itemStack, double electricityCount) {
+        MachineType machineType = MachineType.getType(itemStack);
+
+        switch (machineType) {
+            case BASIC_ELECTRICITY_METER:
+            case ADVANCED_ELECTRICITY_METER:
+            case ELITE_ELECTRICITY_METER:
+            case ULTIMATE_ELECTRICITY_METER:
+            case CREATIVE_ELECTRICITY_METER:
+                if (itemStack.stackTagCompound == null) {
+                    itemStack.setTagCompound(new NBTTagCompound());
+                }
+
+                itemStack.stackTagCompound.setDouble("electricityCount", electricityCount);
+                break;
+        }
+    }
+
+    private int getElectricityStored(ItemStack itemStack) {
+        MachineType machineType = MachineType.getType(itemStack);
+
+        switch (machineType) {
+            case BASIC_ELECTRICITY_METER:
+            case ADVANCED_ELECTRICITY_METER:
+            case ELITE_ELECTRICITY_METER:
+            case ULTIMATE_ELECTRICITY_METER:
+            case CREATIVE_ELECTRICITY_METER:
+                if (itemStack.stackTagCompound != null) {
+                    return itemStack.stackTagCompound.getInteger("electricityStored");
+                }
+
+            default:
+                return 0;
+        }
+    }
+
+    public void setElectricityStored(ItemStack itemStack, int electricityStored) {
+        MachineType machineType = MachineType.getType(itemStack);
+
+        switch (machineType) {
+            case BASIC_ELECTRICITY_METER:
+            case ADVANCED_ELECTRICITY_METER:
+            case ELITE_ELECTRICITY_METER:
+            case ULTIMATE_ELECTRICITY_METER:
+            case CREATIVE_ELECTRICITY_METER:
+                if (itemStack.stackTagCompound == null) {
+                    itemStack.setTagCompound(new NBTTagCompound());
+                }
+
+                itemStack.stackTagCompound.setInteger("electricityStored", electricityStored);
+                break;
+        }
     }
 }

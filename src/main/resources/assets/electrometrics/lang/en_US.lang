@@ -18,5 +18,6 @@ tile.ElectricityMeter.name=Electricity Meter
 // Tooltip
 tooltip.hold=Hold
 tooltip.forDetails=for details
+tooltip.noInformation=No information to display
 tooltip.measuredEnergy=Measured energy
 tooltip.storedEnergy=Stored energy

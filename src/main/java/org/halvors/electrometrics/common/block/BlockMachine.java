@@ -14,6 +14,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.client.render.BlockRenderer;
@@ -23,11 +24,10 @@ import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.base.Tier;
 import org.halvors.electrometrics.common.base.tile.IOwnable;
 import org.halvors.electrometrics.common.base.tile.IRedstoneControl;
-import org.halvors.electrometrics.common.item.ItemBlockElectricityMeter;
-import org.halvors.electrometrics.common.network.PacketHandler;
-import org.halvors.electrometrics.common.network.PacketRequestData;
+import org.halvors.electrometrics.common.item.ItemBlockMachine;
 import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.tile.TileEntityElectricBlock;
+import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
 
 import java.util.List;
 
@@ -41,12 +41,8 @@ import java.util.List;
  * 4: Creative Electricity Meter
  */
 public class BlockMachine extends BlockRotatable {
-    private final MachineType machineType;
-
-	BlockMachine(MachineType machineType) {
-		super(machineType.getUnlocalizedName(), Material.iron);
-
-        this.machineType = machineType;
+	public BlockMachine() {
+		super("Machine", Material.iron);
 
 		setHardness(2F);
 		setResistance(4F);
@@ -55,6 +51,8 @@ public class BlockMachine extends BlockRotatable {
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
+		MachineType machineType = MachineType.getType(this, metadata);
+
 		return machineType.getTileEntity();
 	}
 
@@ -83,8 +81,8 @@ public class BlockMachine extends BlockRotatable {
 				case ULTIMATE_ELECTRICITY_METER:
 				case CREATIVE_ELECTRICITY_METER:
 					ItemStack itemStack = machineType.getItemStack();
-					ItemBlockElectricityMeter itemBlockElectricityMeter = (ItemBlockElectricityMeter) itemStack.getItem();
-					itemBlockElectricityMeter.setTier(itemStack, Tier.ElectricityMeter.getFromMachineType(machineType));
+					ItemBlockMachine itemBlockMachine = (ItemBlockMachine) itemStack.getItem();
+					itemBlockMachine.setElectricityMeterTier(itemStack, Tier.ElectricityMeter.getFromMachineType(machineType));
 
 					list.add(itemStack);
 					break;
@@ -174,6 +172,35 @@ public class BlockMachine extends BlockRotatable {
 				tileEntityElectricBlock.onNeighborChange();
 			}
 		}
+	}
+
+	@Override
+	public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean willHarvest) {
+		if (!player.capabilities.isCreativeMode && !world.isRemote && canHarvestBlock(player, world.getBlockMetadata(x, y, z))) {
+			dismantleBlock(world, x, y, z, false);
+		}
+
+		return world.setBlockToAir(x, y, z);
+	}
+
+	@Override
+	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player) {
+		TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
+
+		if (tileEntity instanceof TileEntityElectricityMeter) {
+			TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
+			Tier.ElectricityMeter tier = tileEntityElectricityMeter.getTier();
+			ItemStack itemStack = tier.getMachineType().getItemStack();
+
+			ItemBlockMachine itemBlockMachine = (ItemBlockMachine) itemStack.getItem();
+			itemBlockMachine.setElectricityMeterTier(itemStack, tier);
+			itemBlockMachine.setElectricityCount(itemStack, tileEntityElectricityMeter.getElectricityCount());
+			itemBlockMachine.setElectricityStored(itemStack, tileEntityElectricityMeter.getStorage().getEnergyStored());
+
+			return itemStack;
+		}
+
+		return super.getPickBlock(target, world, x, y, z, player);
 	}
 
 	@Override

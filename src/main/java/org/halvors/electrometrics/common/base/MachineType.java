@@ -68,7 +68,8 @@ public enum MachineType {
         return metadata;
     }
 
-    public TileEntityMachine getTileEntity() {
+    public TileEntityElectricityMeter getTileEntity() {
+        /*
         try {
             return tileEntityClass.getConstructor(MachineType.class).newInstance(this);
         } catch(Exception e) {
@@ -77,9 +78,13 @@ public enum MachineType {
         }
 
         return null;
+        */
+
+        return new TileEntityElectricityMeter(this);
     }
 
-    public GuiScreen getGui(TileEntityMachine tileEntity) {
+    public GuiElectricityMeter getGui(TileEntityElectricityMeter tileEntity) {
+        /*
         try {
             return guiClass.getConstructor(TileEntityMachine.class).newInstance(tileEntity);
         } catch(Exception e) {
@@ -88,6 +93,9 @@ public enum MachineType {
         }
 
         return null;
+        */
+
+        return new GuiElectricityMeter(tileEntity);
     }
 
     public static MachineType getType(Block block, int meta) {
@@ -107,7 +115,7 @@ public enum MachineType {
     }
 
     public ItemStack getItemStack() {
-        return new ItemStack(Electrometrics.blockElectricityMeter, 1, metadata);
+        return new ItemStack(Electrometrics.blockMachine, 1, metadata);
     }
 
     public Item getItem() {
