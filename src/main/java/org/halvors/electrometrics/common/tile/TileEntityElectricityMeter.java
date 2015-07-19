@@ -101,14 +101,19 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 
         isActive = dataStream.readBoolean();
 
-		long ownerUUIDM = dataStream.readLong();
-		long ownerUUIDL = dataStream.readLong();
+		long ownerUUIDMostSignificantBits = dataStream.readLong();
+		long ownerUUIDLeastSignificantBits = dataStream.readLong();
 
-		if (ownerUUIDM != 0 && ownerUUIDL != 0) {
-			ownerUUID = new UUID(ownerUUIDM, ownerUUIDL);
+		if (ownerUUIDMostSignificantBits != 0 && ownerUUIDLeastSignificantBits != 0) {
+			ownerUUID = new UUID(ownerUUIDMostSignificantBits, ownerUUIDLeastSignificantBits);
 		}
 
-		ownerName = ByteBufUtils.readUTF8String(dataStream);
+		String ownerNameText = ByteBufUtils.readUTF8String(dataStream);
+
+		if (!ownerNameText.isEmpty()) {
+			ownerName = ownerNameText;
+		}
+
 		redstoneControlType = RedstoneControlType.values()[dataStream.readInt()];
 
 		// Check if client is in sync with the server, if not update it.
