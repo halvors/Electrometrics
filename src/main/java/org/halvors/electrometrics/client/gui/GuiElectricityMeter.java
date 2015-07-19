@@ -24,7 +24,7 @@ import java.util.List;
  * @author halvors
  */
 @SideOnly(Side.CLIENT)
-public class GuiElectricityMeter extends GuiComponentScreen {
+public class GuiElectricityMeter extends GuiComponentContainerScreen {
 	private int ticker = 0;
 
 	public GuiElectricityMeter(final TileEntityElectricityMeter tileEntity) {
