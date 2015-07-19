@@ -57,57 +57,42 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbtTags) {
-		super.readFromNBT(nbtTags);
+	public void readFromNBT(NBTTagCompound nbtTagCompound) {
+		super.readFromNBT(nbtTagCompound);
 
-        isActive = nbtTags.getBoolean("isActive");
+        isActive = nbtTagCompound.getBoolean("isActive");
 
-		/*
-		if (nbtTags.hasKey("ownerUUIDM")) {
-			ownerUUID = new UUID(nbtTags.getLong("ownerUUIDM"), nbtTags.getLong("ownerUUIDL"));
-
-			System.out.println("ownerUUID is: " + ownerUUID.toString());
-			System.out.println("ownerName is: " + ownerName);
-		} else {
-			System.out.println("Owner key don't exists.");
-		}
-		*/
-
-		if (nbtTags.hasKey("ownerName")) {
-			ownerName = nbtTags.getString("ownerName");
+		if (nbtTagCompound.hasKey("ownerUUIDM") && nbtTagCompound.hasKey("ownerUUIDL")) {
+			ownerUUID = new UUID(nbtTagCompound.getLong("ownerUUIDM"), nbtTagCompound.getLong("ownerUUIDL"));
 		}
 
-		redstoneControlType = RedstoneControlType.values()[nbtTags.getInteger("redstoneControlType")];
-		tier = Tier.ElectricityMeter.values()[nbtTags.getInteger("tier")];
-		electricityCount = nbtTags.getDouble("electricityCount");
+		if (nbtTagCompound.hasKey("ownerName")) {
+			ownerName = nbtTagCompound.getString("ownerName");
+		}
+
+		redstoneControlType = RedstoneControlType.values()[nbtTagCompound.getInteger("redstoneControlType")];
+		tier = Tier.ElectricityMeter.values()[nbtTagCompound.getInteger("tier")];
+		electricityCount = nbtTagCompound.getDouble("electricityCount");
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbtTags) {
-		super.writeToNBT(nbtTags);
+	public void writeToNBT(NBTTagCompound nbtTagCompound) {
+		super.writeToNBT(nbtTagCompound);
 
-        nbtTags.setBoolean("isActive", isActive);
+		nbtTagCompound.setBoolean("isActive", isActive);
 
-		/*
 		if (ownerUUID != null) {
-			nbtTags.setLong("ownerUUIDM", ownerUUID.getMostSignificantBits());
-			nbtTags.setLong("ownerUUIDL", ownerUUID.getLeastSignificantBits());
-
-
-			System.out.println("ownerUUID is: " + ownerUUID.toString());
-			System.out.println("ownerName is: " + ownerName);
-		} else {
-			System.out.println("Owner is null.");
+			nbtTagCompound.setLong("ownerUUIDM", ownerUUID.getMostSignificantBits());
+			nbtTagCompound.setLong("ownerUUIDL", ownerUUID.getLeastSignificantBits());
 		}
-		*/
 
 		if (ownerName != null) {
-			nbtTags.setString("ownerName", ownerName);
+			nbtTagCompound.setString("ownerName", ownerName);
 		}
 
-        nbtTags.setInteger("redstoneControlType", redstoneControlType.ordinal());
-		nbtTags.setInteger("tier", tier.ordinal());
-		nbtTags.setDouble("electricityCount", electricityCount);
+		nbtTagCompound.setInteger("redstoneControlType", redstoneControlType.ordinal());
+		nbtTagCompound.setInteger("tier", tier.ordinal());
+		nbtTagCompound.setDouble("electricityCount", electricityCount);
 	}
 
 	@Override
@@ -116,17 +101,12 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 
         isActive = dataStream.readBoolean();
 
-		/*
+		long ownerUUIDM = dataStream.readLong();
+		long ownerUUIDL = dataStream.readLong();
 
-		String ownerUUIDString = ByteBufUtils.readUTF8String(dataStream);
-
-		if (!ownerUUIDString.equals("")) {
-			ownerUUID = UUID.fromString(ownerUUIDString);
-
-			System.out.println("ownerUUID is: " + ownerUUID.toString());
-			System.out.println("ownerName is: " + ownerName);
+		if (ownerUUIDM != 0 && ownerUUIDL != 0) {
+			ownerUUID = new UUID(ownerUUIDM, ownerUUIDL);
 		}
-		*/
 
 		ownerName = ByteBufUtils.readUTF8String(dataStream);
 		redstoneControlType = RedstoneControlType.values()[dataStream.readInt()];
@@ -147,7 +127,8 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 		super.getPacketData(list);
 
 		list.add(isActive);
-		//list.add(ownerUUID.toString());
+		list.add(ownerUUID != null ? ownerUUID.getMostSignificantBits() : 0);
+		list.add(ownerUUID != null ? ownerUUID.getLeastSignificantBits() : 0);
 		list.add(ownerName != null ? ownerName : "");
 		list.add(redstoneControlType.ordinal());
 		list.add(tier.ordinal());
@@ -196,10 +177,6 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 	@Override
 	public EntityPlayer getOwner() {
 		return PlayerUtils.getPlayerFromUUID(ownerUUID);
-	}
-
-	public UUID getOwnerUUID() {
-		return ownerUUID;
 	}
 
 	@Override
