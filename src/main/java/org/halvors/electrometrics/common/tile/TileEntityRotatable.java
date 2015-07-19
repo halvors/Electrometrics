@@ -1,13 +1,12 @@
 package org.halvors.electrometrics.common.tile;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 import org.halvors.electrometrics.common.base.tile.INetworkable;
 import org.halvors.electrometrics.common.base.tile.IRotatable;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketRequestData;
+import org.halvors.electrometrics.common.network.PacketTileEntity;
 
 import java.util.List;
 
@@ -16,7 +15,6 @@ public class TileEntityRotatable extends TileEntity implements INetworkable, IRo
     int facing;
 
     // The direction this TileEntity's block is facing, client side.
-    @SideOnly(Side.CLIENT)
     private int clientFacing;
 
     TileEntityRotatable(String inventoryName) {
@@ -51,10 +49,14 @@ public class TileEntityRotatable extends TileEntity implements INetworkable, IRo
         facing = dataStream.readInt();
 
         // Check if client is in sync with the server, if not update it.
-        if (worldObj.isRemote && clientFacing != facing) {
+        if (clientFacing != facing) {
             clientFacing = facing;
 
+            // Update the block's rotation.
             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+
+            // Update potentially connected redstone blocks.
+            worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
         }
     }
 
@@ -79,8 +81,12 @@ public class TileEntityRotatable extends TileEntity implements INetworkable, IRo
     public void setFacing(int facing) {
         if (canSetFacing(facing)) {
             this.facing = facing;
+        }
 
-            PacketHandler.sendToServer(new PacketRequestData(this));
+        if (!worldObj.isRemote || clientFacing != facing) {
+            clientFacing = facing;
+
+            PacketHandler.sendToReceivers(new PacketTileEntity(this), this);
         }
     }
 }
