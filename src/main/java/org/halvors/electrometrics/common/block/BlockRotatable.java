@@ -1,9 +1,11 @@
 package org.halvors.electrometrics.common.block;
 
+import buildcraft.api.tools.IToolWrench;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -68,17 +70,15 @@ class BlockRotatable extends BlockTextured {
                 dismantleBlock(world, x, y, z, false);
 
                 return true;
-            }
+            } else {
+                if (tileEntity instanceof IRotatable) {
+                    IRotatable rotatable = (IRotatable) tileEntity;
+                    int change = ForgeDirection.ROTATION_MATRIX[ForgeDirection.UP.ordinal()][rotatable.getFacing()];
 
-            if (tileEntity instanceof IRotatable) {
-                IRotatable rotatable = (IRotatable) tileEntity;
+                    rotatable.setFacing(change);
 
-                int change = ForgeDirection.ROTATION_MATRIX[ForgeDirection.UP.ordinal()][rotatable.getFacing()];
-
-                rotatable.setFacing(change);
-                world.notifyBlocksOfNeighborChange(x, y, z, this);
-
-                return true;
+                    return true;
+                }
             }
         }
 
@@ -122,7 +122,8 @@ class BlockRotatable extends BlockTextured {
         return super.rotateBlock(world, x, y, z, axis);
     }
 
-    void dismantleBlock(World world, int x, int y, int z, boolean returnBlock) {
+    ItemStack dismantleBlock(World world, int x, int y, int z, boolean returnBlock) {
+        ItemStack itemStack = getPickBlock(null, world, x, y, z, null);
         world.setBlockToAir(x, y, z);
 
         if (!returnBlock) {
@@ -130,10 +131,11 @@ class BlockRotatable extends BlockTextured {
             double motionX = (world.rand.nextFloat() * motion) + (1.0F - motion) * 0.5D;
             double motionY = (world.rand.nextFloat() * motion) + (1.0F - motion) * 0.5D;
             double motionZ = (world.rand.nextFloat() * motion) + (1.0F - motion) * 0.5D;
-            ItemStack itemStack = getPickBlock(null, world, x, y, z, null);
 
             EntityItem entityItem = new EntityItem(world, x + motionX, y + motionY, z + motionZ, itemStack);
             world.spawnEntityInWorld(entityItem);
         }
+
+        return itemStack;
     }
 }
