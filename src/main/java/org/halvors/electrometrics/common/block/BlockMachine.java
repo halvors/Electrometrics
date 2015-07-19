@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -28,6 +29,7 @@ import org.halvors.electrometrics.common.item.ItemBlockMachine;
 import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.tile.TileEntityElectricBlock;
 import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
+import org.halvors.electrometrics.common.util.MachineUtils;
 
 import java.util.List;
 
@@ -119,7 +121,7 @@ public class BlockMachine extends BlockRotatable {
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int facing, float playerX, float playerY, float playerZ) {
 		TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
 
-		if (!player.isSneaking()) {
+		if (!MachineUtils.hasUsableWrench(player, x, y, z)) {
 			// Check whether or not this IOwnable has a owner, if not set the current player as owner.
 			if (tileEntity instanceof IOwnable) {
 				IOwnable ownable = (IOwnable) tileEntity;
@@ -129,10 +131,8 @@ public class BlockMachine extends BlockRotatable {
 				}
 			}
 
-            // Open the GUI.
+			// Open the GUI.
 			player.openGui(Electrometrics.getInstance(), 0, world, x, y, z);
-
-			return true;
 		}
 
 		return super.onBlockActivated(world, x, y, z, player, facing, playerX, playerY, playerZ);
@@ -186,21 +186,25 @@ public class BlockMachine extends BlockRotatable {
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player) {
 		TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
+		int metadata = world.getBlockMetadata(x, y, z);
+		ItemStack itemStack = new ItemStack(this, 1, metadata);
+		ItemBlockMachine itemBlockMachine = (ItemBlockMachine) itemStack.getItem();
+
+		if (tileEntity instanceof IRedstoneControl) {
+			IRedstoneControl redstoneControl = (IRedstoneControl) tileEntity;
+
+			itemBlockMachine.setRedstoneControlType(itemStack, redstoneControl.getControlType());
+		}
 
 		if (tileEntity instanceof TileEntityElectricityMeter) {
 			TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
-			Tier.ElectricityMeter tier = tileEntityElectricityMeter.getTier();
-			ItemStack itemStack = tier.getMachineType().getItemStack();
 
-			ItemBlockMachine itemBlockMachine = (ItemBlockMachine) itemStack.getItem();
-			itemBlockMachine.setElectricityMeterTier(itemStack, tier);
+			itemBlockMachine.setElectricityMeterTier(itemStack, tileEntityElectricityMeter.getTier());
 			itemBlockMachine.setElectricityCount(itemStack, tileEntityElectricityMeter.getElectricityCount());
 			itemBlockMachine.setElectricityStored(itemStack, tileEntityElectricityMeter.getStorage().getEnergyStored());
-
-			return itemStack;
 		}
 
-		return super.getPickBlock(target, world, x, y, z, player);
+		return itemStack;
 	}
 
 	@Override
