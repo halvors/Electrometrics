@@ -10,7 +10,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.base.Tier;
 import org.halvors.electrometrics.common.base.tile.*;
-import org.halvors.electrometrics.common.tile.TileEntityElectricityProvider;
+import org.halvors.electrometrics.common.tile.component.TileRedstoneControlComponent;
 import org.halvors.electrometrics.common.util.PlayerUtils;
 
 import java.util.EnumSet;
@@ -23,7 +23,7 @@ import java.util.UUID;
  *
  * @author halvors
  */
-public class TileEntityElectricityMeter extends TileEntityElectricityProvider implements INetworkable, IActiveState, IOwnable, IRedstoneControl {
+public class TileEntityElectricityMeter extends TileEntityElectricityProvider implements INetworkable, IActiveState, IOwnable {
     // Whether or not this TileEntity's block is in it's active state.
     private boolean isActive;
 
@@ -54,6 +54,8 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 		super(machineType, tier.getMaxEnergy(), tier.getMaxTransfer());
 
 		this.tier = tier;
+
+		components.add(new TileRedstoneControlComponent());
 	}
 
 	@Override
@@ -70,7 +72,6 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 			ownerName = nbtTagCompound.getString("ownerName");
 		}
 
-		redstoneControlType = RedstoneControlType.values()[nbtTagCompound.getInteger("redstoneControlType")];
 		tier = Tier.ElectricityMeter.values()[nbtTagCompound.getInteger("tier")];
 		electricityCount = nbtTagCompound.getDouble("electricityCount");
 	}
@@ -90,7 +91,6 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 			nbtTagCompound.setString("ownerName", ownerName);
 		}
 
-		nbtTagCompound.setInteger("redstoneControlType", redstoneControlType.ordinal());
 		nbtTagCompound.setInteger("tier", tier.ordinal());
 		nbtTagCompound.setDouble("electricityCount", electricityCount);
 	}
@@ -109,7 +109,6 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 		}
 
 		ownerName = ByteBufUtils.readUTF8String(dataStream);
-		redstoneControlType = RedstoneControlType.values()[dataStream.readInt()];
 
 		// Check if client is in sync with the server, if not update it.
 		if (worldObj.isRemote && clientIsActive != isActive) {
@@ -130,7 +129,6 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 		list.add(ownerUUID != null ? ownerUUID.getMostSignificantBits() : 0);
 		list.add(ownerUUID != null ? ownerUUID.getLeastSignificantBits() : 0);
 		list.add(ownerName != null ? ownerName : "");
-		list.add(redstoneControlType.ordinal());
 		list.add(tier.ordinal());
 		list.add(electricityCount);
 
@@ -188,36 +186,6 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 	public void setOwner(EntityPlayer player) {
 		this.ownerUUID = player.getPersistentID();
 		this.ownerName = player.getDisplayName();
-	}
-
-	@Override
-	public RedstoneControlType getControlType() {
-		return redstoneControlType;
-	}
-
-	@Override
-	public void setControlType(RedstoneControlType redstoneControlType) {
-		this.redstoneControlType = redstoneControlType;
-	}
-
-	@Override
-	public boolean isPowered() {
-		return isPowered;
-	}
-
-	@Override
-	public void setPowered(boolean isPowered) {
-		this.isPowered = isPowered;
-	}
-
-	@Override
-	public boolean wasPowered() {
-		return wasPowered;
-	}
-
-	@Override
-	public boolean canPulse() {
-		return false;
 	}
 
 	public Tier.ElectricityMeter getTier() {

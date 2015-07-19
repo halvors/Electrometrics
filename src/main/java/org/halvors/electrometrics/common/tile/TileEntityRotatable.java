@@ -10,7 +10,7 @@ import org.halvors.electrometrics.common.network.PacketTileEntity;
 
 import java.util.List;
 
-public class TileEntityRotatable extends TileEntity implements INetworkable, IRotatable {
+public class TileEntityRotatable extends TileEntityComponentContainer implements INetworkable, IRotatable {
     // The direction this TileEntity's block is facing.
     int facing;
 

@@ -11,18 +11,18 @@ import org.halvors.electrometrics.common.base.tile.IRedstoneControl;
 import org.halvors.electrometrics.common.base.tile.RedstoneControlType;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketTileEntity;
-import org.halvors.electrometrics.common.tile.TileEntity;
+import org.halvors.electrometrics.common.tile.component.ITileComponent;
 
 @SideOnly(Side.CLIENT)
-public class GuiRedstoneControl<T extends TileEntity & IRedstoneControl & INetworkable> extends GuiComponent implements IGuiComponent {
+public class GuiRedstoneControl<T extends ITileComponent & INetworkable & IRedstoneControl> extends GuiComponent implements IGuiComponent {
 	private final IRedstoneControl redstoneControl;
 	private final INetworkable networkable;
 
-	public GuiRedstoneControl(IGui gui, T tileEntity, ResourceLocation defaultResource) {
+	public GuiRedstoneControl(IGui gui, T tileComponent, ResourceLocation defaultResource) {
 		super("guiRedstoneControl.png", gui, defaultResource);
 
-		this.redstoneControl = tileEntity;
-		this.networkable = tileEntity;
+		this.redstoneControl = tileComponent;
+		this.networkable = tileComponent;
 	}
 
 	@Override

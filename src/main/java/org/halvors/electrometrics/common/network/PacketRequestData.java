@@ -16,8 +16,8 @@ public class PacketRequestData extends PacketBlockLocation implements IMessage, 
 		super(blockLocation);
 	}
 
-	public PacketRequestData(INetworkable networkable) {
-		super(new BlockLocation((TileEntity) networkable));
+	public <T extends TileEntity & INetworkable> PacketRequestData(T tileEntity) {
+		super(new BlockLocation(tileEntity));
 	}
 
 	@Override

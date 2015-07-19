@@ -7,11 +7,12 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import org.halvors.electrometrics.client.gui.component.*;
 import org.halvors.electrometrics.common.base.tile.IOwnable;
+import org.halvors.electrometrics.common.component.IComponent;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketRequestData;
 import org.halvors.electrometrics.common.network.PacketTileEntity;
 import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
-import org.halvors.electrometrics.common.tile.TileEntityMachine;
+import org.halvors.electrometrics.common.tile.component.TileRedstoneControlComponent;
 import org.halvors.electrometrics.common.util.energy.EnergyUtils;
 
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ import java.util.List;
  * @author halvors
  */
 @SideOnly(Side.CLIENT)
-public class GuiElectricityMeter extends GuiComponentScreen {
+public class GuiElectricityMeter extends GuiComponentContainerScreen {
 	private int ticker = 0;
 
 	public GuiElectricityMeter(final TileEntityElectricityMeter tileEntity) {
@@ -53,7 +54,14 @@ public class GuiElectricityMeter extends GuiComponentScreen {
 		}, this, defaultResource));
 
 		components.add(new GuiEnergyDisplay(this, defaultResource));
-		components.add(new GuiRedstoneControl<>(this, tileEntity, defaultResource));
+
+		for (IComponent component : tileEntity.getComponents()) {
+			if (component instanceof TileRedstoneControlComponent) {
+				TileRedstoneControlComponent tileRedstoneControlComponent = (TileRedstoneControlComponent) component;
+
+				components.add(new GuiRedstoneControl<>(this, tileRedstoneControlComponent, defaultResource));
+			}
+		}
 	}
 
 	@SuppressWarnings("unchecked")

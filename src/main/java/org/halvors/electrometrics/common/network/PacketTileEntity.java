@@ -34,8 +34,8 @@ public class PacketTileEntity extends PacketBlockLocation implements IMessage, I
 		this.objectList = dataList;
 	}
 
-	public PacketTileEntity(INetworkable networkable) {
-		this(new BlockLocation((TileEntity) networkable), networkable.getPacketData(new ArrayList<>()));
+	public <T extends TileEntity & INetworkable> PacketTileEntity(T tileEntity) {
+		this(new BlockLocation(tileEntity), tileEntity.getPacketData(new ArrayList<>()));
 	}
 
 	@Override
