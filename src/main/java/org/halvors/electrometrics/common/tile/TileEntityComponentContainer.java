@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TileEntityComponentContainer extends TileEntity implements INetworkable {
-	protected final List<IComponent> components = new ArrayList<>();
+	final List<IComponent> components = new ArrayList<>();
 
 	TileEntityComponentContainer(String inventoryName) {
 		super(inventoryName);
@@ -77,7 +77,7 @@ public class TileEntityComponentContainer extends TileEntity implements INetwork
 			if (component instanceof ITileNetworkableComponent) {
 				ITileNetworkableComponent tileComponent = (ITileNetworkableComponent) component;
 
-				list.addAll(tileComponent.getPacketData(list));
+				list.addAll(tileComponent.getPacketData(new ArrayList<>()));
 			}
 		}
 
