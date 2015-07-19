@@ -133,6 +133,8 @@ public class BlockMachine extends BlockRotatable {
 
 			// Open the GUI.
 			player.openGui(Electrometrics.getInstance(), 0, world, x, y, z);
+
+			return true;
 		}
 
 		return super.onBlockActivated(world, x, y, z, player, facing, playerX, playerY, playerZ);
