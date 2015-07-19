@@ -10,6 +10,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.base.Tier;
 import org.halvors.electrometrics.common.base.tile.*;
+import org.halvors.electrometrics.common.tile.TileEntityElectricityProvider;
 import org.halvors.electrometrics.common.util.PlayerUtils;
 
 import java.util.EnumSet;
@@ -40,15 +41,19 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 	private RedstoneControlType redstoneControlType = RedstoneControlType.DISABLED;
 
     // The tier of this TileEntity.
-	private Tier.ElectricityMeter electricityMeterTier = Tier.ElectricityMeter.BASIC;
+	private Tier.ElectricityMeter tier = Tier.ElectricityMeter.BASIC;
 
 	// The amount of energy that has passed thru.
 	private double electricityCount;
 
-	public TileEntityElectricityMeter(MachineType machineType) {
-		super(machineType, Tier.ElectricityMeter.getFromMachineType(machineType).getMaxEnergy(), Tier.ElectricityMeter.getFromMachineType(machineType).getMaxTransfer());
+	public TileEntityElectricityMeter() {
+		this(MachineType.BASIC_ELECTRICITY_METER, Tier.ElectricityMeter.BASIC);
+	}
 
-		electricityMeterTier = Tier.ElectricityMeter.getFromMachineType(machineType);
+	public TileEntityElectricityMeter(MachineType machineType, Tier.ElectricityMeter tier) {
+		super(machineType, tier.getMaxEnergy(), tier.getMaxTransfer());
+
+		this.tier = tier;
 	}
 
 	@Override
@@ -73,7 +78,7 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 		}
 
 		redstoneControlType = RedstoneControlType.values()[nbtTags.getInteger("redstoneControlType")];
-		electricityMeterTier = Tier.ElectricityMeter.values()[nbtTags.getInteger("tier")];
+		tier = Tier.ElectricityMeter.values()[nbtTags.getInteger("tier")];
 		electricityCount = nbtTags.getDouble("electricityCount");
 	}
 
@@ -101,7 +106,7 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 		}
 
         nbtTags.setInteger("redstoneControlType", redstoneControlType.ordinal());
-		nbtTags.setInteger("tier", electricityMeterTier.ordinal());
+		nbtTags.setInteger("tier", tier.ordinal());
 		nbtTags.setDouble("electricityCount", electricityCount);
 	}
 
@@ -112,6 +117,7 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
         isActive = dataStream.readBoolean();
 
 		/*
+
 		String ownerUUIDString = ByteBufUtils.readUTF8String(dataStream);
 
 		if (!ownerUUIDString.equals("")) {
@@ -132,7 +138,7 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		}
 
-		electricityMeterTier = Tier.ElectricityMeter.values()[dataStream.readInt()];
+		tier = Tier.ElectricityMeter.values()[dataStream.readInt()];
 		electricityCount = dataStream.readDouble();
 	}
 
@@ -144,7 +150,7 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 		//list.add(ownerUUID.toString());
 		list.add(ownerName != null ? ownerName : "");
 		list.add(redstoneControlType.ordinal());
-		list.add(electricityMeterTier.ordinal());
+		list.add(tier.ordinal());
 		list.add(electricityCount);
 
 		return list;
@@ -238,11 +244,11 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 	}
 
 	public Tier.ElectricityMeter getTier() {
-		return electricityMeterTier;
+		return tier;
 	}
 
 	public void setTier(Tier.ElectricityMeter electricityMeterTier) {
-		this.electricityMeterTier = electricityMeterTier;
+		this.tier = electricityMeterTier;
 	}
 
 	/**
