@@ -31,17 +31,17 @@ public class TileEntityRotatable extends TileEntity implements INetworkable, IRo
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbtTags) {
-        super.readFromNBT(nbtTags);
+    public void readFromNBT(NBTTagCompound nbtTagCompound) {
+        super.readFromNBT(nbtTagCompound);
 
-        facing = nbtTags.getInteger("facing");
+        facing = nbtTagCompound.getInteger("facing");
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbtTags) {
-        super.writeToNBT(nbtTags);
+    public void writeToNBT(NBTTagCompound nbtTagCompound) {
+        super.writeToNBT(nbtTagCompound);
 
-        nbtTags.setInteger("facing", facing);
+        nbtTagCompound.setInteger("facing", facing);
     }
 
     @Override

@@ -37,17 +37,17 @@ public abstract class TileEntityElectricityStorage extends TileEntityElectricBlo
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbtTags) {
-		super.readFromNBT(nbtTags);
+	public void readFromNBT(NBTTagCompound nbtTagCompound) {
+		super.readFromNBT(nbtTagCompound);
 
-		storage.readFromNBT(nbtTags);
+		storage.readFromNBT(nbtTagCompound);
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbtTags) {
-		super.writeToNBT(nbtTags);
+	public void writeToNBT(NBTTagCompound nbtTagCompound) {
+		super.writeToNBT(nbtTagCompound);
 
-		storage.writeToNBT(nbtTags);
+		storage.writeToNBT(nbtTagCompound);
 	}
 
 	@Override
