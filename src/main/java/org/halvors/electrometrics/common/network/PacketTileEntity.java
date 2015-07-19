@@ -10,6 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.common.base.tile.INetworkable;
 import org.halvors.electrometrics.common.tile.TileEntity;
+import org.halvors.electrometrics.common.tile.component.ITileNetworkableComponent;
 import org.halvors.electrometrics.common.util.location.BlockLocation;
 
 import java.util.ArrayList;
@@ -36,6 +37,10 @@ public class PacketTileEntity extends PacketBlockLocation implements IMessage, I
 
 	public <T extends TileEntity & INetworkable> PacketTileEntity(T tileEntity) {
 		this(new BlockLocation(tileEntity), tileEntity.getPacketData(new ArrayList<>()));
+	}
+
+	public PacketTileEntity(ITileNetworkableComponent tileNetworkableComponent) {
+		super(new BlockLocation(tileNetworkableComponent.getTileEntity()));
 	}
 
 	@Override

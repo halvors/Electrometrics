@@ -5,6 +5,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import org.halvors.electrometrics.common.base.tile.INetworkable;
 import org.halvors.electrometrics.common.component.IComponent;
 import org.halvors.electrometrics.common.tile.component.ITileComponent;
+import org.halvors.electrometrics.common.tile.component.ITileNetworkableComponent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,8 +63,8 @@ public class TileEntityComponentContainer extends TileEntity implements INetwork
 	@Override
 	public void handlePacketData(ByteBuf dataStream) throws Exception {
 		for (IComponent component : components) {
-			if (component instanceof ITileComponent) {
-				ITileComponent tileComponent = (ITileComponent) component;
+			if (component instanceof ITileNetworkableComponent) {
+				ITileNetworkableComponent tileComponent = (ITileNetworkableComponent) component;
 
 				tileComponent.handlePacketData(dataStream);
 			}
@@ -73,8 +74,8 @@ public class TileEntityComponentContainer extends TileEntity implements INetwork
 	@Override
 	public List<Object> getPacketData(List<Object> list) {
 		for (IComponent component : components) {
-			if (component instanceof ITileComponent) {
-				ITileComponent tileComponent = (ITileComponent) component;
+			if (component instanceof ITileNetworkableComponent) {
+				ITileNetworkableComponent tileComponent = (ITileNetworkableComponent) component;
 
 				list.addAll(tileComponent.getPacketData(list));
 			}

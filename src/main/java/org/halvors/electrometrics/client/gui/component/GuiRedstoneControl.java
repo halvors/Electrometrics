@@ -12,17 +12,18 @@ import org.halvors.electrometrics.common.base.tile.RedstoneControlType;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketTileEntity;
 import org.halvors.electrometrics.common.tile.component.ITileComponent;
+import org.halvors.electrometrics.common.tile.component.TileRedstoneControlComponent;
 
 @SideOnly(Side.CLIENT)
-public class GuiRedstoneControl<T extends ITileComponent & INetworkable & IRedstoneControl> extends GuiComponent implements IGuiComponent {
+public class GuiRedstoneControl<T extends TileRedstoneControlComponent & IRedstoneControl> extends GuiComponent implements IGuiComponent {
 	private final IRedstoneControl redstoneControl;
-	private final INetworkable networkable;
+	private final TileRedstoneControlComponent tileRedstoneControlComponent;
 
-	public GuiRedstoneControl(IGui gui, T tileComponent, ResourceLocation defaultResource) {
+	public GuiRedstoneControl(IGui gui, TileRedstoneControlComponent tileRedstoneControlComponent, ResourceLocation defaultResource) {
 		super("guiRedstoneControl.png", gui, defaultResource);
 
-		this.redstoneControl = tileComponent;
-		this.networkable = tileComponent;
+		this.redstoneControl = tileRedstoneControlComponent;
+		this.tileRedstoneControlComponent = tileRedstoneControlComponent;
 	}
 
 	@Override
@@ -81,7 +82,7 @@ public class GuiRedstoneControl<T extends ITileComponent & INetworkable & IRedst
 					redstoneControl.setControlType(RedstoneControlType.values()[ordinalToSet]);
 
 					// Send a update packet to the server.
-					PacketHandler.sendToServer(new PacketTileEntity(networkable));
+					PacketHandler.sendToServer(new PacketTileEntity(tileRedstoneControlComponent));
 				}
 				break;
 		}

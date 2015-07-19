@@ -55,7 +55,7 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 
 		this.tier = tier;
 
-		components.add(new TileRedstoneControlComponent());
+		components.add(new TileRedstoneControlComponent(this));
 	}
 
 	@Override

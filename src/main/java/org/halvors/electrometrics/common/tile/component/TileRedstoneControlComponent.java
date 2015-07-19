@@ -4,16 +4,21 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 import org.halvors.electrometrics.common.base.tile.IRedstoneControl;
 import org.halvors.electrometrics.common.base.tile.RedstoneControlType;
+import org.halvors.electrometrics.common.tile.TileEntityComponentContainer;
 
 import java.util.List;
 
-public class TileRedstoneControlComponent implements ITileComponent, IRedstoneControl {
+public class TileRedstoneControlComponent extends TileComponent implements ITileNetworkableComponent, IRedstoneControl {
     // The current RedstoneControlType of this TileEntity.
     private RedstoneControlType redstoneControlType = RedstoneControlType.DISABLED;
 
     // The current and past redstone state.
     boolean isPowered;
     boolean wasPowered;
+
+    public TileRedstoneControlComponent(TileEntityComponentContainer tileEntity) {
+        super(tileEntity);
+    }
 
     @Override
     public void onUpdate() {
