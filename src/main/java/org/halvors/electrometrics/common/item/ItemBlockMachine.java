@@ -105,7 +105,7 @@ public class ItemBlockMachine extends ItemBlock {
             itemStack.setTagCompound(new NBTTagCompound());
         }
 
-        itemStack.stackTagCompound.setInteger("tier", tier.getBaseTier().ordinal());
+        itemStack.stackTagCompound.setInteger("tier", tier.getBase().ordinal());
     }
 
     private double getElectricityCount(ItemStack itemStack) {

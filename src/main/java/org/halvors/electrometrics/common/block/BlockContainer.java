@@ -10,7 +10,7 @@ import org.halvors.electrometrics.common.tile.TileEntity;
  *
  * @author halvors
  */
-public class BlockContainer extends net.minecraft.block.BlockContainer {
+class BlockContainer extends net.minecraft.block.BlockContainer {
 	final String name;
 
 	BlockContainer(String name, Material material) {

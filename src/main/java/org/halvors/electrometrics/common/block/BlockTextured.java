@@ -13,7 +13,7 @@ import org.halvors.electrometrics.common.base.tile.IRotatable;
 import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.util.render.Orientation;
 
-public class BlockTextured extends BlockContainer {
+class BlockTextured extends BlockContainer {
 	@SideOnly(Side.CLIENT)
 	final IIcon[][] iconList = new IIcon[16][16];
 

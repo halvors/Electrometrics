@@ -1,6 +1,8 @@
 package org.halvors.electrometrics.common.tile;
 
 import org.halvors.electrometrics.common.base.MachineType;
+import org.halvors.electrometrics.common.network.PacketHandler;
+import org.halvors.electrometrics.common.network.PacketTileEntity;
 
 /**
  * This is a basic TileEntity that is meant to be extended by other TileEntities.
@@ -31,7 +33,7 @@ public class TileEntityElectricBlock extends TileEntityMachine {
             if (isPowered != redstonePower) {
                 isPowered = redstonePower;
 
-                //PacketHandler.sendToReceivers(new PacketTileEntity(this), this);
+                PacketHandler.sendToReceivers(new PacketTileEntity(this), this);
             }
         }
     }

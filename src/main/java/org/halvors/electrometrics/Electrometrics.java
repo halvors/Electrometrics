@@ -132,7 +132,8 @@ public class Electrometrics {
 		if (isMekanismIntegrationEnabled) {
 			// Add recipe for all tiers.
 			for (Tier.ElectricityMeter tier : Tier.ElectricityMeter.values()) {
-				ItemStack itemStackMachine = tier.getMachineType().getItemStack();
+				MachineType machineType = tier.getMachineType();
+				ItemStack itemStackMachine = machineType.getItemStack();
 				ItemBlockMachine itemBlockMachine = (ItemBlockMachine) itemStackMachine.getItem();
 				itemBlockMachine.setElectricityMeterTier(itemStackMachine, tier);
 

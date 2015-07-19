@@ -51,7 +51,7 @@ public class Tier {
 			this.maxTransfer = maxTransfer;
 		}
 
-		public Base getBaseTier() {
+		public Base getBase() {
 			return Base.values()[ordinal()];
 		}
 
