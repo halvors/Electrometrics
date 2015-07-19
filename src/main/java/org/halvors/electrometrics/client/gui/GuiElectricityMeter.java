@@ -27,22 +27,18 @@ import java.util.List;
 public class GuiElectricityMeter extends GuiComponentScreen {
 	private int ticker = 0;
 
-	public GuiElectricityMeter(TileEntityMachine tileEntity) {
+	public GuiElectricityMeter(final TileEntityElectricityMeter tileEntity) {
 		super(tileEntity);
 
-		if (tileEntity instanceof IOwnable) {
-			final IOwnable ownable = (IOwnable) tileEntity;
+		components.add(new GuiOwnerInfo(new IInfoHandler() {
+			@Override
+			public List<String> getInfo() {
+				List<String> list = new ArrayList<>();
+				list.add(tileEntity.getOwnerName());
 
-			components.add(new GuiOwnerInfo(new IInfoHandler() {
-				@Override
-				public List<String> getInfo() {
-					List<String> list = new ArrayList<>();
-					list.add(ownable.getOwnerName());
-
-					return list;
-				}
-			}, this, defaultResource));
-		}
+				return list;
+			}
+		}, this, defaultResource));
 
 		// TODO: Get currect energy usage here.
 		components.add(new GuiEnergyInfo(new IInfoHandler() {
@@ -56,12 +52,9 @@ public class GuiElectricityMeter extends GuiComponentScreen {
 			}
 		}, this, defaultResource));
 
-		if (tileEntity instanceof TileEntityElectricityMeter) {
-			TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
 
-			components.add(new GuiEnergyDisplay(this, defaultResource));
-			components.add(new GuiRedstoneControl<>(this, tileEntityElectricityMeter, defaultResource));
-		}
+		components.add(new GuiEnergyDisplay(this, defaultResource));
+		components.add(new GuiRedstoneControl<>(this, tileEntity, defaultResource));
 	}
 
 	@SuppressWarnings("unchecked")
