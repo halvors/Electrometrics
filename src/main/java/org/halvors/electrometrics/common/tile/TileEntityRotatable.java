@@ -83,10 +83,22 @@ public class TileEntityRotatable extends TileEntity implements INetworkable, IRo
             this.facing = facing;
         }
 
+        if (worldObj.isRemote) {
+            PacketHandler.sendToServer(new PacketTileEntity(this));
+        }
+
+        // Update the block's rotation.
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+
+        // Update potentially connected redstone blocks.
+        worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
+
+        /*
         if (!worldObj.isRemote || clientFacing != facing) {
             clientFacing = facing;
 
             PacketHandler.sendToReceivers(new PacketTileEntity(this), this);
         }
+        */
     }
 }

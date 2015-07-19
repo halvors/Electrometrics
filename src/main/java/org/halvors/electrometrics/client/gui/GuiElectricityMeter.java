@@ -52,7 +52,6 @@ public class GuiElectricityMeter extends GuiComponentScreen {
 			}
 		}, this, defaultResource));
 
-
 		components.add(new GuiEnergyDisplay(this, defaultResource));
 		components.add(new GuiRedstoneControl<>(this, tileEntity, defaultResource));
 	}
