@@ -52,8 +52,8 @@ public class BlockRenderer {
 		}
 	}
 
-	private static boolean textureExists(String fileName) {
-		ResourceLocation resourceLocation = new ResourceLocation(Reference.DOMAIN, ResourceType.TEXTURE_BLOCKS.getPrefix() + fileName + ".png");
+	private static boolean textureExists(String texture) {
+		ResourceLocation resourceLocation = new ResourceLocation(Reference.DOMAIN, ResourceType.TEXTURE_BLOCKS.getPrefix() + texture + ".png");
 
 		try {
 			Minecraft.getMinecraft().getResourceManager().getAllResources(resourceLocation);
