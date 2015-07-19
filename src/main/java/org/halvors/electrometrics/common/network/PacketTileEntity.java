@@ -52,26 +52,26 @@ public class PacketTileEntity extends PacketBlockLocation implements IMessage, I
 		try {
 			for (Object object : objectList) {
 				// Language types.
-				if (object instanceof Integer) {
-					dataStream.writeInt((Integer) object);
+				if (object instanceof Boolean) {
+					dataStream.writeBoolean((Boolean) object);
+				} else if (object instanceof Byte) {
+					dataStream.writeByte((Byte) object);
+				} else if (object instanceof byte[]) {
+					dataStream.writeBytes((byte[]) object);
 				} else if (object instanceof Double) {
 					dataStream.writeDouble((Double) object);
 				} else if (object instanceof Float) {
 					dataStream.writeFloat((Float) object);
-				} else if (object instanceof Boolean) {
-					dataStream.writeBoolean((Boolean) object);
-				} else if (object instanceof Byte) {
-					dataStream.writeByte((Byte) object);
-				} else if (object instanceof String) {
-					ByteBufUtils.writeUTF8String(dataStream, (String) object);
-				} else if (object instanceof int[]) { // Array types.
+				} else if (object instanceof Integer) {
+					dataStream.writeInt((Integer) object);
+				} else if (object instanceof int[]) {
 					for (int i : (int[]) object) {
 						dataStream.writeInt(i);
 					}
-				} else if (object instanceof byte[]) {
-					for (byte b : (byte[]) object) {
-						dataStream.writeByte(b);
-					}
+				} else if (object instanceof Long) {
+					dataStream.writeLong((Long) object);
+				} else if (object instanceof String) {
+					ByteBufUtils.writeUTF8String(dataStream, (String) object);
 				} else if (object instanceof ItemStack) { // Minecraft specific types.
 					ByteBufUtils.writeItemStack(dataStream, (ItemStack) object);
 				} else if (object instanceof NBTTagCompound) {
