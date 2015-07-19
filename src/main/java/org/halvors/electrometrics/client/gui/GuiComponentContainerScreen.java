@@ -20,21 +20,21 @@ import java.util.List;
 import java.util.Set;
 
 @SideOnly(Side.CLIENT)
-public abstract class GuiComponentScreen extends GuiScreen implements IGui {
+public abstract class GuiComponentContainerScreen extends GuiScreen implements IGui {
 	static final Minecraft game = Minecraft.getMinecraft();
 
 	final Set<IComponent> components = new HashSet<>();
 	final ResourceLocation defaultResource = new ResourceLocation(Reference.DOMAIN, ResourceType.GUI.getPrefix() + "Screen.png");
 	final TileEntity tileEntity;
 
-	// This is not present by default in GuiComponentScreen as it is in GuiComponentContainer.
+	// This is not present by default in GuiComponentContainerScreen as it is in GuiComponentContainerInventoryScreen.
 	final int xSize = 176;
 	final int ySize = 166;
 
 	private int guiLeft;
 	private int guiTop;
 
-	GuiComponentScreen(TileEntity tileEntity) {
+	GuiComponentContainerScreen(TileEntity tileEntity) {
 		this.tileEntity = tileEntity;
 	}
 

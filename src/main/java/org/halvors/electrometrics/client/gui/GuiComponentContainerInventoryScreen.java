@@ -22,14 +22,14 @@ import java.util.List;
 import java.util.Set;
 
 @SideOnly(Side.CLIENT)
-public abstract class GuiComponentContainer extends GuiContainer implements IGui {
+public abstract class GuiComponentContainerInventoryScreen extends GuiContainer implements IGui {
 	static final Minecraft game = Minecraft.getMinecraft();
 
 	final Set<IComponent> components = new HashSet<>();
 	final ResourceLocation defaultResource = new ResourceLocation(Reference.DOMAIN, ResourceType.GUI.getPrefix() + "Container.png");
 	final TileEntity tileEntity;
 
-	GuiComponentContainer(TileEntity tileEntity, Container container) {
+	GuiComponentContainerInventoryScreen(TileEntity tileEntity, Container container) {
 		super(container);
 
 		this.tileEntity = tileEntity;
