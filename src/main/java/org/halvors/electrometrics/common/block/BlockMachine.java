@@ -51,7 +51,7 @@ public class BlockMachine extends BlockRotatable {
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
-		MachineType machineType = MachineType.getType(this, metadata);
+		MachineType machineType = MachineType.getType(metadata);
 
 		return machineType.getTileEntity();
 	}
