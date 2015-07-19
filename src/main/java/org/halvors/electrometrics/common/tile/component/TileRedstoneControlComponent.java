@@ -39,6 +39,8 @@ public class TileRedstoneControlComponent extends TileComponent implements ITile
     @Override
     public void handlePacketData(ByteBuf dataStream) {
         redstoneControlType = RedstoneControlType.values()[dataStream.readInt()];
+
+        System.out.println("RedstoneControlType is: " + redstoneControlType);
     }
 
     @Override

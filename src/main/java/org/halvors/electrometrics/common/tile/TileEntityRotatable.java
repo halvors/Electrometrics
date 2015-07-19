@@ -46,6 +46,8 @@ public class TileEntityRotatable extends TileEntityComponentContainer implements
 
     @Override
     public void handlePacketData(ByteBuf dataStream) throws Exception {
+        super.handlePacketData(dataStream);
+
         facing = dataStream.readInt();
 
         // Check if client is in sync with the server, if not update it.
@@ -62,6 +64,8 @@ public class TileEntityRotatable extends TileEntityComponentContainer implements
 
     @Override
     public List<Object> getPacketData(List<Object> list) {
+        super.getPacketData(list);
+
         list.add(facing);
 
         return list;
