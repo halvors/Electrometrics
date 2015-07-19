@@ -20,27 +20,30 @@ public class MachineUtils {
      */
     public static boolean hasUsableWrench(EntityPlayer player, int x, int y, int z) {
         ItemStack itemStack = player.getCurrentEquippedItem();
-        Item item = itemStack.getItem();
 
-        // Check if item is a Buildcraft wrench.
-        if (item instanceof IToolWrench) {
-            IToolWrench wrench = (IToolWrench) item;
+        if (itemStack != null) {
+            Item item = itemStack.getItem();
 
-            return wrench.canWrench(player, x, y, z);
-        }
+            // Check if item is a Buildcraft wrench.
+            if (item instanceof IToolWrench) {
+                IToolWrench wrench = (IToolWrench) item;
 
-        // Check if item is a CoFH wrench.
-        if (item instanceof IToolHammer) {
-            IToolHammer wrench = (IToolHammer) item;
+                return wrench.canWrench(player, x, y, z);
+            }
 
-            return wrench.isUsable(itemStack, player, x, y, z);
-        }
+            // Check if item is a CoFH wrench.
+            if (item instanceof IToolHammer) {
+                IToolHammer wrench = (IToolHammer) item;
 
-        // Check if item is a Mekanism wrench.
-        if (item instanceof IMekWrench) {
-            IMekWrench wrench = (IMekWrench) item;
+                return wrench.isUsable(itemStack, player, x, y, z);
+            }
 
-            return wrench.canUseWrench(player, x, y, z);
+            // Check if item is a Mekanism wrench.
+            if (item instanceof IMekWrench) {
+                IMekWrench wrench = (IMekWrench) item;
+
+                return wrench.canUseWrench(player, x, y, z);
+            }
         }
 
         return false;
