@@ -9,10 +9,14 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import org.halvors.electrometrics.Electrometrics;
+import org.halvors.electrometrics.Reference;
+import org.halvors.electrometrics.common.base.ResourceType;
 import org.halvors.electrometrics.common.base.tile.IRedstoneControl;
-import org.halvors.electrometrics.common.util.UnitDisplay.Unit;
+import org.halvors.electrometrics.common.util.energy.Unit;
+import org.halvors.electrometrics.common.util.energy.UnitDisplay;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +26,16 @@ public class Utils {
 	public static String translate(String text) {
 		return StatCollector.translateToLocal(text);
 	}
+
+    /**
+     * Gets a ResourceLocation with a defined resource type and name.
+     * @param type - type of resource to retrieve
+     * @param name - simple name of file to retrieve as a ResourceLocation
+     * @return the corresponding ResourceLocation
+     */
+    public static ResourceLocation getResource(ResourceType type, String name) {
+        return new ResourceLocation(Reference.DOMAIN, type.getPrefix() + name);
+    }
 
     /**
      * Whether or not the player has a usable wrench for a block at the coordinates given.
