@@ -11,7 +11,6 @@ import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketRequestData;
 import org.halvors.electrometrics.common.network.PacketTileEntity;
 import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
-import org.halvors.electrometrics.common.tile.TileEntityMachine;
 import org.halvors.electrometrics.common.util.energy.EnergyUtils;
 
 import java.util.ArrayList;

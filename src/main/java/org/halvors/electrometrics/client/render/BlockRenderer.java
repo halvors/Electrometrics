@@ -5,10 +5,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.halvors.electrometrics.common.Reference;
 import org.halvors.electrometrics.common.base.ResourceType;
+import org.halvors.electrometrics.common.util.ResourceUtils;
 
 @SideOnly(Side.CLIENT)
 public class BlockRenderer {
@@ -53,10 +53,8 @@ public class BlockRenderer {
 	}
 
 	private static boolean textureExists(String texture) {
-		ResourceLocation resourceLocation = new ResourceLocation(Reference.DOMAIN, ResourceType.TEXTURE_BLOCKS.getPrefix() + texture + ".png");
-
 		try {
-			Minecraft.getMinecraft().getResourceManager().getAllResources(resourceLocation);
+			Minecraft.getMinecraft().getResourceManager().getAllResources(ResourceUtils.getResource(ResourceType.TEXTURE_BLOCKS, texture + ".png"));
 
 			return true;
 		} catch (Exception e) {

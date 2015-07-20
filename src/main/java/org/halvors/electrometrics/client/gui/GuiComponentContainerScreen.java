@@ -8,10 +8,10 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import org.halvors.electrometrics.client.gui.component.IGuiComponent;
-import org.halvors.electrometrics.common.Reference;
 import org.halvors.electrometrics.common.base.ResourceType;
 import org.halvors.electrometrics.common.component.IComponent;
 import org.halvors.electrometrics.common.tile.TileEntity;
+import org.halvors.electrometrics.common.util.ResourceUtils;
 import org.lwjgl.opengl.GL11;
 
 import java.util.Collections;
@@ -24,7 +24,7 @@ public abstract class GuiComponentContainerScreen extends GuiScreen implements I
 	static final Minecraft game = Minecraft.getMinecraft();
 
 	final Set<IComponent> components = new HashSet<>();
-	final ResourceLocation defaultResource = new ResourceLocation(Reference.DOMAIN, ResourceType.GUI.getPrefix() + "Screen.png");
+	final ResourceLocation defaultResource = ResourceUtils.getResource(ResourceType.GUI, "Screen.png");
 	final TileEntity tileEntity;
 
 	// This is not present by default in GuiComponentContainerScreen as it is in GuiComponentContainerInventoryScreen.

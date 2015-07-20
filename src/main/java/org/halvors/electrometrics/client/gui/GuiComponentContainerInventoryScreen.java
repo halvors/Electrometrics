@@ -10,10 +10,10 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import org.halvors.electrometrics.client.gui.component.IGuiComponent;
-import org.halvors.electrometrics.common.Reference;
 import org.halvors.electrometrics.common.base.ResourceType;
 import org.halvors.electrometrics.common.component.IComponent;
 import org.halvors.electrometrics.common.tile.TileEntity;
+import org.halvors.electrometrics.common.util.ResourceUtils;
 import org.lwjgl.opengl.GL11;
 
 import java.util.Collections;
@@ -26,7 +26,7 @@ public abstract class GuiComponentContainerInventoryScreen extends GuiContainer 
 	static final Minecraft game = Minecraft.getMinecraft();
 
 	final Set<IComponent> components = new HashSet<>();
-	final ResourceLocation defaultResource = new ResourceLocation(Reference.DOMAIN, ResourceType.GUI.getPrefix() + "Container.png");
+	final ResourceLocation defaultResource = ResourceUtils.getResource(ResourceType.GUI, "Container.png");
 	final TileEntity tileEntity;
 
 	GuiComponentContainerInventoryScreen(TileEntity tileEntity, Container container) {

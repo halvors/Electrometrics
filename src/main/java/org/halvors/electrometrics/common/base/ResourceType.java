@@ -19,8 +19,4 @@ public enum ResourceType {
     public String getPrefix() {
         return prefix + "/";
     }
-
-    public static ResourceLocation getResource(ResourceType resourceType, String name) {
-        return new ResourceLocation(Reference.DOMAIN, resourceType.getPrefix() + name);
-    }
 }
