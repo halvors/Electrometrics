@@ -9,14 +9,14 @@ import org.halvors.electrometrics.common.util.location.BlockLocation;
  *
  * @author halvors
  */
-public class PacketBlockLocation implements IMessage {
+class PacketBlockLocation implements IMessage {
 	private BlockLocation blockLocation;
 
 	public PacketBlockLocation() {
 
     }
 
-	public PacketBlockLocation(BlockLocation blockLocation) {
+	PacketBlockLocation(BlockLocation blockLocation) {
 		this.blockLocation = blockLocation;
 	}
 

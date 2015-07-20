@@ -7,11 +7,12 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
-import org.halvors.electrometrics.common.base.Tier.ElectricityMeterTier;
+import org.halvors.electrometrics.common.base.MachineType;
+import org.halvors.electrometrics.common.base.Tier;
 import org.halvors.electrometrics.common.base.tile.*;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketRequestData;
-import org.halvors.electrometrics.common.util.Utils;
+import org.halvors.electrometrics.common.util.PlayerUtils;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -35,19 +36,25 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 	private UUID ownerUUID;
 
 	// The name of the player owning this.
-	private String ownerName = "";
+	private String ownerName;
 
 	// The current RedstoneControlType of this TileEntity.
 	private RedstoneControlType redstoneControlType = RedstoneControlType.DISABLED;
 
     // The tier of this TileEntity.
-	private ElectricityMeterTier electricityMeterTier = ElectricityMeterTier.BASIC;
+	private Tier.ElectricityMeter tier = Tier.ElectricityMeter.BASIC;
 
 	// The amount of energy that has passed thru.
 	private double electricityCount;
 
-	public TileEntityElectricityMeter(String name, ElectricityMeterTier electricityMeterTier) {
-		super(name, electricityMeterTier.getMaxEnergy(), electricityMeterTier.getMaxTransfer());
+	public TileEntityElectricityMeter() {
+		this(MachineType.BASIC_ELECTRICITY_METER, Tier.ElectricityMeter.BASIC);
+	}
+
+	public TileEntityElectricityMeter(MachineType machineType, Tier.ElectricityMeter tier) {
+		super(machineType, tier.getMaxEnergy(), tier.getMaxTransfer());
+
+		this.tier = tier;
 	}
 
     @Override
@@ -58,31 +65,42 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
     }
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbtTags) {
-		super.readFromNBT(nbtTags);
+	public void readFromNBT(NBTTagCompound nbtTagCompound) {
+		super.readFromNBT(nbtTagCompound);
 
-        isActive = nbtTags.getBoolean("isActive");
+        isActive = nbtTagCompound.getBoolean("isActive");
 
-        String ownerString = nbtTags.getString("ownerUUID");
-        ownerUUID = ownerString != null ? UUID.fromString(ownerString) : null;
-		ownerName = nbtTags.getString("ownerName");
-		redstoneControlType = RedstoneControlType.values()[nbtTags.getInteger("redstoneControlType")];
+		if (nbtTagCompound.hasKey("ownerUUIDM") && nbtTagCompound.hasKey("ownerUUIDL")) {
+			ownerUUID = new UUID(nbtTagCompound.getLong("ownerUUIDM"), nbtTagCompound.getLong("ownerUUIDL"));
+		}
 
-		electricityMeterTier = ElectricityMeterTier.values()[nbtTags.getInteger("tier")];
-		electricityCount = nbtTags.getDouble("electricityCount");
+		if (nbtTagCompound.hasKey("ownerName")) {
+			ownerName = nbtTagCompound.getString("ownerName");
+		}
+
+		redstoneControlType = RedstoneControlType.values()[nbtTagCompound.getInteger("redstoneControlType")];
+		tier = Tier.ElectricityMeter.values()[nbtTagCompound.getInteger("tier")];
+		electricityCount = nbtTagCompound.getDouble("electricityCount");
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbtTags) {
-		super.writeToNBT(nbtTags);
+	public void writeToNBT(NBTTagCompound nbtTagCompound) {
+		super.writeToNBT(nbtTagCompound);
 
-        nbtTags.setBoolean("isActive", isActive);
-        nbtTags.setString("ownerUUID", ownerUUID != null ? ownerUUID.toString() : "");
-        nbtTags.setString("ownerName", ownerName);
-        nbtTags.setInteger("redstoneControlType", redstoneControlType.ordinal());
+		nbtTagCompound.setBoolean("isActive", isActive);
 
-		nbtTags.setInteger("tier", electricityMeterTier.ordinal());
-		nbtTags.setDouble("electricityCount", electricityCount);
+		if (ownerUUID != null) {
+			nbtTagCompound.setLong("ownerUUIDM", ownerUUID.getMostSignificantBits());
+			nbtTagCompound.setLong("ownerUUIDL", ownerUUID.getLeastSignificantBits());
+		}
+
+		if (ownerName != null) {
+			nbtTagCompound.setString("ownerName", ownerName);
+		}
+
+		nbtTagCompound.setInteger("redstoneControlType", redstoneControlType.ordinal());
+		nbtTagCompound.setInteger("tier", tier.ordinal());
+		nbtTagCompound.setDouble("electricityCount", electricityCount);
 	}
 
 	@Override
@@ -91,9 +109,19 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 
         isActive = dataStream.readBoolean();
 
-        String ownerString = ByteBufUtils.readUTF8String(dataStream);
-        ownerUUID = ownerString != null ? UUID.fromString(ownerString) : null;
-		ownerName = ByteBufUtils.readUTF8String(dataStream);
+		long ownerUUIDMostSignificantBits = dataStream.readLong();
+		long ownerUUIDLeastSignificantBits = dataStream.readLong();
+
+		if (ownerUUIDMostSignificantBits != 0 && ownerUUIDLeastSignificantBits != 0) {
+			ownerUUID = new UUID(ownerUUIDMostSignificantBits, ownerUUIDLeastSignificantBits);
+		}
+
+		String ownerNameText = ByteBufUtils.readUTF8String(dataStream);
+
+		if (!ownerNameText.isEmpty()) {
+			ownerName = ownerNameText;
+		}
+
 		redstoneControlType = RedstoneControlType.values()[dataStream.readInt()];
 
 		// Check if client is in sync with the server, if not update it.
@@ -103,7 +131,7 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		}
 
-		electricityMeterTier = ElectricityMeterTier.values()[dataStream.readInt()];
+		tier = Tier.ElectricityMeter.values()[dataStream.readInt()];
 		electricityCount = dataStream.readDouble();
 	}
 
@@ -111,12 +139,12 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 	public List<Object> getPacketData(List<Object> list) {
 		super.getPacketData(list);
 
-        list.add(isActive);
-		list.add(ownerUUID != null ? ownerUUID.toString() : "");
-		list.add(ownerName);
+		list.add(isActive);
+		list.add(ownerUUID != null ? ownerUUID.getMostSignificantBits() : 0);
+		list.add(ownerUUID != null ? ownerUUID.getLeastSignificantBits() : 0);
+		list.add(ownerName != null ? ownerName : "");
 		list.add(redstoneControlType.ordinal());
-
-		list.add(electricityMeterTier.ordinal());
+		list.add(tier.ordinal());
 		list.add(electricityCount);
 
 		return list;
@@ -161,7 +189,7 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 
 	@Override
 	public EntityPlayer getOwner() {
-		return Utils.getPlayerFromUUID(ownerUUID);
+		return PlayerUtils.getPlayerFromUUID(ownerUUID);
 	}
 
 	@Override
@@ -205,12 +233,12 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 		return false;
 	}
 
-	public ElectricityMeterTier getTier() {
-		return electricityMeterTier;
+	public Tier.ElectricityMeter getTier() {
+		return tier;
 	}
 
-	public void setTier(ElectricityMeterTier electricityMeterTier) {
-		this.electricityMeterTier = electricityMeterTier;
+	public void setTier(Tier.ElectricityMeter electricityMeterTier) {
+		this.tier = electricityMeterTier;
 	}
 
 	/**

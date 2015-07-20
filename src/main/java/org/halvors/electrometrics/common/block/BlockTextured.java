@@ -4,16 +4,16 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
-import org.halvors.electrometrics.Reference;
+import org.halvors.electrometrics.client.render.DefaultIcon;
+import org.halvors.electrometrics.common.Reference;
 import org.halvors.electrometrics.common.base.tile.IActiveState;
 import org.halvors.electrometrics.common.base.tile.IRotatable;
-import org.halvors.electrometrics.common.util.Orientation;
-import org.halvors.electrometrics.common.util.render.DefaultIcon;
+import org.halvors.electrometrics.common.tile.TileEntity;
+import org.halvors.electrometrics.common.util.render.Orientation;
 
-public class BlockTextured extends BlockContainer {
+class BlockTextured extends BlockContainer {
 	@SideOnly(Side.CLIENT)
 	final IIcon[][] iconList = new IIcon[16][16];
 
@@ -34,7 +34,7 @@ public class BlockTextured extends BlockContainer {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
-		TileEntity tileEntity = world.getTileEntity(x, y, z);
+		TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
 		int metadata = world.getBlockMetadata(x, y, z);
 		boolean isActive = false;
 

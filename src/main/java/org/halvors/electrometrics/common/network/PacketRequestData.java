@@ -24,10 +24,8 @@ public class PacketRequestData extends PacketBlockLocation implements IMessage, 
 	public IMessage onMessage(PacketRequestData message, MessageContext context) {
 		TileEntity tileEntity = message.getBlockLocation().getTileEntity(PacketHandler.getWorld(context));
 
-		if (tileEntity != null) {
-			if (tileEntity instanceof INetworkable) {
-				return new PacketTileEntity((INetworkable) tileEntity);
-			}
+		if (tileEntity != null && tileEntity instanceof INetworkable) {
+			return new PacketTileEntity((INetworkable) tileEntity);
 		}
 
 		return null;

@@ -12,7 +12,7 @@ import org.halvors.electrometrics.common.network.PacketRequestData;
 import org.halvors.electrometrics.common.network.PacketTileEntity;
 import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.tile.TileEntityMachine;
-import org.halvors.electrometrics.common.util.Utils;
+import org.halvors.electrometrics.common.util.energy.EnergyUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,38 +24,36 @@ import java.util.List;
  * @author halvors
  */
 @SideOnly(Side.CLIENT)
-public class GuiElectricityMeter extends GuiComponentScreen {
+public class GuiElectricityMeter extends GuiComponentContainerScreen {
 	private int ticker = 0;
 
-	public GuiElectricityMeter(TileEntityMachine tileEntity) {
+	public GuiElectricityMeter(final TileEntityElectricityMeter tileEntity) {
 		super(tileEntity);
-
-		final TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
 
 		components.add(new GuiOwnerInfo(new IInfoHandler() {
 			@Override
 			public List<String> getInfo() {
 				List<String> list = new ArrayList<>();
-				list.add(tileEntityElectricityMeter.getOwnerName());
+				list.add(tileEntity.getOwnerName());
 
 				return list;
 			}
 		}, this, defaultResource));
 
-        // TODO: Get currect energy usage here.
+		// TODO: Get currect energy usage here.
 		components.add(new GuiEnergyInfo(new IInfoHandler() {
 			@Override
 			public List<String> getInfo() {
 				List<String> list = new ArrayList<>();
-				list.add("Using: " + Utils.getEnergyDisplay(10) + "/t");
-				list.add("Needed: " + Utils.getEnergyDisplay(10));
+				list.add("Using: " + EnergyUtils.getEnergyDisplay(10) + "/t");
+				list.add("Needed: " + EnergyUtils.getEnergyDisplay(10));
 
 				return list;
 			}
 		}, this, defaultResource));
 
-        components.add(new GuiEnergyDisplay(this, defaultResource));
-		components.add(new GuiRedstoneControl(this, tileEntityElectricityMeter, defaultResource));
+		components.add(new GuiEnergyUnitType<>(this, tileEntity, defaultResource));
+		components.add(new GuiRedstoneControl<>(this, tileEntity, defaultResource));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -105,13 +103,10 @@ public class GuiElectricityMeter extends GuiComponentScreen {
 		if (tileEntity instanceof TileEntityElectricityMeter) {
 			TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
 
-			// The name of this machine.
-			fontRendererObj.drawString(tileEntity.getName(), (xSize / 2) - (fontRendererObj.getStringWidth(tileEntity.getName()) / 2), 6, 0x404040);
-
 			// Formatting energy to the correct energy unit.
-			String measuredEnergy = Utils.getEnergyDisplay(tileEntityElectricityMeter.getElectricityCount());
-			String storedEnergy = Utils.getEnergyDisplay(tileEntityElectricityMeter.getStorage().getEnergyStored());
-			String maxOutput = Utils.getEnergyDisplay(tileEntityElectricityMeter.getStorage().getMaxEnergyStored());
+			String measuredEnergy = EnergyUtils.getEnergyDisplay(tileEntityElectricityMeter.getElectricityCount());
+			String storedEnergy = EnergyUtils.getEnergyDisplay(tileEntityElectricityMeter.getStorage().getEnergyStored());
+			String maxOutput = EnergyUtils.getEnergyDisplay(tileEntityElectricityMeter.getStorage().getMaxEnergyStored());
 
 			fontRendererObj.drawString("Measured:", 8, ySize - 140, 0x404040);
 			fontRendererObj.drawString(measuredEnergy, 72, ySize - 140, 0x404040);

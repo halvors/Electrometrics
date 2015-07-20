@@ -1,14 +1,19 @@
 package org.halvors.electrometrics.common.tile;
 
-public class TileEntity extends net.minecraft.tileentity.TileEntity {
-	// The name of this TileEntity.
-	private final String name;
+import net.minecraft.world.IBlockAccess;
 
-	TileEntity(String name) {
-		this.name = name;
+public class TileEntity extends net.minecraft.tileentity.TileEntity {
+	private final String inventoryName;
+
+	TileEntity(String inventoryName) {
+		this.inventoryName = inventoryName;
 	}
 
-	public String getName() {
-		return name;
+	public String getInventoryName() {
+		return inventoryName;
+	}
+
+	public static TileEntity getTileEntity(IBlockAccess world, int x, int y, int z) {
+		return (TileEntity) world.getTileEntity(x, y, z);
 	}
 }

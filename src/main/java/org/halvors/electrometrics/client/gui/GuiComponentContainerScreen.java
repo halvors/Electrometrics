@@ -2,14 +2,14 @@ package org.halvors.electrometrics.client.gui;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.Slot;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
-import org.halvors.electrometrics.Reference;
 import org.halvors.electrometrics.client.gui.component.IGuiComponent;
+import org.halvors.electrometrics.common.Reference;
+import org.halvors.electrometrics.common.base.ResourceType;
 import org.halvors.electrometrics.common.component.IComponent;
 import org.halvors.electrometrics.common.tile.TileEntity;
 import org.lwjgl.opengl.GL11;
@@ -20,16 +20,60 @@ import java.util.List;
 import java.util.Set;
 
 @SideOnly(Side.CLIENT)
-public abstract class GuiComponentContainer extends GuiContainer implements IGui {
-	final Set<IComponent> components = new HashSet<>();
+public abstract class GuiComponentContainerScreen extends GuiScreen implements IGui {
+	static final Minecraft game = Minecraft.getMinecraft();
 
-	final ResourceLocation defaultResource = new ResourceLocation(Reference.PREFIX + "gui/guiContainerBlank.png");
+	final Set<IComponent> components = new HashSet<>();
+	final ResourceLocation defaultResource = new ResourceLocation(Reference.DOMAIN, ResourceType.GUI.getPrefix() + "Screen.png");
 	final TileEntity tileEntity;
 
-	GuiComponentContainer(TileEntity tileEntity, Container container) {
-		super(container);
+	// This is not present by default in GuiComponentContainerScreen as it is in GuiComponentContainerInventoryScreen.
+	final int xSize = 176;
+	final int ySize = 166;
 
+	private int guiLeft;
+	private int guiTop;
+
+	GuiComponentContainerScreen(TileEntity tileEntity) {
 		this.tileEntity = tileEntity;
+	}
+
+	@Override
+	public boolean doesGuiPauseGame() {
+		return false;
+	}
+
+	@Override
+	public void initGui() {
+		super.initGui();
+
+		guiLeft = (width - xSize) / 2;
+		guiTop = (height - ySize) / 2;
+	}
+
+	@Override
+	public void drawScreen(int mouseX, int mouseY, float partialTick) {
+		drawDefaultBackground();
+
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+
+		drawGuiScreenBackgroundLayer(partialTick, mouseX, mouseY);
+
+		super.drawScreen(mouseX, mouseY, partialTick);
+
+		GL11.glTranslatef(guiLeft, guiTop, 0);
+
+		drawGuiScreenForegroundLayer(mouseX, mouseY);
+	}
+
+	public float getNeededScale(String text, int maxX) {
+		int length = fontRendererObj.getStringWidth(text);
+
+		if (length <= maxX) {
+			return 1;
+		} else {
+			return (float) maxX / length;
+		}
 	}
 
 	public void renderScaledText(String text, int x, int y, int color, int maxX) {
@@ -51,12 +95,8 @@ public abstract class GuiComponentContainer extends GuiContainer implements IGui
 		}
 	}
 
-	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
-
-		fontRendererObj.drawString(tileEntity.getName(), (xSize / 2) - (fontRendererObj.getStringWidth(tileEntity.getName()) / 2), 6, 0x404040);
-		fontRendererObj.drawString("Inventory", 8, (ySize - 96) + 2, 0x404040);
+	void drawGuiScreenForegroundLayer(int mouseX, int mouseY) {
+		fontRendererObj.drawString(tileEntity.getInventoryName(), (xSize / 2) - (fontRendererObj.getStringWidth(tileEntity.getInventoryName()) / 2), 6, 0x404040);
 
 		int xAxis = (mouseX - (width - xSize) / 2);
 		int yAxis = (mouseY - (height - ySize) / 2);
@@ -69,13 +109,8 @@ public abstract class GuiComponentContainer extends GuiContainer implements IGui
 		}
 	}
 
-	protected boolean isMouseOverSlot(Slot slot, int mouseX, int mouseY) {
-		return func_146978_c(slot.xDisplayPosition, slot.yDisplayPosition, 16, 16, mouseX, mouseY); // isPointInRegion
-	}
-
-	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTick, int mouseX, int mouseY) {
-		mc.renderEngine.bindTexture(defaultResource);
+	void drawGuiScreenBackgroundLayer(float partialTick, int mouseX, int mouseY) {
+		game.renderEngine.bindTexture(defaultResource);
 
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
@@ -157,10 +192,6 @@ public abstract class GuiComponentContainer extends GuiContainer implements IGui
 				guiComponent.mouseMovedOrUp(xAxis, yAxis, type);
 			}
 		}
-	}
-
-	public void handleMouse(Slot slot, int slotIndex, int button, int modifier) {
-		handleMouseClick(slot, slotIndex, button, modifier);
 	}
 
 	@Override

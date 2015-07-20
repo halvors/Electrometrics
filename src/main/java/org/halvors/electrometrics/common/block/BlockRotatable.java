@@ -1,25 +1,27 @@
 package org.halvors.electrometrics.common.block;
 
+import buildcraft.api.tools.IToolWrench;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.halvors.electrometrics.common.base.tile.IRotatable;
-import org.halvors.electrometrics.common.util.Utils;
+import org.halvors.electrometrics.common.tile.TileEntity;
+import org.halvors.electrometrics.common.util.MachineUtils;
 
-public class BlockRotatable extends BlockTextured {
+class BlockRotatable extends BlockTextured {
     BlockRotatable(String name, Material material) {
         super(name, material);
     }
 
     @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemStack) {
-        TileEntity tileEntity = world.getTileEntity(x, y, z);
+        TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
 
         // If this TileEntity implements IRotatable, we do our rotations.
         if (tileEntity instanceof IRotatable) {
@@ -60,25 +62,23 @@ public class BlockRotatable extends BlockTextured {
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int facing, float playerX, float playerY, float playerZ) {
-        TileEntity tileEntity = world.getTileEntity(x, y, z);
+        TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
 
         // Handle wrenching.
-        if (player.getCurrentEquippedItem() != null && Utils.hasUsableWrench(player, x, y, z)) {
+        if (player.getCurrentEquippedItem() != null && MachineUtils.hasUsableWrench(player, x, y, z)) {
             if (player.isSneaking()) {
                 dismantleBlock(world, x, y, z, false);
 
                 return true;
-            }
+            } else {
+                if (tileEntity instanceof IRotatable) {
+                    IRotatable rotatable = (IRotatable) tileEntity;
+                    int change = ForgeDirection.ROTATION_MATRIX[ForgeDirection.UP.ordinal()][rotatable.getFacing()];
 
-            if (tileEntity instanceof IRotatable) {
-                IRotatable rotatable = (IRotatable) tileEntity;
+                    rotatable.setFacing(change);
 
-                int change = ForgeDirection.ROTATION_MATRIX[ForgeDirection.UP.ordinal()][rotatable.getFacing()];
-
-                rotatable.setFacing(change);
-                world.notifyBlocksOfNeighborChange(x, y, z, this);
-
-                return true;
+                    return true;
+                }
             }
         }
 
@@ -87,7 +87,7 @@ public class BlockRotatable extends BlockTextured {
 
     @Override
     public ForgeDirection[] getValidRotations(World world, int x, int y, int z) {
-        TileEntity tileEntity = world.getTileEntity(x, y, z);
+        TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
         ForgeDirection[] valid = new ForgeDirection[6];
 
         // If this TileEntity implements IRotatable, we do our rotations.
@@ -106,7 +106,7 @@ public class BlockRotatable extends BlockTextured {
 
     @Override
     public boolean rotateBlock(World world, int x, int y, int z, ForgeDirection axis) {
-        TileEntity tileEntity = world.getTileEntity(x, y, z);
+        TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
 
         // If this TileEntity implements IRotatable, we do our rotations.
         if (tileEntity instanceof IRotatable) {
@@ -122,7 +122,8 @@ public class BlockRotatable extends BlockTextured {
         return super.rotateBlock(world, x, y, z, axis);
     }
 
-    void dismantleBlock(World world, int x, int y, int z, boolean returnBlock) {
+    ItemStack dismantleBlock(World world, int x, int y, int z, boolean returnBlock) {
+        ItemStack itemStack = getPickBlock(null, world, x, y, z, null);
         world.setBlockToAir(x, y, z);
 
         if (!returnBlock) {
@@ -130,10 +131,11 @@ public class BlockRotatable extends BlockTextured {
             double motionX = (world.rand.nextFloat() * motion) + (1.0F - motion) * 0.5D;
             double motionY = (world.rand.nextFloat() * motion) + (1.0F - motion) * 0.5D;
             double motionZ = (world.rand.nextFloat() * motion) + (1.0F - motion) * 0.5D;
-            ItemStack itemStack = getPickBlock(null, world, x, y, z, null);
 
             EntityItem entityItem = new EntityItem(world, x + motionX, y + motionY, z + motionZ, itemStack);
             world.spawnEntityInWorld(entityItem);
         }
+
+        return itemStack;
     }
 }

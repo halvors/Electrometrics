@@ -3,24 +3,21 @@
 // Creative tab
 itemGroup.tabElectrometrics=Electrometrics
 
-// Blocks
-tile.BasicElectricityMeter.name=Basic Electricity Meter
-tile.AdvancedElectricityMeter.name=Advanced Electricity Meter
-tile.EliteElectricityMeter.name=Elite Electricity Meter
-tile.UltimateElectricityMeter.name=Ultimate Electricity Meter
-tile.CreativeElectricityMeter.name=Creative Electricity Meter
-
-// Items
-
-// Tooltip
-tooltip.hold=Hold
-tooltip.forDetails=for details
-tooltip.measuredEnergy=Measured energy
-tooltip.storedEnergy=Stored energy
-
 // Tier names
 tier.Basic=Basic
 tier.Advanced=Advanced
 tier.Elite=Elite
 tier.Ultimate=Ultimate
 tier.Creative=Creative
+
+// Blocks
+tile.ElectricityMeter.name=Electricity Meter
+
+// Items
+
+// Tooltip
+tooltip.hold=Hold
+tooltip.forDetails=for details
+tooltip.noInformation=No information to display
+tooltip.measuredEnergy=Measured energy
+tooltip.storedEnergy=Stored energy

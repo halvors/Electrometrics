@@ -3,16 +3,15 @@ package org.halvors.electrometrics.client.gui.component;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.util.ResourceLocation;
-import org.halvors.electrometrics.Reference;
 import org.halvors.electrometrics.client.gui.IGui;
-import org.halvors.electrometrics.common.util.render.Rectangle4i;
+import org.halvors.electrometrics.client.render.Rectangle4i;
 
 @SideOnly(Side.CLIENT)
 public class GuiEnergyInfo extends GuiComponent implements IGuiComponent {
 	private final IInfoHandler infoHandler;
 
 	public GuiEnergyInfo(IInfoHandler infoHandler, IGui gui, ResourceLocation defaultResource) {
-		super(new ResourceLocation(Reference.DOMAIN, "gui/elements/guiEnergyInfo.png"), gui, defaultResource);
+		super("EnergyInfo.png", gui, defaultResource);
 
 		this.infoHandler = infoHandler;
 	}

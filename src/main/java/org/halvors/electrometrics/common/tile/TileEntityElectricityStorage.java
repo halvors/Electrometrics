@@ -3,6 +3,7 @@ package org.halvors.electrometrics.common.tile;
 import cofh.api.energy.EnergyStorage;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
+import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.base.tile.INetworkable;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketRequestData;
@@ -18,21 +19,21 @@ public abstract class TileEntityElectricityStorage extends TileEntityElectricBlo
 	// The internal energy storage.
 	final EnergyStorage storage;
 
-	TileEntityElectricityStorage(String name, int maxEnergy) {
-		super(name);
+	TileEntityElectricityStorage(MachineType machineType, int maxEnergy) {
+		super(machineType);
 
 		storage = new EnergyStorage(maxEnergy);
 	}
 
-    TileEntityElectricityStorage(String name, int maxEnergy, int maxReceive, int maxExtract) {
-        this(name, maxEnergy);
+    TileEntityElectricityStorage(MachineType machineType, int maxEnergy, int maxReceive, int maxExtract) {
+        this(machineType, maxEnergy);
 
         storage.setMaxReceive(maxReceive);
         storage.setMaxExtract(maxExtract);
     }
 
-	TileEntityElectricityStorage(String name, int maxEnergy, int maxTransfer) {
-		this(name, maxEnergy);
+	TileEntityElectricityStorage(MachineType machineType, int maxEnergy, int maxTransfer) {
+		this(machineType, maxEnergy);
 
 		storage.setMaxTransfer(maxTransfer);
 	}
@@ -45,17 +46,17 @@ public abstract class TileEntityElectricityStorage extends TileEntityElectricBlo
     }
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbtTags) {
-		super.readFromNBT(nbtTags);
+	public void readFromNBT(NBTTagCompound nbtTagCompound) {
+		super.readFromNBT(nbtTagCompound);
 
-		storage.readFromNBT(nbtTags);
+		storage.readFromNBT(nbtTagCompound);
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbtTags) {
-		super.writeToNBT(nbtTags);
+	public void writeToNBT(NBTTagCompound nbtTagCompound) {
+		super.writeToNBT(nbtTagCompound);
 
-		storage.writeToNBT(nbtTags);
+		storage.writeToNBT(nbtTagCompound);
 	}
 
 	@Override

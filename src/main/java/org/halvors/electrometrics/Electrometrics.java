@@ -18,15 +18,15 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.halvors.electrometrics.common.CommonProxy;
+import org.halvors.electrometrics.common.Reference;
 import org.halvors.electrometrics.common.Tab;
 import org.halvors.electrometrics.common.base.MachineType;
-import org.halvors.electrometrics.common.base.Tier.ElectricityMeterTier;
-import org.halvors.electrometrics.common.block.BlockElectricityMeter;
+import org.halvors.electrometrics.common.base.Tier;
 import org.halvors.electrometrics.common.block.BlockMachine;
 import org.halvors.electrometrics.common.event.PlayerEventHandler;
-import org.halvors.electrometrics.common.item.ItemBlockElectricityMeter;
+import org.halvors.electrometrics.common.item.ItemBlockMachine;
 import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
-import org.halvors.electrometrics.common.util.UnitDisplay.Unit;
+import org.halvors.electrometrics.common.util.energy.Unit;
 
 import java.io.File;
 
@@ -53,7 +53,7 @@ public class Electrometrics {
 	private static final Tab tab = new Tab();
 
 	// Blocks.
-	public static final BlockMachine blockElectricityMeter = new BlockElectricityMeter();
+	public static final BlockMachine blockMachine = new BlockMachine();
 
 	// Configuration.
 	private static Configuration configuration;
@@ -61,7 +61,7 @@ public class Electrometrics {
 	// Configuration variables.
 
     // General.
-    public static Unit energyType = Unit.JOULES;
+    public static Unit energyUnitType = Unit.JOULES;
 	public static double toJoules;
 	public static double toMinecraftJoules;
 	public static double toElectricalUnits;
@@ -79,17 +79,17 @@ public class Electrometrics {
 
 		isMekanismIntegrationEnabled = configuration.get(Configuration.CATEGORY_GENERAL, "MekanismIntegration", Loader.isModLoaded("Mekanism")).getBoolean();
 
-		String energyTypeString = configuration.get(Configuration.CATEGORY_GENERAL, "EnergyType", "J", "The default energy system to display.", new String[] { "RF", "J", "MJ", "EU" }).getString();
+		String energyUnitTypeString = configuration.get(Configuration.CATEGORY_GENERAL, "EnergyType", "J", "The default energy system to display.", new String[] { "RF", "J", "MJ", "EU" }).getString();
 
-		if (energyTypeString != null) {
-			if (energyTypeString.trim().equalsIgnoreCase("RF")) {
-				energyType = Unit.REDSTONE_FLUX;
-			} else if (energyTypeString.trim().equalsIgnoreCase("J")) {
-				energyType = Unit.JOULES;
-			} else if (energyTypeString.trim().equalsIgnoreCase("MJ")) {
-				energyType = Unit.MINECRAFT_JOULES;
-			} else if (energyTypeString.trim().equalsIgnoreCase("EU")) {
-				energyType = Unit.ELECTRICAL_UNITS;
+		if (energyUnitTypeString != null) {
+			if (energyUnitTypeString.trim().equalsIgnoreCase("RF")) {
+				energyUnitType = Unit.REDSTONE_FLUX;
+			} else if (energyUnitTypeString.trim().equalsIgnoreCase("J")) {
+				energyUnitType = Unit.JOULES;
+			} else if (energyUnitTypeString.trim().equalsIgnoreCase("MJ")) {
+				energyUnitType = Unit.MINECRAFT_JOULES;
+			} else if (energyUnitTypeString.trim().equalsIgnoreCase("EU")) {
+				energyUnitType = Unit.ELECTRICAL_UNITS;
 			}
 		}
 
@@ -119,7 +119,7 @@ public class Electrometrics {
 
 	private void addBlocks() {
 		// Register blocks.
-		GameRegistry.registerBlock(blockElectricityMeter, ItemBlockElectricityMeter.class, "blockElectricityMeter");
+		GameRegistry.registerBlock(blockMachine, ItemBlockMachine.class, "blockMachine");
 	}
 
 	private void addTileEntities() {
@@ -131,17 +131,18 @@ public class Electrometrics {
 		// Register recipes.
 		if (isMekanismIntegrationEnabled) {
 			// Add recipe for all tiers.
-			for (ElectricityMeterTier tier : ElectricityMeterTier.values()) {
-				ItemStack itemStackElectricityMeter = tier.getMachineType().getItemStack();
-				ItemBlockElectricityMeter itemBlockElectricityMeter = (ItemBlockElectricityMeter) itemStackElectricityMeter.getItem();
-				itemBlockElectricityMeter.setTier(itemStackElectricityMeter, tier);
+			for (Tier.ElectricityMeter tier : Tier.ElectricityMeter.values()) {
+				MachineType machineType = tier.getMachineType();
+				ItemStack itemStackMachine = machineType.getItemStack();
+				ItemBlockMachine itemBlockMachine = (ItemBlockMachine) itemStackMachine.getItem();
+				itemBlockMachine.setElectricityMeterTier(itemStackMachine, tier);
 
-				ItemStack cable = new ItemStack(ItemRetriever.getItem("PartTransmitter").getItem(), 8, tier.ordinal());
+				ItemStack itemStackCable = new ItemStack(ItemRetriever.getItem("PartTransmitter").getItem(), 8, tier.ordinal());
 
-				GameRegistry.addRecipe(itemStackElectricityMeter,
+				GameRegistry.addRecipe(itemStackMachine,
 						"III",
 						"CDC",
-						"III", 'I', Items.iron_ingot, 'U', cable, 'D', Items.clock);
+						"III", 'I', Items.iron_ingot, 'U', itemStackCable, 'D', Items.clock);
 			}
         } else {
             MachineType machineType = MachineType.BASIC_ELECTRICITY_METER;

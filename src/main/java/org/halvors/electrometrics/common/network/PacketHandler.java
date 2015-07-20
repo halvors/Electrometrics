@@ -12,9 +12,9 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import org.halvors.electrometrics.Reference;
+import org.halvors.electrometrics.common.Reference;
 import org.halvors.electrometrics.common.tile.TileEntity;
-import org.halvors.electrometrics.common.util.Utils;
+import org.halvors.electrometrics.common.util.PlayerUtils;
 import org.halvors.electrometrics.common.util.location.BlockLocation;
 import org.halvors.electrometrics.common.util.location.Range;
 
@@ -70,7 +70,7 @@ public class PacketHandler {
 	 */
     public static void sendToCuboid(IMessage message, AxisAlignedBB cuboid, int dimId) {
 		if (cuboid != null) {
-			for (EntityPlayerMP player : Utils.getPlayers()) {
+			for (EntityPlayerMP player : PlayerUtils.getPlayers()) {
 				if (player.dimension == dimId && cuboid.isVecInside(Vec3.createVectorHelper(player.posX, player.posY, player.posZ))) {
 					sendTo(message, player);
 				}
@@ -79,7 +79,7 @@ public class PacketHandler {
 	}
 
     public static void sendToReceivers(IMessage message, Range range) {
-        for (EntityPlayerMP player : Utils.getPlayers()) {
+        for (EntityPlayerMP player : PlayerUtils.getPlayers()) {
             if (player.dimension == range.getDimensionId() && Range.getChunkRange(player).intersects(range)) {
                 sendTo(message, player);
             }

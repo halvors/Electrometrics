@@ -1,5 +1,6 @@
 package org.halvors.electrometrics.common.tile;
 
+import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketTileEntity;
 
@@ -13,8 +14,8 @@ public class TileEntityElectricBlock extends TileEntityMachine {
     boolean isPowered;
     boolean wasPowered;
 
-	TileEntityElectricBlock(String name) {
-		super(name);
+	TileEntityElectricBlock(MachineType machineType) {
+		super(machineType);
 	}
 
     @Override

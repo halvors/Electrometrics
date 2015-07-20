@@ -1,4 +1,4 @@
-package org.halvors.electrometrics;
+package org.halvors.electrometrics.common;
 
 /**
  * This is a reference class used to store important static information about this mod.
