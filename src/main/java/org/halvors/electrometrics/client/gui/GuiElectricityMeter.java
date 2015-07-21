@@ -11,8 +11,9 @@ import org.halvors.electrometrics.common.component.IComponent;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketRequestData;
 import org.halvors.electrometrics.common.network.PacketTileEntity;
-import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityMeter;
+import org.halvors.electrometrics.common.tile.component.TileOwnableComponent;
 import org.halvors.electrometrics.common.tile.component.TileRedstoneControlComponent;
+import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.util.energy.EnergyUtils;
 
 import java.util.ArrayList;
@@ -31,15 +32,19 @@ public class GuiElectricityMeter extends GuiComponentContainerScreen {
 	public GuiElectricityMeter(final TileEntityElectricityMeter tileEntity) {
 		super(tileEntity);
 
-		components.add(new GuiOwnerInfo(new IInfoHandler() {
-			@Override
-			public List<String> getInfo() {
-				List<String> list = new ArrayList<>();
-				list.add(tileEntity.getOwnerName());
+        if (tileEntity.hasComponentType(TileOwnableComponent.class)) {
+            final TileOwnableComponent tileOwnableComponent = (TileOwnableComponent) tileEntity.getComponentType(TileOwnableComponent.class);
 
-				return list;
-			}
-		}, this, defaultResource));
+            components.add(new GuiOwnerInfo(new IInfoHandler() {
+                @Override
+                public List<String> getInfo() {
+                    List<String> list = new ArrayList<>();
+                    list.add(tileOwnableComponent.getOwnerName());
+
+                    return list;
+                }
+            }, this, defaultResource));
+        }
 
 		// TODO: Get currect energy usage here.
 		components.add(new GuiEnergyInfo(new IInfoHandler() {
@@ -55,13 +60,11 @@ public class GuiElectricityMeter extends GuiComponentContainerScreen {
 
 		components.add(new GuiEnergyUnitType<>(this, tileEntity, defaultResource));
 
-		for (IComponent component : tileEntity.getComponents()) {
-			if (component instanceof TileRedstoneControlComponent) {
-				TileRedstoneControlComponent tileRedstoneControlComponent = (TileRedstoneControlComponent) component;
+        if (tileEntity.hasComponentType(TileOwnableComponent.class)) {
+            final TileRedstoneControlComponent tileRedstoneControlComponent = (TileRedstoneControlComponent) tileEntity.getComponentType(TileOwnableComponent.class);
 
-				components.add(new GuiRedstoneControl<>(this, tileRedstoneControlComponent, defaultResource));
-			}
-		}
+            components.add(new GuiRedstoneControl<>(this, tileRedstoneControlComponent, defaultResource));
+        }
 	}
 
 	@SuppressWarnings("unchecked")
@@ -130,7 +133,7 @@ public class GuiElectricityMeter extends GuiComponentContainerScreen {
 			if (ticker == 0) {
 				ticker = 5;
 				// Request the latest data from the server-side TileEntity.
-				PacketHandler.sendToServer(new PacketRequestData.PacketRequestDataMessage<>(tileEntityElectricityMeter));
+				PacketHandler.sendToServer(new PacketRequestData(tileEntityElectricityMeter));
 			} else {
 				ticker--;
 			}

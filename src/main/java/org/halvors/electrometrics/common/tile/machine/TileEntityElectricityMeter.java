@@ -15,6 +15,7 @@ import org.halvors.electrometrics.common.base.tile.ITileOwnable;
 import org.halvors.electrometrics.common.base.tile.RedstoneControlType;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketRequestData;
+import org.halvors.electrometrics.common.tile.component.TileOwnableComponent;
 import org.halvors.electrometrics.common.tile.component.TileRedstoneControlComponent;
 import org.halvors.electrometrics.common.util.PlayerUtils;
 
@@ -28,22 +29,13 @@ import java.util.UUID;
  *
  * @author halvors
  */
-public class TileEntityElectricityMeter extends TileEntityElectricityProvider implements ITileNetworkable, ITileActivatable, ITileOwnable {
+public class TileEntityElectricityMeter extends TileEntityElectricityProvider implements ITileNetworkable, ITileActivatable {
     // Whether or not this TileEntity's block is in it's active state.
     private boolean isActive;
 
     // The client's current active state.
     @SideOnly(Side.CLIENT)
     private boolean clientIsActive;
-
-	// The UUID of the player owning this.
-	private UUID ownerUUID;
-
-	// The name of the player owning this.
-	private String ownerName;
-
-	// The current RedstoneControlType of this TileEntity.
-	private RedstoneControlType redstoneControlType = RedstoneControlType.DISABLED;
 
     // The tier of this TileEntity.
 	private Tier.ElectricityMeter tier = Tier.ElectricityMeter.BASIC;
@@ -60,6 +52,7 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 
 		this.tier = tier;
 
+        components.add(new TileOwnableComponent(this));
 		components.add(new TileRedstoneControlComponent(this));
 	}
 
@@ -67,7 +60,7 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
     public void validate() {
         super.validate();
 
-        PacketHandler.sendToServer(new PacketRequestData.PacketRequestDataMessage<>(this));
+        PacketHandler.sendToServer(new PacketRequestData(this));
     }
 
 	@Override
@@ -75,15 +68,6 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 		super.readFromNBT(nbtTagCompound);
 
         isActive = nbtTagCompound.getBoolean("isActive");
-
-		if (nbtTagCompound.hasKey("ownerUUIDM") && nbtTagCompound.hasKey("ownerUUIDL")) {
-			ownerUUID = new UUID(nbtTagCompound.getLong("ownerUUIDM"), nbtTagCompound.getLong("ownerUUIDL"));
-		}
-
-		if (nbtTagCompound.hasKey("ownerName")) {
-			ownerName = nbtTagCompound.getString("ownerName");
-		}
-
 		tier = Tier.ElectricityMeter.values()[nbtTagCompound.getInteger("tier")];
 		electricityCount = nbtTagCompound.getDouble("electricityCount");
 	}
@@ -93,16 +77,6 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 		super.writeToNBT(nbtTagCompound);
 
 		nbtTagCompound.setBoolean("isActive", isActive);
-
-		if (ownerUUID != null) {
-			nbtTagCompound.setLong("ownerUUIDM", ownerUUID.getMostSignificantBits());
-			nbtTagCompound.setLong("ownerUUIDL", ownerUUID.getLeastSignificantBits());
-		}
-
-		if (ownerName != null) {
-			nbtTagCompound.setString("ownerName", ownerName);
-		}
-
 		nbtTagCompound.setInteger("tier", tier.ordinal());
 		nbtTagCompound.setDouble("electricityCount", electricityCount);
 	}
@@ -112,19 +86,6 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 		super.handlePacketData(dataStream);
 
         isActive = dataStream.readBoolean();
-
-		long ownerUUIDMostSignificantBits = dataStream.readLong();
-		long ownerUUIDLeastSignificantBits = dataStream.readLong();
-
-		if (ownerUUIDMostSignificantBits != 0 && ownerUUIDLeastSignificantBits != 0) {
-			ownerUUID = new UUID(ownerUUIDMostSignificantBits, ownerUUIDLeastSignificantBits);
-		}
-
-		String ownerName = ByteBufUtils.readUTF8String(dataStream);
-
-		if (!ownerName.isEmpty()) {
-			this.ownerName = ownerName;
-		}
 
 		// Check if client is in sync with the server, if not update it.
 		if (worldObj.isRemote && clientIsActive != isActive) {
@@ -142,9 +103,6 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 		super.getPacketData(list);
 
 		list.add(isActive);
-		list.add(ownerUUID != null ? ownerUUID.getMostSignificantBits() : 0);
-		list.add(ownerUUID != null ? ownerUUID.getLeastSignificantBits() : 0);
-		list.add(ownerName != null ? ownerName : "");
 		list.add(tier.ordinal());
 		list.add(electricityCount);
 
@@ -177,32 +135,6 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
     public void setActive(boolean isActive) {
         this.isActive = isActive;
     }
-
-	@Override
-	public boolean hasOwner() {
-		return ownerUUID != null && ownerName != null;
-	}
-
-	@Override
-	public boolean isOwner(EntityPlayer player) {
-		return hasOwner() && ownerUUID.equals(player.getPersistentID());
-	}
-
-	@Override
-	public EntityPlayer getOwner() {
-		return PlayerUtils.getPlayerFromUUID(ownerUUID);
-	}
-
-	@Override
-	public String getOwnerName() {
-		return ownerName;
-	}
-
-	@Override
-	public void setOwner(EntityPlayer player) {
-		this.ownerUUID = player.getPersistentID();
-		this.ownerName = player.getDisplayName();
-	}
 
 	public Tier.ElectricityMeter getTier() {
 		return tier;
