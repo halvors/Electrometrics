@@ -6,12 +6,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import org.halvors.electrometrics.client.gui.component.*;
-import org.halvors.electrometrics.common.base.tile.IOwnable;
+import org.halvors.electrometrics.common.base.tile.ITileOwnable;
 import org.halvors.electrometrics.common.component.IComponent;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketRequestData;
 import org.halvors.electrometrics.common.network.PacketTileEntity;
-import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
+import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.tile.component.TileRedstoneControlComponent;
 import org.halvors.electrometrics.common.util.energy.EnergyUtils;
 
@@ -76,8 +76,8 @@ public class GuiElectricityMeter extends GuiComponentContainerScreen {
 		GuiButton resetButton = new GuiButton(0, guiWidth + 110, guiHeight + 60, 60, 20, "Reset");
 
 		// If this has a owner, restrict the reset button to that player.
-		if (tileEntity instanceof IOwnable) {
-			IOwnable ownable = (IOwnable) tileEntity;
+		if (tileEntity instanceof ITileOwnable) {
+			ITileOwnable ownable = (ITileOwnable) tileEntity;
 			EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 
 			resetButton.enabled = ownable.isOwner(player);

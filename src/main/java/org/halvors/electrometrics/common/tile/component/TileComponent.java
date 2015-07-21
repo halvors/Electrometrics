@@ -3,7 +3,7 @@ package org.halvors.electrometrics.common.tile.component;
 import org.halvors.electrometrics.common.tile.TileEntityComponentContainer;
 
 public class TileComponent {
-    final TileEntityComponentContainer tileEntity;
+    protected final TileEntityComponentContainer tileEntity;
 
     public TileComponent(TileEntityComponentContainer tileEntity) {
         this.tileEntity = tileEntity;

@@ -25,7 +25,7 @@ import org.halvors.electrometrics.common.base.Tier;
 import org.halvors.electrometrics.common.block.BlockMachine;
 import org.halvors.electrometrics.common.event.PlayerEventHandler;
 import org.halvors.electrometrics.common.item.ItemBlockMachine;
-import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
+import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.util.energy.Unit;
 
 import java.io.File;

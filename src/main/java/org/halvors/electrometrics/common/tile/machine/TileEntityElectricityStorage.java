@@ -1,10 +1,10 @@
-package org.halvors.electrometrics.common.tile;
+package org.halvors.electrometrics.common.tile.machine;
 
 import cofh.api.energy.EnergyStorage;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 import org.halvors.electrometrics.common.base.MachineType;
-import org.halvors.electrometrics.common.base.tile.INetworkable;
+import org.halvors.electrometrics.common.base.tile.ITileNetworkable;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketRequestData;
 
@@ -15,24 +15,24 @@ import java.util.List;
  *
  * @author halvors
  */
-public abstract class TileEntityElectricityStorage extends TileEntityMachine implements INetworkable {
+public abstract class TileEntityElectricityStorage extends TileEntityMachine implements ITileNetworkable {
 	// The internal energy storage.
-	final EnergyStorage storage;
+	protected final EnergyStorage storage;
 
-	TileEntityElectricityStorage(MachineType machineType, int maxEnergy) {
+	protected TileEntityElectricityStorage(MachineType machineType, int maxEnergy) {
 		super(machineType);
 
 		storage = new EnergyStorage(maxEnergy);
 	}
 
-    TileEntityElectricityStorage(MachineType machineType, int maxEnergy, int maxReceive, int maxExtract) {
+	protected TileEntityElectricityStorage(MachineType machineType, int maxEnergy, int maxReceive, int maxExtract) {
         this(machineType, maxEnergy);
 
         storage.setMaxReceive(maxReceive);
         storage.setMaxExtract(maxExtract);
     }
 
-	TileEntityElectricityStorage(MachineType machineType, int maxEnergy, int maxTransfer) {
+	protected TileEntityElectricityStorage(MachineType machineType, int maxEnergy, int maxTransfer) {
 		this(machineType, maxEnergy);
 
 		storage.setMaxTransfer(maxTransfer);

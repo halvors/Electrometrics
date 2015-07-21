@@ -1,4 +1,4 @@
-package org.halvors.electrometrics.common.tile;
+package org.halvors.electrometrics.common.tile.machine;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.relauncher.Side;
@@ -9,10 +9,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.base.Tier;
-import org.halvors.electrometrics.common.base.tile.IActiveState;
-import org.halvors.electrometrics.common.base.tile.INetworkable;
-import org.halvors.electrometrics.common.base.tile.IOwnable;
-import org.halvors.electrometrics.common.base.tile.RedstoneControlType;
+import org.halvors.electrometrics.common.base.tile.ITileActivatable;
+import org.halvors.electrometrics.common.base.tile.ITileNetworkable;
+import org.halvors.electrometrics.common.base.tile.ITileOwnable;
+import org.halvors.electrometrics.common.base.tile.RedstoneControllableType;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketRequestData;
 import org.halvors.electrometrics.common.tile.component.TileRedstoneControlComponent;
@@ -28,7 +28,7 @@ import java.util.UUID;
  *
  * @author halvors
  */
-public class TileEntityElectricityMeter extends TileEntityElectricityProvider implements INetworkable, IActiveState, IOwnable {
+public class TileEntityElectricityMeter extends TileEntityElectricityProvider implements ITileNetworkable, ITileActivatable, ITileOwnable {
     // Whether or not this TileEntity's block is in it's active state.
     private boolean isActive;
 
@@ -42,8 +42,8 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 	// The name of the player owning this.
 	private String ownerName;
 
-	// The current RedstoneControlType of this TileEntity.
-	private RedstoneControlType redstoneControlType = RedstoneControlType.DISABLED;
+	// The current RedstoneControllableType of this TileEntity.
+	private RedstoneControllableType redstoneControllableType = RedstoneControllableType.DISABLED;
 
     // The tier of this TileEntity.
 	private Tier.ElectricityMeter tier = Tier.ElectricityMeter.BASIC;

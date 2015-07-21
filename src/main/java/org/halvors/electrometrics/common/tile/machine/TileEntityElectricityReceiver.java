@@ -1,4 +1,4 @@
-package org.halvors.electrometrics.common.tile;
+package org.halvors.electrometrics.common.tile.machine;
 
 import cofh.api.energy.IEnergyReceiver;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -12,15 +12,15 @@ import java.util.EnumSet;
  * @author halvors
  */
 public abstract class TileEntityElectricityReceiver extends TileEntityElectricityStorage implements IEnergyReceiver {
-	TileEntityElectricityReceiver(MachineType machineType, int maxEnergy) {
+	protected TileEntityElectricityReceiver(MachineType machineType, int maxEnergy) {
 		super(machineType, maxEnergy);
 	}
 
-    TileEntityElectricityReceiver(MachineType machineType, int maxEnergy, int maxTransfer) {
+	protected TileEntityElectricityReceiver(MachineType machineType, int maxEnergy, int maxTransfer) {
 		super(machineType, maxEnergy, maxTransfer);
 	}
 
-    TileEntityElectricityReceiver(MachineType machineType, int maxEnergy, int maxReceive, int maxExtract) {
+	protected TileEntityElectricityReceiver(MachineType machineType, int maxEnergy, int maxReceive, int maxExtract) {
 		super(machineType, maxEnergy, maxReceive, maxExtract);
 	}
 
