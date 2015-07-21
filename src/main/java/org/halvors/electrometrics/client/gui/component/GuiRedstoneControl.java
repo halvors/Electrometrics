@@ -6,22 +6,21 @@ import net.minecraft.util.ResourceLocation;
 import org.halvors.electrometrics.client.gui.IGui;
 import org.halvors.electrometrics.client.render.Rectangle4i;
 import org.halvors.electrometrics.client.sound.SoundHandler;
-import org.halvors.electrometrics.common.base.tile.INetworkable;
 import org.halvors.electrometrics.common.base.tile.IRedstoneControl;
 import org.halvors.electrometrics.common.base.tile.RedstoneControlType;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketTileEntity;
-import org.halvors.electrometrics.common.tile.component.ITileComponent;
+import org.halvors.electrometrics.common.tile.component.ITileNetworkableComponent;
 import org.halvors.electrometrics.common.tile.component.TileRedstoneControlComponent;
 
 @SideOnly(Side.CLIENT)
-public class GuiRedstoneControl<T extends TileRedstoneControlComponent & IRedstoneControl> extends GuiComponent implements IGuiComponent {
-	private final TileRedstoneControlComponent tileRedstoneControlComponent;
+public class GuiRedstoneControl<T extends ITileNetworkableComponent & IRedstoneControl> extends GuiComponent implements IGuiComponent {
+	private final T tile;
 
-	public GuiRedstoneControl(IGui gui, TileRedstoneControlComponent tileRedstoneControlComponent, ResourceLocation defaultResource) {
+	public GuiRedstoneControl(IGui gui, T tile, ResourceLocation defaultResource) {
 		super("guiRedstoneControl.png", gui, defaultResource);
 
-		this.tileRedstoneControlComponent = tileRedstoneControlComponent;
+		this.tile = tile;
 	}
 
 	@Override
@@ -35,7 +34,7 @@ public class GuiRedstoneControl<T extends TileRedstoneControlComponent & IRedsto
 
 		gui.drawTexturedRect(guiWidth + 176, guiHeight + 138, 0, 0, 26, 26);
 
-		int renderX = 26 + (18 * tileRedstoneControlComponent.getControlType().ordinal());
+		int renderX = 26 + (18 * tile.getControlType().ordinal());
 
 		if (xAxis >= 179 && xAxis <= 197 && yAxis >= 142 && yAxis <= 160) {
 			gui.drawTexturedRect(guiWidth + 179, guiHeight + 142, renderX, 0, 18, 18);
@@ -51,7 +50,7 @@ public class GuiRedstoneControl<T extends TileRedstoneControlComponent & IRedsto
 		game.renderEngine.bindTexture(resource);
 
 		if (xAxis >= 179 && xAxis <= 197 && yAxis >= 142 && yAxis <= 160) {
-			displayTooltip(tileRedstoneControlComponent.getControlType().getDisplay(), xAxis, yAxis);
+			displayTooltip(tile.getControlType().getDisplay(), xAxis, yAxis);
 		}
 
         super.renderForeground(xAxis, yAxis);
@@ -67,20 +66,20 @@ public class GuiRedstoneControl<T extends TileRedstoneControlComponent & IRedsto
 		switch (button) {
 			case 0:
 				if (xAxis >= 179 && xAxis <= 197 && yAxis >= 142 && yAxis <= 160) {
-					RedstoneControlType current = tileRedstoneControlComponent.getControlType();
+					RedstoneControlType current = tile.getControlType();
 					int ordinalToSet = current.ordinal() < (RedstoneControlType.values().length - 1) ? current.ordinal() + 1 : 0;
 
-					if (ordinalToSet == RedstoneControlType.PULSE.ordinal() && !tileRedstoneControlComponent.canPulse()) {
+					if (ordinalToSet == RedstoneControlType.PULSE.ordinal() && !tile.canPulse()) {
 						ordinalToSet = 0;
 					}
 
 					SoundHandler.playSound("gui.button.press");
 
 					// Set the redstone control type.
-					tileRedstoneControlComponent.setControlType(RedstoneControlType.values()[ordinalToSet]);
+					tile.setControlType(RedstoneControlType.values()[ordinalToSet]);
 
 					// Send a update packet to the server.
-					PacketHandler.sendToServer(new PacketTileEntity(tileRedstoneControlComponent));
+					PacketHandler.sendToServer(new PacketTileEntity(tile));
 				}
 				break;
 		}
