@@ -26,7 +26,7 @@ public class TileEntityRotatable extends TileEntityComponentContainer implements
         super.validate();
 
         if (worldObj.isRemote) {
-            PacketHandler.sendToServer(new PacketRequestData.PacketRequestDataMessage(this));
+            PacketHandler.sendToServer(new PacketRequestData(this));
         }
     }
 

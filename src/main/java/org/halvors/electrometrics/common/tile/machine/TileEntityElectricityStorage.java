@@ -42,7 +42,7 @@ public abstract class TileEntityElectricityStorage extends TileEntityMachine imp
     public void validate() {
         super.validate();
 
-        PacketHandler.sendToServer(new PacketRequestData.PacketRequestDataMessage<>(this));
+        PacketHandler.sendToServer(new PacketRequestData(this));
     }
 
 	@Override
