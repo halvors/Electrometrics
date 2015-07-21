@@ -1,11 +1,11 @@
 package org.halvors.electrometrics.common.tile;
 
 import io.netty.buffer.ByteBuf;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.nbt.NBTTagCompound;
 import org.halvors.electrometrics.common.base.tile.ITileNetworkable;
 import org.halvors.electrometrics.common.component.IComponent;
 import org.halvors.electrometrics.common.tile.component.ITileComponent;
-import org.halvors.electrometrics.common.tile.component.ITileNetworkableComponent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,13 +72,11 @@ public class TileEntityComponentContainer extends TileEntity implements ITileNet
 
 	@Override
 	public void handlePacketData(ByteBuf dataStream) throws Exception {
-		ByteBuf tileComponentDataStream = dataStream;
-
 		for (IComponent component : components) {
-			if (component instanceof ITileNetworkableComponent) {
-				ITileNetworkableComponent tileComponent = (ITileNetworkableComponent) component;
+			if (component instanceof ITileComponent && component instanceof ITileNetworkable) {
+				ITileNetworkable tileComponent = (ITileNetworkable) component;
 
-				tileComponentDataStream = tileComponent.handlePacketData(tileComponentDataStream);
+				tileComponent.handlePacketData(dataStream);
 			}
 		}
 	}
@@ -86,8 +84,8 @@ public class TileEntityComponentContainer extends TileEntity implements ITileNet
 	@Override
 	public List<Object> getPacketData(List<Object> list) {
 		for (IComponent component : components) {
-			if (component instanceof ITileNetworkableComponent) {
-				ITileNetworkableComponent tileComponent = (ITileNetworkableComponent) component;
+			if (component instanceof ITileComponent && component instanceof ITileNetworkable) {
+				ITileNetworkable tileComponent = (ITileNetworkable) component;
 
 				list.addAll(tileComponent.getPacketData(new ArrayList<>()));
 			}
@@ -95,4 +93,32 @@ public class TileEntityComponentContainer extends TileEntity implements ITileNet
 
 		return list;
 	}
+
+    public boolean hasComponentType(Class<? extends ITileComponent> componentClass) {
+        for (IComponent component : components) {
+            if (component instanceof ITileComponent) {
+                ITileComponent tileComponent = (ITileComponent) component;
+
+                if (tileComponent.getClass().isInstance(componentClass)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public ITileComponent getComponentType(Class<? extends ITileComponent> componentClass) {
+        for (IComponent component : components) {
+            if (component instanceof ITileComponent) {
+                ITileComponent tileComponent = (ITileComponent) component;
+
+                if (tileComponent.getClass().isInstance(componentClass)) {
+                    return tileComponent;
+                }
+            }
+        }
+
+        return null;
+    }
 }
