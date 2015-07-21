@@ -4,7 +4,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 import org.halvors.electrometrics.common.base.tile.IRedstoneControl;
 import org.halvors.electrometrics.common.base.tile.RedstoneControlType;
-import org.halvors.electrometrics.common.tile.TileEntityComponentContainer;
+import org.halvors.electrometrics.common.tile.TileEntity;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public class TileRedstoneControlComponent extends TileComponent implements ITile
     boolean isPowered;
     boolean wasPowered;
 
-    public TileRedstoneControlComponent(TileEntityComponentContainer tileEntity) {
+    public TileRedstoneControlComponent(TileEntity tileEntity) {
         super(tileEntity);
     }
 
