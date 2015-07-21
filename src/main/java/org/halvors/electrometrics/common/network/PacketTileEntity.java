@@ -10,6 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.common.base.tile.ITileNetworkable;
 import org.halvors.electrometrics.common.tile.TileEntity;
+import org.halvors.electrometrics.common.tile.component.ITileComponent;
 import org.halvors.electrometrics.common.tile.component.ITileNetworkableComponent;
 import org.halvors.electrometrics.common.util.location.BlockLocation;
 
@@ -22,7 +23,7 @@ import java.util.List;
  * @author halvors
  */
 public class PacketTileEntity extends PacketBlockLocation implements IMessage, IMessageHandler<PacketTileEntity, IMessage> {
-	private List<Object> objectList;
+	private List<Object> objects;
 	private ByteBuf storedBuffer = null;
 
 	public PacketTileEntity() {
@@ -32,15 +33,15 @@ public class PacketTileEntity extends PacketBlockLocation implements IMessage, I
 	public PacketTileEntity(BlockLocation blockLocation, List<Object> dataList) {
 		super(blockLocation);
 
-		this.objectList = dataList;
+		this.objects = dataList;
 	}
 
-	public PacketTileEntity(ITileNetworkable networkable) {
-		this(new BlockLocation((TileEntity) networkable), networkable.getPacketData(new ArrayList<>()));
+	public <T extends TileEntity & ITileNetworkable> PacketTileEntity(T tileEntity) {
+		this(new BlockLocation(tileEntity), tileEntity.getPacketData(new ArrayList<>()));
 	}
 
-	public PacketTileEntity(ITileNetworkableComponent tileNetworkableComponent) {
-		super(new BlockLocation(tileNetworkableComponent.getTileEntity()));
+	public PacketTileEntity(ITileComponent tileComponent) {
+		super(new BlockLocation(tileComponent.getTileEntity()));
 	}
 
 	@Override
@@ -55,28 +56,30 @@ public class PacketTileEntity extends PacketBlockLocation implements IMessage, I
 		super.toBytes(dataStream);
 
 		try {
-			for (Object object : objectList) {
+			for (Object object : objects) {
 				// Language types.
 				if (object instanceof Boolean) {
 					dataStream.writeBoolean((Boolean) object);
 				} else if (object instanceof Byte) {
 					dataStream.writeByte((Byte) object);
-				} else if (object instanceof byte[]) {
-					dataStream.writeBytes((byte[]) object);
 				} else if (object instanceof Double) {
 					dataStream.writeDouble((Double) object);
 				} else if (object instanceof Float) {
 					dataStream.writeFloat((Float) object);
 				} else if (object instanceof Integer) {
 					dataStream.writeInt((Integer) object);
-				} else if (object instanceof int[]) {
-					for (int i : (int[]) object) {
-						dataStream.writeInt(i);
-					}
 				} else if (object instanceof Long) {
 					dataStream.writeLong((Long) object);
 				} else if (object instanceof String) {
 					ByteBufUtils.writeUTF8String(dataStream, (String) object);
+
+				} else if (object instanceof byte[]) {
+					dataStream.writeBytes((byte[]) object);
+				} else if (object instanceof int[]) {
+					for (int i : (int[]) object) {
+						dataStream.writeInt(i);
+					}
+
 				} else if (object instanceof ItemStack) { // Minecraft specific types.
 					ByteBufUtils.writeItemStack(dataStream, (ItemStack) object);
 				} else if (object instanceof NBTTagCompound) {

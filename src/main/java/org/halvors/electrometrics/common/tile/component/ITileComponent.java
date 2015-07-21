@@ -6,7 +6,7 @@ import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.tile.TileEntityComponentContainer;
 
 public interface ITileComponent extends IComponent {
-    TileEntity getTileEntity();
+    TileEntityComponentContainer getTileEntity();
 
     void onUpdate();
 

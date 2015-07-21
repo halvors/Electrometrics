@@ -67,7 +67,7 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
     public void validate() {
         super.validate();
 
-        PacketHandler.sendToServer(new PacketRequestData(this));
+        PacketHandler.sendToServer(new PacketRequestData.PacketRequestDataMessage<>(this));
     }
 
 	@Override

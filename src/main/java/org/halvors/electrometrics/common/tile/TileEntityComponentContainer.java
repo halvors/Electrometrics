@@ -72,11 +72,13 @@ public class TileEntityComponentContainer extends TileEntity implements ITileNet
 
 	@Override
 	public void handlePacketData(ByteBuf dataStream) throws Exception {
+		ByteBuf tileComponentDataStream = dataStream;
+
 		for (IComponent component : components) {
 			if (component instanceof ITileNetworkableComponent) {
 				ITileNetworkableComponent tileComponent = (ITileNetworkableComponent) component;
 
-				tileComponent.handlePacketData(dataStream);
+				tileComponentDataStream = tileComponent.handlePacketData(tileComponentDataStream);
 			}
 		}
 	}

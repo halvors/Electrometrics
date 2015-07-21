@@ -130,7 +130,7 @@ public class GuiElectricityMeter extends GuiComponentContainerScreen {
 			if (ticker == 0) {
 				ticker = 5;
 				// Request the latest data from the server-side TileEntity.
-				PacketHandler.sendToServer(new PacketRequestData(tileEntityElectricityMeter));
+				PacketHandler.sendToServer(new PacketRequestData.PacketRequestDataMessage<>(tileEntityElectricityMeter));
 			} else {
 				ticker--;
 			}
