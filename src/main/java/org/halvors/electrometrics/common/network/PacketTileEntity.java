@@ -8,7 +8,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import org.halvors.electrometrics.Electrometrics;
-import org.halvors.electrometrics.common.base.tile.INetworkable;
+import org.halvors.electrometrics.common.base.tile.ITileNetworkable;
 import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.tile.component.ITileNetworkableComponent;
 import org.halvors.electrometrics.common.util.location.BlockLocation;
@@ -35,7 +35,7 @@ public class PacketTileEntity extends PacketBlockLocation implements IMessage, I
 		this.objectList = dataList;
 	}
 
-	public PacketTileEntity(INetworkable networkable) {
+	public PacketTileEntity(ITileNetworkable networkable) {
 		this(new BlockLocation((TileEntity) networkable), networkable.getPacketData(new ArrayList<>()));
 	}
 
@@ -93,8 +93,8 @@ public class PacketTileEntity extends PacketBlockLocation implements IMessage, I
 	public IMessage onMessage(PacketTileEntity message, MessageContext context) {
 		TileEntity tileEntity = message.getBlockLocation().getTileEntity(PacketHandler.getWorld(context));
 
-		if (tileEntity != null && tileEntity instanceof INetworkable) {
-			INetworkable networkable = (INetworkable) tileEntity;
+		if (tileEntity != null && tileEntity instanceof ITileNetworkable) {
+			ITileNetworkable networkable = (ITileNetworkable) tileEntity;
 
 			try {
 				networkable.handlePacketData(message.storedBuffer);

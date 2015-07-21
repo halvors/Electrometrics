@@ -6,15 +6,14 @@ import net.minecraft.util.ResourceLocation;
 import org.halvors.electrometrics.client.gui.IGui;
 import org.halvors.electrometrics.client.render.Rectangle4i;
 import org.halvors.electrometrics.client.sound.SoundHandler;
-import org.halvors.electrometrics.common.base.tile.IRedstoneControl;
-import org.halvors.electrometrics.common.base.tile.RedstoneControlType;
+import org.halvors.electrometrics.common.base.tile.RedstoneControllableType;
+import org.halvors.electrometrics.common.base.tile.ITileRedstoneControllable;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketTileEntity;
 import org.halvors.electrometrics.common.tile.component.ITileNetworkableComponent;
-import org.halvors.electrometrics.common.tile.component.TileRedstoneControlComponent;
 
 @SideOnly(Side.CLIENT)
-public class GuiRedstoneControl<T extends ITileNetworkableComponent & IRedstoneControl> extends GuiComponent implements IGuiComponent {
+public class GuiRedstoneControl<T extends ITileNetworkableComponent & ITileRedstoneControllable> extends GuiComponent implements IGuiComponent {
 	private final T tile;
 
 	public GuiRedstoneControl(IGui gui, T tile, ResourceLocation defaultResource) {
@@ -66,17 +65,17 @@ public class GuiRedstoneControl<T extends ITileNetworkableComponent & IRedstoneC
 		switch (button) {
 			case 0:
 				if (xAxis >= 179 && xAxis <= 197 && yAxis >= 142 && yAxis <= 160) {
-					RedstoneControlType current = tile.getControlType();
-					int ordinalToSet = current.ordinal() < (RedstoneControlType.values().length - 1) ? current.ordinal() + 1 : 0;
+					RedstoneControllableType current = tile.getControlType();
+					int ordinalToSet = current.ordinal() < (RedstoneControllableType.values().length - 1) ? current.ordinal() + 1 : 0;
 
-					if (ordinalToSet == RedstoneControlType.PULSE.ordinal() && !tile.canPulse()) {
+					if (ordinalToSet == RedstoneControllableType.PULSE.ordinal() && !tile.canPulse()) {
 						ordinalToSet = 0;
 					}
 
 					SoundHandler.playSound("gui.button.press");
 
 					// Set the redstone control type.
-					tile.setControlType(RedstoneControlType.values()[ordinalToSet]);
+					tile.setControlType(RedstoneControllableType.values()[ordinalToSet]);
 
 					// Send a update packet to the server.
 					PacketHandler.sendToServer(new PacketTileEntity(tile));

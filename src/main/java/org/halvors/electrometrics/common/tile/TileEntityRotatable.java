@@ -2,22 +2,22 @@ package org.halvors.electrometrics.common.tile;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
-import org.halvors.electrometrics.common.base.tile.INetworkable;
-import org.halvors.electrometrics.common.base.tile.IRotatable;
+import org.halvors.electrometrics.common.base.tile.ITileNetworkable;
+import org.halvors.electrometrics.common.base.tile.ITileRotatable;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketRequestData;
 import org.halvors.electrometrics.common.network.PacketTileEntity;
 
 import java.util.List;
 
-public class TileEntityRotatable extends TileEntityComponentContainer implements INetworkable, IRotatable {
+public class TileEntityRotatable extends TileEntityComponentContainer implements ITileNetworkable, ITileRotatable {
     // The direction this TileEntity's block is facing.
-    int facing;
+    protected int facing;
 
     // The direction this TileEntity's block is facing, client side.
     private int clientFacing;
 
-    TileEntityRotatable(String inventoryName) {
+    protected TileEntityRotatable(String inventoryName) {
         super(inventoryName);
     }
 

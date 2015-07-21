@@ -2,7 +2,7 @@ package org.halvors.electrometrics.common.tile;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
-import org.halvors.electrometrics.common.base.tile.INetworkable;
+import org.halvors.electrometrics.common.base.tile.ITileNetworkable;
 import org.halvors.electrometrics.common.component.IComponent;
 import org.halvors.electrometrics.common.tile.component.ITileComponent;
 import org.halvors.electrometrics.common.tile.component.ITileNetworkableComponent;
@@ -10,8 +10,8 @@ import org.halvors.electrometrics.common.tile.component.ITileNetworkableComponen
 import java.util.ArrayList;
 import java.util.List;
 
-public class TileEntityComponentContainer extends TileEntity implements INetworkable {
-	final List<IComponent> components = new ArrayList<>();
+public class TileEntityComponentContainer extends TileEntity implements ITileNetworkable {
+	protected final List<IComponent> components = new ArrayList<>();
 
 	TileEntityComponentContainer(String inventoryName) {
 		super(inventoryName);

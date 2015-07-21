@@ -7,14 +7,14 @@ import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.client.gui.IGui;
 import org.halvors.electrometrics.client.render.Rectangle4i;
 import org.halvors.electrometrics.client.sound.SoundHandler;
-import org.halvors.electrometrics.common.base.tile.INetworkable;
+import org.halvors.electrometrics.common.base.tile.ITileNetworkable;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketTileEntity;
 import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.util.energy.Unit;
 
 @SideOnly(Side.CLIENT)
-public class GuiEnergyUnitType<T extends TileEntity & INetworkable> extends GuiComponent implements IGuiComponent {
+public class GuiEnergyUnitType<T extends TileEntity & ITileNetworkable> extends GuiComponent implements IGuiComponent {
 	private final T tileEntity;
 
 	public GuiEnergyUnitType(IGui gui, T tileEntity, ResourceLocation defaultResource) {

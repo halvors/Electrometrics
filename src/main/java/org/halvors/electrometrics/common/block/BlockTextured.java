@@ -8,8 +8,8 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import org.halvors.electrometrics.client.render.DefaultIcon;
 import org.halvors.electrometrics.common.Reference;
-import org.halvors.electrometrics.common.base.tile.IActiveState;
-import org.halvors.electrometrics.common.base.tile.IRotatable;
+import org.halvors.electrometrics.common.base.tile.ITileActivatable;
+import org.halvors.electrometrics.common.base.tile.ITileRotatable;
 import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.util.render.Orientation;
 
@@ -38,16 +38,16 @@ class BlockTextured extends BlockContainer {
 		int metadata = world.getBlockMetadata(x, y, z);
 		boolean isActive = false;
 
-		// Check if this implements IActiveState, if it do we get the state from it.
-		if (tileEntity instanceof IActiveState) {
-			IActiveState activeState = (IActiveState) tileEntity;
+		// Check if this implements ITileActivatable, if it do we get the state from it.
+		if (tileEntity instanceof ITileActivatable) {
+			ITileActivatable activeState = (ITileActivatable) tileEntity;
 
 			isActive = activeState.isActive();
 		}
 
-		// Check if this implements IRotatable.
-		if (tileEntity instanceof IRotatable) {
-			IRotatable rotatable = (IRotatable) tileEntity;
+		// Check if this implements ITileRotatable.
+		if (tileEntity instanceof ITileRotatable) {
+			ITileRotatable rotatable = (ITileRotatable) tileEntity;
 
 			return iconList[metadata][Orientation.getBaseOrientation(side, rotatable.getFacing()) + (isActive ? 6 : 0)];
 		}

@@ -11,10 +11,10 @@ import net.minecraft.world.World;
 import org.halvors.electrometrics.client.key.Key;
 import org.halvors.electrometrics.client.key.KeyHandler;
 import org.halvors.electrometrics.common.base.MachineType;
+import org.halvors.electrometrics.common.base.tile.RedstoneControllableType;
 import org.halvors.electrometrics.common.base.Tier;
-import org.halvors.electrometrics.common.base.tile.RedstoneControlType;
 import org.halvors.electrometrics.common.tile.TileEntity;
-import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
+import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.util.LanguageUtils;
 import org.halvors.electrometrics.common.util.energy.EnergyUtils;
 import org.halvors.electrometrics.common.util.render.Color;
@@ -91,20 +91,20 @@ public class ItemBlockMachine extends ItemBlock {
         return placed;
     }
 
-    private RedstoneControlType getRedstoneControlType(ItemStack itemStack) {
+    private RedstoneControllableType getRedstoneControlType(ItemStack itemStack) {
         if (itemStack.stackTagCompound != null) {
-            return RedstoneControlType.values()[itemStack.stackTagCompound.getInteger("redstoneControlType")];
+            return RedstoneControllableType.values()[itemStack.stackTagCompound.getInteger("redstoneControlType")];
         }
 
-        return RedstoneControlType.DISABLED;
+        return RedstoneControllableType.DISABLED;
     }
 
-    public void setRedstoneControlType(ItemStack itemStack, RedstoneControlType redstoneControlType) {
+    public void setRedstoneControlType(ItemStack itemStack, RedstoneControllableType redstoneControllableType) {
         if (itemStack.stackTagCompound == null) {
             itemStack.setTagCompound(new NBTTagCompound());
         }
 
-        itemStack.stackTagCompound.setInteger("redstoneControlType", redstoneControlType.ordinal());
+        itemStack.stackTagCompound.setInteger("redstoneControllableType", redstoneControllableType.ordinal());
     }
 
     private Tier.ElectricityMeter getElectricityMeterTier(ItemStack itemStack) {

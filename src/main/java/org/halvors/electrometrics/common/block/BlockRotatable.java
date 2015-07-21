@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import org.halvors.electrometrics.common.base.tile.IRotatable;
+import org.halvors.electrometrics.common.base.tile.ITileRotatable;
 import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.util.MachineUtils;
 
@@ -21,9 +21,9 @@ class BlockRotatable extends BlockTextured {
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemStack) {
         TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
 
-        // If this TileEntity implements IRotatable, we do our rotations.
-        if (tileEntity instanceof IRotatable) {
-            IRotatable rotatable = (IRotatable) tileEntity;
+        // If this TileEntity implements ITileRotatable, we do our rotations.
+        if (tileEntity instanceof ITileRotatable) {
+            ITileRotatable rotatable = (ITileRotatable) tileEntity;
 
             int side = MathHelper.floor_double((entity.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
             int height = Math.round(entity.rotationPitch);
@@ -69,8 +69,8 @@ class BlockRotatable extends BlockTextured {
 
                 return true;
             } else {
-                if (tileEntity instanceof IRotatable) {
-                    IRotatable rotatable = (IRotatable) tileEntity;
+                if (tileEntity instanceof ITileRotatable) {
+                    ITileRotatable rotatable = (ITileRotatable) tileEntity;
                     int change = ForgeDirection.ROTATION_MATRIX[ForgeDirection.UP.ordinal()][rotatable.getFacing()];
 
                     rotatable.setFacing(change);
@@ -88,9 +88,9 @@ class BlockRotatable extends BlockTextured {
         TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
         ForgeDirection[] valid = new ForgeDirection[6];
 
-        // If this TileEntity implements IRotatable, we do our rotations.
-        if (tileEntity instanceof IRotatable) {
-            IRotatable rotatable = (IRotatable) tileEntity;
+        // If this TileEntity implements ITileRotatable, we do our rotations.
+        if (tileEntity instanceof ITileRotatable) {
+            ITileRotatable rotatable = (ITileRotatable) tileEntity;
 
             for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
                 if (rotatable.canSetFacing(direction.ordinal())) {
@@ -106,9 +106,9 @@ class BlockRotatable extends BlockTextured {
     public boolean rotateBlock(World world, int x, int y, int z, ForgeDirection axis) {
         TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
 
-        // If this TileEntity implements IRotatable, we do our rotations.
-        if (tileEntity instanceof IRotatable) {
-            IRotatable rotatable = (IRotatable) tileEntity;
+        // If this TileEntity implements ITileRotatable, we do our rotations.
+        if (tileEntity instanceof ITileRotatable) {
+            ITileRotatable rotatable = (ITileRotatable) tileEntity;
 
             if (rotatable.canSetFacing(axis.ordinal())) {
                 rotatable.setFacing(axis.ordinal());

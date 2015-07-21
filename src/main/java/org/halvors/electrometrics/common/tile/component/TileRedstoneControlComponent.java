@@ -2,18 +2,17 @@ package org.halvors.electrometrics.common.tile.component;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
-import org.halvors.electrometrics.common.base.tile.IRedstoneControl;
-import org.halvors.electrometrics.common.base.tile.RedstoneControlType;
+import org.halvors.electrometrics.common.base.tile.RedstoneControllableType;
+import org.halvors.electrometrics.common.base.tile.ITileRedstoneControllable;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketTileEntity;
-import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.tile.TileEntityComponentContainer;
 
 import java.util.List;
 
-public class TileRedstoneControlComponent extends TileComponent implements ITileNetworkableComponent, IRedstoneControl {
-    // The current RedstoneControlType of this TileEntity.
-    private RedstoneControlType redstoneControlType = RedstoneControlType.DISABLED;
+public class TileRedstoneControlComponent extends TileComponent implements ITileNetworkableComponent, ITileRedstoneControllable {
+    // The current RedstoneControllableType of this TileEntity.
+    private RedstoneControllableType redstoneControllableType = RedstoneControllableType.DISABLED;
 
     // The current and past redstone state.
     boolean isPowered;
@@ -44,36 +43,36 @@ public class TileRedstoneControlComponent extends TileComponent implements ITile
 
     @Override
     public void readFromNBT(NBTTagCompound nbtTagCompound) {
-        redstoneControlType = RedstoneControlType.values()[nbtTagCompound.getInteger("redstoneControlType")];
+        redstoneControllableType = RedstoneControllableType.values()[nbtTagCompound.getInteger("redstoneControllableType")];
     }
 
     @Override
     public void writeToNBT(NBTTagCompound nbtTagCompound) {
-        nbtTagCompound.setInteger("redstoneControlType", redstoneControlType.ordinal());
+        nbtTagCompound.setInteger("redstoneControllableType", redstoneControllableType.ordinal());
     }
 
     @Override
     public void handlePacketData(ByteBuf dataStream) {
-        redstoneControlType = RedstoneControlType.values()[dataStream.readInt()];
+        redstoneControllableType = RedstoneControllableType.values()[dataStream.readInt()];
 
-        System.out.println("RedstoneControlType is: " + redstoneControlType);
+        System.out.println("RedstoneControllableType is: " + redstoneControllableType);
     }
 
     @Override
     public List<Object> getPacketData(List<Object> list) {
-        list.add(redstoneControlType.ordinal());
+        list.add(redstoneControllableType.ordinal());
 
         return list;
     }
 
     @Override
-    public RedstoneControlType getControlType() {
-        return redstoneControlType;
+    public RedstoneControllableType getControlType() {
+        return redstoneControllableType;
     }
 
     @Override
-    public void setControlType(RedstoneControlType redstoneControlType) {
-        this.redstoneControlType = redstoneControlType;
+    public void setControlType(RedstoneControllableType redstoneControllableType) {
+        this.redstoneControllableType = redstoneControllableType;
     }
 
     @Override

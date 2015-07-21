@@ -5,7 +5,7 @@ package org.halvors.electrometrics.common.base.tile;
  *
  * @author halvors
  */
-public interface IRotatable {
+public interface ITileRotatable {
 	/**
 	 * Whether or not this block's orientation can be changed to a specific direction.
 	 */

@@ -6,7 +6,7 @@ import mekanism.api.IMekWrench;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import org.halvors.electrometrics.common.base.tile.IRedstoneControl;
+import org.halvors.electrometrics.common.base.tile.ITileRedstoneControllable;
 import org.halvors.electrometrics.common.tile.TileEntity;
 
 public class MachineUtils {
@@ -51,13 +51,13 @@ public class MachineUtils {
 
     /**
      * Whether or not a certain TileEntity can function with redstone logic. Illogical to use unless the defined TileEntity implements
-     * IRedstoneControl.
+     * ITileRedstoneControllable.
      * @param tileEntity - TileEntity to check
      * @return if the TileEntity can function with redstone logic
      */
     public static boolean canFunction(TileEntity tileEntity) {
-        if (tileEntity instanceof IRedstoneControl) {
-            IRedstoneControl redstoneControl = (IRedstoneControl) tileEntity;
+        if (tileEntity instanceof ITileRedstoneControllable) {
+            ITileRedstoneControllable redstoneControl = (ITileRedstoneControllable) tileEntity;
 
             switch (redstoneControl.getControlType()) {
                 case DISABLED:
