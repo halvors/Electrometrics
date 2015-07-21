@@ -1,17 +1,17 @@
 package org.halvors.electrometrics.common.base.tile;
 
-public interface ITileRedstoneControllable {
+public interface ITileRedstoneControl {
 	/**
 	 * Gets the RedstoneControl type from this block.
 	 * @return this block's RedstoneControl type
 	 */
-	RedstoneControllableType getControlType();
+	RedstoneControlType getControlType();
 
 	/**
 	 * Sets this block's RedstoneControl type to a new value.
-	 * @param redstoneControllableType - RedstoneControl type to set
+	 * @param redstoneControlType - RedstoneControl type to set
 	 */
-	void setControlType(RedstoneControllableType redstoneControllableType);
+	void setControlType(RedstoneControlType redstoneControlType);
 
 	/**
 	 * If the block is getting powered or not by redstone (indirectly).

@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 import org.halvors.electrometrics.client.key.Key;
 import org.halvors.electrometrics.client.key.KeyHandler;
 import org.halvors.electrometrics.common.base.MachineType;
-import org.halvors.electrometrics.common.base.tile.RedstoneControllableType;
+import org.halvors.electrometrics.common.base.tile.RedstoneControlType;
 import org.halvors.electrometrics.common.base.Tier;
 import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityMeter;
@@ -91,20 +91,20 @@ public class ItemBlockMachine extends ItemBlock {
         return placed;
     }
 
-    private RedstoneControllableType getRedstoneControlType(ItemStack itemStack) {
+    private RedstoneControlType getRedstoneControlType(ItemStack itemStack) {
         if (itemStack.stackTagCompound != null) {
-            return RedstoneControllableType.values()[itemStack.stackTagCompound.getInteger("redstoneControlType")];
+            return RedstoneControlType.values()[itemStack.stackTagCompound.getInteger("redstoneControlType")];
         }
 
-        return RedstoneControllableType.DISABLED;
+        return RedstoneControlType.DISABLED;
     }
 
-    public void setRedstoneControlType(ItemStack itemStack, RedstoneControllableType redstoneControllableType) {
+    public void setRedstoneControlType(ItemStack itemStack, RedstoneControlType redstoneControlType) {
         if (itemStack.stackTagCompound == null) {
             itemStack.setTagCompound(new NBTTagCompound());
         }
 
-        itemStack.stackTagCompound.setInteger("redstoneControllableType", redstoneControllableType.ordinal());
+        itemStack.stackTagCompound.setInteger("redstoneControlType", redstoneControlType.ordinal());
     }
 
     private Tier.ElectricityMeter getElectricityMeterTier(ItemStack itemStack) {

@@ -23,7 +23,7 @@ import org.halvors.electrometrics.common.Reference;
 import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.base.Tier;
 import org.halvors.electrometrics.common.base.tile.ITileOwnable;
-import org.halvors.electrometrics.common.base.tile.ITileRedstoneControllable;
+import org.halvors.electrometrics.common.base.tile.ITileRedstoneControl;
 import org.halvors.electrometrics.common.item.ItemBlockMachine;
 import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.tile.TileEntityComponentContainer;
@@ -145,9 +145,9 @@ public class BlockMachine extends BlockRotatable {
 
 		TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
 
-		// If this TileEntity implements ITileRedstoneControllable, check if it's getting powered.
-		if (tileEntity instanceof ITileRedstoneControllable) {
-			ITileRedstoneControllable redstoneControl = (ITileRedstoneControllable) tileEntity;
+		// If this TileEntity implements ITileRedstoneControl, check if it's getting powered.
+		if (tileEntity instanceof ITileRedstoneControl) {
+			ITileRedstoneControl redstoneControl = (ITileRedstoneControl) tileEntity;
 			redstoneControl.setPowered(world.isBlockIndirectlyGettingPowered(x, y, z));
 		}
 
@@ -191,8 +191,8 @@ public class BlockMachine extends BlockRotatable {
 		ItemStack itemStack = new ItemStack(this, 1, metadata);
 		ItemBlockMachine itemBlockMachine = (ItemBlockMachine) itemStack.getItem();
 
-		if (tileEntity instanceof ITileRedstoneControllable) {
-			ITileRedstoneControllable redstoneControl = (ITileRedstoneControllable) tileEntity;
+		if (tileEntity instanceof ITileRedstoneControl) {
+			ITileRedstoneControl redstoneControl = (ITileRedstoneControl) tileEntity;
 
 			itemBlockMachine.setRedstoneControlType(itemStack, redstoneControl.getControlType());
 		}

@@ -12,7 +12,7 @@ import org.halvors.electrometrics.common.base.Tier;
 import org.halvors.electrometrics.common.base.tile.ITileActivatable;
 import org.halvors.electrometrics.common.base.tile.ITileNetworkable;
 import org.halvors.electrometrics.common.base.tile.ITileOwnable;
-import org.halvors.electrometrics.common.base.tile.RedstoneControllableType;
+import org.halvors.electrometrics.common.base.tile.RedstoneControlType;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketRequestData;
 import org.halvors.electrometrics.common.tile.component.TileRedstoneControlComponent;
@@ -42,8 +42,8 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 	// The name of the player owning this.
 	private String ownerName;
 
-	// The current RedstoneControllableType of this TileEntity.
-	private RedstoneControllableType redstoneControllableType = RedstoneControllableType.DISABLED;
+	// The current RedstoneControlType of this TileEntity.
+	private RedstoneControlType redstoneControlType = RedstoneControlType.DISABLED;
 
     // The tier of this TileEntity.
 	private Tier.ElectricityMeter tier = Tier.ElectricityMeter.BASIC;

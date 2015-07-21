@@ -1,6 +1,6 @@
 package org.halvors.electrometrics.common.base.tile;
 
-public enum RedstoneControllableType {
+public enum RedstoneControlType {
 	DISABLED("Disabled"),
 	HIGH("High"),
 	LOW("Low"),
@@ -12,7 +12,7 @@ public enum RedstoneControllableType {
 		return display;
 	}
 
-	RedstoneControllableType(String s) {
+	RedstoneControlType(String s) {
 		display = s;
 	}
 }
