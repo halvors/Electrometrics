@@ -9,43 +9,47 @@ import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.tile.component.ITileComponent;
 import org.halvors.electrometrics.common.util.location.BlockLocation;
 
-public class PacketRequestData<T extends TileEntity & ITileNetworkable> implements IMessageHandler<PacketRequestData.PacketRequestDataMessage, IMessage> {
-	@Override
-	public IMessage onMessage(PacketRequestDataMessage message, MessageContext context) {
-		TileEntity tileEntity = null; //= message.getBlockLocation().getTileEntity(PacketHandler.getWorld(context));
+public class PacketRequestData extends PacketBlockLocation implements IMessage {
+	public PacketRequestData() {
 
-		if (tileEntity != null && tileEntity instanceof ITileNetworkable) {
-			return new PacketTileEntity((T) tileEntity);
-		}
+    }
 
-		return null;
+	public PacketRequestData(BlockLocation blockLocation) {
+		super(blockLocation);
 	}
 
-	public static class PacketRequestDataMessage<T extends TileEntity & ITileNetworkable> implements IMessage {
-		public PacketRequestDataMessage() {
+	public PacketRequestData(TileEntity tileEntity) {
+		this(new BlockLocation(tileEntity));
+	}
 
-		}
+	public PacketRequestData(ITileComponent tileComponent) {
+		this(tileComponent.getTileEntity());
+	}
 
-		public PacketRequestDataMessage(BlockLocation blockLocation) {
-			//super(blockLocation);
-		}
+	@Override
+	public void fromBytes(ByteBuf dataStream) {
 
-		public PacketRequestDataMessage(T tileEntity) {
-			//super(new BlockLocation(tileEntity));
-		}
+	}
 
-		public PacketRequestDataMessage(ITileComponent tileComponent) {
-			//super(new BlockLocation(tileComponent.getTileEntity()));
-		}
+	@Override
+	public void toBytes(ByteBuf dataStream) {
 
+	}
+
+	public static class PacketRequestDataMessage implements IMessageHandler<PacketRequestData, IMessage> {
 		@Override
-		public void fromBytes(ByteBuf dataStream) {
-
+		public IMessage onMessage(PacketRequestData message, MessageContext messageContext) {
+			return onPacketRequestDataMessage(message, messageContext);
 		}
 
-		@Override
-		public void toBytes(ByteBuf dataStream) {
+        public <T extends TileEntity & ITileNetworkable> IMessage onPacketRequestDataMessage(PacketRequestData message, MessageContext messageContext) {
+            TileEntity tileEntity = message.getBlockLocation().getTileEntity(PacketHandler.getWorld(messageContext));
 
-		}
+            if (tileEntity != null && tileEntity instanceof ITileNetworkable) {
+                return new PacketTileEntity((T) tileEntity);
+            }
+
+            return null;
+        }
 	}
 }

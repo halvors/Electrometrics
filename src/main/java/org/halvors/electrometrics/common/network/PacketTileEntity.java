@@ -11,7 +11,6 @@ import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.common.base.tile.ITileNetworkable;
 import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.tile.component.ITileComponent;
-import org.halvors.electrometrics.common.tile.component.ITileNetworkableComponent;
 import org.halvors.electrometrics.common.util.location.BlockLocation;
 
 import java.util.ArrayList;
@@ -22,7 +21,7 @@ import java.util.List;
  *
  * @author halvors
  */
-public class PacketTileEntity extends PacketBlockLocation implements IMessage, IMessageHandler<PacketTileEntity, IMessage> {
+public class PacketTileEntity extends PacketBlockLocation implements IMessage {
 	private List<Object> objects;
 	private ByteBuf storedBuffer = null;
 
@@ -38,9 +37,9 @@ public class PacketTileEntity extends PacketBlockLocation implements IMessage, I
 
 	public <T extends TileEntity & ITileNetworkable> PacketTileEntity(T tileEntity) {
 		this(new BlockLocation(tileEntity), tileEntity.getPacketData(new ArrayList<>()));
-	}
+    }
 
-	public PacketTileEntity(ITileComponent tileComponent) {
+    public PacketTileEntity(ITileComponent tileComponent) {
 		super(new BlockLocation(tileComponent.getTileEntity()));
 	}
 
@@ -72,14 +71,12 @@ public class PacketTileEntity extends PacketBlockLocation implements IMessage, I
 					dataStream.writeLong((Long) object);
 				} else if (object instanceof String) {
 					ByteBufUtils.writeUTF8String(dataStream, (String) object);
-
 				} else if (object instanceof byte[]) {
 					dataStream.writeBytes((byte[]) object);
 				} else if (object instanceof int[]) {
 					for (int i : (int[]) object) {
 						dataStream.writeInt(i);
 					}
-
 				} else if (object instanceof ItemStack) { // Minecraft specific types.
 					ByteBufUtils.writeItemStack(dataStream, (ItemStack) object);
 				} else if (object instanceof NBTTagCompound) {
@@ -92,22 +89,24 @@ public class PacketTileEntity extends PacketBlockLocation implements IMessage, I
 		}
 	}
 
-	@Override
-	public IMessage onMessage(PacketTileEntity message, MessageContext context) {
-		TileEntity tileEntity = message.getBlockLocation().getTileEntity(PacketHandler.getWorld(context));
+	public static class PacketTileEntityMessage implements IMessageHandler<PacketTileEntity, IMessage> {
+		@Override
+		public IMessage onMessage(PacketTileEntity message, MessageContext messageContext) {
+			TileEntity tileEntity = message.getBlockLocation().getTileEntity(PacketHandler.getWorld(messageContext));
 
-		if (tileEntity != null && tileEntity instanceof ITileNetworkable) {
-			ITileNetworkable networkable = (ITileNetworkable) tileEntity;
+			if (tileEntity != null && tileEntity instanceof ITileNetworkable) {
+				ITileNetworkable networkable = (ITileNetworkable) tileEntity;
 
-			try {
-				networkable.handlePacketData(message.storedBuffer);
-			} catch (Exception e) {
-				e.printStackTrace();
+				try {
+					networkable.handlePacketData(message.storedBuffer);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+				message.storedBuffer.release();
 			}
 
-			message.storedBuffer.release();
+			return null;
 		}
-
-		return null;
 	}
 }
