@@ -9,7 +9,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.base.Tier;
-import org.halvors.electrometrics.common.base.tile.*;
+import org.halvors.electrometrics.common.base.tile.IActiveState;
+import org.halvors.electrometrics.common.base.tile.INetworkable;
+import org.halvors.electrometrics.common.base.tile.IOwnable;
+import org.halvors.electrometrics.common.base.tile.RedstoneControlType;
+import org.halvors.electrometrics.common.network.PacketHandler;
+import org.halvors.electrometrics.common.network.PacketRequestData;
 import org.halvors.electrometrics.common.tile.component.TileRedstoneControlComponent;
 import org.halvors.electrometrics.common.util.PlayerUtils;
 
@@ -58,6 +63,13 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 		components.add(new TileRedstoneControlComponent(this));
 	}
 
+    @Override
+    public void validate() {
+        super.validate();
+
+        PacketHandler.sendToServer(new PacketRequestData(this));
+    }
+
 	@Override
 	public void readFromNBT(NBTTagCompound nbtTagCompound) {
 		super.readFromNBT(nbtTagCompound);
@@ -101,14 +113,18 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 
         isActive = dataStream.readBoolean();
 
-		long ownerUUIDM = dataStream.readLong();
-		long ownerUUIDL = dataStream.readLong();
+		long ownerUUIDMostSignificantBits = dataStream.readLong();
+		long ownerUUIDLeastSignificantBits = dataStream.readLong();
 
-		if (ownerUUIDM != 0 && ownerUUIDL != 0) {
-			ownerUUID = new UUID(ownerUUIDM, ownerUUIDL);
+		if (ownerUUIDMostSignificantBits != 0 && ownerUUIDLeastSignificantBits != 0) {
+			ownerUUID = new UUID(ownerUUIDMostSignificantBits, ownerUUIDLeastSignificantBits);
 		}
 
-		ownerName = ByteBufUtils.readUTF8String(dataStream);
+		String ownerNameText = ByteBufUtils.readUTF8String(dataStream);
+
+		if (!ownerNameText.isEmpty()) {
+			ownerName = ownerNameText;
+		}
 
 		// Check if client is in sync with the server, if not update it.
 		if (worldObj.isRemote && clientIsActive != isActive) {

@@ -6,8 +6,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.ResourceLocation;
 import org.halvors.electrometrics.client.gui.IGui;
-import org.halvors.electrometrics.common.Reference;
 import org.halvors.electrometrics.common.base.ResourceType;
+import org.halvors.electrometrics.common.util.ResourceUtils;
 import org.lwjgl.opengl.GL11;
 
 import java.util.List;
@@ -21,8 +21,8 @@ public abstract class GuiComponent implements IGuiComponent {
 	final ResourceLocation resource;
 	final IGui gui;
 
-	GuiComponent(String fileName, IGui gui, ResourceLocation defaultResource) {
-		this.resource = new ResourceLocation(Reference.DOMAIN, ResourceType.GUI_ELEMENT.getPrefix() + fileName);
+	GuiComponent(String texture, IGui gui, ResourceLocation defaultResource) {
+		this.resource = ResourceUtils.getResource(ResourceType.GUI_ELEMENT, texture);
 		this.gui = gui;
 		this.defaultResource = defaultResource;
 	}

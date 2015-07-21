@@ -7,14 +7,20 @@ import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.client.gui.IGui;
 import org.halvors.electrometrics.client.render.Rectangle4i;
 import org.halvors.electrometrics.client.sound.SoundHandler;
+import org.halvors.electrometrics.common.base.tile.INetworkable;
+import org.halvors.electrometrics.common.network.PacketHandler;
+import org.halvors.electrometrics.common.network.PacketTileEntity;
+import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.util.energy.Unit;
 
 @SideOnly(Side.CLIENT)
-public class GuiEnergyDisplay extends GuiComponent implements IGuiComponent {
-    private Unit energyType = Electrometrics.energyType;
+public class GuiEnergyUnitType<T extends TileEntity & INetworkable> extends GuiComponent implements IGuiComponent {
+	private final T tileEntity;
 
-	public GuiEnergyDisplay(IGui gui, ResourceLocation defaultResource) {
+	public GuiEnergyUnitType(IGui gui, T tileEntity, ResourceLocation defaultResource) {
 		super("EnergyDisplay.png", gui, defaultResource);
+
+		this.tileEntity = tileEntity;
 	}
 
 	@Override
@@ -28,7 +34,7 @@ public class GuiEnergyDisplay extends GuiComponent implements IGuiComponent {
 
 		gui.drawTexturedRect(guiWidth + 176, guiHeight + 2, 0, 0, 26, 26);
 
-		int renderX = 26 + (18 * energyType.ordinal());
+		int renderX = 26 + (18 * Electrometrics.energyUnitType.ordinal());
 
 		if (xAxis >= 179 && xAxis <= 197 && yAxis >= 6 && yAxis <= 24) {
 			gui.drawTexturedRect(guiWidth + 179, guiHeight + 6, renderX, 0, 18, 18);
@@ -44,7 +50,7 @@ public class GuiEnergyDisplay extends GuiComponent implements IGuiComponent {
 		game.renderEngine.bindTexture(resource);
 
         if (xAxis >= 179 && xAxis <= 197 && yAxis >= 6 && yAxis <= 24) {
-			displayTooltip(energyType.getName(), xAxis, yAxis);
+			displayTooltip(Electrometrics.energyUnitType.getName(), xAxis, yAxis);
 		}
 
 		super.renderForeground(xAxis, yAxis);
@@ -60,13 +66,16 @@ public class GuiEnergyDisplay extends GuiComponent implements IGuiComponent {
 		switch (button) {
 			case 0:
                 if (xAxis >= 179 && xAxis <= 197 && yAxis >= 6 && yAxis <= 24) {
-                    Unit current = energyType;
+                    Unit current = Electrometrics.energyUnitType;
                     int ordinalToSet = current.ordinal() < (Unit.values().length - 1) ? current.ordinal() + 1 : 0;
 
                     SoundHandler.playSound("gui.button.press");
 
-					// Set energy type to display here.
-                    energyType = Unit.values()[ordinalToSet];
+					// Set energy unit type to use.
+					Electrometrics.energyUnitType = Unit.values()[ordinalToSet];
+
+					// Send a update packet to the server.
+					PacketHandler.sendToServer(new PacketTileEntity(tileEntity));
                 }
 				break;
 		}

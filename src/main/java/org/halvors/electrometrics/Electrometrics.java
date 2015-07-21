@@ -61,7 +61,7 @@ public class Electrometrics {
 	// Configuration variables.
 
     // General.
-    public static Unit energyType = Unit.JOULES;
+    public static Unit energyUnitType = Unit.JOULES;
 	public static double toJoules;
 	public static double toMinecraftJoules;
 	public static double toElectricalUnits;
@@ -79,17 +79,17 @@ public class Electrometrics {
 
 		isMekanismIntegrationEnabled = configuration.get(Configuration.CATEGORY_GENERAL, "MekanismIntegration", Loader.isModLoaded("Mekanism")).getBoolean();
 
-		String energyTypeString = configuration.get(Configuration.CATEGORY_GENERAL, "EnergyType", "J", "The default energy system to display.", new String[] { "RF", "J", "MJ", "EU" }).getString();
+		String energyUnitTypeString = configuration.get(Configuration.CATEGORY_GENERAL, "EnergyType", "J", "The default energy system to display.", new String[] { "RF", "J", "MJ", "EU" }).getString();
 
-		if (energyTypeString != null) {
-			if (energyTypeString.trim().equalsIgnoreCase("RF")) {
-				energyType = Unit.REDSTONE_FLUX;
-			} else if (energyTypeString.trim().equalsIgnoreCase("J")) {
-				energyType = Unit.JOULES;
-			} else if (energyTypeString.trim().equalsIgnoreCase("MJ")) {
-				energyType = Unit.MINECRAFT_JOULES;
-			} else if (energyTypeString.trim().equalsIgnoreCase("EU")) {
-				energyType = Unit.ELECTRICAL_UNITS;
+		if (energyUnitTypeString != null) {
+			if (energyUnitTypeString.trim().equalsIgnoreCase("RF")) {
+				energyUnitType = Unit.REDSTONE_FLUX;
+			} else if (energyUnitTypeString.trim().equalsIgnoreCase("J")) {
+				energyUnitType = Unit.JOULES;
+			} else if (energyUnitTypeString.trim().equalsIgnoreCase("MJ")) {
+				energyUnitType = Unit.MINECRAFT_JOULES;
+			} else if (energyUnitTypeString.trim().equalsIgnoreCase("EU")) {
+				energyUnitType = Unit.ELECTRICAL_UNITS;
 			}
 		}
 

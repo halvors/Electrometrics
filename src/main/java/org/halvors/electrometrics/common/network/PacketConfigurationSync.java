@@ -20,7 +20,7 @@ public class PacketConfigurationSync implements IMessage, IMessageHandler<Packet
 	@Override
 	public void fromBytes(ByteBuf dataStream) {
         // General.
-        Electrometrics.energyType = Unit.values()[dataStream.readInt()];
+        Electrometrics.energyUnitType = Unit.values()[dataStream.readInt()];
 		Electrometrics.toJoules = dataStream.readDouble();
 		Electrometrics.toMinecraftJoules = dataStream.readDouble();
 		Electrometrics.toElectricalUnits = dataStream.readDouble();
@@ -32,7 +32,7 @@ public class PacketConfigurationSync implements IMessage, IMessageHandler<Packet
 	@Override
 	public void toBytes(ByteBuf dataStream) {
         // General.
-        dataStream.writeInt(Electrometrics.energyType.ordinal());
+        dataStream.writeInt(Electrometrics.energyUnitType.ordinal());
 		dataStream.writeDouble(Electrometrics.toJoules);
 		dataStream.writeDouble(Electrometrics.toMinecraftJoules);
 		dataStream.writeDouble(Electrometrics.toElectricalUnits);
