@@ -34,6 +34,16 @@ public class TileEntityComponentContainer extends TileEntity implements INetwork
 		}
 	}
 
+	public void onNeighborChange() {
+		for (IComponent component : components) {
+			if (component instanceof ITileComponent) {
+				ITileComponent tileComponent = (ITileComponent) component;
+
+				tileComponent.onNeighborChange();
+			}
+		}
+	}
+
 	@Override
 	public void readFromNBT(NBTTagCompound nbtTagCompound) {
 		super.readFromNBT(nbtTagCompound);

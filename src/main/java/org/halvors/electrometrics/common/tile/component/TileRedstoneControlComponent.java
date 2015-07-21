@@ -4,7 +4,10 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 import org.halvors.electrometrics.common.base.tile.IRedstoneControl;
 import org.halvors.electrometrics.common.base.tile.RedstoneControlType;
+import org.halvors.electrometrics.common.network.PacketHandler;
+import org.halvors.electrometrics.common.network.PacketTileEntity;
 import org.halvors.electrometrics.common.tile.TileEntity;
+import org.halvors.electrometrics.common.tile.TileEntityComponentContainer;
 
 import java.util.List;
 
@@ -16,7 +19,7 @@ public class TileRedstoneControlComponent extends TileComponent implements ITile
     boolean isPowered;
     boolean wasPowered;
 
-    public TileRedstoneControlComponent(TileEntity tileEntity) {
+    public TileRedstoneControlComponent(TileEntityComponentContainer tileEntity) {
         super(tileEntity);
     }
 
@@ -24,6 +27,19 @@ public class TileRedstoneControlComponent extends TileComponent implements ITile
     public void onUpdate() {
         // Update wasPowered to the current isPowered.
         wasPowered = isPowered;
+    }
+
+    @Override
+    public void onNeighborChange() {
+        if (!tileEntity.getWorldObj().isRemote) {
+            boolean redstonePower = tileEntity.getWorldObj().isBlockIndirectlyGettingPowered(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
+
+            if (isPowered != redstonePower) {
+                isPowered = redstonePower;
+
+                PacketHandler.sendToReceivers(new PacketTileEntity(this), this);
+            }
+        }
     }
 
     @Override

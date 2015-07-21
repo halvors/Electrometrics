@@ -120,10 +120,10 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 			ownerUUID = new UUID(ownerUUIDMostSignificantBits, ownerUUIDLeastSignificantBits);
 		}
 
-		String ownerNameText = ByteBufUtils.readUTF8String(dataStream);
+		String ownerName = ByteBufUtils.readUTF8String(dataStream);
 
-		if (!ownerNameText.isEmpty()) {
-			ownerName = ownerNameText;
+		if (!ownerName.isEmpty()) {
+			this.ownerName = ownerName;
 		}
 
 		// Check if client is in sync with the server, if not update it.

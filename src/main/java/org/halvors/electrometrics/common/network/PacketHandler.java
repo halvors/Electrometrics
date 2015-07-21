@@ -14,6 +14,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import org.halvors.electrometrics.common.Reference;
 import org.halvors.electrometrics.common.tile.TileEntity;
+import org.halvors.electrometrics.common.tile.component.ITileNetworkableComponent;
 import org.halvors.electrometrics.common.util.PlayerUtils;
 import org.halvors.electrometrics.common.util.location.BlockLocation;
 import org.halvors.electrometrics.common.util.location.Range;
@@ -88,5 +89,9 @@ public class PacketHandler {
 
 	public static void sendToReceivers(IMessage message, TileEntity tileEntity) {
 		sendToReceivers(message, new Range(new BlockLocation(tileEntity)));
+	}
+
+	public static void sendToReceivers(IMessage message, ITileNetworkableComponent tileNetworkableComponent) {
+		sendToReceivers(message, tileNetworkableComponent.getTileEntity());
 	}
 }

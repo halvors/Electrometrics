@@ -10,6 +10,8 @@ public interface ITileComponent extends IComponent {
 
     void onUpdate();
 
+    void onNeighborChange();
+
     void readFromNBT(NBTTagCompound nbtTagCompound);
 
     void writeToNBT(NBTTagCompound nbtTagCompound);

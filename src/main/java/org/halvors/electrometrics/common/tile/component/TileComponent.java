@@ -1,15 +1,15 @@
 package org.halvors.electrometrics.common.tile.component;
 
-import org.halvors.electrometrics.common.tile.TileEntity;
+import org.halvors.electrometrics.common.tile.TileEntityComponentContainer;
 
 public class TileComponent {
-    private final TileEntity tileEntity;
+    final TileEntityComponentContainer tileEntity;
 
-    public TileComponent(TileEntity tileEntity) {
+    public TileComponent(TileEntityComponentContainer tileEntity) {
         this.tileEntity = tileEntity;
     }
 
-    public TileEntity getTileEntity() {
+    public TileEntityComponentContainer getTileEntity() {
         return tileEntity;
     }
 }
