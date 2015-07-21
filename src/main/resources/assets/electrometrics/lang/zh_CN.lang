@@ -1,0 +1,23 @@
+# Electrometrics Language Properties
+
+// Creative tab
+itemGroup.tabElectrometrics=电能测量器
+
+// Tier names
+tier.Basic=基础
+tier.Advanced=高级
+tier.Elite=精英
+tier.Ultimate=终极
+tier.Creative=创造
+
+// Blocks
+tile.ElectricityMeter.name=电能测量器
+
+// Items
+
+// Tooltip
+tooltip.hold=按住
+tooltip.forDetails=查看详情
+tooltip.noInformation=无可显示的信息.
+tooltip.measuredEnergy=电能测量完成.
+tooltip.storedEnergy=存储能量
