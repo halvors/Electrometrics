@@ -21,16 +21,9 @@ import org.halvors.electrometrics.common.util.render.Color;
 
 import java.util.List;
 
-public class ItemBlockMachine extends ItemBlock {
+public class ItemBlockMachine extends ItemBlockSubtyped {
     public ItemBlockMachine(Block block) {
         super(block);
-
-        setHasSubtypes(true);
-    }
-
-    @Override
-    public int getMetadata(int metadata) {
-        return metadata;
     }
 
     @Override

@@ -24,9 +24,13 @@ import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.base.Tier;
 import org.halvors.electrometrics.common.block.BlockMachine;
 import org.halvors.electrometrics.common.event.PlayerEventHandler;
+import org.halvors.electrometrics.common.item.Item;
 import org.halvors.electrometrics.common.item.ItemBlockMachine;
+import org.halvors.electrometrics.common.item.ItemMultimeter;
 import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.util.energy.Unit;
+
+import org.halvors.electrometrics.common.base.Tier;
 
 import java.io.File;
 
@@ -51,6 +55,9 @@ public class Electrometrics {
 
 	// Creative tab.
 	private static final Tab tab = new Tab();
+
+	// Items.
+	public static final Item itemMultimeter = new ItemMultimeter();
 
 	// Blocks.
 	public static final BlockMachine blockMachine = new BlockMachine();
@@ -106,6 +113,7 @@ public class Electrometrics {
 		FMLCommonHandler.instance().bus().register(new PlayerEventHandler());
 
 		// Call functions for adding blocks, items, etc.
+		addItems();
 		addBlocks();
 		addTileEntities();
 		addRecipes();
@@ -115,6 +123,11 @@ public class Electrometrics {
 
         // Mod integration.
 		logger.log(Level.INFO, "Mekanism integration is " + (isMekanismIntegrationEnabled ? "enabled" : "disabled") + ".");
+	}
+
+	private void addItems() {
+		// Register items.
+		GameRegistry.registerItem(itemMultimeter, "itemMultimeter");
 	}
 
 	private void addBlocks() {
@@ -141,16 +154,16 @@ public class Electrometrics {
 
 				GameRegistry.addRecipe(itemStackMachine,
 						"III",
-						"CDC",
-						"III", 'I', Items.iron_ingot, 'U', itemStackCable, 'D', Items.clock);
+						"CMC",
+						"III", 'I', Items.iron_ingot, 'U', itemStackCable, 'D', itemMultimeter);
 			}
         } else {
             MachineType machineType = MachineType.BASIC_ELECTRICITY_METER;
 
 			GameRegistry.addRecipe(machineType.getItemStack(),
 				"III",
-				"CDC",
-				"III", 'I', Items.iron_ingot, 'C', Items.redstone, 'D', Items.clock);
+				"CMC",
+				"III", 'I', Items.iron_ingot, 'C', Items.redstone, 'D', itemMultimeter);
 		}
 	}
 
