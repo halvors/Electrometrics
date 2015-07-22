@@ -61,6 +61,8 @@ public class BlockMachine extends BlockRotatable {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
+		super.registerBlockIcons(iconRegister);
+
 		IIcon topIcon = iconRegister.registerIcon(Reference.PREFIX + name + "Top");
 		DefaultIcon defaultTopIcon = DefaultIcon.getActivePair(topIcon, 1);
 
