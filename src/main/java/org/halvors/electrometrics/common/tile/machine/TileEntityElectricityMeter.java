@@ -1,27 +1,21 @@
 package org.halvors.electrometrics.common.tile.machine;
 
-import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.base.Tier;
 import org.halvors.electrometrics.common.base.tile.ITileActivatable;
 import org.halvors.electrometrics.common.base.tile.ITileNetworkable;
-import org.halvors.electrometrics.common.base.tile.ITileOwnable;
-import org.halvors.electrometrics.common.base.tile.RedstoneControlType;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketRequestData;
 import org.halvors.electrometrics.common.tile.component.TileOwnableComponent;
 import org.halvors.electrometrics.common.tile.component.TileRedstoneControlComponent;
-import org.halvors.electrometrics.common.util.PlayerUtils;
 
 import java.util.EnumSet;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * This is the TileEntity of the Electricity Meter which provides a simple way to keep count of the electricity you use.
