@@ -13,12 +13,12 @@ import org.halvors.electrometrics.common.base.tile.ITileRotatable;
 import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.util.render.Orientation;
 
-class BlockTextured extends BlockContainer {
+abstract class BlockTextured extends BlockContainer {
 	@SideOnly(Side.CLIENT)
 	final IIcon[][] iconList = new IIcon[16][16];
 
 	@SideOnly(Side.CLIENT)
-    DefaultIcon defaultIcon;
+    DefaultIcon defaultBaseIcon;
 
 	BlockTextured(String name, Material material) {
 		super(name, material);
@@ -28,7 +28,7 @@ class BlockTextured extends BlockContainer {
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
 		IIcon baseIcon = iconRegister.registerIcon(Reference.PREFIX + name);
-		defaultIcon = DefaultIcon.getAll(baseIcon);
+		defaultBaseIcon = DefaultIcon.getAll(baseIcon);
 	}
 
 	@Override

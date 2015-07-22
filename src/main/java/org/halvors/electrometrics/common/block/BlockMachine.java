@@ -22,13 +22,14 @@ import org.halvors.electrometrics.client.render.DefaultIcon;
 import org.halvors.electrometrics.common.Reference;
 import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.base.Tier;
-import org.halvors.electrometrics.common.base.tile.IOwnable;
-import org.halvors.electrometrics.common.base.tile.IRedstoneControl;
+import org.halvors.electrometrics.common.base.tile.ITileOwnable;
+import org.halvors.electrometrics.common.base.tile.ITileRedstoneControl;
 import org.halvors.electrometrics.common.item.ItemBlockMachine;
 import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.tile.TileEntityElectricBlock;
 import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.util.MachineUtils;
+import scala.tools.nsc.doc.model.Def;
 
 import java.util.List;
 
@@ -60,12 +61,12 @@ public class BlockMachine extends BlockRotatable {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
-		IIcon baseIcon = iconRegister.registerIcon(Reference.PREFIX + "Machine");
-		defaultIcon = DefaultIcon.getAll(baseIcon);
+		IIcon topIcon = iconRegister.registerIcon(Reference.PREFIX + name + "Top");
+		DefaultIcon defaultTopIcon = DefaultIcon.getActivePair(topIcon, 1);
 
 		// Adding all icons for the machine types.
 		for (MachineType machineType : MachineType.values()) {
-			BlockRenderer.loadDynamicTextures(iconRegister, machineType.getUnlocalizedName(), iconList[machineType.getMetadata()], defaultIcon);
+			BlockRenderer.loadDynamicTextures(iconRegister, machineType.getUnlocalizedName(), iconList[machineType.getMetadata()], defaultBaseIcon, defaultTopIcon);
 		}
 	}
 
@@ -106,8 +107,8 @@ public class BlockMachine extends BlockRotatable {
 			TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
 
 			// Display a message the the player clicking this block if not the owner.
-			if (tileEntity instanceof IOwnable) {
-				IOwnable ownable = (IOwnable) tileEntity;
+			if (tileEntity instanceof ITileOwnable) {
+				ITileOwnable ownable = (ITileOwnable) tileEntity;
 
 				if (!ownable.isOwner(player)) {
 					player.addChatMessage(new ChatComponentText("This block is owned by " + ownable.getOwnerName() + ", you cannot remove this block."));
@@ -121,9 +122,9 @@ public class BlockMachine extends BlockRotatable {
 		TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
 
 		if (!MachineUtils.hasUsableWrench(player, x, y, z)) {
-			// Check whether or not this IOwnable has a owner, if not set the current player as owner.
-			if (tileEntity instanceof IOwnable) {
-				IOwnable ownable = (IOwnable) tileEntity;
+			// Check whether or not this ITileOwnable has a owner, if not set the current player as owner.
+			if (tileEntity instanceof ITileOwnable) {
+				ITileOwnable ownable = (ITileOwnable) tileEntity;
 
 				if (!ownable.hasOwner()) {
 					ownable.setOwner(player);
@@ -145,9 +146,9 @@ public class BlockMachine extends BlockRotatable {
 
 		TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
 
-		// If this TileEntity implements IRedstoneControl, check if it's getting powered.
-		if (tileEntity instanceof IRedstoneControl) {
-			IRedstoneControl redstoneControl = (IRedstoneControl) tileEntity;
+		// If this TileEntity implements ITileRedstoneControl, check if it's getting powered.
+		if (tileEntity instanceof ITileRedstoneControl) {
+			ITileRedstoneControl redstoneControl = (ITileRedstoneControl) tileEntity;
 			redstoneControl.setPowered(world.isBlockIndirectlyGettingPowered(x, y, z));
 		}
 
@@ -155,9 +156,9 @@ public class BlockMachine extends BlockRotatable {
 		if (entity instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) entity;
 
-			// If this TileEntity implements IOwnable, we set the owner.
-			if (tileEntity instanceof IOwnable) {
-				IOwnable ownable = (IOwnable) tileEntity;
+			// If this TileEntity implements ITileOwnable, we set the owner.
+			if (tileEntity instanceof ITileOwnable) {
+				ITileOwnable ownable = (ITileOwnable) tileEntity;
 				ownable.setOwner(player);
 			}
 		}
@@ -191,8 +192,8 @@ public class BlockMachine extends BlockRotatable {
 		ItemStack itemStack = new ItemStack(this, 1, metadata);
 		ItemBlockMachine itemBlockMachine = (ItemBlockMachine) itemStack.getItem();
 
-		if (tileEntity instanceof IRedstoneControl) {
-			IRedstoneControl redstoneControl = (IRedstoneControl) tileEntity;
+		if (tileEntity instanceof ITileRedstoneControl) {
+			ITileRedstoneControl redstoneControl = (ITileRedstoneControl) tileEntity;
 
 			itemBlockMachine.setRedstoneControlType(itemStack, redstoneControl.getControlType());
 		}
@@ -212,9 +213,9 @@ public class BlockMachine extends BlockRotatable {
 	public float getBlockHardness(World world, int x, int y, int z) {
 		TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
 
-		// If this TileEntity implements IOwnable, we check if there is a owner.
-		if (tileEntity instanceof IOwnable) {
-			IOwnable ownable = (IOwnable) tileEntity;
+		// If this TileEntity implements ITileOwnable, we check if there is a owner.
+		if (tileEntity instanceof ITileOwnable) {
+			ITileOwnable ownable = (ITileOwnable) tileEntity;
 			EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 
 			return ownable.isOwner(player) ? blockHardness : -1;
@@ -227,8 +228,8 @@ public class BlockMachine extends BlockRotatable {
 	public float getExplosionResistance(Entity entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ) {
 		TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
 
-		if (tileEntity instanceof IOwnable) {
-			IOwnable ownable = (IOwnable) tileEntity;
+		if (tileEntity instanceof ITileOwnable) {
+			ITileOwnable ownable = (ITileOwnable) tileEntity;
 			EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 
 			return ownable.isOwner(player) ? blockResistance : -1;

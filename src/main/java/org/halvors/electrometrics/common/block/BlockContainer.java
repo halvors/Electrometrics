@@ -10,7 +10,7 @@ import org.halvors.electrometrics.common.tile.TileEntity;
  *
  * @author halvors
  */
-class BlockContainer extends net.minecraft.block.BlockContainer {
+abstract class BlockContainer extends net.minecraft.block.BlockContainer {
 	final String name;
 
 	BlockContainer(String name, Material material) {
@@ -20,10 +20,5 @@ class BlockContainer extends net.minecraft.block.BlockContainer {
 
 		setBlockName(name);
 		setCreativeTab(Electrometrics.getTab());
-	}
-
-	@Override
-	public TileEntity createNewTileEntity(World world, int metadata) {
-		return null;
 	}
 }
