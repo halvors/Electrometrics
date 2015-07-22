@@ -60,8 +60,7 @@ public class BlockMachine extends BlockRotatable {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
-		IIcon baseIcon = iconRegister.registerIcon(Reference.PREFIX + "Machine");
-		defaultIcon = DefaultIcon.getAll(baseIcon);
+		super.registerBlockIcons(iconRegister);
 
 		// Adding all icons for the machine types.
 		for (MachineType machineType : MachineType.values()) {
@@ -106,11 +105,15 @@ public class BlockMachine extends BlockRotatable {
 			TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
 
 			// Display a message the the player clicking this block if not the owner.
-			if (tileEntity instanceof ITileOwnable) {
-				ITileOwnable ownable = (ITileOwnable) tileEntity;
+			if (tileEntity instanceof TileEntityComponentContainer) {
+				TileEntityComponentContainer tileEntityComponentContainer = (TileEntityComponentContainer) tileEntity;
 
-				if (!ownable.isOwner(player)) {
-					player.addChatMessage(new ChatComponentText("This block is owned by " + ownable.getOwnerName() + ", you cannot remove this block."));
+				if (tileEntityComponentContainer.hasComponentImplementing(ITileOwnable.class)) {
+					ITileOwnable tileOwnable = (ITileOwnable) tileEntityComponentContainer.getComponentImplementing(ITileOwnable.class);
+
+					if (!tileOwnable.isOwner(player)) {
+						player.addChatMessage(new ChatComponentText("This block is owned by " + tileOwnable.getOwnerName() + ", you cannot remove this block."));
+					}
 				}
 			}
 		}
@@ -122,11 +125,15 @@ public class BlockMachine extends BlockRotatable {
 
 		if (!MachineUtils.hasUsableWrench(player, x, y, z)) {
 			// Check whether or not this ITileOwnable has a owner, if not set the current player as owner.
-			if (tileEntity instanceof ITileOwnable) {
-				ITileOwnable ownable = (ITileOwnable) tileEntity;
+			if (tileEntity instanceof TileEntityComponentContainer) {
+				TileEntityComponentContainer tileEntityComponentContainer = (TileEntityComponentContainer) tileEntity;
 
-				if (!ownable.hasOwner()) {
-					ownable.setOwner(player);
+				if (tileEntityComponentContainer.hasComponentImplementing(ITileOwnable.class)) {
+					ITileOwnable tileOwnable = (ITileOwnable) tileEntityComponentContainer.getComponentImplementing(ITileOwnable.class);
+
+					if (!tileOwnable.hasOwner()) {
+						tileOwnable.setOwner(player);
+					}
 				}
 			}
 
@@ -145,20 +152,25 @@ public class BlockMachine extends BlockRotatable {
 
 		TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
 
-		// If this TileEntity implements ITileRedstoneControl, check if it's getting powered.
-		if (tileEntity instanceof ITileRedstoneControl) {
-			ITileRedstoneControl redstoneControl = (ITileRedstoneControl) tileEntity;
-			redstoneControl.setPowered(world.isBlockIndirectlyGettingPowered(x, y, z));
-		}
+		if (tileEntity instanceof TileEntityComponentContainer) {
+			TileEntityComponentContainer tileEntityComponentContainer = (TileEntityComponentContainer) tileEntity;
 
-		// Check if this entity is a player.
-		if (entity instanceof EntityPlayer) {
-			EntityPlayer player = (EntityPlayer) entity;
+			// If this TileEntity implements ITileRedstoneControl, check if it's getting powered.
+			if (tileEntityComponentContainer.hasComponentImplementing(ITileRedstoneControl.class)) {
+				ITileRedstoneControl tileRedstoneControl = (ITileRedstoneControl) tileEntityComponentContainer.getComponentImplementing(ITileRedstoneControl.class);
 
-			// If this TileEntity implements ITileOwnable, we set the owner.
-			if (tileEntity instanceof ITileOwnable) {
-				ITileOwnable ownable = (ITileOwnable) tileEntity;
-				ownable.setOwner(player);
+				tileRedstoneControl.setPowered(world.isBlockIndirectlyGettingPowered(x, y, z));
+			}
+
+			// Check if this entity is a player.
+			if (entity instanceof EntityPlayer) {
+				EntityPlayer player = (EntityPlayer) entity;
+
+				if (tileEntityComponentContainer.hasComponentImplementing(ITileOwnable.class)) {
+					ITileOwnable tileOwnable = (ITileOwnable) tileEntityComponentContainer.getComponentImplementing(ITileOwnable.class);
+
+					tileOwnable.setOwner(player);
+				}
 			}
 		}
 	}
@@ -191,10 +203,14 @@ public class BlockMachine extends BlockRotatable {
 		ItemStack itemStack = new ItemStack(this, 1, metadata);
 		ItemBlockMachine itemBlockMachine = (ItemBlockMachine) itemStack.getItem();
 
-		if (tileEntity instanceof ITileRedstoneControl) {
-			ITileRedstoneControl redstoneControl = (ITileRedstoneControl) tileEntity;
+		if (tileEntity instanceof TileEntityComponentContainer) {
+			TileEntityComponentContainer tileEntityComponentContainer = (TileEntityComponentContainer) tileEntity;
 
-			itemBlockMachine.setRedstoneControlType(itemStack, redstoneControl.getControlType());
+			if (tileEntityComponentContainer.hasComponentImplementing(ITileRedstoneControl.class)) {
+				ITileRedstoneControl tileRedstoneControl = (ITileRedstoneControl) tileEntityComponentContainer.getComponentImplementing(ITileRedstoneControl.class);
+
+				itemBlockMachine.setRedstoneControlType(itemStack, tileRedstoneControl.getControlType());
+			}
 		}
 
 		if (tileEntity instanceof TileEntityElectricityMeter) {
@@ -213,11 +229,15 @@ public class BlockMachine extends BlockRotatable {
 		TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
 
 		// If this TileEntity implements ITileOwnable, we check if there is a owner.
-		if (tileEntity instanceof ITileOwnable) {
-			ITileOwnable ownable = (ITileOwnable) tileEntity;
-			EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+		if (tileEntity instanceof TileEntityComponentContainer) {
+			TileEntityComponentContainer tileEntityComponentContainer = (TileEntityComponentContainer) tileEntity;
 
-			return ownable.isOwner(player) ? blockHardness : -1;
+			if (tileEntityComponentContainer.hasComponentImplementing(ITileOwnable.class)) {
+				ITileOwnable tileOwnable = (ITileOwnable) tileEntityComponentContainer.getComponentImplementing(ITileOwnable.class);
+				EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+
+				return tileOwnable.isOwner(player) ? blockHardness : -1;
+			}
 		}
 
 		return blockHardness;
@@ -227,11 +247,17 @@ public class BlockMachine extends BlockRotatable {
 	public float getExplosionResistance(Entity entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ) {
 		TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
 
-		if (tileEntity instanceof ITileOwnable) {
-			ITileOwnable ownable = (ITileOwnable) tileEntity;
-			EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+		if (tileEntity instanceof TileEntityComponentContainer) {
+			TileEntityComponentContainer tileEntityComponentContainer = (TileEntityComponentContainer) tileEntity;
 
-			return ownable.isOwner(player) ? blockResistance : -1;
+			if (tileEntityComponentContainer.hasComponentImplementing(ITileOwnable.class)) {
+				ITileOwnable tileOwnable = (ITileOwnable) tileEntityComponentContainer.getComponentImplementing(ITileOwnable.class);
+
+
+				EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+
+				return tileOwnable.isOwner(player) ? blockResistance : -1;
+			}
 		}
 
 		return blockResistance;

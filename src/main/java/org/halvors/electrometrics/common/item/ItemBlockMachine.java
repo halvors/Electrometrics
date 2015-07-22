@@ -12,8 +12,10 @@ import org.halvors.electrometrics.client.key.Key;
 import org.halvors.electrometrics.client.key.KeyHandler;
 import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.base.Tier;
+import org.halvors.electrometrics.common.base.tile.ITileRedstoneControl;
 import org.halvors.electrometrics.common.base.tile.RedstoneControlType;
 import org.halvors.electrometrics.common.tile.TileEntity;
+import org.halvors.electrometrics.common.tile.TileEntityComponentContainer;
 import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.util.LanguageUtils;
 import org.halvors.electrometrics.common.util.energy.EnergyUtils;
@@ -79,6 +81,16 @@ public class ItemBlockMachine extends ItemBlock {
 
         if (placed) {
             TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
+
+            if (tileEntity instanceof TileEntityComponentContainer) {
+                TileEntityComponentContainer tileEntityComponentContainer = (TileEntityComponentContainer) tileEntity;
+
+                if (tileEntityComponentContainer.hasComponentImplementing(ITileRedstoneControl.class)) {
+                    ITileRedstoneControl tileRedstoneControl = (ITileRedstoneControl) tileEntityComponentContainer.getComponentImplementing(ITileRedstoneControl.class);
+
+                    tileRedstoneControl.setControlType(getRedstoneControlType(itemStack));
+                }
+            }
 
             if (tileEntity instanceof TileEntityElectricityMeter) {
                 TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;

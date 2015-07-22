@@ -7,10 +7,12 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import org.halvors.electrometrics.client.gui.component.*;
 import org.halvors.electrometrics.common.base.tile.ITileOwnable;
+import org.halvors.electrometrics.common.base.tile.ITileRedstoneControl;
 import org.halvors.electrometrics.common.component.IComponent;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketRequestData;
 import org.halvors.electrometrics.common.network.PacketTileEntity;
+import org.halvors.electrometrics.common.tile.TileEntityComponentContainer;
 import org.halvors.electrometrics.common.tile.component.TileOwnableComponent;
 import org.halvors.electrometrics.common.tile.component.TileRedstoneControlComponent;
 import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityMeter;
@@ -32,14 +34,14 @@ public class GuiElectricityMeter extends GuiComponentContainerScreen {
 	public GuiElectricityMeter(final TileEntityElectricityMeter tileEntity) {
 		super(tileEntity);
 
-        if (tileEntity.hasComponentType(TileOwnableComponent.class)) {
-            final TileOwnableComponent tileOwnableComponent = (TileOwnableComponent) tileEntity.getComponentType(TileOwnableComponent.class);
+        if (tileEntity.hasComponentImplementing(ITileOwnable.class)) {
+            final ITileOwnable tileOwnable = (ITileOwnable) tileEntity.getComponentImplementing(ITileOwnable.class);
 
             components.add(new GuiOwnerInfo(new IInfoHandler() {
                 @Override
                 public List<String> getInfo() {
                     List<String> list = new ArrayList<>();
-                    list.add(tileOwnableComponent.getOwnerName());
+                    list.add(tileOwnable.getOwnerName());
 
                     return list;
                 }
@@ -60,8 +62,9 @@ public class GuiElectricityMeter extends GuiComponentContainerScreen {
 
 		components.add(new GuiEnergyUnitType<>(this, tileEntity, defaultResource));
 
-        if (tileEntity.hasComponentType(TileOwnableComponent.class)) {
-            final TileRedstoneControlComponent tileRedstoneControlComponent = (TileRedstoneControlComponent) tileEntity.getComponentType(TileOwnableComponent.class);
+        if (tileEntity.hasComponent(TileRedstoneControlComponent.class)) {
+            //final ITileRedstoneControl tileRedstoneControl = (ITileRedstoneControl) tileEntity.getComponentImplementing(ITileRedstoneControl.class);
+			TileRedstoneControlComponent tileRedstoneControlComponent = (TileRedstoneControlComponent) tileEntity.getComponent(TileRedstoneControlComponent.class);
 
             components.add(new GuiRedstoneControl<>(this, tileRedstoneControlComponent, defaultResource));
         }
