@@ -18,7 +18,7 @@ public class GuiRedstoneControl<T extends TileEntity & ITileRedstoneControl & IT
 	private final T tileEntity;
 
 	public GuiRedstoneControl(IGui gui, T tileEntity, ResourceLocation defaultResource) {
-		super("guiRedstoneControl.png", gui, defaultResource);
+		super("RedstoneControl.png", gui, defaultResource);
 
 		this.tileEntity = tileEntity;
 	}

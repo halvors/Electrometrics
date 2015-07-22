@@ -23,13 +23,13 @@ abstract class BlockRotatable extends BlockTextured {
 
         // If this TileEntity implements ITileRotatable, we do our rotations.
         if (tileEntity instanceof ITileRotatable) {
-            ITileRotatable rotatable = (ITileRotatable) tileEntity;
+            ITileRotatable tileRotatable = (ITileRotatable) tileEntity;
 
             int side = MathHelper.floor_double((entity.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
             int height = Math.round(entity.rotationPitch);
             int change = 3;
 
-            if (rotatable.canSetFacing(0) && rotatable.canSetFacing(1)) {
+            if (tileRotatable.canSetFacing(0) && tileRotatable.canSetFacing(1)) {
                 if (height >= 65) {
                     change = 1;
                 } else if (height <= -65) {
@@ -54,7 +54,7 @@ abstract class BlockRotatable extends BlockTextured {
                 }
             }
 
-            rotatable.setFacing(change);
+            tileRotatable.setFacing(change);
         }
     }
 
@@ -70,10 +70,10 @@ abstract class BlockRotatable extends BlockTextured {
                 return true;
             } else {
                 if (tileEntity instanceof ITileRotatable) {
-                    ITileRotatable rotatable = (ITileRotatable) tileEntity;
-                    int change = ForgeDirection.ROTATION_MATRIX[ForgeDirection.UP.ordinal()][rotatable.getFacing()];
+                    ITileRotatable tileRotatable = (ITileRotatable) tileEntity;
+                    int change = ForgeDirection.ROTATION_MATRIX[ForgeDirection.UP.ordinal()][tileRotatable.getFacing()];
 
-                    rotatable.setFacing(change);
+                    tileRotatable.setFacing(change);
 
                     return true;
                 }

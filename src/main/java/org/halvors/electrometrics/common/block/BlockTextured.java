@@ -40,16 +40,15 @@ abstract class BlockTextured extends BlockContainer {
 
 		// Check if this implements ITileActiveState, if it do we get the state from it.
 		if (tileEntity instanceof ITileActiveState) {
-			ITileActiveState activeState = (ITileActiveState) tileEntity;
-
-			isActive = activeState.isActive();
+			ITileActiveState tileActiveState = (ITileActiveState) tileEntity;
+			isActive = tileActiveState.isActive();
 		}
 
 		// Check if this implements ITileRotatable.
 		if (tileEntity instanceof ITileRotatable) {
-			ITileRotatable rotatable = (ITileRotatable) tileEntity;
+			ITileRotatable tileRotatable = (ITileRotatable) tileEntity;
 
-			return iconList[metadata][Orientation.getBaseOrientation(side, rotatable.getFacing()) + (isActive ? 6 : 0)];
+			return iconList[metadata][Orientation.getBaseOrientation(side, tileRotatable.getFacing()) + (isActive ? 6 : 0)];
 		}
 
 		return iconList[metadata][side + (isActive ? 6 : 0)];
