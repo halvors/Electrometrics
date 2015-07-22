@@ -22,3 +22,23 @@ tooltip.forDetails=for details
 tooltip.noInformation=No information to display
 tooltip.measuredEnergy=Measured energy
 tooltip.storedEnergy=Stored energy
+
+// Colors
+color.black=Black
+color.darkBlue=Dark Blue
+color.darkGreen=Dark Green
+color.darkAqua=Dark Aqua
+color.darkRed=Dark Red
+color.purple=Purple
+color.orange=Orange
+color.grey=Grey
+color.darkGrey=Dark Grey
+color.indigo=Indigo
+color.brightGreen=Bright Green
+color.aqua=Aqua
+color.red=Red
+color.pink=Pink
+color.yellow=Yellow
+color.white=White
+color.brown=Brown
+color.brightPink=Bright Pink
