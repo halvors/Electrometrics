@@ -6,15 +6,15 @@ import net.minecraft.util.ResourceLocation;
 import org.halvors.electrometrics.client.gui.IGui;
 import org.halvors.electrometrics.client.render.Rectangle4i;
 import org.halvors.electrometrics.client.sound.SoundHandler;
-import org.halvors.electrometrics.common.base.tile.INetworkable;
-import org.halvors.electrometrics.common.base.tile.IRedstoneControl;
-import org.halvors.electrometrics.common.base.tile.RedstoneControlType;
+import org.halvors.electrometrics.common.base.tile.ITileNetworkable;
+import org.halvors.electrometrics.common.base.tile.ITileRedstoneControl;
+import org.halvors.electrometrics.common.base.RedstoneControlType;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketTileEntity;
 import org.halvors.electrometrics.common.tile.TileEntity;
 
 @SideOnly(Side.CLIENT)
-public class GuiRedstoneControl<T extends TileEntity & IRedstoneControl & INetworkable> extends GuiComponent implements IGuiComponent {
+public class GuiRedstoneControl<T extends TileEntity & ITileRedstoneControl & ITileNetworkable> extends GuiComponent implements IGuiComponent {
 	private final T tileEntity;
 
 	public GuiRedstoneControl(IGui gui, T tileEntity, ResourceLocation defaultResource) {

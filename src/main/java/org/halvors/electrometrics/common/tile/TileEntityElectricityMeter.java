@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.halvors.electrometrics.common.base.MachineType;
+import org.halvors.electrometrics.common.base.RedstoneControlType;
 import org.halvors.electrometrics.common.base.Tier;
 import org.halvors.electrometrics.common.base.tile.*;
 import org.halvors.electrometrics.common.network.PacketHandler;
@@ -24,7 +25,7 @@ import java.util.UUID;
  *
  * @author halvors
  */
-public class TileEntityElectricityMeter extends TileEntityElectricityProvider implements INetworkable, IActiveState, IOwnable, IRedstoneControl {
+public class TileEntityElectricityMeter extends TileEntityElectricityProvider implements ITileNetworkable, ITileActiveState, ITileOwnable, ITileRedstoneControl {
     // Whether or not this TileEntity's block is in it's active state.
     private boolean isActive;
 

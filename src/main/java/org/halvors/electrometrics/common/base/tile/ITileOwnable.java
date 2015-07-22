@@ -2,7 +2,7 @@ package org.halvors.electrometrics.common.base.tile;
 
 import net.minecraft.entity.player.EntityPlayer;
 
-public interface IOwnable {
+public interface ITileOwnable {
 	/**
 	 * Check if this ownable has an owner.
 	 * @return true if this ownable has an owner.

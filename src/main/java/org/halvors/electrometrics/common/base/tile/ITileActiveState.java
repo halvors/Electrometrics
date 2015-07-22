@@ -5,7 +5,7 @@ package org.halvors.electrometrics.common.base.tile;
  *
  * @author halvors
  */
-public interface IActiveState {
+public interface ITileActiveState {
 	/**
 	 * Gets the active state as a boolean.
 	 */

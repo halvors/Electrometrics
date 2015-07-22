@@ -1,8 +1,5 @@
 package org.halvors.electrometrics.common.base;
 
-import net.minecraft.util.ResourceLocation;
-import org.halvors.electrometrics.common.Reference;
-
 public enum ResourceType {
     GUI("gui"),
     GUI_ELEMENT("gui/elements"),

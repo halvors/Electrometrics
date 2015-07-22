@@ -1,6 +1,8 @@
 package org.halvors.electrometrics.common.base.tile;
 
-public interface IRedstoneControl {
+import org.halvors.electrometrics.common.base.RedstoneControlType;
+
+public interface ITileRedstoneControl {
 	/**
 	 * Gets the RedstoneControl type from this block.
 	 * @return this block's RedstoneControl type

@@ -1,4 +1,4 @@
-package org.halvors.electrometrics.common.base.tile;
+package org.halvors.electrometrics.common.base;
 
 public enum RedstoneControlType {
 	DISABLED("Disabled"),

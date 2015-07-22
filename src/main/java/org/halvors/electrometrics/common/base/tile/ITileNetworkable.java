@@ -9,7 +9,7 @@ import java.util.List;
  *
  * @author halvors
  */
-public interface INetworkable {
+public interface ITileNetworkable {
 	/**
 	 * Receive and manage a packet's data.
 	 * @param dataStream the dataStream to read data from.

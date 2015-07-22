@@ -12,7 +12,7 @@ import org.halvors.electrometrics.client.key.Key;
 import org.halvors.electrometrics.client.key.KeyHandler;
 import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.base.Tier;
-import org.halvors.electrometrics.common.base.tile.RedstoneControlType;
+import org.halvors.electrometrics.common.base.RedstoneControlType;
 import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.util.LanguageUtils;

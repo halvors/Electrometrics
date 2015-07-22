@@ -4,7 +4,7 @@ import cofh.api.energy.EnergyStorage;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 import org.halvors.electrometrics.common.base.MachineType;
-import org.halvors.electrometrics.common.base.tile.INetworkable;
+import org.halvors.electrometrics.common.base.tile.ITileNetworkable;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketRequestData;
 
@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @author halvors
  */
-public abstract class TileEntityElectricityStorage extends TileEntityElectricBlock implements INetworkable {
+public abstract class TileEntityElectricityStorage extends TileEntityElectricBlock implements ITileNetworkable {
 	// The internal energy storage.
 	final EnergyStorage storage;
 
