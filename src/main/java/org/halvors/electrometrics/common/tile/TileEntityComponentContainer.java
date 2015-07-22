@@ -94,7 +94,7 @@ public class TileEntityComponentContainer extends TileEntity implements ITileNet
 		return list;
 	}
 
-    public boolean hasComponentType(Class<? extends ITileComponent> componentClass) {
+    public boolean hasComponent(Class<? extends ITileComponent> componentClass) {
         for (IComponent component : components) {
             if (component instanceof ITileComponent) {
                 ITileComponent tileComponent = (ITileComponent) component;
@@ -108,17 +108,45 @@ public class TileEntityComponentContainer extends TileEntity implements ITileNet
         return false;
     }
 
-    public ITileComponent getComponentType(Class<? extends ITileComponent> componentClass) {
-        for (IComponent component : components) {
-            if (component instanceof ITileComponent) {
-                ITileComponent tileComponent = (ITileComponent) component;
+	public ITileComponent getComponent(Class<? extends ITileComponent> componentClass) {
+		for (IComponent component : components) {
+			if (component instanceof ITileComponent) {
+				ITileComponent tileComponent = (ITileComponent) component;
 
-                if (tileComponent.getClass().isInstance(componentClass)) {
-                    return tileComponent;
-                }
-            }
-        }
+				if (tileComponent.getClass().isInstance(componentClass)) {
+					return tileComponent;
+				}
+			}
+		}
 
-        return null;
-    }
+		return null;
+	}
+
+	public boolean hasComponentImplementing(Class<?> interfaceClass) {
+		for (IComponent component : components) {
+			if (component instanceof ITileComponent) {
+				ITileComponent tileComponent = (ITileComponent) component;
+
+				if (interfaceClass.isInterface() && tileComponent.getClass().isInstance(interfaceClass)) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	public ITileComponent getComponentImplementing(Class<?> interfaceClass) {
+		for (IComponent component : components) {
+			if (component instanceof ITileComponent) {
+				ITileComponent tileComponent = (ITileComponent) component;
+
+				if (interfaceClass.isInterface() && tileComponent.getClass().isInstance(interfaceClass)) {
+					return tileComponent;
+				}
+			}
+		}
+
+		return null;
+	}
 }
