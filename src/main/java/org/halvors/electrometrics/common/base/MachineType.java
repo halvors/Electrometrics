@@ -13,8 +13,7 @@ public enum MachineType {
     BASIC_ELECTRICITY_METER(0, "ElectricityMeter", TileEntityElectricityMeter.class, GuiElectricityMeter.class),
     ADVANCED_ELECTRICITY_METER(1, "ElectricityMeter", TileEntityElectricityMeter.class, GuiElectricityMeter.class),
     ELITE_ELECTRICITY_METER(2, "ElectricityMeter", TileEntityElectricityMeter.class, GuiElectricityMeter.class),
-    ULTIMATE_ELECTRICITY_METER(3, "ElectricityMeter", TileEntityElectricityMeter.class, GuiElectricityMeter.class),
-    CREATIVE_ELECTRICITY_METER(4, "ElectricityMeter", TileEntityElectricityMeter.class, GuiElectricityMeter.class);
+    ULTIMATE_ELECTRICITY_METER(3, "ElectricityMeter", TileEntityElectricityMeter.class, GuiElectricityMeter.class);
 
     private final int metadata;
     private final String name;
@@ -34,7 +33,6 @@ public enum MachineType {
             case ADVANCED_ELECTRICITY_METER:
             case ELITE_ELECTRICITY_METER:
             case ULTIMATE_ELECTRICITY_METER:
-            case CREATIVE_ELECTRICITY_METER:
                 Tier.Base baseTier = Tier.ElectricityMeter.getFromMachineType(this).getBase();
 
                 return baseTier.getUnlocalizedName() + name;
@@ -52,7 +50,6 @@ public enum MachineType {
             case ADVANCED_ELECTRICITY_METER:
             case ELITE_ELECTRICITY_METER:
             case ULTIMATE_ELECTRICITY_METER:
-            case CREATIVE_ELECTRICITY_METER:
                 Tier.Base baseTier = Tier.ElectricityMeter.getFromMachineType(this).getBase();
 
                 return baseTier.getLocalizedName() + " " + localizedName;
@@ -73,7 +70,6 @@ public enum MachineType {
                 case ADVANCED_ELECTRICITY_METER:
                 case ELITE_ELECTRICITY_METER:
                 case ULTIMATE_ELECTRICITY_METER:
-                case CREATIVE_ELECTRICITY_METER:
                     return tileEntityClass.getConstructor(MachineType.class, Tier.ElectricityMeter.class).newInstance(this, Tier.ElectricityMeter.getFromMachineType(this));
 
                 default:

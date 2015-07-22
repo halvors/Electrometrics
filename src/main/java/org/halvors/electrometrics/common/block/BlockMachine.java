@@ -29,7 +29,6 @@ import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.tile.TileEntityElectricBlock;
 import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.util.MachineUtils;
-import scala.tools.nsc.doc.model.Def;
 
 import java.util.List;
 
@@ -40,7 +39,6 @@ import java.util.List;
  * 1: Advanced Electricity Meter
  * 2: Elite Electricity Meter
  * 3: Ultimate Electricity Meter
- * 4: Creative Electricity Meter
  */
 public class BlockMachine extends BlockRotatable {
 	public BlockMachine() {
@@ -83,7 +81,6 @@ public class BlockMachine extends BlockRotatable {
 				case ADVANCED_ELECTRICITY_METER:
 				case ELITE_ELECTRICITY_METER:
 				case ULTIMATE_ELECTRICITY_METER:
-				case CREATIVE_ELECTRICITY_METER:
 					ItemStack itemStack = machineType.getItemStack();
 					ItemBlockMachine itemBlockMachine = (ItemBlockMachine) itemStack.getItem();
 					itemBlockMachine.setElectricityMeterTier(itemStack, Tier.ElectricityMeter.getFromMachineType(machineType));

@@ -8,8 +8,7 @@ public class Tier {
 		BASIC("Basic", Color.BRIGHT_GREEN),
 		ADVANCED("Advanced", Color.DARK_RED),
 		ELITE("Elite", Color.DARK_BLUE),
-		ULTIMATE("Ultimate", Color.PURPLE),
-		CREATIVE("Creative", Color.BLACK);
+		ULTIMATE("Ultimate", Color.PURPLE);
 
 		private final String name;
 		private final Color color;
@@ -30,18 +29,13 @@ public class Tier {
 		public Color getColor() {
 			return color;
 		}
-
-		public boolean isObtainable() {
-			return this != CREATIVE;
-		}
 	}
 
 	public enum ElectricityMeter {
 		BASIC(5000000, 2000), // 800 J
 		ADVANCED(20000000, 8000), // 3200 J
 		ELITE(80000000, 32000), // 12800 J
-		ULTIMATE(320000000, 128000), // 51200 J
-		CREATIVE(Integer.MAX_VALUE, Integer.MAX_VALUE);
+		ULTIMATE(320000000, 128000); // 51200 J
 
 		private final int maxEnergy;
 		private final int maxTransfer;

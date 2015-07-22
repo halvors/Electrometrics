@@ -1,6 +1,5 @@
 package org.halvors.electrometrics.common.util.render;
 
-import net.minecraft.util.StatCollector;
 import org.halvors.electrometrics.common.util.LanguageUtils;
 
 /**

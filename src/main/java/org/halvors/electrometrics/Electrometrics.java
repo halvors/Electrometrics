@@ -30,8 +30,6 @@ import org.halvors.electrometrics.common.item.ItemMultimeter;
 import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.util.energy.Unit;
 
-import org.halvors.electrometrics.common.base.Tier;
-
 import java.io.File;
 
 /**

@@ -11,8 +11,8 @@ import net.minecraft.world.World;
 import org.halvors.electrometrics.client.key.Key;
 import org.halvors.electrometrics.client.key.KeyHandler;
 import org.halvors.electrometrics.common.base.MachineType;
-import org.halvors.electrometrics.common.base.Tier;
 import org.halvors.electrometrics.common.base.RedstoneControlType;
+import org.halvors.electrometrics.common.base.Tier;
 import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.util.LanguageUtils;
@@ -54,7 +54,6 @@ public class ItemBlockMachine extends ItemBlockSubtyped {
                 case ADVANCED_ELECTRICITY_METER:
                 case ELITE_ELECTRICITY_METER:
                 case ULTIMATE_ELECTRICITY_METER:
-                case CREATIVE_ELECTRICITY_METER:
                     list.add(Color.BRIGHT_GREEN + LanguageUtils.translate("tooltip.measuredEnergy") + ": " + Color.GREY + EnergyUtils.getEnergyDisplay(getElectricityCount(itemStack)));
                     list.add(Color.AQUA + LanguageUtils.translate("tooltip.storedEnergy") + ": " + Color.GREY + EnergyUtils.getEnergyDisplay(getElectricityStored(itemStack)));
                     break;
@@ -124,7 +123,6 @@ public class ItemBlockMachine extends ItemBlockSubtyped {
             case ADVANCED_ELECTRICITY_METER:
             case ELITE_ELECTRICITY_METER:
             case ULTIMATE_ELECTRICITY_METER:
-            case CREATIVE_ELECTRICITY_METER:
                 if (itemStack.stackTagCompound != null) {
                     return itemStack.stackTagCompound.getDouble("electricityCount");
                 }
@@ -142,7 +140,6 @@ public class ItemBlockMachine extends ItemBlockSubtyped {
             case ADVANCED_ELECTRICITY_METER:
             case ELITE_ELECTRICITY_METER:
             case ULTIMATE_ELECTRICITY_METER:
-            case CREATIVE_ELECTRICITY_METER:
                 if (itemStack.stackTagCompound == null) {
                     itemStack.setTagCompound(new NBTTagCompound());
                 }
@@ -160,7 +157,6 @@ public class ItemBlockMachine extends ItemBlockSubtyped {
             case ADVANCED_ELECTRICITY_METER:
             case ELITE_ELECTRICITY_METER:
             case ULTIMATE_ELECTRICITY_METER:
-            case CREATIVE_ELECTRICITY_METER:
                 if (itemStack.stackTagCompound != null) {
                     return itemStack.stackTagCompound.getInteger("electricityStored");
                 }
@@ -178,7 +174,6 @@ public class ItemBlockMachine extends ItemBlockSubtyped {
             case ADVANCED_ELECTRICITY_METER:
             case ELITE_ELECTRICITY_METER:
             case ULTIMATE_ELECTRICITY_METER:
-            case CREATIVE_ELECTRICITY_METER:
                 if (itemStack.stackTagCompound == null) {
                     itemStack.setTagCompound(new NBTTagCompound());
                 }

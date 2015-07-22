@@ -8,7 +8,6 @@ tier.Basic=Basic
 tier.Advanced=Advanced
 tier.Elite=Elite
 tier.Ultimate=Ultimate
-tier.Creative=Creative
 
 // Blocks
 tile.ElectricityMeter.name=Electricity Meter
