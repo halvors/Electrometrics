@@ -87,8 +87,12 @@ public class PacketHandler {
         }
 	}
 
+	public static void sendToReceivers(IMessage message, BlockLocation blockLocation) {
+		sendToReceivers(message, new Range(blockLocation));
+	}
+
 	public static void sendToReceivers(IMessage message, TileEntity tileEntity) {
-		sendToReceivers(message, new Range(new BlockLocation(tileEntity)));
+		sendToReceivers(message, new BlockLocation(tileEntity));
 	}
 
 	public static void sendToReceivers(IMessage message, ITileComponent tileComponent) {
