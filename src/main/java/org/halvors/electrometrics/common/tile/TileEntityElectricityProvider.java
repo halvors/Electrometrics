@@ -14,15 +14,15 @@ import java.util.EnumSet;
  * @author halvors
  */
 public abstract class TileEntityElectricityProvider extends TileEntityElectricityReceiver implements IEnergyProvider {
-	TileEntityElectricityProvider(MachineType machineType, int maxEnergy) {
+	protected TileEntityElectricityProvider(MachineType machineType, int maxEnergy) {
 		super(machineType, maxEnergy);
 	}
 
-	TileEntityElectricityProvider(MachineType machineType, int maxEnergy, int maxTransfer) {
+	protected TileEntityElectricityProvider(MachineType machineType, int maxEnergy, int maxTransfer) {
 		super(machineType, maxEnergy, maxTransfer);
 	}
 
-	TileEntityElectricityProvider(MachineType machineType, int maxEnergy, int maxReceive, int maxExtract) {
+	protected TileEntityElectricityProvider(MachineType machineType, int maxEnergy, int maxReceive, int maxExtract) {
 		super(machineType, maxEnergy, maxReceive, maxExtract);
 	}
 
@@ -47,7 +47,7 @@ public abstract class TileEntityElectricityProvider extends TileEntityElectricit
 	}
 
 	@Override
-	EnumSet<ForgeDirection> getReceivingSides() {
+	protected EnumSet<ForgeDirection> getReceivingSides() {
 		EnumSet<ForgeDirection> directions = EnumSet.allOf(ForgeDirection.class);
 		directions.removeAll(getExtractingSides());
 		directions.remove(ForgeDirection.UNKNOWN);
@@ -56,7 +56,7 @@ public abstract class TileEntityElectricityProvider extends TileEntityElectricit
 	}
 
 	@Override
-	EnumSet<ForgeDirection> getExtractingSides() {
+	protected EnumSet<ForgeDirection> getExtractingSides() {
 		return EnumSet.of(ForgeDirection.getOrientation(facing));
 	}
 

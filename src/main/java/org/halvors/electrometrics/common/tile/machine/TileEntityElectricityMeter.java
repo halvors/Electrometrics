@@ -1,4 +1,4 @@
-package org.halvors.electrometrics.common.tile;
+package org.halvors.electrometrics.common.tile.machine;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.relauncher.Side;
@@ -16,6 +16,7 @@ import org.halvors.electrometrics.common.base.tile.ITileOwnable;
 import org.halvors.electrometrics.common.base.tile.ITileRedstoneControl;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketRequestData;
+import org.halvors.electrometrics.common.tile.TileEntityElectricityProvider;
 import org.halvors.electrometrics.common.util.PlayerUtils;
 
 import java.util.EnumSet;
@@ -46,7 +47,7 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 	private RedstoneControlType redstoneControlType = RedstoneControlType.DISABLED;
 
     // The tier of this TileEntity.
-	private Tier.ElectricityMeter tier = Tier.ElectricityMeter.BASIC;
+	private Tier.ElectricityMeter tier;
 
 	// The amount of energy that has passed thru.
 	private double electricityCount;
@@ -167,7 +168,7 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 	}
 
 	@Override
-	EnumSet<ForgeDirection> getExtractingSides() {
+	protected EnumSet<ForgeDirection> getExtractingSides() {
 		return EnumSet.of(ForgeDirection.getOrientation(facing).getRotation(ForgeDirection.DOWN));
 	}
 

@@ -12,7 +12,7 @@ import java.util.List;
 
 public class TileEntityRotatable extends TileEntity implements ITileNetworkable, ITileRotatable {
     // The direction this TileEntity's block is facing.
-    int facing;
+    protected int facing;
 
     // The direction this TileEntity's block is facing, client side.
     private int clientFacing;

@@ -19,20 +19,20 @@ public abstract class TileEntityElectricityStorage extends TileEntityElectricBlo
 	// The internal energy storage.
 	final EnergyStorage storage;
 
-	TileEntityElectricityStorage(MachineType machineType, int maxEnergy) {
+	protected TileEntityElectricityStorage(MachineType machineType, int maxEnergy) {
 		super(machineType);
 
 		storage = new EnergyStorage(maxEnergy);
 	}
 
-    TileEntityElectricityStorage(MachineType machineType, int maxEnergy, int maxReceive, int maxExtract) {
+	protected TileEntityElectricityStorage(MachineType machineType, int maxEnergy, int maxReceive, int maxExtract) {
         this(machineType, maxEnergy);
 
         storage.setMaxReceive(maxReceive);
         storage.setMaxExtract(maxExtract);
     }
 
-	TileEntityElectricityStorage(MachineType machineType, int maxEnergy, int maxTransfer) {
+	protected TileEntityElectricityStorage(MachineType machineType, int maxEnergy, int maxTransfer) {
 		this(machineType, maxEnergy);
 
 		storage.setMaxTransfer(maxTransfer);
