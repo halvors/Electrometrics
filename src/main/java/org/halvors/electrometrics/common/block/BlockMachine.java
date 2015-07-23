@@ -22,7 +22,6 @@ import org.halvors.electrometrics.client.render.DefaultIcon;
 import org.halvors.electrometrics.common.Reference;
 import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.base.Tier;
-import org.halvors.electrometrics.common.base.tile.ITileActiveState;
 import org.halvors.electrometrics.common.base.tile.ITileOwnable;
 import org.halvors.electrometrics.common.base.tile.ITileRedstoneControl;
 import org.halvors.electrometrics.common.item.ItemBlockMachine;

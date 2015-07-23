@@ -1,7 +1,9 @@
 package org.halvors.electrometrics.common.util.location;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import org.halvors.electrometrics.common.tile.TileEntity;
 
 public class Range {
 	private final int dimensionId;
@@ -40,6 +42,14 @@ public class Range {
 		this.maxX = blockLocation.getX() + 1;
 		this.maxY = blockLocation.getY() + 1;
 		this.maxZ = blockLocation.getZ() + 1;
+	}
+
+	public Range(Entity entity) {
+		this(new BlockLocation(entity));
+	}
+
+	public Range(TileEntity tileEntity) {
+		this(new BlockLocation(tileEntity));
 	}
 
 	public static Range getChunkRange(EntityPlayer player) {

@@ -4,6 +4,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import org.halvors.electrometrics.common.tile.TileEntity;
 
 /**
  * ChunkLocation - an integer-based way to keep track of and perform operations on chunks in a Minecraft-based environment. This also takes
@@ -29,16 +30,6 @@ public class ChunkLocation {
 	}
 
 	/**
-	 * Creates a ChunkLocation from an entity based on it's location and dimension.
-	 * @param entity - the entity to get the ChunkLocation object from
-	 */
-	public ChunkLocation(Entity entity) {
-		this.dimensionId = entity.dimension;
-		this.x = ((int) entity.posX) >> 4;
-		this.z = ((int) entity.posZ) >> 4;
-	}
-
-	/**
 	 * Creates a ChunkLocation from a BlockLocation based on it's coordinates and dimension.
 	 * @param blockLocation - the BlockLocation object to get this ChunkLocation from
 	 */
@@ -46,6 +37,18 @@ public class ChunkLocation {
 		this.dimensionId = blockLocation.getDimensionId();
 		this.x = blockLocation.getX() >> 4;
 		this.z = blockLocation.getZ() >> 4;
+	}
+
+	/**
+	 * Creates a ChunkLocation from an entity based on it's location and dimension.
+	 * @param entity - the entity to get the ChunkLocation object from
+	 */
+	public ChunkLocation(Entity entity) {
+		this(new BlockLocation(entity));
+	}
+
+	public ChunkLocation(TileEntity tileEntity) {
+		this(new BlockLocation(tileEntity));
 	}
 
 	/**
