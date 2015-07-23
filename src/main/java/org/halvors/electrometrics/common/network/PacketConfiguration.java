@@ -12,8 +12,8 @@ import org.halvors.electrometrics.common.util.energy.Unit;
  *
  * @author halvors
  */
-public class PacketConfigurationSync implements IMessage, IMessageHandler<PacketConfigurationSync, IMessage> {
-	public PacketConfigurationSync() {
+public class PacketConfiguration implements IMessage {
+	public PacketConfiguration() {
 
 	}
 
@@ -41,8 +41,10 @@ public class PacketConfigurationSync implements IMessage, IMessageHandler<Packet
         dataStream.writeBoolean(Electrometrics.isMekanismIntegrationEnabled);
 	}
 
-	@Override
-	public IMessage onMessage(PacketConfigurationSync message, MessageContext context) {
-		return null;
+	public static class PacketConfigurationMessage implements IMessageHandler<PacketConfiguration, IMessage> {
+		@Override
+		public IMessage onMessage(PacketConfiguration message, MessageContext messageContext) {
+			return null;
+		}
 	}
 }

@@ -1,6 +1,8 @@
 package org.halvors.electrometrics.common.network;
 
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import org.halvors.electrometrics.common.tile.TileEntity;
@@ -45,5 +47,12 @@ class PacketBlockLocation implements IMessage {
 
 	public BlockLocation getBlockLocation() {
 		return blockLocation;
+	}
+
+	public static class PacketBlockLocationMessage implements IMessageHandler<PacketBlockLocation, IMessage> {
+		@Override
+		public IMessage onMessage(PacketBlockLocation message, MessageContext messageContext) {
+			return null;
+		}
 	}
 }

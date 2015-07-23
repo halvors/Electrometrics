@@ -5,7 +5,6 @@ import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import org.halvors.electrometrics.common.base.tile.ITileNetworkable;
 import org.halvors.electrometrics.common.tile.TileEntity;
-import org.halvors.electrometrics.common.util.location.BlockLocation;
 
 public class PacketRequestData extends PacketBlockLocation implements IMessage {
 	public PacketRequestData() {
