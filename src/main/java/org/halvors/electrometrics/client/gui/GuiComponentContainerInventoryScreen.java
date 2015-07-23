@@ -67,7 +67,7 @@ public abstract class GuiComponentContainerInventoryScreen extends GuiContainer 
 		for (IComponent component : components) {
 			if (component instanceof IGuiComponent) {
 				IGuiComponent guiComponent = (IGuiComponent) component;
-				guiComponent.renderForeground(xAxis, yAxis);
+				guiComponent.renderForeground(xAxis, yAxis, xSize, ySize);
 			}
 		}
 	}
@@ -93,7 +93,7 @@ public abstract class GuiComponentContainerInventoryScreen extends GuiContainer 
 		for (IComponent component : components) {
 			if (component instanceof IGuiComponent) {
 				IGuiComponent guiComponent = (IGuiComponent) component;
-				guiComponent.renderBackground(xAxis, yAxis, guiWidth, guiHeight);
+				guiComponent.renderBackground(xAxis, yAxis, guiWidth, guiHeight, xSize, ySize);
 			}
 		}
 	}

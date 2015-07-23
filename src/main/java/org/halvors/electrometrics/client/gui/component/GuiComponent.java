@@ -28,12 +28,12 @@ public abstract class GuiComponent implements IGuiComponent {
 	}
 
     @Override
-    public void renderBackground(int xAxis, int yAxis, int guiWidth, int guiHeight) {
+    public void renderBackground(int xAxis, int yAxis, int guiWidth, int guiHeight, int guiWidthSize, int guiHeightSize) {
         game.renderEngine.bindTexture(defaultResource);
     }
 
     @Override
-    public void renderForeground(int xAxis, int yAxis) {
+    public void renderForeground(int xAxis, int yAxis, int xSize, int ySize) {
         game.renderEngine.bindTexture(defaultResource);
     }
 

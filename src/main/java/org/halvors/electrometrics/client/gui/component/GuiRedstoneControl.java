@@ -25,35 +25,40 @@ public class GuiRedstoneControl<T extends TileEntity & ITileRedstoneControl & IT
 
 	@Override
 	public Rectangle4i getBounds(int guiWidth, int guiHeight) {
-		return new Rectangle4i(guiWidth + 176, guiHeight + 138, 26, 26);
+		return new Rectangle4i(guiWidth/* + 176*/, guiHeight - 26 - 2/* + 138*/, 26, 26);
 	}
 
 	@Override
-	public void renderBackground(int xAxis, int yAxis, int guiWidth, int guiHeight) {
-		game.renderEngine.bindTexture(resource);
+	public void renderBackground(int xAxis, int yAxis, int guiWidth, int guiHeight, int xSize, int ySize) {
+        int x = guiWidth + xSize;
+        int y = guiHeight + ySize - 26 - 2;
+        int renderX = 26 + (18 * tileEntity.getControlType().ordinal());
 
-		gui.drawTexturedRect(guiWidth + 176, guiHeight + 138, 0, 0, 26, 26);
+        game.renderEngine.bindTexture(resource);
+        gui.drawTexturedRect(x, y, 0, 0, 26, 26);
 
-		int renderX = 26 + (18 * tileEntity.getControlType().ordinal());
-
-		if (xAxis >= 179 && xAxis <= 197 && yAxis >= 142 && yAxis <= 160) {
-			gui.drawTexturedRect(guiWidth + 179, guiHeight + 142, renderX, 0, 18, 18);
+		if (xAxis >= x + 3 && xAxis <= x + 21 && yAxis >= y + 4 && yAxis <= y + 22) {
+			gui.drawTexturedRect(x + 3, y + 4, renderX, 0, 18, 18);
 		} else {
-			gui.drawTexturedRect(guiWidth + 179, guiHeight + 142, renderX, 18, 18, 18);
-		}
+			gui.drawTexturedRect(x + 3, y + 4, renderX, 18, 18, 18);
+        }
 
-        super.renderBackground(xAxis, yAxis, guiWidth, guiHeight);
+        super.renderBackground(xAxis, yAxis, guiWidth, guiHeight, xSize, ySize);
 	}
 
 	@Override
-	public void renderForeground(int xAxis, int yAxis) {
-		game.renderEngine.bindTexture(resource);
+	public void renderForeground(int xAxis, int yAxis, int xSize, int ySize) {
+        int x = xSize;
+        int y = ySize - 26 - 2;
 
-		if (xAxis >= 179 && xAxis <= 197 && yAxis >= 142 && yAxis <= 160) {
+        game.renderEngine.bindTexture(resource);
+
+        if (xAxis >= x + 3 && xAxis <= x + 21 && yAxis >= y + 4 && yAxis <= y + 22) {
+		//if (xAxis >= 179 && xAxis <= 197 && yAxis >= 142 && yAxis <= 160) {
 			displayTooltip(tileEntity.getControlType().getDisplay(), xAxis, yAxis);
 		}
 
-        super.renderForeground(xAxis, yAxis);
+        super.renderForeground(xAxis, yAxis, xSize, ySize);
 	}
 
 	@Override

@@ -23,13 +23,14 @@ public class GuiEnergyUnitType<T extends TileEntity & ITileNetworkable> extends 
 		this.tileEntity = tileEntity;
 	}
 
-	@Override
-	public Rectangle4i getBounds(int guiWidth, int guiHeight) {
-		return new Rectangle4i(guiWidth + 176, guiHeight + 2, 26, 26);
-	}
+    @Override
+    public Rectangle4i getBounds(int guiWidth, int guiHeight) {
+        return new Rectangle4i(guiWidth, guiHeight + 2, 26, 26);
+    }
 
+    /*
 	@Override
-	public void renderBackground(int xAxis, int yAxis, int guiWidth, int guiHeight) {
+	public void renderBackground(int xAxis, int yAxis, int guiWidth, int guiHeight, int guiWidthSize, int guiHeightSize) {
 		game.renderEngine.bindTexture(resource);
 
 		gui.drawTexturedRect(guiWidth + 176, guiHeight + 2, 0, 0, 26, 26);
@@ -42,18 +43,36 @@ public class GuiEnergyUnitType<T extends TileEntity & ITileNetworkable> extends 
 			gui.drawTexturedRect(guiWidth + 179, guiHeight + 6, renderX, 18, 18, 18);
 		}
 
-		super.renderBackground(xAxis, yAxis, guiWidth, guiHeight);
+		super.renderBackground(xAxis, yAxis, guiWidth, guiHeight, guiWidthSize, guiHeightSize);
 	}
+	*/
+
+    @Override
+    public void renderBackground(int xAxis, int yAxis, int guiWidth, int guiHeight, int xSize, int ySize) {
+        Rectangle4i bounds = getBounds(guiWidth + xSize, guiHeight);
+        int renderX = 26 + (18 * Electrometrics.energyUnitType.ordinal());
+
+        game.renderEngine.bindTexture(resource);
+        gui.drawTexturedRect(bounds.getX1(), bounds.getY1(), 0, 0, 26, 26);
+
+        if (xAxis >= bounds.getX1() + 3 && xAxis <= bounds.getX1() + 21 && yAxis >= bounds.getY1() + 4 && yAxis <= bounds.getY1() + 22) {
+            gui.drawTexturedRect(bounds.getX1() + 3, bounds.getY1() + 4, renderX, 0, 18, 18);
+        } else {
+            gui.drawTexturedRect(bounds.getX1() + 3, bounds.getY1() + 4, renderX, 18, 18, 18);
+        }
+
+        super.renderBackground(xAxis, yAxis, guiWidth, guiHeight, xSize, ySize);
+    }
 
 	@Override
-	public void renderForeground(int xAxis, int yAxis) {
+	public void renderForeground(int xAxis, int yAxis, int xSize, int ySize) {
 		game.renderEngine.bindTexture(resource);
 
         if (xAxis >= 179 && xAxis <= 197 && yAxis >= 6 && yAxis <= 24) {
 			displayTooltip(Electrometrics.energyUnitType.getName(), xAxis, yAxis);
 		}
 
-		super.renderForeground(xAxis, yAxis);
+		super.renderForeground(xAxis, yAxis, xSize, ySize);
 	}
 
 	@Override

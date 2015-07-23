@@ -9,9 +9,9 @@ import org.halvors.electrometrics.common.component.IComponent;
 public interface IGuiComponent extends IComponent {
 	Rectangle4i getBounds(int guiWidth, int guiHeight);
 
-	void renderBackground(int xAxis, int yAxis, int guiWidth, int guiHeight);
+	void renderBackground(int xAxis, int yAxis, int guiWidth, int guiHeight, int xSize, int ySize);
 
-	void renderForeground(int xAxis, int yAxis);
+	void renderForeground(int xAxis, int yAxis, int xSize, int ySize);
 
 	void preMouseClicked(int xAxis, int yAxis, int button);
 

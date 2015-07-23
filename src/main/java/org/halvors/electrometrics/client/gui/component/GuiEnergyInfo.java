@@ -22,21 +22,21 @@ public class GuiEnergyInfo extends GuiComponent implements IGuiComponent {
 	}
 
 	@Override
-	public void renderBackground(int xAxis, int yAxis, int guiWidth, int guiHeight) {
+	public void renderBackground(int xAxis, int yAxis, int guiWidth, int guiHeight, int xSize, int ySize) {
 		game.renderEngine.bindTexture(resource);
 
 		gui.drawTexturedRect(guiWidth - 26, guiHeight + 138, 0, 0, 26, 26);
 
-        super.renderBackground(xAxis, yAxis, guiWidth, guiHeight);
+        super.renderBackground(xAxis, yAxis, guiWidth, guiHeight, xSize, ySize);
 	}
 
 	@Override
-	public void renderForeground(int xAxis, int yAxis) {
+	public void renderForeground(int xAxis, int yAxis, int xSize, int ySize) {
 		if (xAxis >= -21 && xAxis <= -3 && yAxis >= 142 && yAxis <= 160) {
 			displayTooltips(infoHandler.getInfo(), xAxis, yAxis);
 		}
 
-        super.renderForeground(xAxis, yAxis);
+        super.renderForeground(xAxis, yAxis, xSize, ySize);
 	}
 
 	@Override

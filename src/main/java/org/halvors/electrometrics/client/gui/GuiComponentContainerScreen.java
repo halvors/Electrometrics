@@ -24,12 +24,12 @@ public abstract class GuiComponentContainerScreen extends GuiScreen implements I
 	static final Minecraft game = Minecraft.getMinecraft();
 
 	final Set<IComponent> components = new HashSet<>();
-	final ResourceLocation defaultResource = ResourceUtils.getResource(ResourceType.GUI, "Screen.png");
+	final ResourceLocation defaultResource = ResourceUtils.getResource(ResourceType.GUI, "XScreen.png");
 	final TileEntity tileEntity;
 
 	// This is not present by default in GuiComponentContainerScreen as it is in GuiComponentContainerInventoryScreen.
 	final int xSize = 176;
-	final int ySize = 166;
+	final int ySize = 83; // 166;
 
 	private int guiLeft;
 	private int guiTop;
@@ -104,7 +104,7 @@ public abstract class GuiComponentContainerScreen extends GuiScreen implements I
 		for (IComponent component : components) {
 			if (component instanceof IGuiComponent) {
 				IGuiComponent guiComponent = (IGuiComponent) component;
-				guiComponent.renderForeground(xAxis, yAxis);
+				guiComponent.renderForeground(xAxis, yAxis, xSize, ySize);
 			}
 		}
 	}
@@ -125,7 +125,7 @@ public abstract class GuiComponentContainerScreen extends GuiScreen implements I
 		for (IComponent component : components) {
 			if (component instanceof IGuiComponent) {
 				IGuiComponent guiComponent = (IGuiComponent) component;
-				guiComponent.renderBackground(xAxis, yAxis, guiWidth, guiHeight);
+				guiComponent.renderBackground(xAxis, yAxis, guiWidth, guiHeight, xSize, ySize);
 			}
 		}
 	}

@@ -65,7 +65,7 @@ public class GuiElectricityMeter extends GuiComponentContainerScreen {
 		int guiHeight = (height - ySize) / 2;
 
 		// Create buttons.
-		GuiButton resetButton = new GuiButton(0, guiWidth + 110, guiHeight + 60, 60, 20, LanguageUtils.translate("gui.reset"));
+		GuiButton resetButton = new GuiButton(0, guiWidth + 110, guiHeight + 68, 60, 20, LanguageUtils.translate("gui.reset"));
 
 		// If this has a owner, restrict the reset button to that player.
 		if (tileEntity instanceof ITileOwnable) {
@@ -108,15 +108,15 @@ public class GuiElectricityMeter extends GuiComponentContainerScreen {
 			String storedEnergy = EnergyUtils.getEnergyDisplay(tileEntityElectricityMeter.getStorage().getEnergyStored());
 			String maxOutput = EnergyUtils.getEnergyDisplay(tileEntityElectricityMeter.getStorage().getMaxEnergyStored());
 
-			fontRendererObj.drawString(LanguageUtils.translate("gui.measured") + ":", 8, ySize - 140, 0x404040);
+			fontRendererObj.drawString(LanguageUtils.translate("gui.measured") + ":", 8, ySize/* - 140*/, 0x404040);
 			fontRendererObj.drawString(measuredEnergy, 72, ySize - 140, 0x404040);
 
 			// Stored energy.
-			fontRendererObj.drawString(LanguageUtils.translate("gui.stored") + ":", 8, ySize - 128, 0x404040);
+			fontRendererObj.drawString(LanguageUtils.translate("gui.stored") + ":", 8, ySize/* - 128*/, 0x404040);
 			fontRendererObj.drawString(storedEnergy, 72, ySize - 128, 0x404040);
 
 			// Current output.
-			fontRendererObj.drawString(LanguageUtils.translate("gui.maxOutput") + ":", 8, ySize - 116, 0x404040);
+			fontRendererObj.drawString(LanguageUtils.translate("gui.maxOutput") + ":", 8, ySize/* - 116*/, 0x404040);
 			fontRendererObj.drawString(maxOutput + "/t", 72, ySize - 116, 0x404040);
 
 			if (ticker == 0) {
