@@ -28,6 +28,7 @@ import org.halvors.electrometrics.common.item.ItemBlockMachine;
 import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.tile.TileEntityElectricBlock;
 import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
+import org.halvors.electrometrics.common.util.LanguageUtils;
 import org.halvors.electrometrics.common.util.MachineUtils;
 
 import java.util.List;
@@ -107,10 +108,10 @@ public class BlockMachine extends BlockRotatable {
 			
 			// Display a message the the player clicking this block if not the owner.
 			if (tileEntity instanceof ITileOwnable) {
-				ITileOwnable ownable = (ITileOwnable) tileEntity;
+				ITileOwnable tileOwnable = (ITileOwnable) tileEntity;
 
-				if (!ownable.isOwner(player)) {
-					player.addChatMessage(new ChatComponentText("This block is owned by " + ownable.getOwnerName() + ", you cannot remove this block."));
+				if (!tileOwnable.isOwner(player)) {
+					player.addChatMessage(new ChatComponentText(LanguageUtils.translate("tooltip.blockOwnedBy").replace("%s", tileOwnable.getOwnerName())));
 				}
 			}
 		}
@@ -123,10 +124,10 @@ public class BlockMachine extends BlockRotatable {
 		if (!MachineUtils.hasUsableWrench(player, x, y, z)) {
 			// Check whether or not this ITileOwnable has a owner, if not set the current player as owner.
 			if (tileEntity instanceof ITileOwnable) {
-				ITileOwnable ownable = (ITileOwnable) tileEntity;
+				ITileOwnable tileOwnable = (ITileOwnable) tileEntity;
 
-				if (!ownable.hasOwner()) {
-					ownable.setOwner(player);
+				if (!tileOwnable.hasOwner()) {
+					tileOwnable.setOwner(player);
 				}
 			}
 

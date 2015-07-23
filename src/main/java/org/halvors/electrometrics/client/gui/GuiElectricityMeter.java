@@ -11,6 +11,7 @@ import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketRequestData;
 import org.halvors.electrometrics.common.network.PacketTileEntity;
 import org.halvors.electrometrics.common.tile.TileEntityElectricityMeter;
+import org.halvors.electrometrics.common.util.LanguageUtils;
 import org.halvors.electrometrics.common.util.energy.EnergyUtils;
 
 import java.util.ArrayList;
@@ -44,8 +45,8 @@ public class GuiElectricityMeter extends GuiComponentContainerScreen {
 			@Override
 			public List<String> getInfo() {
 				List<String> list = new ArrayList<>();
-				list.add("Using: " + EnergyUtils.getEnergyDisplay(10) + "/t");
-				list.add("Needed: " + EnergyUtils.getEnergyDisplay(10));
+				list.add(LanguageUtils.translate("gui.using") + ": " + EnergyUtils.getEnergyDisplay(10) + "/t");
+				list.add(LanguageUtils.translate("gui.needed") + ": " + EnergyUtils.getEnergyDisplay(10));
 
 				return list;
 			}
@@ -64,7 +65,7 @@ public class GuiElectricityMeter extends GuiComponentContainerScreen {
 		int guiHeight = (height - ySize) / 2;
 
 		// Create buttons.
-		GuiButton resetButton = new GuiButton(0, guiWidth + 110, guiHeight + 60, 60, 20, "Reset");
+		GuiButton resetButton = new GuiButton(0, guiWidth + 110, guiHeight + 60, 60, 20, LanguageUtils.translate("gui.reset"));
 
 		// If this has a owner, restrict the reset button to that player.
 		if (tileEntity instanceof ITileOwnable) {
@@ -107,15 +108,15 @@ public class GuiElectricityMeter extends GuiComponentContainerScreen {
 			String storedEnergy = EnergyUtils.getEnergyDisplay(tileEntityElectricityMeter.getStorage().getEnergyStored());
 			String maxOutput = EnergyUtils.getEnergyDisplay(tileEntityElectricityMeter.getStorage().getMaxEnergyStored());
 
-			fontRendererObj.drawString("Measured:", 8, ySize - 140, 0x404040);
+			fontRendererObj.drawString(LanguageUtils.translate("gui.measured") + ":", 8, ySize - 140, 0x404040);
 			fontRendererObj.drawString(measuredEnergy, 72, ySize - 140, 0x404040);
 
 			// Stored energy.
-			fontRendererObj.drawString("Stored:", 8, ySize - 128, 0x404040);
+			fontRendererObj.drawString(LanguageUtils.translate("gui.stored") + ":", 8, ySize - 128, 0x404040);
 			fontRendererObj.drawString(storedEnergy, 72, ySize - 128, 0x404040);
 
 			// Current output.
-			fontRendererObj.drawString("Max output:", 8, ySize - 116, 0x404040);
+			fontRendererObj.drawString(LanguageUtils.translate("gui.maxOutput") + ":", 8, ySize - 116, 0x404040);
 			fontRendererObj.drawString(maxOutput + "/t", 72, ySize - 116, 0x404040);
 
 			if (ticker == 0) {

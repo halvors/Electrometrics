@@ -15,12 +15,21 @@ tile.ElectricityMeter.name=电能测量器
 // Items
 item.Multimeter.name=Multimeter
 
+// Gui
+gui.using=Using
+gui.needed=Needed
+gui.reset=Reset
+gui.measured=Measured
+gui.stored=Stored
+gui.maxOutput=Max output
+
 // Tooltip
 tooltip.hold=按住
 tooltip.forDetails=查看详情
 tooltip.noInformation=无可显示的信息.
 tooltip.measuredEnergy=电能测量完成.
 tooltip.storedEnergy=存储能量
+tooltip.blockOwnedBy=This block is owned by %s, you cannot remove this block.
 
 // Colors
 color.black=Black
