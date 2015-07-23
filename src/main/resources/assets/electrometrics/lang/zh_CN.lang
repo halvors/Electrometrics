@@ -13,15 +13,15 @@ tier.Ultimate=终极
 tile.ElectricityMeter.name=电能测量器
 
 // Items
-item.Multimeter.name=Multimeter
+item.Multimeter.name=万用表
 
 // Gui
-gui.using=Using
-gui.needed=Needed
-gui.reset=Reset
+gui.using=耗能
+gui.needed=需求
+gui.reset=重置
 gui.measured=Measured
-gui.stored=Stored
-gui.maxOutput=Max output
+gui.stored=存储能量
+gui.maxOutput=最高输出
 
 // Tooltip
 tooltip.hold=按住
@@ -29,24 +29,24 @@ tooltip.forDetails=查看详情
 tooltip.noInformation=无可显示的信息.
 tooltip.measuredEnergy=电能测量完成.
 tooltip.storedEnergy=存储能量
-tooltip.blockOwnedBy=This block is owned by %s, you cannot remove this block.
+tooltip.blockOwnedBy=该方块的所有者是 %s, 你不能破坏它.
 
 // Colors
-color.black=Black
-color.darkBlue=Dark Blue
-color.darkGreen=Dark Green
-color.darkAqua=Dark Aqua
-color.darkRed=Dark Red
-color.purple=Purple
-color.orange=Orange
-color.grey=Grey
-color.darkGrey=Dark Grey
-color.indigo=Indigo
-color.brightGreen=Bright Green
-color.aqua=Aqua
-color.red=Red
-color.pink=Pink
-color.yellow=Yellow
-color.white=White
-color.brown=Brown
-color.brightPink=Bright Pink
+color.black=黑色
+color.darkBlue=深蓝色
+color.darkGreen=深绿色
+color.darkAqua=墨蓝色
+color.darkRed=深红色
+color.purple=紫色
+color.orange=橙色
+color.grey=灰色
+color.darkGrey=深灰色
+color.indigo=靛蓝色
+color.brightGreen=亮绿色
+color.aqua=水蓝色
+color.red=红色
+color.pink=粉色
+color.yellow=黄色
+color.white=白色
+color.brown=棕色
+color.brightPink=亮粉红色
