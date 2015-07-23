@@ -18,9 +18,9 @@ public interface ITileNetworkable {
 
 	/**
 	 * Gets a list of data this tile entity keeps synchronized with the client.
-	 * @param list - list of objects
+	 * @param objects - list of objects
 	 * @return List<Object>
 	 */
-	List<Object> getPacketData(List<Object> list);
+	List<Object> getPacketData(List<Object> objects);
 }
 

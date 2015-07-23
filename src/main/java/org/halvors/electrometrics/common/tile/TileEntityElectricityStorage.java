@@ -67,12 +67,12 @@ public abstract class TileEntityElectricityStorage extends TileEntityElectricBlo
 	}
 
 	@Override
-	public List<Object> getPacketData(List<Object> list) {
-		super.getPacketData(list);
+	public List<Object> getPacketData(List<Object> objects) {
+		super.getPacketData(objects);
 
-		list.add(storage.getEnergyStored());
+		objects.add(storage.getEnergyStored());
 
-		return list;
+		return objects;
 	}
 
 	public EnergyStorage getStorage() {

@@ -140,18 +140,18 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 	}
 
 	@Override
-	public List<Object> getPacketData(List<Object> list) {
-		super.getPacketData(list);
+	public List<Object> getPacketData(List<Object> objects) {
+		super.getPacketData(objects);
 
-		list.add(isActive);
-		list.add(ownerUUID != null ? ownerUUID.getMostSignificantBits() : 0);
-		list.add(ownerUUID != null ? ownerUUID.getLeastSignificantBits() : 0);
-		list.add(ownerName != null ? ownerName : "");
-		list.add(redstoneControlType.ordinal());
-		list.add(tier.ordinal());
-		list.add(electricityCount);
+		objects.add(isActive);
+		objects.add(ownerUUID != null ? ownerUUID.getMostSignificantBits() : 0);
+		objects.add(ownerUUID != null ? ownerUUID.getLeastSignificantBits() : 0);
+		objects.add(ownerName != null ? ownerName : "");
+		objects.add(redstoneControlType.ordinal());
+		objects.add(tier.ordinal());
+		objects.add(electricityCount);
 
-		return list;
+		return objects;
 	}
 
 	@Override

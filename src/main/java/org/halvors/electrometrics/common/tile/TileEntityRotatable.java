@@ -61,10 +61,10 @@ public class TileEntityRotatable extends TileEntity implements ITileNetworkable,
     }
 
     @Override
-    public List<Object> getPacketData(List<Object> list) {
-        list.add(facing);
+    public List<Object> getPacketData(List<Object> objects) {
+        objects.add(facing);
 
-        return list;
+        return objects;
     }
 
     @Override
