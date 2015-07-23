@@ -2,6 +2,8 @@ package org.halvors.electrometrics.common.network;
 
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.Entity;
+import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.util.location.BlockLocation;
 
 /**
@@ -18,6 +20,14 @@ class PacketBlockLocation implements IMessage {
 
 	PacketBlockLocation(BlockLocation blockLocation) {
 		this.blockLocation = blockLocation;
+	}
+
+	PacketBlockLocation(Entity entity) {
+		this(new BlockLocation(entity));
+	}
+
+	PacketBlockLocation(TileEntity tileEntity) {
+		this(new BlockLocation(tileEntity));
 	}
 
 	@Override
