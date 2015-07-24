@@ -16,30 +16,33 @@ public class GuiOwnerInfo extends GuiComponent implements IGuiComponent {
 	}
 
 	@Override
-	public void renderBackground(int xAxis, int yAxis, int guiWidth, int guiHeight, int guiWidthSize, int guiHeightSize) {
+	public void renderBackground(int xAxis, int yAxis, int xOrigin, int yOrigin, int guiWidth, int guiHeight) {
 		game.renderEngine.bindTexture(resource);
 
-		gui.drawTexturedRect(guiWidth - 26, guiHeight + 2, 0, 0, 26, 26);
+		gui.drawTexturedRect(xOrigin - 26, yOrigin + 2, 0, 0, 26, 26);
 
-		super.renderBackground(xAxis, yAxis, guiWidth, guiHeight, guiWidthSize, guiHeightSize);
+		super.renderBackground(xAxis, yAxis, xOrigin, yOrigin, guiWidth, guiHeight);
 	}
 
 	@Override
-	public void renderForeground(int xAxis, int yAxis, int xSize, int ySize) {
-		if (xAxis >= -21 && xAxis <= -3 && yAxis >= 6 && yAxis <= 24) {
+	public void renderForeground(int xAxis, int yAxis, int guiWidth, int guiHeight) {
+		int x = -26 + 3;
+		int y = 2 + 3;
+
+		if (xAxis >= x && xAxis <= x + 21 && yAxis >= y && yAxis <= y + 19) {
 			displayTooltips(infoHandler.getInfo(), xAxis, yAxis);
 		}
 
-		super.renderForeground(xAxis, yAxis, xSize, ySize);
+		super.renderForeground(xAxis, yAxis, guiWidth, guiHeight);
 	}
 
 	@Override
-	public void preMouseClicked(int xAxis, int yAxis, int xSize, int ySize, int button) {
+	public void preMouseClicked(int xAxis, int yAxis, int guiWidth, int guiHeight, int button) {
 
 	}
 
 	@Override
-	public void mouseClicked(int xAxis, int yAxis, int xSize, int ySize, int button) {
+	public void mouseClicked(int xAxis, int yAxis, int guiWidth, int guiHeight, int button) {
 
 	}
 
@@ -53,4 +56,3 @@ public class GuiOwnerInfo extends GuiComponent implements IGuiComponent {
 
 	}
 }
-
