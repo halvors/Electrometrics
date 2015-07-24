@@ -24,12 +24,12 @@ public class GuiComponentContainerScreen extends GuiScreen implements IGui {
 	static final Minecraft game = Minecraft.getMinecraft();
 
     protected final Set<IComponent> components = new HashSet<>();
-    protected final ResourceLocation defaultResource = ResourceUtils.getResource(ResourceType.GUI, "XScreen.png");
+    protected final ResourceLocation defaultResource = ResourceUtils.getResource(ResourceType.GUI, "Screen.png");
     protected final TileEntity tileEntity;
 
 	// This is not present by default in GuiComponentContainerScreen as it is in GuiComponentContainerInventoryScreen.
 	protected final int xSize = 176;
-    protected int ySize = 100;
+    protected final int ySize = 100;
 
 	private int guiLeft;
 	private int guiTop;
