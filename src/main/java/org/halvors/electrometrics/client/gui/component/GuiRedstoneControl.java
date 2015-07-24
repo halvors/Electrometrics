@@ -4,7 +4,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.util.ResourceLocation;
 import org.halvors.electrometrics.client.gui.IGui;
-import org.halvors.electrometrics.client.render.Rectangle4i;
 import org.halvors.electrometrics.client.sound.SoundHandler;
 import org.halvors.electrometrics.common.base.RedstoneControlType;
 import org.halvors.electrometrics.common.base.tile.ITileNetworkable;
@@ -24,20 +23,15 @@ public class GuiRedstoneControl<T extends TileEntity & ITileRedstoneControl & IT
 	}
 
 	@Override
-	public Rectangle4i getBounds(int guiWidth, int guiHeight) {
-		return new Rectangle4i(guiWidth/* + 176*/, guiHeight - 26 - 2/* + 138*/, 26, 26);
-	}
-
-	@Override
 	public void renderBackground(int xAxis, int yAxis, int guiWidth, int guiHeight, int xSize, int ySize) {
 		int x = guiWidth + xSize;
-		int y = guiHeight + ySize - 26 - 2;
+		int y = (guiHeight + ySize) - (26 - 2);
 		int renderX = 26 + (18 * tileEntity.getControlType().ordinal());
 
 		game.renderEngine.bindTexture(resource);
 		gui.drawTexturedRect(x, y, 0, 0, 26, 26);
 
-		if (xAxis >= x + 3 && xAxis <= x + 21 && yAxis >= y + 4 && yAxis <= y + 22) {
+		if (isInBounds(xAxis, yAxis, xSize, ySize)) {
 			gui.drawTexturedRect(x + 3, y + 4, renderX, 0, 18, 18);
 		} else {
 			gui.drawTexturedRect(x + 3, y + 4, renderX, 18, 18, 18);
@@ -48,13 +42,9 @@ public class GuiRedstoneControl<T extends TileEntity & ITileRedstoneControl & IT
 
 	@Override
 	public void renderForeground(int xAxis, int yAxis, int xSize, int ySize) {
-		int x = xSize;
-		int y = ySize - 26 - 2;
-
 		game.renderEngine.bindTexture(resource);
 
-		if (xAxis >= x + 3 && xAxis <= x + 21 && yAxis >= y + 4 && yAxis <= y + 22) {
-		//if (xAxis >= 179 && xAxis <= 197 && yAxis >= 142 && yAxis <= 160) {
+		if (isInBounds(xAxis, yAxis, xSize, ySize)) {
 			displayTooltip(tileEntity.getControlType().getDisplay(), xAxis, yAxis);
 		}
 
@@ -62,15 +52,17 @@ public class GuiRedstoneControl<T extends TileEntity & ITileRedstoneControl & IT
 	}
 
 	@Override
-	public void preMouseClicked(int xAxis, int yAxis, int button) {
+	public void preMouseClicked(int xAxis, int yAxis, int xSize, int ySize, int button) {
 
 	}
 
 	@Override
-	public void mouseClicked(int xAxis, int yAxis, int button) {
+	public void mouseClicked(int xAxis, int yAxis, int xSize, int ySize, int button) {
 		switch (button) {
 			case 0:
-				if (xAxis >= 179 && xAxis <= 197 && yAxis >= 142 && yAxis <= 160) {
+				game.renderEngine.bindTexture(resource);
+
+				if (isInBounds(xAxis, yAxis, xSize, ySize)) {
 					RedstoneControlType current = tileEntity.getControlType();
 					int ordinalToSet = current.ordinal() < (RedstoneControlType.values().length - 1) ? current.ordinal() + 1 : 0;
 
@@ -98,5 +90,12 @@ public class GuiRedstoneControl<T extends TileEntity & ITileRedstoneControl & IT
 	@Override
 	public void mouseMovedOrUp(int x, int y, int type) {
 
+	}
+
+	private boolean isInBounds(int xAxis, int yAxis, int xSize, int ySize) {
+		int x = xSize;
+		int y = ySize - 26 - 2;
+
+		return xAxis >= x + 3 && xAxis <= x + 21 && yAxis >= y + 4 && yAxis <= y + 22;
 	}
 }
