@@ -4,7 +4,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.IIcon;
-import org.halvors.electrometrics.common.util.LanguageUtils;
 
 import java.util.List;
 
