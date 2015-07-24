@@ -13,11 +13,11 @@ import org.halvors.electrometrics.common.network.PacketTileEntity;
 import org.halvors.electrometrics.common.tile.TileEntity;
 
 @SideOnly(Side.CLIENT)
-public class GuiRedstoneControl<T extends TileEntity & ITileRedstoneControl & ITileNetworkable> extends GuiComponent implements IGuiComponent {
+public class GuiRedstoneControl<T extends TileEntity & ITileNetworkable & ITileRedstoneControl> extends GuiComponent implements IGuiComponent {
 	private final T tileEntity;
 
 	public GuiRedstoneControl(IGui gui, T tileEntity, ResourceLocation defaultResource) {
-		super("EnergyUnitType.png", gui, defaultResource);
+		super("RedstoneControl.png", gui, defaultResource);
 
 		this.tileEntity = tileEntity;
 	}
@@ -25,18 +25,16 @@ public class GuiRedstoneControl<T extends TileEntity & ITileRedstoneControl & IT
 	@Override
 	public void renderBackground(int xAxis, int yAxis, int xOrigin, int yOrigin, int guiWidth, int guiHeight) {
 		game.renderEngine.bindTexture(resource);
-
 		gui.drawTexturedRect(xOrigin + guiWidth, yOrigin + guiHeight - 2 - 26, 0, 0, 26, 26);
 
-		int renderX = 26 + (18 * tileEntity.getControlType().ordinal());
+		int x = guiWidth + 4;
+		int y = guiHeight - 2 - 26 + 5;
+        int renderX = 26 + (18 * tileEntity.getControlType().ordinal());
 
-		int x = xOrigin + guiWidth + 3;
-		int y = yOrigin + guiHeight - 2 - 26 + 4;
-
-		if (xAxis >= x && xAxis <= x + 17 && yAxis >= y && yAxis <= y + 17) {
-			gui.drawTexturedRect(x, y, renderX, 0, 18, 18);
+        if (xAxis >= x && xAxis <= x + 15 && yAxis >= y && yAxis <= y + 15) {
+			gui.drawTexturedRect(xOrigin + x - 1, yOrigin + y - 1, renderX, 0, 18, 18);
 		} else {
-			gui.drawTexturedRect(x, y, renderX, 18, 18, 18);
+			gui.drawTexturedRect(xOrigin + x - 1, yOrigin + y - 1, renderX, 18, 18, 18);
 		}
 
 		super.renderBackground(xAxis, yAxis, xOrigin, yOrigin, guiWidth, guiHeight);
@@ -44,15 +42,12 @@ public class GuiRedstoneControl<T extends TileEntity & ITileRedstoneControl & IT
 
 	@Override
 	public void renderForeground(int xAxis, int yAxis, int guiWidth, int guiHeight) {
-		int x = guiWidth + 3;
-		int y = guiHeight - 2 - 26 + 4;
+		int x = guiWidth + 4;
+		int y = guiHeight - 2 - 26 + 5;
 
 		game.renderEngine.bindTexture(resource);
 
-		//game.renderEngine.bindTexture(ResourceUtils.getResource(ResourceType.GUI_ELEMENT, "lol"));
-		//gui.drawTexturedRect(x, y, 0, 0, 18, 18);
-
-		if (xAxis >= x && xAxis <= x + 17 && yAxis >= y && yAxis <= y + 17) {
+		if (xAxis >= x && xAxis <= x + 15 && yAxis >= y && yAxis <= y + 15) {
 			displayTooltip(tileEntity.getControlType().getDisplay(), xAxis, yAxis);
 		}
 
@@ -68,10 +63,10 @@ public class GuiRedstoneControl<T extends TileEntity & ITileRedstoneControl & IT
 	public void mouseClicked(int xAxis, int yAxis, int guiWidth, int guiHeight, int button) {
 		switch (button) {
 			case 0:
-				int x = guiWidth + 3;
-				int y = guiHeight - 2 - 26 + 4;
+				int x = guiWidth + 4;
+				int y = guiHeight - 2 - 26 + 5;
 
-				if (xAxis >= x && xAxis <= x + 17 && yAxis >= y && yAxis <= y + 17) {
+				if (xAxis >= x && xAxis <= x + 15 && yAxis >= y && yAxis <= y + 15) {
 					RedstoneControlType current = tileEntity.getControlType();
 					int ordinalToSet = current.ordinal() < (RedstoneControlType.values().length - 1) ? current.ordinal() + 1 : 0;
 
