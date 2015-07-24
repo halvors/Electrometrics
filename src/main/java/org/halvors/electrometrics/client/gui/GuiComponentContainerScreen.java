@@ -29,7 +29,7 @@ public class GuiComponentContainerScreen extends GuiScreen implements IGui {
 
 	// This is not present by default in GuiComponentContainerScreen as it is in GuiComponentContainerInventoryScreen.
 	final int xSize = 176;
-	final int ySize = 83; // 166;
+	final int ySize = 100; // 166;
 
 	private int guiLeft;
 	private int guiTop;
@@ -95,6 +95,27 @@ public class GuiComponentContainerScreen extends GuiScreen implements IGui {
 		}
 	}
 
+    void drawGuiScreenBackgroundLayer(float partialTick, int mouseX, int mouseY) {
+        game.renderEngine.bindTexture(defaultResource);
+
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+
+        int guiWidth = (width - xSize) / 2;
+        int guiHeight = (height - ySize) / 2;
+
+        drawTexturedModalRect(guiWidth, guiHeight, 0, 0, xSize, ySize);
+
+        int xAxis = mouseX - guiWidth;
+        int yAxis = mouseY - guiHeight;
+
+        for (IComponent component : components) {
+            if (component instanceof IGuiComponent) {
+                IGuiComponent guiComponent = (IGuiComponent) component;
+                guiComponent.renderBackground(xAxis, yAxis, guiWidth, guiHeight, xSize, ySize);
+            }
+        }
+    }
+
 	void drawGuiScreenForegroundLayer(int mouseX, int mouseY) {
 		int guiWidth = (width - xSize) / 2;
 		int guiHeight = (height - ySize) / 2;
@@ -108,27 +129,6 @@ public class GuiComponentContainerScreen extends GuiScreen implements IGui {
 			if (component instanceof IGuiComponent) {
 				IGuiComponent guiComponent = (IGuiComponent) component;
 				guiComponent.renderForeground(xAxis, yAxis, xSize, ySize);
-			}
-		}
-	}
-
-	void drawGuiScreenBackgroundLayer(float partialTick, int mouseX, int mouseY) {
-		game.renderEngine.bindTexture(defaultResource);
-
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-
-		int guiWidth = (width - xSize) / 2;
-		int guiHeight = (height - ySize) / 2;
-
-		drawTexturedModalRect(guiWidth, guiHeight, 0, 0, xSize, ySize);
-
-		int xAxis = mouseX - guiWidth;
-		int yAxis = mouseY - guiHeight;
-
-		for (IComponent component : components) {
-			if (component instanceof IGuiComponent) {
-				IGuiComponent guiComponent = (IGuiComponent) component;
-				guiComponent.renderBackground(xAxis, yAxis, guiWidth, guiHeight, xSize, ySize);
 			}
 		}
 	}

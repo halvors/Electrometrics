@@ -54,6 +54,28 @@ public class GuiComponentContainerInventoryScreen extends GuiContainer implement
 		}
 	}
 
+    @Override
+    protected void drawGuiContainerBackgroundLayer(float partialTick, int mouseX, int mouseY) {
+        game.renderEngine.bindTexture(defaultResource);
+
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+
+        int guiWidth = (width - xSize) / 2;
+        int guiHeight = (height - ySize) / 2;
+
+        drawTexturedModalRect(guiWidth, guiHeight, 0, 0, xSize, ySize);
+
+        int xAxis = mouseX - guiWidth;
+        int yAxis = mouseY - guiHeight;
+
+        for (IComponent component : components) {
+            if (component instanceof IGuiComponent) {
+                IGuiComponent guiComponent = (IGuiComponent) component;
+                guiComponent.renderBackground(xAxis, yAxis, guiWidth, guiHeight, xSize, ySize);
+            }
+        }
+    }
+
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
@@ -77,28 +99,6 @@ public class GuiComponentContainerInventoryScreen extends GuiContainer implement
 
 	protected boolean isMouseOverSlot(Slot slot, int mouseX, int mouseY) {
 		return func_146978_c(slot.xDisplayPosition, slot.yDisplayPosition, 16, 16, mouseX, mouseY); // isPointInRegion
-	}
-
-	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTick, int mouseX, int mouseY) {
-		game.renderEngine.bindTexture(defaultResource);
-
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-
-		int guiWidth = (width - xSize) / 2;
-		int guiHeight = (height - ySize) / 2;
-
-		drawTexturedModalRect(guiWidth, guiHeight, 0, 0, xSize, ySize);
-
-		int xAxis = mouseX - guiWidth;
-		int yAxis = mouseY - guiHeight;
-
-		for (IComponent component : components) {
-			if (component instanceof IGuiComponent) {
-				IGuiComponent guiComponent = (IGuiComponent) component;
-				guiComponent.renderBackground(xAxis, yAxis, guiWidth, guiHeight, xSize, ySize);
-			}
-		}
 	}
 
 	@Override
