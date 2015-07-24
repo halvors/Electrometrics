@@ -104,7 +104,6 @@ public class GuiElectricityMeter extends GuiComponentContainerScreen {
 			// Formatting energy to the correct energy unit.
 			String measuredEnergy = EnergyUtils.getEnergyDisplay(tileEntityElectricityMeter.getElectricityCount());
 			String storedEnergy = EnergyUtils.getEnergyDisplay(tileEntityElectricityMeter.getStorage().getEnergyStored());
-			String maxOutput = EnergyUtils.getEnergyDisplay(tileEntityElectricityMeter.getTier().getMaxTransfer());
 
 			drawString(LanguageUtils.translate("gui.measured") + ":", (xSize / 2) - 64, (ySize / 2) - 24);
 			drawString(measuredEnergy, 72, ySize - 140);
@@ -112,10 +111,6 @@ public class GuiElectricityMeter extends GuiComponentContainerScreen {
 			// Stored energy.
 			drawString(LanguageUtils.translate("gui.stored") + ":", (xSize / 2) - 64, (ySize / 2) - 12);
 			drawString(storedEnergy, 72, ySize - 128);
-
-			// Current output.
-			drawString(LanguageUtils.translate("gui.maxOutput") + ":", (xSize / 2) - 64, (ySize / 2));
-			drawString(maxOutput + "/t", 72, ySize - 116);
 
 			if (ticker == 0) {
 				ticker = 5;
