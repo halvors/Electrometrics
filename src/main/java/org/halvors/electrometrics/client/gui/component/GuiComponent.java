@@ -28,7 +28,7 @@ public abstract class GuiComponent implements IGuiComponent {
 	}
 
 	@Override
-	public void renderBackground(int xAxis, int yAxis, int guiWidth, int guiHeight, int guiWidthSize, int guiHeightSize) {
+	public void renderBackground(int xAxis, int yAxis, int xOrigin, int yOrigin, int guiWidthSize, int guiHeightSize) {
 		game.renderEngine.bindTexture(defaultResource);
 	}
 

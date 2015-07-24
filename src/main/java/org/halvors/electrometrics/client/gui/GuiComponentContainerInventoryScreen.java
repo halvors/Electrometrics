@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Set;
 
 @SideOnly(Side.CLIENT)
-public abstract class GuiComponentContainerInventoryScreen extends GuiContainer implements IGui {
+public class GuiComponentContainerInventoryScreen extends GuiContainer implements IGui {
 	static final Minecraft game = Minecraft.getMinecraft();
 
 	final Set<IComponent> components = new HashSet<>();
@@ -58,11 +58,14 @@ public abstract class GuiComponentContainerInventoryScreen extends GuiContainer 
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 
-		fontRendererObj.drawString(tileEntity.getInventoryName(), (xSize / 2) - (fontRendererObj.getStringWidth(tileEntity.getInventoryName()) / 2), 6, 0x404040);
+		int guiWidth = (width - xSize) / 2;
+		int guiHeight = (height - ySize) / 2;
+
+		fontRendererObj.drawString(tileEntity.getInventoryName(), (xSize / 2) - (fontRendererObj.getStringWidth(tileEntity.getInventoryName()) / 2), guiHeight + 6, 0x404040);
 		fontRendererObj.drawString("Inventory", 8, (ySize - 96) + 2, 0x404040);
 
-		int xAxis = (mouseX - (width - xSize) / 2);
-		int yAxis = (mouseY - (height - ySize) / 2);
+		int xAxis = mouseX - guiWidth;
+		int yAxis = mouseY - guiHeight;
 
 		for (IComponent component : components) {
 			if (component instanceof IGuiComponent) {
@@ -100,8 +103,10 @@ public abstract class GuiComponentContainerInventoryScreen extends GuiContainer 
 
 	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int button) {
-		int xAxis = (mouseX - (width - xSize) / 2);
-		int yAxis = (mouseY - (height - ySize) / 2);
+		int guiWidth = (width - xSize) / 2;
+		int guiHeight = (height - ySize) / 2;
+		int xAxis = mouseX - guiWidth;
+		int yAxis = mouseY - guiHeight;
 
 		for (IComponent component : components) {
 			if (component instanceof IGuiComponent) {
@@ -136,8 +141,10 @@ public abstract class GuiComponentContainerInventoryScreen extends GuiContainer 
 	protected void mouseClickMove(int mouseX, int mouseY, int button, long ticks) {
 		super.mouseClickMove(mouseX, mouseY, button, ticks);
 
-		int xAxis = (mouseX - (width - xSize) / 2);
-		int yAxis = (mouseY - (height - ySize) / 2);
+		int guiWidth = (width - xSize) / 2;
+		int guiHeight = (height - ySize) / 2;
+		int xAxis = mouseX - guiWidth;
+		int yAxis = mouseY - guiHeight;
 
 		for (IComponent component : components) {
 			if (component instanceof IGuiComponent) {
