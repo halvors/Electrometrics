@@ -30,35 +30,35 @@ public class GuiRedstoneControl<T extends TileEntity & ITileRedstoneControl & IT
 
 	@Override
 	public void renderBackground(int xAxis, int yAxis, int guiWidth, int guiHeight, int xSize, int ySize) {
-        int x = guiWidth + xSize;
-        int y = guiHeight + ySize - 26 - 2;
-        int renderX = 26 + (18 * tileEntity.getControlType().ordinal());
+		int x = guiWidth + xSize;
+		int y = guiHeight + ySize - 26 - 2;
+		int renderX = 26 + (18 * tileEntity.getControlType().ordinal());
 
-        game.renderEngine.bindTexture(resource);
-        gui.drawTexturedRect(x, y, 0, 0, 26, 26);
+		game.renderEngine.bindTexture(resource);
+		gui.drawTexturedRect(x, y, 0, 0, 26, 26);
 
 		if (xAxis >= x + 3 && xAxis <= x + 21 && yAxis >= y + 4 && yAxis <= y + 22) {
 			gui.drawTexturedRect(x + 3, y + 4, renderX, 0, 18, 18);
 		} else {
 			gui.drawTexturedRect(x + 3, y + 4, renderX, 18, 18, 18);
-        }
+		}
 
-        super.renderBackground(xAxis, yAxis, guiWidth, guiHeight, xSize, ySize);
+		super.renderBackground(xAxis, yAxis, guiWidth, guiHeight, xSize, ySize);
 	}
 
 	@Override
 	public void renderForeground(int xAxis, int yAxis, int xSize, int ySize) {
-        int x = xSize;
-        int y = ySize - 26 - 2;
+		int x = xSize;
+		int y = ySize - 26 - 2;
 
-        game.renderEngine.bindTexture(resource);
+		game.renderEngine.bindTexture(resource);
 
-        if (xAxis >= x + 3 && xAxis <= x + 21 && yAxis >= y + 4 && yAxis <= y + 22) {
+		if (xAxis >= x + 3 && xAxis <= x + 21 && yAxis >= y + 4 && yAxis <= y + 22) {
 		//if (xAxis >= 179 && xAxis <= 197 && yAxis >= 142 && yAxis <= 160) {
 			displayTooltip(tileEntity.getControlType().getDisplay(), xAxis, yAxis);
 		}
 
-        super.renderForeground(xAxis, yAxis, xSize, ySize);
+		super.renderForeground(xAxis, yAxis, xSize, ySize);
 	}
 
 	@Override

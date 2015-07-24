@@ -30,12 +30,12 @@ import java.util.UUID;
  * @author halvors
  */
 public class TileEntityElectricityMeter extends TileEntityElectricityProvider implements ITileNetworkable, ITileActiveState, ITileOwnable, ITileRedstoneControl {
-    // Whether or not this TileEntity's block is in it's active state.
-    private boolean isActive;
+	// Whether or not this TileEntity's block is in it's active state.
+	private boolean isActive;
 
-    // The client's current active state.
-    @SideOnly(Side.CLIENT)
-    private boolean clientIsActive;
+	// The client's current active state.
+	@SideOnly(Side.CLIENT)
+	private boolean clientIsActive;
 
 	// The UUID of the player owning this.
 	private UUID ownerUUID;
@@ -46,7 +46,7 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 	// The current RedstoneControlType of this TileEntity.
 	private RedstoneControlType redstoneControlType = RedstoneControlType.DISABLED;
 
-    // The tier of this TileEntity.
+	// The tier of this TileEntity.
 	private Tier.ElectricityMeter tier;
 
 	// The amount of energy that has passed thru.
@@ -62,18 +62,18 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 		this.tier = tier;
 	}
 
-    @Override
-    public void validate() {
-        super.validate();
+	@Override
+	public void validate() {
+		super.validate();
 
-        PacketHandler.sendToServer(new PacketRequestData(this));
-    }
+		PacketHandler.sendToServer(new PacketRequestData(this));
+	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbtTagCompound) {
 		super.readFromNBT(nbtTagCompound);
 
-        isActive = nbtTagCompound.getBoolean("isActive");
+		isActive = nbtTagCompound.getBoolean("isActive");
 
 		if (nbtTagCompound.hasKey("ownerUUIDM") && nbtTagCompound.hasKey("ownerUUIDL")) {
 			ownerUUID = new UUID(nbtTagCompound.getLong("ownerUUIDM"), nbtTagCompound.getLong("ownerUUIDL"));
@@ -112,7 +112,7 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 	public void handlePacketData(ByteBuf dataStream) throws Exception {
 		super.handlePacketData(dataStream);
 
-        isActive = dataStream.readBoolean();
+		isActive = dataStream.readBoolean();
 
 		long ownerUUIDMostSignificantBits = dataStream.readLong();
 		long ownerUUIDLeastSignificantBits = dataStream.readLong();
@@ -172,15 +172,15 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 		return EnumSet.of(ForgeDirection.getOrientation(facing).getRotation(ForgeDirection.DOWN));
 	}
 
-    @Override
-    public boolean isActive() {
-        return isActive;
-    }
+	@Override
+	public boolean isActive() {
+		return isActive;
+	}
 
-    @Override
-    public void setActive(boolean isActive) {
-        this.isActive = isActive;
-    }
+	@Override
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
 
 	@Override
 	public boolean hasOwner() {

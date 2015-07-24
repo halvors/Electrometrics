@@ -21,28 +21,28 @@ public enum Unit {
 		ELECTRICAL_UNITS("Electrical-Units", "Eu");
 		*/
 
-    REDSTONE_FLUX("Redstone Flux", "RF"),
-    JOULES("Joule", "J"),
-    MINECRAFT_JOULES("Minecraft Joule", "MJ"),
-    ELECTRICAL_UNITS("Electrical Unit", "EU");
+	REDSTONE_FLUX("Redstone Flux", "RF"),
+	JOULES("Joule", "J"),
+	MINECRAFT_JOULES("Minecraft Joule", "MJ"),
+	ELECTRICAL_UNITS("Electrical Unit", "EU");
 
-    private final String name;
-    private final String symbol;
+	private final String name;
+	private final String symbol;
 
-    Unit(String name, String symbol) {
-        this.name = name;
-        this.symbol = symbol;
-    }
+	Unit(String name, String symbol) {
+		this.name = name;
+		this.symbol = symbol;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public String getSymbol() {
-        return symbol;
-    }
+	public String getSymbol() {
+		return symbol;
+	}
 
-    public String getPlural() {
-        return this.name + "s";
-    }
+	public String getPlural() {
+		return this.name + "s";
+	}
 }

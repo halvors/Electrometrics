@@ -19,26 +19,26 @@ public class PacketConfiguration implements IMessage {
 
 	@Override
 	public void fromBytes(ByteBuf dataStream) {
-        // General.
-        Electrometrics.energyUnitType = Unit.values()[dataStream.readInt()];
+		// General.
+		Electrometrics.energyUnitType = Unit.values()[dataStream.readInt()];
 		Electrometrics.toJoules = dataStream.readDouble();
 		Electrometrics.toMinecraftJoules = dataStream.readDouble();
 		Electrometrics.toElectricalUnits = dataStream.readDouble();
 
-        // Mod integration.
-        Electrometrics.isMekanismIntegrationEnabled = dataStream.readBoolean();
+		// Mod integration.
+		Electrometrics.isMekanismIntegrationEnabled = dataStream.readBoolean();
 	}
 
 	@Override
 	public void toBytes(ByteBuf dataStream) {
-        // General.
-        dataStream.writeInt(Electrometrics.energyUnitType.ordinal());
+		// General.
+		dataStream.writeInt(Electrometrics.energyUnitType.ordinal());
 		dataStream.writeDouble(Electrometrics.toJoules);
 		dataStream.writeDouble(Electrometrics.toMinecraftJoules);
 		dataStream.writeDouble(Electrometrics.toElectricalUnits);
 
-        // Mod integration.
-        dataStream.writeBoolean(Electrometrics.isMekanismIntegrationEnabled);
+		// Mod integration.
+		dataStream.writeBoolean(Electrometrics.isMekanismIntegrationEnabled);
 	}
 
 	public static class PacketConfigurationMessage implements IMessageHandler<PacketConfiguration, IMessage> {

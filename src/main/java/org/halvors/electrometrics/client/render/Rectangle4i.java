@@ -1,10 +1,10 @@
 package org.halvors.electrometrics.client.render;
 
 public class Rectangle4i {
-    private int x;
-    private int y;
-    private int w;
-    private int h;
+	private int x;
+	private int y;
+	private int w;
+	private int h;
 
 	public Rectangle4i() {
 
@@ -17,21 +17,21 @@ public class Rectangle4i {
 		this.h = h;
 	}
 
-    public int getX1() {
-        return x;
-    }
+	public int getX1() {
+		return x;
+	}
 
-    public int getY1() {
-        return y;
-    }
+	public int getY1() {
+		return y;
+	}
 
-    public int getX2() {
-        return x + w - 1;
-    }
+	public int getX2() {
+		return x + w - 1;
+	}
 
-    public int getY2() {
-        return y + h - 1;
-    }
+	public int getY2() {
+		return y + h - 1;
+	}
 
 
 	public int x1() {

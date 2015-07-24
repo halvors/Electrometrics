@@ -65,8 +65,8 @@ public class Electrometrics {
 
 	// Configuration variables.
 
-    // General.
-    public static Unit energyUnitType = Unit.JOULES;
+	// General.
+	public static Unit energyUnitType = Unit.JOULES;
 	public static double toJoules;
 	public static double toMinecraftJoules;
 	public static double toElectricalUnits;
@@ -116,10 +116,10 @@ public class Electrometrics {
 		addTileEntities();
 		addRecipes();
 
-        // Register the proxy as our GuiHandler to NetworkRegistry.
-        NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
+		// Register the proxy as our GuiHandler to NetworkRegistry.
+		NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
 
-        // Mod integration.
+		// Mod integration.
 		logger.log(Level.INFO, "Mekanism integration is " + (isMekanismIntegrationEnabled ? "enabled" : "disabled") + ".");
 	}
 
@@ -155,8 +155,8 @@ public class Electrometrics {
 						"CMC",
 						"III", 'I', Items.iron_ingot, 'U', itemStackCable, 'D', itemMultimeter);
 			}
-        } else {
-            MachineType machineType = MachineType.BASIC_ELECTRICITY_METER;
+		} else {
+			MachineType machineType = MachineType.BASIC_ELECTRICITY_METER;
 
 			GameRegistry.addRecipe(machineType.getItemStack(),
 				"III",

@@ -8,11 +8,11 @@ public enum RedstoneControlType {
 
 	private final String display;
 
-	public String getDisplay() {
-		return display;
+	RedstoneControlType(String display) {
+		this.display = display;
 	}
 
-	RedstoneControlType(String s) {
-		display = s;
+	public String getDisplay() {
+		return display;
 	}
 }

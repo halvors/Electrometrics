@@ -68,7 +68,7 @@ public class PacketHandler {
 	 * @param cuboid - the AABB cuboid to send the packet in
 	 * @param dimId - the dimension the cuboid is in
 	 */
-    public static void sendToCuboid(IMessage message, AxisAlignedBB cuboid, int dimId) {
+	public static void sendToCuboid(IMessage message, AxisAlignedBB cuboid, int dimId) {
 		if (cuboid != null) {
 			for (EntityPlayerMP player : PlayerUtils.getPlayers()) {
 				if (player.dimension == dimId && cuboid.isVecInside(Vec3.createVectorHelper(player.posX, player.posY, player.posZ))) {
@@ -78,12 +78,12 @@ public class PacketHandler {
 		}
 	}
 
-    public static void sendToReceivers(IMessage message, Range range) {
-        for (EntityPlayerMP player : PlayerUtils.getPlayers()) {
-            if (player.dimension == range.getDimensionId() && Range.getChunkRange(player).intersects(range)) {
-                sendTo(message, player);
-            }
-        }
+	public static void sendToReceivers(IMessage message, Range range) {
+		for (EntityPlayerMP player : PlayerUtils.getPlayers()) {
+			if (player.dimension == range.getDimensionId() && Range.getChunkRange(player).intersects(range)) {
+				sendTo(message, player);
+			}
+		}
 	}
 
 	public static void sendToReceivers(IMessage message, TileEntity tileEntity) {

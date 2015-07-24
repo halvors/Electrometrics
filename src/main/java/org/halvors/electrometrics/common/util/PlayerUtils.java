@@ -14,24 +14,24 @@ public class PlayerUtils {
 	 * @return the EntityPlayerMP object.
 	 */
 	public static EntityPlayerMP getPlayerFromUUID(UUID uuid) {
-        for (EntityPlayerMP player : getPlayers()) {
-            if (uuid.equals(player.getPersistentID())) {
-                return player;
-            }
-        }
+		for (EntityPlayerMP player : getPlayers()) {
+			if (uuid.equals(player.getPersistentID())) {
+				return player;
+			}
+		}
 
 		return null;
 	}
 
-    @SuppressWarnings("unchecked")
-    public static List<EntityPlayerMP> getPlayers() {
-        List<EntityPlayerMP> playerList = new ArrayList<>();
-        MinecraftServer server = MinecraftServer.getServer();
+	@SuppressWarnings("unchecked")
+	public static List<EntityPlayerMP> getPlayers() {
+		List<EntityPlayerMP> playerList = new ArrayList<>();
+		MinecraftServer server = MinecraftServer.getServer();
 
-        if (server != null) {
-            return (List<EntityPlayerMP>) server.getConfigurationManager().playerEntityList;
-        }
+		if (server != null) {
+			return (List<EntityPlayerMP>) server.getConfigurationManager().playerEntityList;
+		}
 
-        return playerList;
-    }
+		return playerList;
+	}
 }

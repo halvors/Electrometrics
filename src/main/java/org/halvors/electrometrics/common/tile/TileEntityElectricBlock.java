@@ -10,31 +10,31 @@ import org.halvors.electrometrics.common.network.PacketTileEntity;
  * @author halvors
  */
 public class TileEntityElectricBlock extends TileEntityMachine {
-    // The current and past redstone state.
-    protected boolean isPowered;
-    protected boolean wasPowered;
+	// The current and past redstone state.
+	protected boolean isPowered;
+	protected boolean wasPowered;
 
 	TileEntityElectricBlock(MachineType machineType) {
 		super(machineType);
 	}
 
-    @Override
-    public void updateEntity() {
-        super.updateEntity();
+	@Override
+	public void updateEntity() {
+		super.updateEntity();
 
-        // Update wasPowered to the current isPowered.
-        wasPowered = isPowered;
-    }
+		// Update wasPowered to the current isPowered.
+		wasPowered = isPowered;
+	}
 
-    public void onNeighborChange() {
-        if (!worldObj.isRemote) {
-            boolean redstonePower = worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
+	public void onNeighborChange() {
+		if (!worldObj.isRemote) {
+			boolean redstonePower = worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
 
-            if (isPowered != redstonePower) {
-                isPowered = redstonePower;
+			if (isPowered != redstonePower) {
+				isPowered = redstonePower;
 
-                PacketHandler.sendToReceivers(new PacketTileEntity(this), this);
-            }
-        }
-    }
+				PacketHandler.sendToReceivers(new PacketTileEntity(this), this);
+			}
+		}
+	}
 }

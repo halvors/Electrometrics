@@ -26,11 +26,11 @@ public abstract class TileEntityElectricityStorage extends TileEntityElectricBlo
 	}
 
 	protected TileEntityElectricityStorage(MachineType machineType, int maxEnergy, int maxReceive, int maxExtract) {
-        this(machineType, maxEnergy);
+		this(machineType, maxEnergy);
 
-        storage.setMaxReceive(maxReceive);
-        storage.setMaxExtract(maxExtract);
-    }
+		storage.setMaxReceive(maxReceive);
+		storage.setMaxExtract(maxExtract);
+	}
 
 	protected TileEntityElectricityStorage(MachineType machineType, int maxEnergy, int maxTransfer) {
 		this(machineType, maxEnergy);
@@ -38,12 +38,12 @@ public abstract class TileEntityElectricityStorage extends TileEntityElectricBlo
 		storage.setMaxTransfer(maxTransfer);
 	}
 
-    @Override
-    public void validate() {
-        super.validate();
+	@Override
+	public void validate() {
+		super.validate();
 
-        PacketHandler.sendToServer(new PacketRequestData(this));
-    }
+		PacketHandler.sendToServer(new PacketRequestData(this));
+	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbtTagCompound) {

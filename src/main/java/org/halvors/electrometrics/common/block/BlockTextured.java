@@ -18,7 +18,7 @@ abstract class BlockTextured extends BlockContainer {
 	final IIcon[][] iconList = new IIcon[16][16];
 
 	@SideOnly(Side.CLIENT)
-    DefaultIcon defaultBaseIcon;
+	DefaultIcon defaultBaseIcon;
 
 	BlockTextured(String name, Material material) {
 		super(name, material);

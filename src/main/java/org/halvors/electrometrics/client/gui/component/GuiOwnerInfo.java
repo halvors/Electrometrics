@@ -23,11 +23,11 @@ public class GuiOwnerInfo extends GuiComponent implements IGuiComponent {
 
 	@Override
 	public void renderBackground(int xAxis, int yAxis, int guiWidth, int guiHeight, int guiWidthSize, int guiHeightSize) {
-        game.renderEngine.bindTexture(resource);
+		game.renderEngine.bindTexture(resource);
 
-        gui.drawTexturedRect(guiWidth - 26, guiHeight + 2, 0, 0, 26, 26);
+		gui.drawTexturedRect(guiWidth - 26, guiHeight + 2, 0, 0, 26, 26);
 
-        super.renderBackground(xAxis, yAxis, guiWidth, guiHeight, guiWidthSize, guiHeightSize);
+		super.renderBackground(xAxis, yAxis, guiWidth, guiHeight, guiWidthSize, guiHeightSize);
 	}
 
 	@Override
@@ -36,7 +36,7 @@ public class GuiOwnerInfo extends GuiComponent implements IGuiComponent {
 			displayTooltips(infoHandler.getInfo(), xAxis, yAxis);
 		}
 
-        super.renderForeground(xAxis, yAxis, xSize, ySize);
+		super.renderForeground(xAxis, yAxis, xSize, ySize);
 	}
 
 	@Override

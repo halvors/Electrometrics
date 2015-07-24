@@ -27,7 +27,7 @@ public class GuiEnergyInfo extends GuiComponent implements IGuiComponent {
 
 		gui.drawTexturedRect(guiWidth - 26, guiHeight + 138, 0, 0, 26, 26);
 
-        super.renderBackground(xAxis, yAxis, guiWidth, guiHeight, xSize, ySize);
+		super.renderBackground(xAxis, yAxis, guiWidth, guiHeight, xSize, ySize);
 	}
 
 	@Override
@@ -36,7 +36,7 @@ public class GuiEnergyInfo extends GuiComponent implements IGuiComponent {
 			displayTooltips(infoHandler.getInfo(), xAxis, yAxis);
 		}
 
-        super.renderForeground(xAxis, yAxis, xSize, ySize);
+		super.renderForeground(xAxis, yAxis, xSize, ySize);
 	}
 
 	@Override
