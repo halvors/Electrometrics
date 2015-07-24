@@ -11,6 +11,7 @@ import org.halvors.electrometrics.client.gui.component.IGuiComponent;
 import org.halvors.electrometrics.common.base.ResourceType;
 import org.halvors.electrometrics.common.component.IComponent;
 import org.halvors.electrometrics.common.tile.TileEntity;
+import org.halvors.electrometrics.common.util.LanguageUtils;
 import org.halvors.electrometrics.common.util.ResourceUtils;
 import org.lwjgl.opengl.GL11;
 
@@ -99,7 +100,7 @@ public class GuiComponentContainerScreen extends GuiScreen implements IGui {
 		int guiWidth = (width - xSize) / 2;
 		int guiHeight = (height - ySize) / 2;
 
-		fontRendererObj.drawString(tileEntity.getInventoryName(), (xSize / 2) - (fontRendererObj.getStringWidth(tileEntity.getInventoryName()) / 2), 6, 0x404040);
+		drawString(tileEntity.getInventoryName(), (xSize / 2) - (fontRendererObj.getStringWidth(tileEntity.getInventoryName()) / 2), 6);
 
 		int xAxis = mouseX - guiWidth;
 		int yAxis = mouseY - guiHeight;
@@ -207,6 +208,11 @@ public class GuiComponentContainerScreen extends GuiScreen implements IGui {
 	@Override
 	public void drawTexturedRectFromIcon(int x, int y, IIcon icon, int w, int h) {
 		drawTexturedModelRectFromIcon(x, y, icon, w, h);
+	}
+
+	@Override
+	public void drawString(String text, int x, int y) {
+		fontRendererObj.drawString(text, x, y, 0x404040);
 	}
 
 	@Override

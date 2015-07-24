@@ -4,6 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.IIcon;
+import org.halvors.electrometrics.common.util.LanguageUtils;
 
 import java.util.List;
 
@@ -29,6 +30,8 @@ public interface IGui {
 	 * @param h
 	 */
 	void drawTexturedRectFromIcon(int x, int y, IIcon icon, int w, int h);
+
+	void drawString(String text, int x, int y);
 
 	/**
 	 * Display the specified string as tooltip at the specified location.
