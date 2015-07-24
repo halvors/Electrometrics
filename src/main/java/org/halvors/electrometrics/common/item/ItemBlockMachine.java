@@ -126,10 +126,9 @@ public class ItemBlockMachine extends ItemBlockSubtyped {
 				if (itemStack.stackTagCompound != null) {
 					return itemStack.stackTagCompound.getDouble("electricityCount");
 				}
-
-			default:
-				return 0;
 		}
+
+        return 0;
 	}
 
 	public void setElectricityCount(ItemStack itemStack, double electricityCount) {
@@ -153,17 +152,16 @@ public class ItemBlockMachine extends ItemBlockSubtyped {
 		MachineType machineType = MachineType.getType(itemStack);
 
 		switch (machineType) {
-			case BASIC_ELECTRICITY_METER:
-			case ADVANCED_ELECTRICITY_METER:
-			case ELITE_ELECTRICITY_METER:
-			case ULTIMATE_ELECTRICITY_METER:
-				if (itemStack.stackTagCompound != null) {
-					return itemStack.stackTagCompound.getInteger("electricityStored");
-				}
+            case BASIC_ELECTRICITY_METER:
+            case ADVANCED_ELECTRICITY_METER:
+            case ELITE_ELECTRICITY_METER:
+            case ULTIMATE_ELECTRICITY_METER:
+                if (itemStack.stackTagCompound != null) {
+                    return itemStack.stackTagCompound.getInteger("electricityStored");
+                }
+        }
 
-			default:
-				return 0;
-		}
+        return 0;
 	}
 
 	public void setElectricityStored(ItemStack itemStack, int electricityStored) {
