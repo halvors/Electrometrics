@@ -1,8 +1,9 @@
-package org.halvors.electrometrics.client.gui;
+package org.halvors.electrometrics.client.gui.machine;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.GuiButton;
+import org.halvors.electrometrics.client.gui.GuiComponentContainerScreen;
 import org.halvors.electrometrics.client.gui.component.*;
 import org.halvors.electrometrics.common.base.tile.ITileOwnable;
 import org.halvors.electrometrics.common.network.PacketHandler;
@@ -51,7 +52,7 @@ public class GuiElectricityMeter extends GuiComponentContainerScreen {
 			}
 		}, this, defaultResource));
 
-		components.add(new GuiEnergyUnitType<>(this, tileEntity, defaultResource));
+		components.add(new GuiEnergyUnitType(this, defaultResource));
 		components.add(new GuiRedstoneControl<>(this, tileEntity, defaultResource));
 	}
 
@@ -97,7 +98,7 @@ public class GuiElectricityMeter extends GuiComponentContainerScreen {
 	}
 
 	@Override
-	void drawGuiScreenForegroundLayer(int mouseX, int mouseY) {
+	protected void drawGuiScreenForegroundLayer(int mouseX, int mouseY) {
 		if (tileEntity instanceof TileEntityElectricityMeter) {
 			TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
 
@@ -105,12 +106,15 @@ public class GuiElectricityMeter extends GuiComponentContainerScreen {
 			String measuredEnergy = EnergyUtils.getEnergyDisplay(tileEntityElectricityMeter.getElectricityCount());
 			String storedEnergy = EnergyUtils.getEnergyDisplay(tileEntityElectricityMeter.getStorage().getEnergyStored());
 
-			drawString(LanguageUtils.translate("gui.measured") + ":", (xSize / 2) - 64, (ySize / 2) - 24);
-			drawString(measuredEnergy, 72, ySize - 140);
+            int x = (xSize / 2) - 64;
+            int y = ySize / 2;
+
+			drawString(LanguageUtils.translate("gui.measured") + ":", x, y - 12);
+			drawString(measuredEnergy, x + 64, y - 12);
 
 			// Stored energy.
-			drawString(LanguageUtils.translate("gui.stored") + ":", (xSize / 2) - 64, (ySize / 2) - 12);
-			drawString(storedEnergy, 72, ySize - 128);
+			drawString(LanguageUtils.translate("gui.stored") + ":", x, y);
+			drawString(storedEnergy, x + 64, y);
 
 			if (ticker == 0) {
 				ticker = 5;

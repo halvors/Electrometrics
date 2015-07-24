@@ -6,7 +6,7 @@ import org.halvors.electrometrics.common.component.IComponent;
 
 @SideOnly(Side.CLIENT)
 public interface IGuiComponent extends IComponent {
-	void renderBackground(int xAxis, int yAxis, int xOrigin, int yOrigin, int guiWidth, int guiHeight);
+    void renderBackground(int xAxis, int yAxis, int xOrigin, int yOrigin, int guiWidth, int guiHeight);
 
 	void renderForeground(int xAxis, int yAxis, int guiWidth, int guiHeight);
 

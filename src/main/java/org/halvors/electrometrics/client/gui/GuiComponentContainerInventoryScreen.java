@@ -25,11 +25,11 @@ import java.util.Set;
 public class GuiComponentContainerInventoryScreen extends GuiContainer implements IGui {
 	static final Minecraft game = Minecraft.getMinecraft();
 
-	final Set<IComponent> components = new HashSet<>();
-	final ResourceLocation defaultResource = ResourceUtils.getResource(ResourceType.GUI, "Container.png");
-	final TileEntity tileEntity;
+    protected final Set<IComponent> components = new HashSet<>();
+    protected final ResourceLocation defaultResource = ResourceUtils.getResource(ResourceType.GUI, "Container.png");
+    protected final TileEntity tileEntity;
 
-	GuiComponentContainerInventoryScreen(TileEntity tileEntity, Container container) {
+	protected GuiComponentContainerInventoryScreen(TileEntity tileEntity, Container container) {
 		super(container);
 
 		this.tileEntity = tileEntity;

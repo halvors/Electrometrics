@@ -23,18 +23,18 @@ import java.util.Set;
 public class GuiComponentContainerScreen extends GuiScreen implements IGui {
 	static final Minecraft game = Minecraft.getMinecraft();
 
-	final Set<IComponent> components = new HashSet<>();
-	final ResourceLocation defaultResource = ResourceUtils.getResource(ResourceType.GUI, "XScreen.png");
-	final TileEntity tileEntity;
+    protected final Set<IComponent> components = new HashSet<>();
+    protected final ResourceLocation defaultResource = ResourceUtils.getResource(ResourceType.GUI, "XScreen.png");
+    protected final TileEntity tileEntity;
 
 	// This is not present by default in GuiComponentContainerScreen as it is in GuiComponentContainerInventoryScreen.
-	final int xSize = 176;
-	final int ySize = 100; // 166;
+	protected final int xSize = 176;
+    protected int ySize = 100;
 
 	private int guiLeft;
 	private int guiTop;
 
-	GuiComponentContainerScreen(TileEntity tileEntity) {
+    protected GuiComponentContainerScreen(TileEntity tileEntity) {
 		this.tileEntity = tileEntity;
 	}
 
@@ -95,7 +95,7 @@ public class GuiComponentContainerScreen extends GuiScreen implements IGui {
 		}
 	}
 
-    void drawGuiScreenBackgroundLayer(float partialTick, int mouseX, int mouseY) {
+    protected void drawGuiScreenBackgroundLayer(float partialTick, int mouseX, int mouseY) {
         game.renderEngine.bindTexture(defaultResource);
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -116,7 +116,7 @@ public class GuiComponentContainerScreen extends GuiScreen implements IGui {
         }
     }
 
-	void drawGuiScreenForegroundLayer(int mouseX, int mouseY) {
+	protected void drawGuiScreenForegroundLayer(int mouseX, int mouseY) {
 		int guiWidth = (width - xSize) / 2;
 		int guiHeight = (height - ySize) / 2;
 
