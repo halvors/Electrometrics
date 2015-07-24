@@ -44,8 +44,8 @@ public class GuiElectricityMeter extends GuiComponentContainerScreen {
 			@Override
 			public List<String> getInfo() {
 				List<String> list = new ArrayList<>();
-				list.add(LanguageUtils.translate("gui.using") + ": " + EnergyUtils.getEnergyDisplay(10) + "/t");
-				list.add(LanguageUtils.translate("gui.needed") + ": " + EnergyUtils.getEnergyDisplay(10));
+				list.add(LanguageUtils.translate("gui.stored") + ": " + EnergyUtils.getEnergyDisplay(tileEntity.getStorage().getEnergyStored()));
+				list.add(LanguageUtils.translate("gui.maxOutput") + ": " + EnergyUtils.getEnergyDisplay(tileEntity.getTier().getMaxTransfer()));
 
 				return list;
 			}
@@ -104,18 +104,18 @@ public class GuiElectricityMeter extends GuiComponentContainerScreen {
 			// Formatting energy to the correct energy unit.
 			String measuredEnergy = EnergyUtils.getEnergyDisplay(tileEntityElectricityMeter.getElectricityCount());
 			String storedEnergy = EnergyUtils.getEnergyDisplay(tileEntityElectricityMeter.getStorage().getEnergyStored());
-			String maxOutput = EnergyUtils.getEnergyDisplay(tileEntityElectricityMeter.getStorage().getMaxEnergyStored());
+			String maxOutput = EnergyUtils.getEnergyDisplay(tileEntityElectricityMeter.getTier().getMaxTransfer());
 
-			fontRendererObj.drawString(LanguageUtils.translate("gui.measured") + ":", 8, ySize/* - 140*/, 0x404040);
-			fontRendererObj.drawString(measuredEnergy, 72, ySize - 140, 0x404040);
+			drawString(LanguageUtils.translate("gui.measured") + ":", (xSize / 2) - 64, (ySize / 2) - 24);
+			drawString(measuredEnergy, 72, ySize - 140);
 
 			// Stored energy.
-			fontRendererObj.drawString(LanguageUtils.translate("gui.stored") + ":", 8, ySize/* - 128*/, 0x404040);
-			fontRendererObj.drawString(storedEnergy, 72, ySize - 128, 0x404040);
+			drawString(LanguageUtils.translate("gui.stored") + ":", (xSize / 2) - 64, (ySize / 2) - 12);
+			drawString(storedEnergy, 72, ySize - 128);
 
 			// Current output.
-			fontRendererObj.drawString(LanguageUtils.translate("gui.maxOutput") + ":", 8, ySize/* - 116*/, 0x404040);
-			fontRendererObj.drawString(maxOutput + "/t", 72, ySize - 116, 0x404040);
+			drawString(LanguageUtils.translate("gui.maxOutput") + ":", (xSize / 2) - 64, (ySize / 2));
+			drawString(maxOutput + "/t", 72, ySize - 116);
 
 			if (ticker == 0) {
 				ticker = 5;
