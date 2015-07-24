@@ -35,7 +35,7 @@ public class PacketHandler {
 	}
 
 	public static EntityPlayer getPlayer(MessageContext context) {
-		return context.side.isClient() ? Minecraft.getMinecraft().thePlayer : context.getServerHandler().playerEntity;
+		return context.side.isClient() ? PlayerUtils.getClientPlayer() : context.getServerHandler().playerEntity;
 	}
 
 	public static World getWorld(MessageContext context) {

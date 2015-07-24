@@ -1,5 +1,7 @@
 package org.halvors.electrometrics.common.util;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 
@@ -8,6 +10,10 @@ import java.util.List;
 import java.util.UUID;
 
 public class PlayerUtils {
+	public static EntityPlayer getClientPlayer() {
+		return Minecraft.getMinecraft().thePlayer;
+	}
+
 	/**
 	 * Get a player from it's unique id.
 	 * @param uuid the uuid of the player.
