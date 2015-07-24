@@ -12,6 +12,7 @@ import org.halvors.electrometrics.common.network.PacketRequestData;
 import org.halvors.electrometrics.common.network.PacketTileEntity;
 import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.util.LanguageUtils;
+import org.halvors.electrometrics.common.util.PlayerUtils;
 import org.halvors.electrometrics.common.util.energy.EnergyUtils;
 
 import java.util.ArrayList;
@@ -65,14 +66,13 @@ public class GuiElectricityMeter extends GuiComponentContainerScreen {
 		int guiHeight = (height - ySize) / 2;
 
 		// Create buttons.
-		GuiButton resetButton = new GuiButton(0, guiWidth + 110, guiHeight + 68, 60, 20, LanguageUtils.translate("gui.reset"));
+		GuiButton resetButton = new GuiButton(0, (guiWidth + xSize) - (60 + 6), (guiHeight + ySize) - (20 + 6), 60, 20, LanguageUtils.translate("gui.reset"));
 
 		// If this has a owner, restrict the reset button to that player.
 		if (tileEntity instanceof ITileOwnable) {
 			ITileOwnable ownable = (ITileOwnable) tileEntity;
-			EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 
-			resetButton.enabled = ownable.isOwner(player);
+			resetButton.enabled = ownable.isOwner(PlayerUtils.getClientPlayer());
 		}
 
 		// Add buttons.
