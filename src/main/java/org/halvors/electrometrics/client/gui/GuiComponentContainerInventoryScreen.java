@@ -106,7 +106,7 @@ public abstract class GuiComponentContainerInventoryScreen extends GuiContainer 
 		for (IComponent component : components) {
 			if (component instanceof IGuiComponent) {
 				IGuiComponent guiComponent = (IGuiComponent) component;
-				guiComponent.preMouseClicked(xAxis, yAxis, button);
+				guiComponent.preMouseClicked(xAxis, yAxis, xSize, ySize, button);
 			}
 		}
 
@@ -115,7 +115,7 @@ public abstract class GuiComponentContainerInventoryScreen extends GuiContainer 
 		for (IComponent component : components) {
 			if (component instanceof IGuiComponent) {
 				IGuiComponent guiComponent = (IGuiComponent) component;
-				guiComponent.mouseClicked(xAxis, yAxis, button);
+				guiComponent.mouseClicked(xAxis, yAxis, xSize, ySize, button);
 			}
 		}
 	}

@@ -4,7 +4,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.util.ResourceLocation;
 import org.halvors.electrometrics.client.gui.IGui;
-import org.halvors.electrometrics.client.render.Rectangle4i;
 
 @SideOnly(Side.CLIENT)
 public class GuiEnergyInfo extends GuiComponent implements IGuiComponent {
@@ -14,11 +13,6 @@ public class GuiEnergyInfo extends GuiComponent implements IGuiComponent {
 		super("EnergyInfo.png", gui, defaultResource);
 
 		this.infoHandler = infoHandler;
-	}
-
-	@Override
-	public Rectangle4i getBounds(int guiWidth, int guiHeight) {
-		return new Rectangle4i(guiWidth - 26, guiHeight + 138, 26, 26);
 	}
 
 	@Override
@@ -40,12 +34,12 @@ public class GuiEnergyInfo extends GuiComponent implements IGuiComponent {
 	}
 
 	@Override
-	public void preMouseClicked(int xAxis, int yAxis, int button) {
+	public void preMouseClicked(int xAxis, int yAxis, int xSize, int ySize, int button) {
 
 	}
 
 	@Override
-	public void mouseClicked(int xAxis, int yAxis, int button) {
+	public void mouseClicked(int xAxis, int yAxis, int xSize, int ySize, int button) {
 
 	}
 

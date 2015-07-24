@@ -5,7 +5,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.util.ResourceLocation;
 import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.client.gui.IGui;
-import org.halvors.electrometrics.client.render.Rectangle4i;
 import org.halvors.electrometrics.client.sound.SoundHandler;
 import org.halvors.electrometrics.common.base.tile.ITileNetworkable;
 import org.halvors.electrometrics.common.network.PacketHandler;
@@ -21,11 +20,6 @@ public class GuiEnergyUnitType<T extends TileEntity & ITileNetworkable> extends 
 		super("EnergyDisplay.png", gui, defaultResource);
 
 		this.tileEntity = tileEntity;
-	}
-
-	@Override
-	public Rectangle4i getBounds(int guiWidth, int guiHeight) {
-		return new Rectangle4i(guiWidth, guiHeight + 2, 26, 26);
 	}
 
 	/*
@@ -49,17 +43,18 @@ public class GuiEnergyUnitType<T extends TileEntity & ITileNetworkable> extends 
 
 	@Override
 	public void renderBackground(int xAxis, int yAxis, int guiWidth, int guiHeight, int xSize, int ySize) {
-		Rectangle4i bounds = getBounds(guiWidth + xSize, guiHeight);
+		int x = guiWidth + xSize;
+		int y = guiHeight + 2;
 		int renderX = 26 + (18 * Electrometrics.energyUnitType.ordinal());
 
 		game.renderEngine.bindTexture(resource);
-		gui.drawTexturedRect(bounds.getX1(), bounds.getY1(), 0, 0, 26, 26);
+		gui.drawTexturedRect(x, y, 0, 0, 26, 26);
 
-		if (xAxis >= bounds.getX1() + 3 && xAxis <= bounds.getX1() + 21 && yAxis >= bounds.getY1() + 4 && yAxis <= bounds.getY1() + 22) {
-			gui.drawTexturedRect(bounds.getX1() + 3, bounds.getY1() + 4, renderX, 0, 18, 18);
+		if (xAxis >= x + 3 && xAxis <= x + 21 && yAxis >= y + 4 && yAxis <= y + 22) {
+			gui.drawTexturedRect(x + 3, y + 4, renderX, 0, 18, 18);
 		} else {
-			gui.drawTexturedRect(bounds.getX1() + 3, bounds.getY1() + 4, renderX, 18, 18, 18);
-		}
+			gui.drawTexturedRect(x + 3, y + 4, renderX, 18, 18, 18);
+	}
 
 		super.renderBackground(xAxis, yAxis, guiWidth, guiHeight, xSize, ySize);
 	}
@@ -76,12 +71,12 @@ public class GuiEnergyUnitType<T extends TileEntity & ITileNetworkable> extends 
 	}
 
 	@Override
-	public void preMouseClicked(int xAxis, int yAxis, int button) {
+	public void preMouseClicked(int xAxis, int yAxis, int xSize, int ySize, int button) {
 
 	}
 
 	@Override
-	public void mouseClicked(int xAxis, int yAxis, int button) {
+	public void mouseClicked(int xAxis, int yAxis, int xSize, int ySize, int button) {
 		switch (button) {
 			case 0:
 				if (xAxis >= 179 && xAxis <= 197 && yAxis >= 6 && yAxis <= 24) {
