@@ -6,33 +6,27 @@ import net.minecraft.util.ResourceLocation;
 import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.client.gui.IGui;
 import org.halvors.electrometrics.client.sound.SoundHandler;
-import org.halvors.electrometrics.common.base.tile.ITileNetworkable;
-import org.halvors.electrometrics.common.network.PacketHandler;
-import org.halvors.electrometrics.common.network.PacketTileEntity;
-import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.util.energy.Unit;
 
 @SideOnly(Side.CLIENT)
-public class GuiEnergyUnitType<T extends TileEntity & ITileNetworkable> extends GuiComponent implements IGuiComponent {
-	private final T tileEntity;
-
-	public GuiEnergyUnitType(IGui gui, T tileEntity, ResourceLocation defaultResource) {
+public class GuiEnergyUnitType extends GuiComponent implements IGuiComponent {
+	public GuiEnergyUnitType(IGui gui, ResourceLocation defaultResource) {
 		super("EnergyUnitType.png", gui, defaultResource);
-
-		this.tileEntity = tileEntity;
 	}
 
 	@Override
 	public void renderBackground(int xAxis, int yAxis, int xOrigin, int yOrigin, int guiWidth, int guiHeight) {
 		game.renderEngine.bindTexture(resource);
-		gui.drawTexturedRect(xOrigin + 176, yOrigin + 2, 0, 0, 26, 26);
+		gui.drawTexturedRect(xOrigin + guiWidth, yOrigin + 2, 0, 0, 26, 26);
 
+        int x = guiWidth + 4;
+        int y = 2 + 5;
 		int renderX = 26 + (18 * Electrometrics.energyUnitType.ordinal());
 
-		if (xAxis >= 179 && xAxis <= 197 && yAxis >= 6 && yAxis <= 24) {
-			gui.drawTexturedRect(xOrigin + 179, yOrigin + 6, renderX, 0, 18, 18);
+		if (xAxis >= x && xAxis <= x + 15 && yAxis >= y && yAxis <= y + 15) {
+			gui.drawTexturedRect(xOrigin + x - 1, yOrigin + y - 1, renderX, 0, 18, 18);
 		} else {
-			gui.drawTexturedRect(xOrigin + 179, yOrigin + 6, renderX, 18, 18, 18);
+			gui.drawTexturedRect(xOrigin + x - 1, yOrigin + y - 1, renderX, 18, 18, 18);
 		}
 
 		super.renderBackground(xAxis, yAxis, xOrigin, yOrigin, guiWidth, guiHeight);
@@ -42,7 +36,10 @@ public class GuiEnergyUnitType<T extends TileEntity & ITileNetworkable> extends 
 	public void renderForeground(int xAxis, int yAxis, int guiWidth, int guiHeight) {
 		game.renderEngine.bindTexture(resource);
 
-		if (xAxis >= 179 && xAxis <= 197 && yAxis >= 6 && yAxis <= 24) {
+        int x = guiWidth + 4;
+        int y = 2 + 5;
+
+        if (xAxis >= x && xAxis <= x + 15 && yAxis >= y && yAxis <= y + 15) {
 			displayTooltip(Electrometrics.energyUnitType.getName(), xAxis, yAxis);
 		}
 
@@ -58,17 +55,17 @@ public class GuiEnergyUnitType<T extends TileEntity & ITileNetworkable> extends 
 	public void mouseClicked(int xAxis, int yAxis, int guiWidth, int guiHeight, int button) {
 		switch (button) {
 			case 0:
-				if (xAxis >= 179 && xAxis <= 197 && yAxis >= 6 && yAxis <= 24) {
+                int x = guiWidth + 4;
+                int y = 2 + 5;
+
+                if (xAxis >= x && xAxis <= x + 15 && yAxis >= y && yAxis <= y + 15) {
 					Unit current = Electrometrics.energyUnitType;
 					int ordinalToSet = current.ordinal() < (Unit.values().length - 1) ? current.ordinal() + 1 : 0;
 
 					SoundHandler.playSound("gui.button.press");
 
-					// Set energy unit type to use.
+					// Set energy unit type to use, and save the configuration.
 					Electrometrics.energyUnitType = Unit.values()[ordinalToSet];
-
-					// Send a update packet to the server.
-					PacketHandler.sendToServer(new PacketTileEntity(tileEntity));
 				}
 				break;
 		}
