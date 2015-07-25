@@ -13,6 +13,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import mekanism.api.ItemRetriever;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import org.apache.logging.log4j.Level;
@@ -25,7 +26,6 @@ import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.base.Tier;
 import org.halvors.electrometrics.common.block.BlockMachine;
 import org.halvors.electrometrics.common.event.PlayerEventHandler;
-import org.halvors.electrometrics.common.item.Item;
 import org.halvors.electrometrics.common.item.ItemBlockMachine;
 import org.halvors.electrometrics.common.item.ItemMultimeter;
 import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityMeter;
@@ -141,40 +141,60 @@ public class Electrometrics {
 
 	private void addRecipes() {
 		// Register recipes.
-		if (isMekanismIntegrationEnabled) {
-			// Add recipe for all tiers.
-			for (Tier.ElectricityMeter tier : Tier.ElectricityMeter.values()) {
-				MachineType machineType = tier.getMachineType();
-				ItemStack itemStackMachine = machineType.getItemStack();
-				ItemBlockMachine itemBlockMachine = (ItemBlockMachine) itemStackMachine.getItem();
-				itemBlockMachine.setElectricityMeterTier(itemStackMachine, tier);
-				ItemStack itemStackCable = new ItemStack(ItemRetriever.getItem("PartTransmitter").getItem(), 8, tier.ordinal());
-				ItemStack itemStackSteelCasing = new ItemStack(ItemRetriever.getBlock("BasicBlock").getItem(), 1, 8);
-                ItemStack itemStackEnergyTablet = new ItemStack(ItemRetriever.getItem("EnergyTablet").getItem(), 1, 100);
 
-				GameRegistry.addRecipe(itemStackMachine,
-						"RMR",
-						"CBC",
-						"RSR",
-                        'R', Items.redstone,
-                        'M', itemMultimeter,
-                        'C', itemStackCable,
-                        'B', itemStackSteelCasing,
-                        'S', itemStackEnergyTablet);
-			}
-		} else {
-			MachineType machineType = MachineType.BASIC_ELECTRICITY_METER;
+        // Multimeter
+        ItemStack copperIngot = new ItemStack(Items.iron_ingot);
+        Item circuit = Items.repeater;
+        ItemStack battery = new ItemStack(Items.diamond);
 
-			GameRegistry.addRecipe(machineType.getItemStack(),
+        // Electricity Meter
+        ItemStack cable = new ItemStack(Items.gold_ingot);
+        ItemStack casing = new ItemStack(Blocks.iron_block);
+
+        if (isMekanismIntegrationEnabled) {
+            // Multimeter
+            copperIngot = new ItemStack(ItemRetriever.getItem("Ingot").getItem(), 1, 5);
+            circuit = ItemRetriever.getItem("ControlCircuit").getItem();
+            battery = new ItemStack(ItemRetriever.getItem("EnergyTablet").getItem(), 1, 100);
+
+            // Electricity Meter
+            cable = new ItemStack(ItemRetriever.getItem("PartTransmitter").getItem(), 8);
+            casing = new ItemStack(ItemRetriever.getBlock("BasicBlock").getItem(), 1, 8);
+        }
+
+        // Multimeter
+        GameRegistry.addRecipe(new ItemStack(itemMultimeter),
+                "RGR",
+                "IMI",
+                "CBC",
+                'R', Items.redstone,
+                'G', Blocks.glass_pane,
+                'I', copperIngot,
+                'M', Items.clock,
+                'C', circuit,
+                'B', battery);
+
+        // Electricity Meter
+        for (Tier.ElectricityMeter tier : Tier.ElectricityMeter.values()) {
+            if (isMekanismIntegrationEnabled) {
+                cable = new ItemStack(ItemRetriever.getItem("PartTransmitter").getItem(), 8, tier.ordinal());
+            }
+
+            MachineType machineType = tier.getMachineType();
+            ItemStack itemStackMachine = machineType.getItemStack();
+            ItemBlockMachine itemBlockMachine = (ItemBlockMachine) itemStackMachine.getItem();
+            itemBlockMachine.setElectricityMeterTier(itemStackMachine, tier);
+
+            GameRegistry.addRecipe(itemStackMachine,
                     "RMR",
-                    "CBC",
-                    "RSR",
+                    "C#C",
+                    "RBR",
                     'R', Items.redstone,
                     'M', itemMultimeter,
-                    'C', Items.gold_ingot,
-                    'B', Blocks.iron_block,
-                    'S', Items.diamond);
-		}
+                    'C', cable,
+                    '#', casing,
+                    'B', battery);
+        }
 	}
 
 	public static CommonProxy getProxy() {
