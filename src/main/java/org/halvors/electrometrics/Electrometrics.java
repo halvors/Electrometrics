@@ -38,8 +38,12 @@ import java.io.File;
  *
  * @author halvors
  */
-@Mod(modid = Reference.ID, name = Reference.NAME, version = Reference.VERSION, dependencies = "after:CoFHCore;" +
-																							  "after:Mekanism")
+@Mod(modid = Reference.ID,
+     name = Reference.NAME,
+     version = Reference.VERSION,
+     dependencies = "after:CoFHCore;" +
+				    "after:Mekanism",
+     guiFactory = "org.halvors." + Reference.ID + ".client.gui.GuiFactory")
 public class Electrometrics {
 	// The instance of your mod that Forge uses.
 	@Instance(value = Reference.ID)
@@ -146,20 +150,16 @@ public class Electrometrics {
         ItemStack copperIngot = new ItemStack(Items.iron_ingot);
         Item circuit = Items.repeater;
         ItemStack battery = new ItemStack(Items.diamond);
-
-        // Electricity Meter
         ItemStack cable = new ItemStack(Items.gold_ingot);
         ItemStack casing = new ItemStack(Blocks.iron_block);
 
         if (isMekanismIntegrationEnabled) {
             // Multimeter
-            copperIngot = new ItemStack(ItemRetriever.getItem("Ingot").getItem(), 1, 5);
-            circuit = ItemRetriever.getItem("ControlCircuit").getItem();
-            battery = new ItemStack(ItemRetriever.getItem("EnergyTablet").getItem(), 1, 100);
-
-            // Electricity Meter
-            cable = new ItemStack(ItemRetriever.getItem("PartTransmitter").getItem(), 8);
-            casing = new ItemStack(ItemRetriever.getBlock("BasicBlock").getItem(), 1, 8);
+            copperIngot = new ItemStack(ItemRetriever.getItem("Ingot").getItem(), 1, 5); // Copper ingot.
+            circuit = ItemRetriever.getItem("ControlCircuit").getItem(); // Basic control circuit.
+            battery = new ItemStack(ItemRetriever.getItem("EnergyTablet").getItem(), 1, 100); // Uncharged battery.
+            cable = new ItemStack(ItemRetriever.getItem("PartTransmitter").getItem(), 8); // Basic universal cable.
+            casing = new ItemStack(ItemRetriever.getBlock("BasicBlock").getItem(), 1, 8); // Steel casing.
         }
 
         // Multimeter
@@ -177,7 +177,7 @@ public class Electrometrics {
         // Electricity Meter
         for (Tier.ElectricityMeter tier : Tier.ElectricityMeter.values()) {
             if (isMekanismIntegrationEnabled) {
-                cable = new ItemStack(ItemRetriever.getItem("PartTransmitter").getItem(), 8, tier.ordinal());
+                cable = new ItemStack(ItemRetriever.getItem("PartTransmitter").getItem(), 8, tier.ordinal()); // Tier matching universal cable.
             }
 
             MachineType machineType = tier.getMachineType();
