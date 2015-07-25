@@ -10,7 +10,7 @@ public class EnergyUtils {
 	 */
 	public static String getEnergyDisplay(double energy) {
 		Unit energyType = Electrometrics.energyUnitType;
-		double multiplier = 0;
+		double multiplier = 1;
 
 		switch (energyType) {
 			case JOULES:
