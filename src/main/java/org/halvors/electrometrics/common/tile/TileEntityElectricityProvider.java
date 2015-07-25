@@ -66,7 +66,7 @@ public abstract class TileEntityElectricityProvider extends TileEntityElectricit
 	 */
 	private void transferEnergy() {
 		for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
-			TileEntity tileEntity = TileEntity.getTileEntity(worldObj, xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
+			net.minecraft.tileentity.TileEntity tileEntity = worldObj.getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
 
 			if (tileEntity instanceof IEnergyReceiver) {
 				IEnergyReceiver receiver = (IEnergyReceiver) tileEntity;
