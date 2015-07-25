@@ -30,6 +30,8 @@ public interface IGui {
 	 */
 	void drawTexturedRectFromIcon(int x, int y, IIcon icon, int w, int h);
 
+	void drawString(String text, int x, int y);
+
 	/**
 	 * Display the specified string as tooltip at the specified location.
 	 * @param s

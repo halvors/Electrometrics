@@ -22,14 +22,14 @@ import java.util.List;
 import java.util.Set;
 
 @SideOnly(Side.CLIENT)
-public abstract class GuiComponentContainerInventoryScreen extends GuiContainer implements IGui {
+public class GuiComponentContainerInventoryScreen extends GuiContainer implements IGui {
 	static final Minecraft game = Minecraft.getMinecraft();
 
-	final Set<IComponent> components = new HashSet<>();
-	final ResourceLocation defaultResource = ResourceUtils.getResource(ResourceType.GUI, "Container.png");
-	final TileEntity tileEntity;
+    protected final Set<IComponent> components = new HashSet<>();
+    protected final ResourceLocation defaultResource = ResourceUtils.getResource(ResourceType.GUI, "Container.png");
+    protected final TileEntity tileEntity;
 
-	GuiComponentContainerInventoryScreen(TileEntity tileEntity, Container container) {
+	protected GuiComponentContainerInventoryScreen(TileEntity tileEntity, Container container) {
 		super(container);
 
 		this.tileEntity = tileEntity;
@@ -54,20 +54,45 @@ public abstract class GuiComponentContainerInventoryScreen extends GuiContainer 
 		}
 	}
 
+    @Override
+    protected void drawGuiContainerBackgroundLayer(float partialTick, int mouseX, int mouseY) {
+        game.renderEngine.bindTexture(defaultResource);
+
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+
+        int guiWidth = (width - xSize) / 2;
+        int guiHeight = (height - ySize) / 2;
+
+        drawTexturedModalRect(guiWidth, guiHeight, 0, 0, xSize, ySize);
+
+        int xAxis = mouseX - guiWidth;
+        int yAxis = mouseY - guiHeight;
+
+        for (IComponent component : components) {
+            if (component instanceof IGuiComponent) {
+                IGuiComponent guiComponent = (IGuiComponent) component;
+                guiComponent.renderBackground(xAxis, yAxis, guiWidth, guiHeight, xSize, ySize);
+            }
+        }
+    }
+
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 
-		fontRendererObj.drawString(tileEntity.getInventoryName(), (xSize / 2) - (fontRendererObj.getStringWidth(tileEntity.getInventoryName()) / 2), 6, 0x404040);
-		fontRendererObj.drawString("Inventory", 8, (ySize - 96) + 2, 0x404040);
+		int guiWidth = (width - xSize) / 2;
+		int guiHeight = (height - ySize) / 2;
 
-		int xAxis = (mouseX - (width - xSize) / 2);
-		int yAxis = (mouseY - (height - ySize) / 2);
+		drawString(tileEntity.getInventoryName(), (xSize / 2) - (fontRendererObj.getStringWidth(tileEntity.getInventoryName()) / 2), guiHeight + 6);
+		drawString("Inventory", 8, (ySize - 96) + 2);
+
+		int xAxis = mouseX - guiWidth;
+		int yAxis = mouseY - guiHeight;
 
 		for (IComponent component : components) {
 			if (component instanceof IGuiComponent) {
 				IGuiComponent guiComponent = (IGuiComponent) component;
-				guiComponent.renderForeground(xAxis, yAxis);
+				guiComponent.renderForeground(xAxis, yAxis, xSize, ySize);
 			}
 		}
 	}
@@ -77,36 +102,16 @@ public abstract class GuiComponentContainerInventoryScreen extends GuiContainer 
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTick, int mouseX, int mouseY) {
-		game.renderEngine.bindTexture(defaultResource);
-
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-
+	protected void mouseClicked(int mouseX, int mouseY, int button) {
 		int guiWidth = (width - xSize) / 2;
 		int guiHeight = (height - ySize) / 2;
-
-		drawTexturedModalRect(guiWidth, guiHeight, 0, 0, xSize, ySize);
-
 		int xAxis = mouseX - guiWidth;
 		int yAxis = mouseY - guiHeight;
 
 		for (IComponent component : components) {
 			if (component instanceof IGuiComponent) {
 				IGuiComponent guiComponent = (IGuiComponent) component;
-				guiComponent.renderBackground(xAxis, yAxis, guiWidth, guiHeight);
-			}
-		}
-	}
-
-	@Override
-	protected void mouseClicked(int mouseX, int mouseY, int button) {
-		int xAxis = (mouseX - (width - xSize) / 2);
-		int yAxis = (mouseY - (height - ySize) / 2);
-
-		for (IComponent component : components) {
-			if (component instanceof IGuiComponent) {
-				IGuiComponent guiComponent = (IGuiComponent) component;
-				guiComponent.preMouseClicked(xAxis, yAxis, button);
+				guiComponent.preMouseClicked(xAxis, yAxis, xSize, ySize, button);
 			}
 		}
 
@@ -115,7 +120,7 @@ public abstract class GuiComponentContainerInventoryScreen extends GuiContainer 
 		for (IComponent component : components) {
 			if (component instanceof IGuiComponent) {
 				IGuiComponent guiComponent = (IGuiComponent) component;
-				guiComponent.mouseClicked(xAxis, yAxis, button);
+				guiComponent.mouseClicked(xAxis, yAxis, xSize, ySize, button);
 			}
 		}
 	}
@@ -136,8 +141,10 @@ public abstract class GuiComponentContainerInventoryScreen extends GuiContainer 
 	protected void mouseClickMove(int mouseX, int mouseY, int button, long ticks) {
 		super.mouseClickMove(mouseX, mouseY, button, ticks);
 
-		int xAxis = (mouseX - (width - xSize) / 2);
-		int yAxis = (mouseY - (height - ySize) / 2);
+		int guiWidth = (width - xSize) / 2;
+		int guiHeight = (height - ySize) / 2;
+		int xAxis = mouseX - guiWidth;
+		int yAxis = mouseY - guiHeight;
 
 		for (IComponent component : components) {
 			if (component instanceof IGuiComponent) {
@@ -174,6 +181,11 @@ public abstract class GuiComponentContainerInventoryScreen extends GuiContainer 
 	@Override
 	public void drawTexturedRectFromIcon(int x, int y, IIcon icon, int w, int h) {
 		drawTexturedModelRectFromIcon(x, y, icon, w, h);
+	}
+
+	@Override
+	public void drawString(String text, int x, int y) {
+		fontRendererObj.drawString(text, x, y, 0x404040);
 	}
 
 	@Override

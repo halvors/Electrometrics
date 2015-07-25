@@ -188,8 +188,8 @@ public class BlockMachine extends BlockRotatable {
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player) {
 		TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
-		int metadata = world.getBlockMetadata(x, y, z);
-		ItemStack itemStack = new ItemStack(this, 1, metadata);
+		MachineType machineType = MachineType.getType(tileEntity.getBlockMetadata());
+		ItemStack itemStack = machineType.getItemStack();
 		ItemBlockMachine itemBlockMachine = (ItemBlockMachine) itemStack.getItem();
 
 		if (tileEntity instanceof ITileRedstoneControl) {

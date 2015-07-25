@@ -18,7 +18,7 @@ class PacketBlockLocation implements IMessage {
 
 	public PacketBlockLocation() {
 
-    }
+	}
 
 	PacketBlockLocation(BlockLocation blockLocation) {
 		this.blockLocation = blockLocation;

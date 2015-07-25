@@ -6,7 +6,6 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.AxisAlignedBB;
@@ -35,7 +34,7 @@ public class PacketHandler {
 	}
 
 	public static EntityPlayer getPlayer(MessageContext context) {
-		return context.side.isClient() ? Minecraft.getMinecraft().thePlayer : context.getServerHandler().playerEntity;
+		return context.side.isClient() ? PlayerUtils.getClientPlayer() : context.getServerHandler().playerEntity;
 	}
 
 	public static World getWorld(MessageContext context) {
@@ -68,7 +67,7 @@ public class PacketHandler {
 	 * @param cuboid - the AABB cuboid to send the packet in
 	 * @param dimId - the dimension the cuboid is in
 	 */
-    public static void sendToCuboid(IMessage message, AxisAlignedBB cuboid, int dimId) {
+	public static void sendToCuboid(IMessage message, AxisAlignedBB cuboid, int dimId) {
 		if (cuboid != null) {
 			for (EntityPlayerMP player : PlayerUtils.getPlayers()) {
 				if (player.dimension == dimId && cuboid.isVecInside(Vec3.createVectorHelper(player.posX, player.posY, player.posZ))) {
@@ -78,12 +77,12 @@ public class PacketHandler {
 		}
 	}
 
-    public static void sendToReceivers(IMessage message, Range range) {
-        for (EntityPlayerMP player : PlayerUtils.getPlayers()) {
-            if (player.dimension == range.getDimensionId() && Range.getChunkRange(player).intersects(range)) {
-                sendTo(message, player);
-            }
-        }
+	public static void sendToReceivers(IMessage message, Range range) {
+		for (EntityPlayerMP player : PlayerUtils.getPlayers()) {
+			if (player.dimension == range.getDimensionId() && Range.getChunkRange(player).intersects(range)) {
+				sendTo(message, player);
+			}
+		}
 	}
 
 	public static void sendToReceivers(IMessage message, TileEntity tileEntity) {

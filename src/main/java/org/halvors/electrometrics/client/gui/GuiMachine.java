@@ -6,7 +6,7 @@ import org.halvors.electrometrics.common.tile.TileEntityMachine;
 
 @SideOnly(Side.CLIENT)
 public class GuiMachine extends GuiComponentContainerScreen {
-	GuiMachine(TileEntityMachine tileEntity) {
+	protected GuiMachine(TileEntityMachine tileEntity) {
 		super(tileEntity);
 	}
 }

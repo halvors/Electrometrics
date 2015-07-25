@@ -14,9 +14,9 @@ import java.util.List;
 
 @SideOnly(Side.CLIENT)
 public abstract class GuiComponent implements IGuiComponent {
-    private final ResourceLocation defaultResource;
+	private final ResourceLocation defaultResource;
 
-    static final Minecraft game = Minecraft.getMinecraft();
+	static final Minecraft game = Minecraft.getMinecraft();
 
 	final ResourceLocation resource;
 	final IGui gui;
@@ -27,15 +27,15 @@ public abstract class GuiComponent implements IGuiComponent {
 		this.defaultResource = defaultResource;
 	}
 
-    @Override
-    public void renderBackground(int xAxis, int yAxis, int guiWidth, int guiHeight) {
-        game.renderEngine.bindTexture(defaultResource);
-    }
+	@Override
+	public void renderBackground(int xAxis, int yAxis, int xOrigin, int yOrigin, int guiWidthSize, int guiHeightSize) {
+		game.renderEngine.bindTexture(defaultResource);
+	}
 
-    @Override
-    public void renderForeground(int xAxis, int yAxis) {
-        game.renderEngine.bindTexture(defaultResource);
-    }
+	@Override
+	public void renderForeground(int xAxis, int yAxis, int xSize, int ySize) {
+		game.renderEngine.bindTexture(defaultResource);
+	}
 
 	void displayTooltip(String text, int xAxis, int yAxis) {
 		gui.displayTooltip(text, xAxis, yAxis);

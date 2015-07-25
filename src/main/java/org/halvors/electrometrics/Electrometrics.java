@@ -11,6 +11,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import mekanism.api.ItemRetriever;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
@@ -65,8 +66,8 @@ public class Electrometrics {
 
 	// Configuration variables.
 
-    // General.
-    public static Unit energyUnitType = Unit.JOULES;
+	// General.
+	public static Unit energyUnitType = Unit.JOULES;
 	public static double toJoules;
 	public static double toMinecraftJoules;
 	public static double toElectricalUnits;
@@ -110,16 +111,16 @@ public class Electrometrics {
 		// Register the our EventHandler.
 		FMLCommonHandler.instance().bus().register(new PlayerEventHandler());
 
+		// Register the proxy as our GuiHandler to NetworkRegistry.
+		NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
+
 		// Call functions for adding blocks, items, etc.
 		addItems();
 		addBlocks();
 		addTileEntities();
 		addRecipes();
 
-        // Register the proxy as our GuiHandler to NetworkRegistry.
-        NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
-
-        // Mod integration.
+		// Mod integration.
 		logger.log(Level.INFO, "Mekanism integration is " + (isMekanismIntegrationEnabled ? "enabled" : "disabled") + ".");
 	}
 
@@ -147,21 +148,21 @@ public class Electrometrics {
 				ItemStack itemStackMachine = machineType.getItemStack();
 				ItemBlockMachine itemBlockMachine = (ItemBlockMachine) itemStackMachine.getItem();
 				itemBlockMachine.setElectricityMeterTier(itemStackMachine, tier);
-
 				ItemStack itemStackCable = new ItemStack(ItemRetriever.getItem("PartTransmitter").getItem(), 8, tier.ordinal());
+				ItemStack itemStachSteelCasing = new ItemStack(ItemRetriever.getBlock("BasicBlock").getItem(), 1, 8);
 
 				GameRegistry.addRecipe(itemStackMachine,
-						"III",
-						"CMC",
-						"III", 'I', Items.iron_ingot, 'U', itemStackCable, 'D', itemMultimeter);
+						" M ",
+						"CSC",
+						" M ", 'M', itemMultimeter, 'S', itemStachSteelCasing, 'C', itemStackCable);
 			}
-        } else {
-            MachineType machineType = MachineType.BASIC_ELECTRICITY_METER;
+		} else {
+			MachineType machineType = MachineType.BASIC_ELECTRICITY_METER;
 
 			GameRegistry.addRecipe(machineType.getItemStack(),
-				"III",
-				"CMC",
-				"III", 'I', Items.iron_ingot, 'C', Items.redstone, 'D', itemMultimeter);
+				" M ",
+				"CIC",
+				" M ", 'M', itemMultimeter, 'I', Blocks.iron_block, 'C', Items.redstone);
 		}
 	}
 

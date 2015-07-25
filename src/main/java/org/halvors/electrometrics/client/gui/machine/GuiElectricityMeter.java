@@ -1,10 +1,9 @@
-package org.halvors.electrometrics.client.gui;
+package org.halvors.electrometrics.client.gui.machine;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.EntityPlayer;
+import org.halvors.electrometrics.client.gui.GuiComponentContainerScreen;
 import org.halvors.electrometrics.client.gui.component.*;
 import org.halvors.electrometrics.common.base.tile.ITileOwnable;
 import org.halvors.electrometrics.common.network.PacketHandler;
@@ -12,6 +11,7 @@ import org.halvors.electrometrics.common.network.PacketRequestData;
 import org.halvors.electrometrics.common.network.PacketTileEntity;
 import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.util.LanguageUtils;
+import org.halvors.electrometrics.common.util.PlayerUtils;
 import org.halvors.electrometrics.common.util.energy.EnergyUtils;
 
 import java.util.ArrayList;
@@ -45,14 +45,14 @@ public class GuiElectricityMeter extends GuiComponentContainerScreen {
 			@Override
 			public List<String> getInfo() {
 				List<String> list = new ArrayList<>();
-				list.add(LanguageUtils.translate("gui.using") + ": " + EnergyUtils.getEnergyDisplay(10) + "/t");
-				list.add(LanguageUtils.translate("gui.needed") + ": " + EnergyUtils.getEnergyDisplay(10));
+				list.add(LanguageUtils.translate("gui.stored") + ": " + EnergyUtils.getEnergyDisplay(tileEntity.getStorage().getEnergyStored()));
+				list.add(LanguageUtils.translate("gui.maxOutput") + ": " + EnergyUtils.getEnergyDisplay(tileEntity.getTier().getMaxTransfer()));
 
 				return list;
 			}
 		}, this, defaultResource));
 
-		components.add(new GuiEnergyUnitType<>(this, tileEntity, defaultResource));
+		components.add(new GuiEnergyUnitType(this, defaultResource));
 		components.add(new GuiRedstoneControl<>(this, tileEntity, defaultResource));
 	}
 
@@ -65,14 +65,13 @@ public class GuiElectricityMeter extends GuiComponentContainerScreen {
 		int guiHeight = (height - ySize) / 2;
 
 		// Create buttons.
-		GuiButton resetButton = new GuiButton(0, guiWidth + 110, guiHeight + 60, 60, 20, LanguageUtils.translate("gui.reset"));
+		GuiButton resetButton = new GuiButton(0, (guiWidth + xSize) - (60 + 6), (guiHeight + ySize) - (20 + 6), 60, 20, LanguageUtils.translate("gui.reset"));
 
 		// If this has a owner, restrict the reset button to that player.
 		if (tileEntity instanceof ITileOwnable) {
 			ITileOwnable ownable = (ITileOwnable) tileEntity;
-			EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 
-			resetButton.enabled = ownable.isOwner(player);
+			resetButton.enabled = ownable.isOwner(PlayerUtils.getClientPlayer());
 		}
 
 		// Add buttons.
@@ -99,25 +98,23 @@ public class GuiElectricityMeter extends GuiComponentContainerScreen {
 	}
 
 	@Override
-	void drawGuiScreenForegroundLayer(int mouseX, int mouseY) {
+	protected void drawGuiScreenForegroundLayer(int mouseX, int mouseY) {
 		if (tileEntity instanceof TileEntityElectricityMeter) {
 			TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
 
 			// Formatting energy to the correct energy unit.
 			String measuredEnergy = EnergyUtils.getEnergyDisplay(tileEntityElectricityMeter.getElectricityCount());
 			String storedEnergy = EnergyUtils.getEnergyDisplay(tileEntityElectricityMeter.getStorage().getEnergyStored());
-			String maxOutput = EnergyUtils.getEnergyDisplay(tileEntityElectricityMeter.getStorage().getMaxEnergyStored());
 
-			fontRendererObj.drawString(LanguageUtils.translate("gui.measured") + ":", 8, ySize - 140, 0x404040);
-			fontRendererObj.drawString(measuredEnergy, 72, ySize - 140, 0x404040);
+            int x = (xSize / 2) - 64;
+            int y = ySize / 2;
+
+			drawString(LanguageUtils.translate("gui.measured") + ":", x, y - 12);
+			drawString(measuredEnergy, x + 64, y - 12);
 
 			// Stored energy.
-			fontRendererObj.drawString(LanguageUtils.translate("gui.stored") + ":", 8, ySize - 128, 0x404040);
-			fontRendererObj.drawString(storedEnergy, 72, ySize - 128, 0x404040);
-
-			// Current output.
-			fontRendererObj.drawString(LanguageUtils.translate("gui.maxOutput") + ":", 8, ySize - 116, 0x404040);
-			fontRendererObj.drawString(maxOutput + "/t", 72, ySize - 116, 0x404040);
+			drawString(LanguageUtils.translate("gui.stored") + ":", x, y);
+			drawString(storedEnergy, x + 64, y);
 
 			if (ticker == 0) {
 				ticker = 5;
