@@ -149,20 +149,31 @@ public class Electrometrics {
 				ItemBlockMachine itemBlockMachine = (ItemBlockMachine) itemStackMachine.getItem();
 				itemBlockMachine.setElectricityMeterTier(itemStackMachine, tier);
 				ItemStack itemStackCable = new ItemStack(ItemRetriever.getItem("PartTransmitter").getItem(), 8, tier.ordinal());
-				ItemStack itemStachSteelCasing = new ItemStack(ItemRetriever.getBlock("BasicBlock").getItem(), 1, 8);
+				ItemStack itemStackSteelCasing = new ItemStack(ItemRetriever.getBlock("BasicBlock").getItem(), 1, 8);
+                ItemStack itemStackEnergyTablet = new ItemStack(ItemRetriever.getItem("EnergyTablet").getItem(), 1, 100);
 
 				GameRegistry.addRecipe(itemStackMachine,
-						" M ",
-						"CSC",
-						" M ", 'M', itemMultimeter, 'S', itemStachSteelCasing, 'C', itemStackCable);
+						"RMR",
+						"CBC",
+						"RSR",
+                        'R', Items.redstone,
+                        'M', itemMultimeter,
+                        'C', itemStackCable,
+                        'B', itemStackSteelCasing,
+                        'S', itemStackEnergyTablet);
 			}
 		} else {
 			MachineType machineType = MachineType.BASIC_ELECTRICITY_METER;
 
 			GameRegistry.addRecipe(machineType.getItemStack(),
-				" M ",
-				"CIC",
-				" M ", 'M', itemMultimeter, 'I', Blocks.iron_block, 'C', Items.redstone);
+                    "RMR",
+                    "CBC",
+                    "RSR",
+                    'R', Items.redstone,
+                    'M', itemMultimeter,
+                    'C', Items.gold_ingot,
+                    'B', Blocks.iron_block,
+                    'S', Items.diamond);
 		}
 	}
 
