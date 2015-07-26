@@ -6,7 +6,7 @@ import net.minecraft.util.ResourceLocation;
 import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.client.gui.IGui;
 import org.halvors.electrometrics.client.sound.SoundHandler;
-import org.halvors.electrometrics.common.util.energy.Unit;
+import org.halvors.electrometrics.common.util.energy.EnergyUnit;
 
 @SideOnly(Side.CLIENT)
 public class GuiEnergyUnitType extends GuiComponent implements IGuiComponent {
@@ -59,13 +59,13 @@ public class GuiEnergyUnitType extends GuiComponent implements IGuiComponent {
                 int y = 2 + 5;
 
                 if (xAxis >= x && xAxis <= x + 15 && yAxis >= y && yAxis <= y + 15) {
-					Unit current = Electrometrics.energyUnitType;
-					int ordinalToSet = current.ordinal() < (Unit.values().length - 1) ? current.ordinal() + 1 : 0;
+					EnergyUnit current = Electrometrics.energyUnitType;
+					int ordinalToSet = current.ordinal() < (EnergyUnit.values().length - 1) ? current.ordinal() + 1 : 0;
 
 					SoundHandler.playSound("gui.button.press");
 
 					// Set energy unit type to use, and save the configuration.
-					Electrometrics.energyUnitType = Unit.values()[ordinalToSet];
+					Electrometrics.energyUnitType = EnergyUnit.values()[ordinalToSet];
 				}
 				break;
 		}
