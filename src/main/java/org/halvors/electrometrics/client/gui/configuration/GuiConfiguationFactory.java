@@ -1,21 +1,20 @@
-package org.halvors.electrometrics.client.gui;
+package org.halvors.electrometrics.client.gui.configuration;
 
 import cpw.mods.fml.client.IModGuiFactory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
-import org.halvors.electrometrics.GuiConfig;
 
 import java.util.Set;
 
-public class GuiFactory implements IModGuiFactory {
+public class GuiConfiguationFactory implements IModGuiFactory {
     @Override
-    public void initialize(Minecraft minecraft) {
+    public void initialize(Minecraft minecraftInstance) {
 
     }
 
     @Override
     public Class<? extends GuiScreen> mainConfigGuiClass() {
-        return GuiConfig.class;
+        return GuiConfiguration.class;
     }
 
     @Override
