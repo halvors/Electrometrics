@@ -5,6 +5,7 @@ import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 import org.halvors.electrometrics.common.ConfigurationManager.General;
+import org.halvors.electrometrics.common.ConfigurationManager.Integration;
 import org.halvors.electrometrics.common.ConfigurationManager.Machine;
 import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.util.energy.EnergyUnit;
@@ -29,12 +30,13 @@ public class PacketConfiguration implements IMessage {
         General.toMinecraftJoules = dataStream.readDouble();
         General.toElectricalUnits = dataStream.readDouble();
 
-        General.isMekanismIntegrationEnabled = dataStream.readBoolean();
-
         // Machine.
         for (MachineType machineType : MachineType.values()) {
             Machine.setEntry(machineType, dataStream.readBoolean());
         }
+
+        // Integration.
+        Integration.isMekanismEnabled = dataStream.readBoolean();
 	}
 
 	@Override
@@ -47,12 +49,13 @@ public class PacketConfiguration implements IMessage {
 		dataStream.writeDouble(General.toMinecraftJoules);
 		dataStream.writeDouble(General.toElectricalUnits);
 
-		dataStream.writeBoolean(General.isMekanismIntegrationEnabled);
-
         // Machine.
         for (MachineType machineType : MachineType.values()) {
             dataStream.writeBoolean(Machine.isEnabled(machineType));
         }
+
+        // Integration.
+        dataStream.writeBoolean(Integration.isMekanismEnabled);
 	}
 
 	public static class PacketConfigurationMessage implements IMessageHandler<PacketConfiguration, IMessage> {

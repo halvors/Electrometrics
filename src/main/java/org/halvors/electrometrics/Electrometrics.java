@@ -21,6 +21,7 @@ import org.apache.logging.log4j.Logger;
 import org.halvors.electrometrics.common.CommonProxy;
 import org.halvors.electrometrics.common.ConfigurationManager;
 import org.halvors.electrometrics.common.ConfigurationManager.General;
+import org.halvors.electrometrics.common.ConfigurationManager.Integration;
 import org.halvors.electrometrics.common.Reference;
 import org.halvors.electrometrics.common.Tab;
 import org.halvors.electrometrics.common.base.MachineType;
@@ -91,7 +92,7 @@ public class Electrometrics {
 		addRecipes();
 
 		// Mod integration.
-		logger.log(Level.INFO, "Mekanism integration is " + (General.isMekanismIntegrationEnabled ? "enabled" : "disabled") + ".");
+		logger.log(Level.INFO, "Mekanism integration is " + (Integration.isMekanismEnabled ? "enabled" : "disabled") + ".");
 	}
 
 	private void addItems() {
@@ -119,7 +120,7 @@ public class Electrometrics {
         ItemStack cable = new ItemStack(Items.gold_ingot);
         ItemStack casing = new ItemStack(Blocks.iron_block);
 
-        if (General.isMekanismIntegrationEnabled) {
+        if (Integration.isMekanismEnabled) {
             // Multimeter
             copperIngot = new ItemStack(ItemRetriever.getItem("Ingot").getItem(), 1, 5); // Copper ingot.
             circuit = ItemRetriever.getItem("ControlCircuit").getItem(); // Basic control circuit.
@@ -142,7 +143,7 @@ public class Electrometrics {
 
         // Electricity Meter
         for (Tier.ElectricityMeter tier : Tier.ElectricityMeter.values()) {
-            if (General.isMekanismIntegrationEnabled) {
+            if (Integration.isMekanismEnabled) {
                 cable = new ItemStack(ItemRetriever.getItem("PartTransmitter").getItem(), 8, tier.ordinal()); // Tier matching universal cable.
             }
 
