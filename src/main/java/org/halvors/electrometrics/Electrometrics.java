@@ -29,9 +29,7 @@ import org.halvors.electrometrics.common.event.PlayerEventHandler;
 import org.halvors.electrometrics.common.item.ItemBlockMachine;
 import org.halvors.electrometrics.common.item.ItemMultimeter;
 import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityMeter;
-import org.halvors.electrometrics.common.util.energy.Unit;
-
-import java.io.File;
+import org.halvors.electrometrics.common.util.energy.EnergyUnit;
 
 /**
  * This is the Electrometrics class, which is the main class of this mod.
@@ -43,7 +41,7 @@ import java.io.File;
      version = Reference.VERSION,
      dependencies = "after:CoFHCore;" +
 				    "after:Mekanism",
-     guiFactory = "org.halvors." + Reference.ID + ".client.gui.GuiFactory")
+     guiFactory = "org.halvors." + Reference.ID + ".client.gui.configuration.GuiConfiguationFactory")
 public class Electrometrics {
 	// The instance of your mod that Forge uses.
 	@Instance(value = Reference.ID)
@@ -71,7 +69,7 @@ public class Electrometrics {
 	// Configuration variables.
 
 	// General.
-	public static Unit energyUnitType = Unit.JOULES;
+	public static EnergyUnit energyUnitType = EnergyUnit.JOULES;
 	public static double toJoules;
 	public static double toMinecraftJoules;
 	public static double toElectricalUnits;
@@ -81,28 +79,15 @@ public class Electrometrics {
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		File config = event.getSuggestedConfigurationFile();
-
 		// Set the mod's configuration
-		configuration = new Configuration(config);
+		configuration = new Configuration(event.getSuggestedConfigurationFile());
 		configuration.load();
 
+        // Mod integration.
 		isMekanismIntegrationEnabled = configuration.get(Configuration.CATEGORY_GENERAL, "MekanismIntegration", Loader.isModLoaded("Mekanism")).getBoolean();
 
-		String energyUnitTypeString = configuration.get(Configuration.CATEGORY_GENERAL, "EnergyType", "J", "The default energy system to display.", new String[] { "RF", "J", "MJ", "EU" }).getString();
-
-		if (energyUnitTypeString != null) {
-			if (energyUnitTypeString.trim().equalsIgnoreCase("RF")) {
-				energyUnitType = Unit.REDSTONE_FLUX;
-			} else if (energyUnitTypeString.trim().equalsIgnoreCase("J")) {
-				energyUnitType = Unit.JOULES;
-			} else if (energyUnitTypeString.trim().equalsIgnoreCase("MJ")) {
-				energyUnitType = Unit.MINECRAFT_JOULES;
-			} else if (energyUnitTypeString.trim().equalsIgnoreCase("EU")) {
-				energyUnitType = Unit.ELECTRICAL_UNITS;
-			}
-		}
-
+        // Energy.
+        energyUnitType = EnergyUnit.getUnitFromSymbol(configuration.get(Configuration.CATEGORY_GENERAL, "EnergyUnitType", "J", "The default energy system to display.", new String[]{"RF", "J", "MJ", "EU"}).getString());
 		toJoules = configuration.get(Configuration.CATEGORY_GENERAL, "RFToJoules", 2.5).getDouble();
 		toMinecraftJoules = configuration.get(Configuration.CATEGORY_GENERAL, "RFToMinecraftJoules", 0.1).getDouble();
 		toElectricalUnits = configuration.get(Configuration.CATEGORY_GENERAL, "RFToElectricalUnits", 0.25).getDouble();

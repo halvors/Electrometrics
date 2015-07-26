@@ -9,7 +9,7 @@ public class EnergyUtils {
 	 * @return the energy as a String.
 	 */
 	public static String getEnergyDisplay(double energy) {
-		Unit energyType = Electrometrics.energyUnitType;
+		EnergyUnit energyType = Electrometrics.energyUnitType;
 		double multiplier = 1;
 
 		switch (energyType) {
@@ -26,6 +26,6 @@ public class EnergyUtils {
 				break;
 		}
 
-		return UnitDisplay.getDisplayShort(energy * multiplier, energyType);
+		return EnergyDisplay.getDisplayShort(energy * multiplier, energyType);
 	}
 }
