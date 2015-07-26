@@ -45,8 +45,8 @@ public class GuiElectricityMeter extends GuiComponentContainerScreen {
 			@Override
 			public List<String> getInfo() {
 				List<String> list = new ArrayList<>();
-				list.add(LanguageUtils.translate("gui.stored") + ": " + EnergyUtils.getEnergyDisplay(tileEntity.getStorage().getEnergyStored()));
-				list.add(LanguageUtils.translate("gui.maxOutput") + ": " + EnergyUtils.getEnergyDisplay(tileEntity.getTier().getMaxTransfer()));
+				list.add(LanguageUtils.localize("gui.stored") + ": " + EnergyUtils.getEnergyDisplay(tileEntity.getStorage().getEnergyStored()));
+				list.add(LanguageUtils.localize("gui.maxOutput") + ": " + EnergyUtils.getEnergyDisplay(tileEntity.getTier().getMaxTransfer()));
 
 				return list;
 			}
@@ -65,7 +65,7 @@ public class GuiElectricityMeter extends GuiComponentContainerScreen {
 		int guiHeight = (height - ySize) / 2;
 
 		// Create buttons.
-		GuiButton resetButton = new GuiButton(0, (guiWidth + xSize) - (60 + 6), (guiHeight + ySize) - (20 + 6), 60, 20, LanguageUtils.translate("gui.reset"));
+		GuiButton resetButton = new GuiButton(0, (guiWidth + xSize) - (60 + 6), (guiHeight + ySize) - (20 + 6), 60, 20, LanguageUtils.localize("gui.reset"));
 
 		// If this has a owner, restrict the reset button to that player.
 		if (tileEntity instanceof ITileOwnable) {
@@ -109,11 +109,11 @@ public class GuiElectricityMeter extends GuiComponentContainerScreen {
             int x = (xSize / 2) - 64;
             int y = ySize / 2;
 
-			drawString(LanguageUtils.translate("gui.measured") + ":", x, y - 12);
+			drawString(LanguageUtils.localize("gui.measured") + ":", x, y - 12);
 			drawString(measuredEnergy, x + 64, y - 12);
 
 			// Stored energy.
-			drawString(LanguageUtils.translate("gui.stored") + ":", x, y);
+			drawString(LanguageUtils.localize("gui.stored") + ":", x, y);
 			drawString(storedEnergy, x + 64, y);
 
 			if (ticker == 0) {

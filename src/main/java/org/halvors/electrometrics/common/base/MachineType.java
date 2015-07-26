@@ -43,7 +43,7 @@ public enum MachineType {
 	}
 
 	public String getLocalizedName() {
-		String localizedName = LanguageUtils.translate("tile." + name + ".name");
+		String localizedName = LanguageUtils.localize("tile." + name + ".name");
 
 		switch (this) {
 			case BASIC_ELECTRICITY_METER:

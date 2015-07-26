@@ -111,7 +111,7 @@ public class BlockMachine extends BlockRotatable {
 				ITileOwnable tileOwnable = (ITileOwnable) tileEntity;
 
 				if (!tileOwnable.isOwner(player)) {
-					player.addChatMessage(new ChatComponentText(LanguageUtils.translate("tooltip.blockOwnedBy").replace("%s", tileOwnable.getOwnerName())));
+					player.addChatMessage(new ChatComponentText(LanguageUtils.localize("tooltip.blockOwnedBy").replace("%s", tileOwnable.getOwnerName())));
 				}
 			}
 		}
