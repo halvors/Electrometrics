@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GuiConfiguration extends GuiConfig {
-    static List<IConfigElement> configElements = new ArrayList<>();
+    static final List<IConfigElement> configElements = new ArrayList<>();
 
     static {
         configElements.add(new DummyCategoryElement(LanguageUtils.localize("gui.config.category.general"), "gui.config.category.general", CategoryEntryGeneral.class));

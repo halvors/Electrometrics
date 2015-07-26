@@ -7,6 +7,7 @@ import cpw.mods.fml.client.config.IConfigElement;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.common.config.ConfigElement;
 import org.halvors.electrometrics.Electrometrics;
+import org.halvors.electrometrics.common.ConfigurationManager;
 
 public class CategoryEntryClient extends CategoryEntry {
     public CategoryEntryClient(GuiConfig guiConfig, GuiConfigEntries guiConfigEntries, IConfigElement configElement) {
@@ -16,8 +17,8 @@ public class CategoryEntryClient extends CategoryEntry {
     @Override
     protected GuiScreen buildChildScreen() {
         return new GuiConfig(owningScreen,
-                new ConfigElement(Electrometrics.getConfiguration().getCategory("client")).getChildElements(),
-                owningScreen.modID, "client", false, false,
+                new ConfigElement(Electrometrics.getConfiguration().getCategory(ConfigurationManager.CATEGORY_CLIENT)).getChildElements(),
+                owningScreen.modID, ConfigurationManager.CATEGORY_CLIENT, false, false,
                 GuiConfig.getAbridgedConfigPath(Electrometrics.getConfiguration().toString()));
     }
 }

@@ -1,6 +1,6 @@
 package org.halvors.electrometrics.common.util.energy;
 
-import org.halvors.electrometrics.Electrometrics;
+import org.halvors.electrometrics.common.ConfigurationManager.General;
 
 public class EnergyUtils {
 	/**
@@ -9,20 +9,20 @@ public class EnergyUtils {
 	 * @return the energy as a String.
 	 */
 	public static String getEnergyDisplay(double energy) {
-		EnergyUnit energyType = Electrometrics.energyUnitType;
+		EnergyUnit energyType = General.energyUnitType;
 		double multiplier = 1;
 
 		switch (energyType) {
 			case JOULES:
-				multiplier = Electrometrics.toJoules;
+				multiplier = General.toJoules;
 				break;
 
 			case MINECRAFT_JOULES:
-				multiplier = Electrometrics.toMinecraftJoules;
+				multiplier = General.toMinecraftJoules;
 				break;
 
 			case ELECTRICAL_UNITS:
-				multiplier = Electrometrics.toElectricalUnits;
+				multiplier = General.toElectricalUnits;
 				break;
 		}
 

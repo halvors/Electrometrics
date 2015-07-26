@@ -3,9 +3,9 @@ package org.halvors.electrometrics.client.gui.component;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.util.ResourceLocation;
-import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.client.gui.IGui;
 import org.halvors.electrometrics.client.sound.SoundHandler;
+import org.halvors.electrometrics.common.ConfigurationManager.General;
 import org.halvors.electrometrics.common.util.energy.EnergyUnit;
 
 @SideOnly(Side.CLIENT)
@@ -21,7 +21,7 @@ public class GuiEnergyUnitType extends GuiComponent implements IGuiComponent {
 
         int x = guiWidth + 4;
         int y = 2 + 5;
-		int renderX = 26 + (18 * Electrometrics.energyUnitType.ordinal());
+		int renderX = 26 + (18 * General.energyUnitType.ordinal());
 
 		if (xAxis >= x && xAxis <= x + 15 && yAxis >= y && yAxis <= y + 15) {
 			gui.drawTexturedRect(xOrigin + x - 1, yOrigin + y - 1, renderX, 0, 18, 18);
@@ -40,7 +40,7 @@ public class GuiEnergyUnitType extends GuiComponent implements IGuiComponent {
         int y = 2 + 5;
 
         if (xAxis >= x && xAxis <= x + 15 && yAxis >= y && yAxis <= y + 15) {
-			displayTooltip(Electrometrics.energyUnitType.getName(), xAxis, yAxis);
+			displayTooltip(General.energyUnitType.getName(), xAxis, yAxis);
 		}
 
 		super.renderForeground(xAxis, yAxis, guiWidth, guiHeight);
@@ -59,13 +59,13 @@ public class GuiEnergyUnitType extends GuiComponent implements IGuiComponent {
                 int y = 2 + 5;
 
                 if (xAxis >= x && xAxis <= x + 15 && yAxis >= y && yAxis <= y + 15) {
-					EnergyUnit current = Electrometrics.energyUnitType;
+					EnergyUnit current = General.energyUnitType;
 					int ordinalToSet = current.ordinal() < (EnergyUnit.values().length - 1) ? current.ordinal() + 1 : 0;
 
 					SoundHandler.playSound("gui.button.press");
 
 					// Set energy unit type to use, and save the configuration.
-					Electrometrics.energyUnitType = EnergyUnit.values()[ordinalToSet];
+                    General.energyUnitType = EnergyUnit.values()[ordinalToSet];
 				}
 				break;
 		}
