@@ -1,20 +1,21 @@
-package org.halvors.electrometrics.common.tile;
+package org.halvors.electrometrics.common.tile.machine;
 
 import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketTileEntity;
+import org.halvors.electrometrics.common.tile.machine.TileEntityMachine;
 
 /**
  * This is a basic TileEntity that is meant to be extended by other TileEntities.
  *
  * @author halvors
  */
-public class TileEntityElectricBlock extends TileEntityMachine {
+public class TileEntityElectricMachine extends TileEntityMachine {
 	// The current and past redstone state.
 	protected boolean isPowered;
 	protected boolean wasPowered;
 
-	TileEntityElectricBlock(MachineType machineType) {
+	TileEntityElectricMachine(MachineType machineType) {
 		super(machineType);
 	}
 

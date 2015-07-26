@@ -1,4 +1,4 @@
-package org.halvors.electrometrics.common.tile;
+package org.halvors.electrometrics.common.tile.machine;
 
 import cofh.api.energy.EnergyStorage;
 import io.netty.buffer.ByteBuf;
@@ -7,6 +7,7 @@ import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.base.tile.ITileNetworkable;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketRequestData;
+import org.halvors.electrometrics.common.tile.machine.TileEntityElectricMachine;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ import java.util.List;
  *
  * @author halvors
  */
-public abstract class TileEntityElectricityStorage extends TileEntityElectricBlock implements ITileNetworkable {
+public abstract class TileEntityElectricityStorage extends TileEntityElectricMachine implements ITileNetworkable {
 	// The internal energy storage.
 	final EnergyStorage storage;
 
