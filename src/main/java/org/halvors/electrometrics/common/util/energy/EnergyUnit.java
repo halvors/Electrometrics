@@ -1,5 +1,8 @@
 package org.halvors.electrometrics.common.util.energy;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Universal Electricity's units are in KILOJOULES, KILOWATTS and KILOVOLTS. Try to make your
  * energy ratio as close to real life as possible.
@@ -24,7 +27,7 @@ public enum EnergyUnit {
 	REDSTONE_FLUX("Redstone Flux", "RF"),
 	JOULES("Joule", "J"),
 	MINECRAFT_JOULES("Minecraft Joule", "MJ"),
-	ELECTRICAL_UNITS("Electrical EnergyUnit", "EU");
+	ELECTRICAL_UNITS("Electrical Unit", "EU");
 
 	private final String name;
 	private final String symbol;
@@ -42,9 +45,39 @@ public enum EnergyUnit {
 		return symbol;
 	}
 
-	public String getPlural() {
-		return this.name + "s";
+	public String getPluralName() {
+		return name + "s";
 	}
+
+    public static List<String> getNames() {
+        List<String> names = new ArrayList<>();
+
+        for (EnergyUnit energyUnit : values()) {
+            names.add(energyUnit.getName());
+        }
+
+        return names;
+    }
+
+    public static List<String> getSymbols() {
+        List<String> symbols = new ArrayList<>();
+
+        for (EnergyUnit energyUnit : values()) {
+            symbols.add(energyUnit.getSymbol());
+        }
+
+        return symbols;
+    }
+
+    public static List<String> getPluralNames() {
+        List<String> pluralNames = new ArrayList<>();
+
+        for (EnergyUnit energyUnit : values()) {
+            pluralNames.add(energyUnit.getPluralName());
+        }
+
+        return pluralNames;
+    }
 
     public static EnergyUnit getUnitFromName(String name) {
         for (EnergyUnit energyUnit : values()) {

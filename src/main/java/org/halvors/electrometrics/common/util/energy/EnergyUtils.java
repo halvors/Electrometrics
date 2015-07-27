@@ -10,10 +10,10 @@ public class EnergyUtils {
 	 * @return the energy as a String.
 	 */
 	public static String getEnergyDisplay(double energy) {
-		EnergyUnit energyType = Client.energyUnitType;
+		EnergyUnit energyUnit = Client.energyUnit;
 		double multiplier = 1;
 
-		switch (energyType) {
+		switch (energyUnit) {
 			case JOULES:
 				multiplier = General.toJoules;
 				break;
@@ -27,6 +27,6 @@ public class EnergyUtils {
 				break;
 		}
 
-		return EnergyDisplay.getDisplayShort(energy * multiplier, energyType);
+		return EnergyDisplay.getDisplayShort(energy * multiplier, energyUnit);
 	}
 }

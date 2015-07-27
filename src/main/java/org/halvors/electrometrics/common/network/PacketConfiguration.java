@@ -39,7 +39,7 @@ public class PacketConfiguration implements IMessage {
         Integration.isMekanismEnabled = dataStream.readBoolean();
 
 		// Client.
-		Client.energyUnitType = EnergyUnit.values()[dataStream.readInt()];
+		Client.energyUnit = EnergyUnit.values()[dataStream.readInt()];
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public class PacketConfiguration implements IMessage {
         dataStream.writeBoolean(Integration.isMekanismEnabled);
 
 		// Client.
-		dataStream.writeInt(Client.energyUnitType.ordinal());
+		dataStream.writeInt(Client.energyUnit.ordinal());
 	}
 
 	public static class PacketConfigurationMessage implements IMessageHandler<PacketConfiguration, IMessage> {

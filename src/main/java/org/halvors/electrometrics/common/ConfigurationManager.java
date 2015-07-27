@@ -38,7 +38,7 @@ public class ConfigurationManager {
 }
 
     public static class Client {
-        public static EnergyUnit energyUnitType;
+        public static EnergyUnit energyUnit;
     }
 
     public static void loadConfiguration(Configuration configuration) {
@@ -60,7 +60,7 @@ public class ConfigurationManager {
         Integration.isMekanismEnabled = configuration.get(CATEGORY_INTEGRATION, "Mekanism", Loader.isModLoaded("Mekanism")).getBoolean();
 
         // Client.
-        Client.energyUnitType = EnergyUnit.getUnitFromSymbol(configuration.get(Configuration.CATEGORY_GENERAL, "EnergyUnitType", "J", "The default energy system to display.", new String[]{"RF", "J", "MJ", "EU"}).getString());
+        Client.energyUnit = EnergyUnit.getUnitFromSymbol(configuration.get(CATEGORY_CLIENT, "EnergyUnitType", EnergyUnit.JOULES.getName(), "The default energy system to display.", EnergyUnit.getNames().toArray(new String[EnergyUnit.getNames().size()])).getString());
 
         configuration.save();
     }

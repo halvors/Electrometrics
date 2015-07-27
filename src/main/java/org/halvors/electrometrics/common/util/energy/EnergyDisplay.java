@@ -30,7 +30,7 @@ public class EnergyDisplay {
 		if (isShort) {
 			unitName = energyUnit.getSymbol();
 		} else if (value > 1) {
-			unitName = energyUnit.getPlural();
+			unitName = energyUnit.getPluralName();
 		}
 
 		if (value == 0) {
@@ -84,10 +84,10 @@ public class EnergyDisplay {
 	public static String getDisplaySimple(double value, EnergyUnit energyUnit, int decimalPlaces) {
 		if (value > 1) {
 			if (decimalPlaces < 1) {
-				return (int) value + " " + energyUnit.getPlural();
+				return (int) value + " " + energyUnit.getPluralName();
 			}
 
-			return roundDecimals(value, decimalPlaces) + " " + energyUnit.getPlural();
+			return roundDecimals(value, decimalPlaces) + " " + energyUnit.getPluralName();
 		}
 
 		if (decimalPlaces < 1) {
