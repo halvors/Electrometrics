@@ -4,6 +4,7 @@ import cofh.api.energy.IEnergyProvider;
 import cofh.api.energy.IEnergyReceiver;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.halvors.electrometrics.common.base.MachineType;
+import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.util.MachineUtils;
 
 import java.util.EnumSet;
@@ -13,7 +14,7 @@ import java.util.EnumSet;
  *
  * @author halvors
  */
-public abstract class TileEntityElectricityProvider extends TileEntityElectricityReceiver implements IEnergyProvider {
+public class TileEntityElectricityProvider extends TileEntityElectricityReceiver implements IEnergyProvider {
 	protected TileEntityElectricityProvider(MachineType machineType, int maxEnergy) {
 		super(machineType, maxEnergy);
 	}
@@ -66,10 +67,10 @@ public abstract class TileEntityElectricityProvider extends TileEntityElectricit
 	 */
 	private void transferEnergy() {
 		for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
-			net.minecraft.tileentity.TileEntity tileEntity = worldObj.getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
+			TileEntity tileEntity = TileEntity.getTileEntity(worldObj, xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
 
 			if (tileEntity instanceof IEnergyReceiver) {
-				IEnergyReceiver receiver = (IEnergyReceiver) tileEntity;
+				IEnergyReceiver receiver = (IEnergyReceiver) tileEntity.getNative();
 
 				extractEnergy(direction.getOpposite(), receiver.receiveEnergy(direction.getOpposite(), storage.getEnergyStored(), false), false);
 			}

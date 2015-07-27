@@ -11,7 +11,7 @@ import java.util.EnumSet;
  *
  * @author halvors
  */
-public abstract class TileEntityElectricityReceiver extends TileEntityElectricityStorage implements IEnergyReceiver {
+public class TileEntityElectricityReceiver extends TileEntityElectricityStorage implements IEnergyReceiver {
 	protected TileEntityElectricityReceiver(MachineType machineType, int maxEnergy) {
 		super(machineType, maxEnergy);
 	}

@@ -20,8 +20,8 @@ import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.client.render.BlockRenderer;
 import org.halvors.electrometrics.client.render.DefaultIcon;
 import org.halvors.electrometrics.common.Reference;
-import org.halvors.electrometrics.common.base.IElectricTiered;
-import org.halvors.electrometrics.common.base.ITiered;
+import org.halvors.electrometrics.common.base.IElectricTier;
+import org.halvors.electrometrics.common.base.ITier;
 import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.base.Tier;
 import org.halvors.electrometrics.common.base.tile.ITileOwnable;
@@ -55,7 +55,7 @@ public class BlockMachine extends BlockRotatable {
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
-		MachineType machineType = MachineType.getType(metadata);
+		MachineType machineType = MachineType.getType(this, metadata);
 
 		return machineType.getTileEntity();
 	}
@@ -201,18 +201,18 @@ public class BlockMachine extends BlockRotatable {
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player) {
 		TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
-		MachineType machineType = MachineType.getType(tileEntity.getBlockMetadata());
+		MachineType machineType = MachineType.getType(this, tileEntity.getBlockMetadata());
 		ItemStack itemStack = machineType.getItemStack();
 		ItemBlockMachine itemBlockMachine = (ItemBlockMachine) itemStack.getItem();
 
-		if (tileEntity instanceof ITiered) {
-			ITiered tiered = (ITiered) tileEntity;
+		if (tileEntity instanceof ITier) {
+			ITier tiered = (ITier) tileEntity;
 
 			itemBlockMachine.setTier(itemStack, tiered.getTier());
 		}
 
-		if (tileEntity instanceof IElectricTiered) {
-			IElectricTiered electricTiered = (IElectricTiered) tileEntity;
+		if (tileEntity instanceof IElectricTier) {
+			IElectricTier electricTiered = (IElectricTier) tileEntity;
 
 			itemBlockMachine.setElectricTier(itemStack, electricTiered.getElectricTier());
 		}

@@ -9,7 +9,7 @@ import org.halvors.electrometrics.Electrometrics;
  *
  * @author halvors
  */
-abstract class Block extends BlockContainer {
+public abstract class Block extends BlockContainer {
 	final String name;
 
 	Block(String name, Material material) {

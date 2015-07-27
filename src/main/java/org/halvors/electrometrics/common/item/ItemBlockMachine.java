@@ -71,13 +71,13 @@ public class ItemBlockMachine extends ItemBlockSubtyped {
 		if (placed) {
 			TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
 
-			if (tileEntity instanceof ITiered) {
-				ITiered tiered = (ITiered) tileEntity;
+			if (tileEntity instanceof ITier) {
+				ITier tiered = (ITier) tileEntity;
 				tiered.setTier(getTier(itemStack));
 			}
 
-			if (tileEntity instanceof IElectricTiered) {
-				IElectricTiered electricTiered = (IElectricTiered) tileEntity;
+			if (tileEntity instanceof IElectricTier) {
+				IElectricTier electricTiered = (IElectricTier) tileEntity;
 				electricTiered.setElectricTier(getElectricTier(itemStack));
 			}
 

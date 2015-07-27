@@ -1,11 +1,13 @@
 package org.halvors.electrometrics.common.base;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.client.gui.machine.GuiElectricityMeter;
 import org.halvors.electrometrics.common.ConfigurationManager.Machine;
+import org.halvors.electrometrics.common.block.BlockMachine;
 import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.tile.machine.TileEntityMachine;
 import org.halvors.electrometrics.common.util.LanguageUtils;
@@ -95,10 +97,12 @@ public enum MachineType {
 		return null;
 	}
 
-	public static MachineType getType(int metadata) {
-		for (MachineType machineType : values()) {
-			if (metadata == machineType.getMetadata()) {
-				return machineType;
+	public static MachineType getType(Block block, int metadata) {
+		if (block instanceof BlockMachine) {
+			for (MachineType machineType : values()) {
+				if (metadata == machineType.getMetadata()) {
+					return machineType;
+				}
 			}
 		}
 
@@ -106,7 +110,7 @@ public enum MachineType {
 	}
 
 	public static MachineType getType(ItemStack itemStack) {
-		return getType(itemStack.getItemDamage());
+		return getType(Block.getBlockFromItem(itemStack.getItem()), itemStack.getItemDamage());
 	}
 
 	public ItemStack getItemStack() {
