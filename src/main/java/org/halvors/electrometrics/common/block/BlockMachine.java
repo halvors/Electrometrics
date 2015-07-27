@@ -20,6 +20,8 @@ import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.client.render.BlockRenderer;
 import org.halvors.electrometrics.client.render.DefaultIcon;
 import org.halvors.electrometrics.common.Reference;
+import org.halvors.electrometrics.common.base.IElectricTiered;
+import org.halvors.electrometrics.common.base.ITiered;
 import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.base.Tier;
 import org.halvors.electrometrics.common.base.tile.ITileOwnable;
@@ -28,6 +30,7 @@ import org.halvors.electrometrics.common.item.ItemBlockMachine;
 import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.tile.machine.TileEntityElectricMachine;
 import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityMeter;
+import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityStorage;
 import org.halvors.electrometrics.common.util.LanguageUtils;
 import org.halvors.electrometrics.common.util.MachineUtils;
 
@@ -93,7 +96,7 @@ public class BlockMachine extends BlockRotatable {
                     case ULTIMATE_ELECTRICITY_METER:
                         ItemStack itemStack = machineType.getItemStack();
                         ItemBlockMachine itemBlockMachine = (ItemBlockMachine) itemStack.getItem();
-                        itemBlockMachine.setElectricityMeterTier(itemStack, Tier.ElectricityMeter.getFromMachineType(machineType));
+                        itemBlockMachine.setElectricTier(itemStack, Tier.Electric.getFromMachineType(machineType));
 
                         list.add(itemStack);
                         break;
@@ -202,16 +205,33 @@ public class BlockMachine extends BlockRotatable {
 		ItemStack itemStack = machineType.getItemStack();
 		ItemBlockMachine itemBlockMachine = (ItemBlockMachine) itemStack.getItem();
 
+		if (tileEntity instanceof ITiered) {
+			ITiered tiered = (ITiered) tileEntity;
+
+			itemBlockMachine.setTier(itemStack, tiered.getTier());
+		}
+
+		if (tileEntity instanceof IElectricTiered) {
+			IElectricTiered electricTiered = (IElectricTiered) tileEntity;
+
+			itemBlockMachine.setElectricTier(itemStack, electricTiered.getElectricTier());
+		}
+
 		if (tileEntity instanceof ITileRedstoneControl) {
 			ITileRedstoneControl tileRedstoneControl = (ITileRedstoneControl) tileEntity;
 
 			itemBlockMachine.setRedstoneControlType(itemStack, tileRedstoneControl.getControlType());
 		}
 
+		if (tileEntity instanceof TileEntityElectricityStorage) {
+			TileEntityElectricityStorage tileEntityElectricityStorage = (TileEntityElectricityStorage) tileEntity;
+
+			itemBlockMachine.setElectricityStored(itemStack, tileEntityElectricityStorage.getStorage().getEnergyStored());
+		}
+
 		if (tileEntity instanceof TileEntityElectricityMeter) {
 			TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
 
-			itemBlockMachine.setElectricityMeterTier(itemStack, tileEntityElectricityMeter.getTier());
 			itemBlockMachine.setElectricityCount(itemStack, tileEntityElectricityMeter.getElectricityCount());
 			itemBlockMachine.setElectricityStored(itemStack, tileEntityElectricityMeter.getStorage().getEnergyStored());
 		}

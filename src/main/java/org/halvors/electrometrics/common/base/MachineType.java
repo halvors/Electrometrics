@@ -34,7 +34,7 @@ public enum MachineType {
 			case ADVANCED_ELECTRICITY_METER:
 			case ELITE_ELECTRICITY_METER:
 			case ULTIMATE_ELECTRICITY_METER:
-				Tier.Base baseTier = Tier.ElectricityMeter.getFromMachineType(this).getBase();
+				Tier.Base baseTier = Tier.Electric.getFromMachineType(this).getBase();
 
 				return baseTier.getUnlocalizedName() + name;
 
@@ -51,7 +51,7 @@ public enum MachineType {
 			case ADVANCED_ELECTRICITY_METER:
 			case ELITE_ELECTRICITY_METER:
 			case ULTIMATE_ELECTRICITY_METER:
-				Tier.Base baseTier = Tier.ElectricityMeter.getFromMachineType(this).getBase();
+				Tier.Base baseTier = Tier.Electric.getFromMachineType(this).getBase();
 
 				return baseTier.getLocalizedName() + " " + localizedName;
 
@@ -71,7 +71,7 @@ public enum MachineType {
 				case ADVANCED_ELECTRICITY_METER:
 				case ELITE_ELECTRICITY_METER:
 				case ULTIMATE_ELECTRICITY_METER:
-					return tileEntityClass.getConstructor(MachineType.class, Tier.ElectricityMeter.class).newInstance(this, Tier.ElectricityMeter.getFromMachineType(this));
+					return tileEntityClass.getConstructor(MachineType.class, Tier.Electric.class).newInstance(this, Tier.Electric.getFromMachineType(this));
 
 				default:
 					return tileEntityClass.newInstance();
@@ -119,5 +119,5 @@ public enum MachineType {
 
     public boolean isEnabled() {
         return Machine.isEnabled(this);
-    }
+	}
 }

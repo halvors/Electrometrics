@@ -31,7 +31,7 @@ public class Tier {
 		}
 	}
 
-	public enum ElectricityMeter {
+	public enum Electric {
 		BASIC(5000000, 2000), // 800 J
 		ADVANCED(20000000, 8000), // 3200 J
 		ELITE(80000000, 32000), // 12800 J
@@ -40,7 +40,7 @@ public class Tier {
 		private final int maxEnergy;
 		private final int maxTransfer;
 
-		ElectricityMeter(int maxEnergy, int maxTransfer) {
+		Electric(int maxEnergy, int maxTransfer) {
 			this.maxEnergy = maxEnergy;
 			this.maxTransfer = maxTransfer;
 		}
@@ -61,8 +61,17 @@ public class Tier {
 			return MachineType.values()[ordinal()];
 		}
 
-		public static ElectricityMeter getFromMachineType(MachineType machineType) {
-			return values()[machineType.getMetadata()];
+		public static Electric getFromMachineType(MachineType machineType) {
+			switch (machineType) {
+				case BASIC_ELECTRICITY_METER:
+				case ADVANCED_ELECTRICITY_METER:
+				case ELITE_ELECTRICITY_METER:
+				case ULTIMATE_ELECTRICITY_METER:
+					return values()[machineType.getMetadata()];
+
+				default:
+					return null;
+			}
 		}
 	}
 }

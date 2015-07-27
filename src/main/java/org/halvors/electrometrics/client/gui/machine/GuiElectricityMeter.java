@@ -46,7 +46,7 @@ public class GuiElectricityMeter extends GuiComponentContainerScreen {
 			public List<String> getInfo() {
 				List<String> list = new ArrayList<>();
 				list.add(LanguageUtils.localize("gui.stored") + ": " + EnergyUtils.getEnergyDisplay(tileEntity.getStorage().getEnergyStored()));
-				list.add(LanguageUtils.localize("gui.maxOutput") + ": " + EnergyUtils.getEnergyDisplay(tileEntity.getTier().getMaxTransfer()));
+				list.add(LanguageUtils.localize("gui.maxOutput") + ": " + EnergyUtils.getEnergyDisplay(tileEntity.getElectricTier().getMaxTransfer()));
 
 				return list;
 			}

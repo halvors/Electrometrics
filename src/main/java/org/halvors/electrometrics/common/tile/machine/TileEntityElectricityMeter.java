@@ -7,6 +7,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
+import org.halvors.electrometrics.common.base.IElectricTiered;
 import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.base.RedstoneControlType;
 import org.halvors.electrometrics.common.base.Tier;
@@ -28,7 +29,7 @@ import java.util.UUID;
  *
  * @author halvors
  */
-public class TileEntityElectricityMeter extends TileEntityElectricityProvider implements ITileNetworkable, ITileActiveState, ITileOwnable, ITileRedstoneControl {
+public class TileEntityElectricityMeter extends TileEntityElectricityProvider implements ITileNetworkable, ITileActiveState, IElectricTiered, ITileOwnable, ITileRedstoneControl {
 	// Whether or not this TileEntity's block is in it's active state.
 	private boolean isActive;
 
@@ -46,19 +47,19 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 	private RedstoneControlType redstoneControlType = RedstoneControlType.DISABLED;
 
 	// The tier of this TileEntity.
-	private Tier.ElectricityMeter tier;
+	private Tier.Electric electricTier;
 
 	// The amount of energy that has passed thru.
 	private double electricityCount;
 
 	public TileEntityElectricityMeter() {
-		this(MachineType.BASIC_ELECTRICITY_METER, Tier.ElectricityMeter.BASIC);
+		this(MachineType.BASIC_ELECTRICITY_METER, Tier.Electric.BASIC);
 	}
 
-	public TileEntityElectricityMeter(MachineType machineType, Tier.ElectricityMeter tier) {
-		super(machineType, tier.getMaxEnergy(), tier.getMaxTransfer());
+	public TileEntityElectricityMeter(MachineType machineType, Tier.Electric electricTier) {
+		super(machineType, electricTier.getMaxEnergy(), electricTier.getMaxTransfer());
 
-		this.tier = tier;
+		this.electricTier = electricTier;
 	}
 
 	@Override
@@ -83,7 +84,7 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 		}
 
 		redstoneControlType = RedstoneControlType.values()[nbtTagCompound.getInteger("redstoneControlType")];
-		tier = Tier.ElectricityMeter.values()[nbtTagCompound.getInteger("tier")];
+		electricTier = Tier.Electric.values()[nbtTagCompound.getInteger("electricTier")];
 		electricityCount = nbtTagCompound.getDouble("electricityCount");
 	}
 
@@ -103,7 +104,7 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 		}
 
 		nbtTagCompound.setInteger("redstoneControlType", redstoneControlType.ordinal());
-		nbtTagCompound.setInteger("tier", tier.ordinal());
+		nbtTagCompound.setInteger("electricTier", electricTier.ordinal());
 		nbtTagCompound.setDouble("electricityCount", electricityCount);
 	}
 
@@ -135,7 +136,7 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		}
 
-		tier = Tier.ElectricityMeter.values()[dataStream.readInt()];
+		electricTier = Tier.Electric.values()[dataStream.readInt()];
 		electricityCount = dataStream.readDouble();
 	}
 
@@ -148,7 +149,7 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 		objects.add(ownerUUID != null ? ownerUUID.getLeastSignificantBits() : 0);
 		objects.add(ownerName != null ? ownerName : "");
 		objects.add(redstoneControlType.ordinal());
-		objects.add(tier.ordinal());
+		objects.add(electricTier.ordinal());
 		objects.add(electricityCount);
 
 		return objects;
@@ -179,6 +180,16 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 	@Override
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
+	}
+
+	@Override
+	public Tier.Electric getElectricTier() {
+		return electricTier;
+	}
+
+	@Override
+	public void setElectricTier(Tier.Electric electricTier) {
+		this.electricTier = electricTier;
 	}
 
 	@Override
@@ -235,14 +246,6 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 	@Override
 	public boolean canPulse() {
 		return false;
-	}
-
-	public Tier.ElectricityMeter getTier() {
-		return tier;
-	}
-
-	public void setTier(Tier.ElectricityMeter electricityMeterTier) {
-		this.tier = electricityMeterTier;
 	}
 
 	/**

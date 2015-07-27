@@ -111,8 +111,6 @@ public class Electrometrics {
 
 	private void addRecipes() {
 		// Register recipes.
-
-        // Multimeter
         ItemStack copperIngot = new ItemStack(Items.iron_ingot);
         Item circuit = Items.repeater;
         ItemStack battery = new ItemStack(Items.diamond);
@@ -120,8 +118,7 @@ public class Electrometrics {
         ItemStack casing = new ItemStack(Blocks.iron_block);
 
         if (Integration.isMekanismEnabled) {
-            // Multimeter
-            copperIngot = new ItemStack(ItemRetriever.getItem("Ingot").getItem(), 1, 5); // Copper ingot.
+			copperIngot = new ItemStack(ItemRetriever.getItem("Ingot").getItem(), 1, 5); // Copper ingot.
             circuit = ItemRetriever.getItem("ControlCircuit").getItem(); // Basic control circuit.
             battery = new ItemStack(ItemRetriever.getItem("EnergyTablet").getItem(), 1, 100); // Uncharged battery.
             cable = new ItemStack(ItemRetriever.getItem("PartTransmitter").getItem(), 8); // Basic universal cable.
@@ -141,15 +138,15 @@ public class Electrometrics {
                 'B', battery);
 
         // Electricity Meter
-        for (Tier.ElectricityMeter tier : Tier.ElectricityMeter.values()) {
+        for (Tier.Electric electricTier : Tier.Electric.values()) {
             if (Integration.isMekanismEnabled) {
-                cable = new ItemStack(ItemRetriever.getItem("PartTransmitter").getItem(), 8, tier.ordinal()); // Tier matching universal cable.
+                cable = new ItemStack(ItemRetriever.getItem("PartTransmitter").getItem(), 8, electricTier.ordinal()); // Tier matching universal cable.
             }
 
-            MachineType machineType = tier.getMachineType();
+            MachineType machineType = electricTier.getMachineType();
             ItemStack itemStackMachine = machineType.getItemStack();
             ItemBlockMachine itemBlockMachine = (ItemBlockMachine) itemStackMachine.getItem();
-            itemBlockMachine.setElectricityMeterTier(itemStackMachine, tier);
+            itemBlockMachine.setElectricTier(itemStackMachine, electricTier);
 
             GameRegistry.addRecipe(itemStackMachine,
                     "RMR",

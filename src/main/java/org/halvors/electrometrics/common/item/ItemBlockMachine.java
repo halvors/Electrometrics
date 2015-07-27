@@ -10,11 +10,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import org.halvors.electrometrics.client.key.Key;
 import org.halvors.electrometrics.client.key.KeyHandler;
-import org.halvors.electrometrics.common.base.MachineType;
-import org.halvors.electrometrics.common.base.RedstoneControlType;
-import org.halvors.electrometrics.common.base.Tier;
+import org.halvors.electrometrics.common.base.*;
 import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityMeter;
+import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityStorage;
 import org.halvors.electrometrics.common.util.LanguageUtils;
 import org.halvors.electrometrics.common.util.energy.EnergyUtils;
 import org.halvors.electrometrics.common.util.render.Color;
@@ -72,15 +71,60 @@ public class ItemBlockMachine extends ItemBlockSubtyped {
 		if (placed) {
 			TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
 
+			if (tileEntity instanceof ITiered) {
+				ITiered tiered = (ITiered) tileEntity;
+				tiered.setTier(getTier(itemStack));
+			}
+
+			if (tileEntity instanceof IElectricTiered) {
+				IElectricTiered electricTiered = (IElectricTiered) tileEntity;
+				electricTiered.setElectricTier(getElectricTier(itemStack));
+			}
+
+			if (tileEntity instanceof TileEntityElectricityStorage) {
+				TileEntityElectricityStorage tileEntityElectricityStorage = (TileEntityElectricityStorage) tileEntity;
+				tileEntityElectricityStorage.getStorage().setEnergyStored(getElectricityStored(itemStack));
+			}
+
 			if (tileEntity instanceof TileEntityElectricityMeter) {
 				TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
-				tileEntityElectricityMeter.setTier(getElectricityMeterTier(itemStack));
 				tileEntityElectricityMeter.setElectricityCount(getElectricityCount(itemStack));
-				tileEntityElectricityMeter.getStorage().setEnergyStored(getElectricityStored(itemStack));
 			}
 		}
 
 		return placed;
+	}
+
+	private Tier.Base getTier(ItemStack itemStack) {
+		if (itemStack.stackTagCompound != null) {
+			return Tier.Base.values()[itemStack.stackTagCompound.getInteger("tier")];
+		}
+
+		return Tier.Base.BASIC;
+	}
+
+	public void setTier(ItemStack itemStack, Tier.Base tier) {
+		if (itemStack.stackTagCompound == null) {
+			itemStack.setTagCompound(new NBTTagCompound());
+		}
+
+		itemStack.stackTagCompound.setInteger("tier", tier.ordinal());
+	}
+
+	private Tier.Electric getElectricTier(ItemStack itemStack) {
+		if (itemStack.stackTagCompound != null) {
+			return Tier.Electric.values()[itemStack.stackTagCompound.getInteger("electricTier")];
+		}
+
+		return Tier.Electric.BASIC;
+	}
+
+	public void setElectricTier(ItemStack itemStack, Tier.Electric electricTier) {
+		if (itemStack.stackTagCompound == null) {
+			itemStack.setTagCompound(new NBTTagCompound());
+		}
+
+		itemStack.stackTagCompound.setInteger("electricTier", electricTier.ordinal());
 	}
 
 	private RedstoneControlType getRedstoneControlType(ItemStack itemStack) {
@@ -99,20 +143,37 @@ public class ItemBlockMachine extends ItemBlockSubtyped {
 		itemStack.stackTagCompound.setInteger("redstoneControlType", redstoneControlType.ordinal());
 	}
 
-	private Tier.ElectricityMeter getElectricityMeterTier(ItemStack itemStack) {
-		if (itemStack.stackTagCompound != null) {
-			return Tier.ElectricityMeter.values()[itemStack.stackTagCompound.getInteger("tier")];
+	private int getElectricityStored(ItemStack itemStack) {
+		MachineType machineType = MachineType.getType(itemStack);
+
+		switch (machineType) {
+			case BASIC_ELECTRICITY_METER:
+			case ADVANCED_ELECTRICITY_METER:
+			case ELITE_ELECTRICITY_METER:
+			case ULTIMATE_ELECTRICITY_METER:
+				if (itemStack.stackTagCompound != null) {
+					return itemStack.stackTagCompound.getInteger("electricityStored");
+				}
 		}
 
-		return Tier.ElectricityMeter.BASIC;
+		return 0;
 	}
 
-	public void setElectricityMeterTier(ItemStack itemStack, Tier.ElectricityMeter tier) {
-		if (itemStack.stackTagCompound == null) {
-			itemStack.setTagCompound(new NBTTagCompound());
-		}
+	public void setElectricityStored(ItemStack itemStack, int electricityStored) {
+		MachineType machineType = MachineType.getType(itemStack);
 
-		itemStack.stackTagCompound.setInteger("tier", tier.getBase().ordinal());
+		switch (machineType) {
+			case BASIC_ELECTRICITY_METER:
+			case ADVANCED_ELECTRICITY_METER:
+			case ELITE_ELECTRICITY_METER:
+			case ULTIMATE_ELECTRICITY_METER:
+				if (itemStack.stackTagCompound == null) {
+					itemStack.setTagCompound(new NBTTagCompound());
+				}
+
+				itemStack.stackTagCompound.setInteger("electricityStored", electricityStored);
+				break;
+		}
 	}
 
 	private double getElectricityCount(ItemStack itemStack) {
@@ -144,39 +205,6 @@ public class ItemBlockMachine extends ItemBlockSubtyped {
 				}
 
 				itemStack.stackTagCompound.setDouble("electricityCount", electricityCount);
-				break;
-		}
-	}
-
-	private int getElectricityStored(ItemStack itemStack) {
-		MachineType machineType = MachineType.getType(itemStack);
-
-		switch (machineType) {
-            case BASIC_ELECTRICITY_METER:
-            case ADVANCED_ELECTRICITY_METER:
-            case ELITE_ELECTRICITY_METER:
-            case ULTIMATE_ELECTRICITY_METER:
-                if (itemStack.stackTagCompound != null) {
-                    return itemStack.stackTagCompound.getInteger("electricityStored");
-                }
-        }
-
-        return 0;
-	}
-
-	public void setElectricityStored(ItemStack itemStack, int electricityStored) {
-		MachineType machineType = MachineType.getType(itemStack);
-
-		switch (machineType) {
-			case BASIC_ELECTRICITY_METER:
-			case ADVANCED_ELECTRICITY_METER:
-			case ELITE_ELECTRICITY_METER:
-			case ULTIMATE_ELECTRICITY_METER:
-				if (itemStack.stackTagCompound == null) {
-					itemStack.setTagCompound(new NBTTagCompound());
-				}
-
-				itemStack.stackTagCompound.setInteger("electricityStored", electricityStored);
 				break;
 		}
 	}
