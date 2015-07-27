@@ -9,7 +9,7 @@ import org.halvors.electrometrics.common.util.location.BlockLocation;
 public class TileEntityMachine extends TileEntityRotatable {
 	private final MachineType machineType;
 
-	TileEntityMachine(MachineType machineType) {
+	protected TileEntityMachine(MachineType machineType) {
 		super(machineType.getLocalizedName());
 
 		this.machineType = machineType;

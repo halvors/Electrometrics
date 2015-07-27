@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class TileEntityElectricityStorage extends TileEntityElectricMachine implements ITileNetworkable {
 	// The internal energy storage.
-	final EnergyStorage storage;
+	protected final EnergyStorage storage;
 
 	protected TileEntityElectricityStorage(MachineType machineType, int maxEnergy) {
 		super(machineType);

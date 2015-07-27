@@ -14,7 +14,7 @@ public class TileEntityElectricMachine extends TileEntityMachine {
 	protected boolean isPowered;
 	protected boolean wasPowered;
 
-	TileEntityElectricMachine(MachineType machineType) {
+	protected TileEntityElectricMachine(MachineType machineType) {
 		super(machineType);
 	}
 
