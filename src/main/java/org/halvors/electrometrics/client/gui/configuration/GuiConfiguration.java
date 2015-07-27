@@ -6,6 +6,7 @@ import cpw.mods.fml.client.config.GuiConfigEntries.IConfigEntry;
 import cpw.mods.fml.client.config.IConfigElement;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.common.config.Configuration;
+import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.client.gui.configuration.category.CategoryEntryClient;
 import org.halvors.electrometrics.client.gui.configuration.category.CategoryEntryGeneral;
 import org.halvors.electrometrics.client.gui.configuration.category.CategoryEntryIntegration;
@@ -29,6 +30,8 @@ public class GuiConfiguration extends GuiConfig {
 
     public GuiConfiguration(GuiScreen parent) {
         super(parent, configElements, Reference.ID, false, false, Reference.NAME);
+
+        titleLine2 = Electrometrics.getConfiguration().getConfigFile().getAbsolutePath();
     }
 
     private static void register(String category, Class<? extends IConfigEntry> configEntryClass) {
