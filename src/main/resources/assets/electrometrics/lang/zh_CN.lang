@@ -23,6 +23,16 @@ gui.measured=Measured
 gui.stored=存储能量
 gui.maxOutput=最高输出
 
+// Gui configuration
+gui.configuration.category.general=General
+gui.configuration.category.general.tooltip=General settings
+gui.configuration.category.machine=Machine
+gui.configuration.category.machine.tooltip=Settings regarding enabling and disabling of specific machines
+gui.configuration.category.integration=Integration
+gui.configuration.category.integration.tooltip=Settings regarding enabling and disabling of specific mod integrations
+gui.configuration.category.client=Client
+gui.configuration.category.client.tooltip=Client-specific settings
+
 // Tooltip
 tooltip.hold=按住
 tooltip.forDetails=查看详情
