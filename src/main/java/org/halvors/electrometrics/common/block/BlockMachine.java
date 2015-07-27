@@ -31,8 +31,10 @@ import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.tile.machine.TileEntityElectricMachine;
 import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityStorage;
+import org.halvors.electrometrics.common.tile.machine.TileEntityMachine;
 import org.halvors.electrometrics.common.util.LanguageUtils;
 import org.halvors.electrometrics.common.util.MachineUtils;
+import org.halvors.electrometrics.common.util.PlayerUtils;
 
 import java.util.List;
 
@@ -150,13 +152,11 @@ public class BlockMachine extends BlockRotatable {
 			return true;
 		}
 
-		return super.onBlockActivated(world, x, y, z, player, facing, playerX, playerY, playerZ);
+		return false;
 	}
 
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemStack) {
-		super.onBlockPlacedBy(world, x, y, z, entity, itemStack);
-
 		TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
 
 		// If this TileEntity implements ITileRedstoneControl, check if it's getting powered.
@@ -175,6 +175,8 @@ public class BlockMachine extends BlockRotatable {
 				tileOwnable.setOwner(player);
 			}
 		}
+
+		super.onBlockPlacedBy(world, x, y, z, entity, itemStack);
 	}
 
 	@Override
@@ -246,9 +248,8 @@ public class BlockMachine extends BlockRotatable {
 		// If this TileEntity implements ITileOwnable, we check if there is a owner.
 		if (tileEntity instanceof ITileOwnable) {
 			ITileOwnable tileOwnable = (ITileOwnable) tileEntity;
-			EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 
-			return tileOwnable.isOwner(player) ? blockHardness : -1;
+			return tileOwnable.isOwner(PlayerUtils.getClientPlayer()) ? blockHardness : -1;
 		}
 
 		return blockHardness;
@@ -260,9 +261,8 @@ public class BlockMachine extends BlockRotatable {
 
 		if (tileEntity instanceof ITileOwnable) {
 			ITileOwnable tileOwnable = (ITileOwnable) tileEntity;
-			EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 
-			return tileOwnable.isOwner(player) ? blockResistance : -1;
+			return tileOwnable.isOwner(PlayerUtils.getClientPlayer()) ? blockResistance : -1;
 		}
 
 		return blockResistance;

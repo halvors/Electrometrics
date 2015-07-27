@@ -10,7 +10,7 @@ import org.halvors.electrometrics.Electrometrics;
  * @author halvors
  */
 public abstract class Block extends BlockContainer {
-	final String name;
+	protected final String name;
 
 	Block(String name, Material material) {
 		super(material);

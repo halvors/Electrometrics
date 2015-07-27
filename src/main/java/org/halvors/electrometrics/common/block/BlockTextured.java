@@ -13,14 +13,14 @@ import org.halvors.electrometrics.common.base.tile.ITileRotatable;
 import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.util.render.Orientation;
 
-abstract class BlockTextured extends Block {
+public abstract class BlockTextured extends Block {
 	@SideOnly(Side.CLIENT)
-	final IIcon[][] iconList = new IIcon[16][16];
+	protected final IIcon[][] iconList = new IIcon[16][16];
 
 	@SideOnly(Side.CLIENT)
-	DefaultIcon defaultBaseIcon;
+	protected DefaultIcon defaultBaseIcon;
 
-	BlockTextured(String name, Material material) {
+	protected BlockTextured(String name, Material material) {
 		super(name, material);
 	}
 

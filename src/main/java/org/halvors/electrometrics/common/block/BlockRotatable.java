@@ -12,8 +12,8 @@ import org.halvors.electrometrics.common.base.tile.ITileRotatable;
 import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.util.MachineUtils;
 
-abstract class BlockRotatable extends BlockTextured {
-	BlockRotatable(String name, Material material) {
+public abstract class BlockRotatable extends BlockTextured {
+	protected BlockRotatable(String name, Material material) {
 		super(name, material);
 	}
 
@@ -117,7 +117,7 @@ abstract class BlockRotatable extends BlockTextured {
 			}
 		}
 
-		return super.rotateBlock(world, x, y, z, axis);
+		return false;
 	}
 
 	ItemStack dismantleBlock(World world, int x, int y, int z, boolean returnBlock) {
