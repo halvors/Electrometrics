@@ -68,7 +68,11 @@ public abstract class BlockRotatable extends BlockTextured {
 				dismantleBlock(world, x, y, z, false);
 
 				return true;
-			} else {
+			}
+
+            // TODO: Figure out this, seems to work just fine without this code.
+            /*
+            } else {
 				if (tileEntity instanceof ITileRotatable) {
 					ITileRotatable tileRotatable = (ITileRotatable) tileEntity;
 					int change = ForgeDirection.ROTATION_MATRIX[ForgeDirection.UP.ordinal()][tileRotatable.getFacing()];
@@ -78,6 +82,7 @@ public abstract class BlockRotatable extends BlockTextured {
 					return true;
 				}
 			}
+			*/
 		}
 
 		return false;

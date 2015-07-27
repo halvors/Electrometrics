@@ -60,6 +60,11 @@ public class BlockMachine extends BlockRotatable {
 		return machineType.getTileEntity();
 	}
 
+    @Override
+    public int damageDropped (int metadata) {
+        return metadata;
+    }
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
@@ -110,11 +115,6 @@ public class BlockMachine extends BlockRotatable {
 	}
 
 	@Override
-	public int damageDropped (int metadata) {
-		return metadata;
-	}
-
-	@Override
 	public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player) {
 		if (!world.isRemote) {
 			TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
@@ -150,7 +150,7 @@ public class BlockMachine extends BlockRotatable {
 			return true;
 		}
 
-		return false;
+		return super.onBlockActivated(world, x, y, z, player, facing, playerX, playerY, playerZ);
 	}
 
 	@Override
