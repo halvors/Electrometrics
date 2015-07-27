@@ -47,19 +47,19 @@ public class ItemBlockMachine extends ItemBlockSubtyped {
 		MachineType machineType = MachineType.getType(itemStack);
 
 		if (!KeyHandler.getIsKeyPressed(Key.SNEAK.getKeyBinding())) {
-			list.add(LanguageUtils.translate("tooltip.hold") + " " + Color.AQUA + GameSettings.getKeyDisplayString(Key.SNEAK.getKeyBinding().getKeyCode()) + Color.GREY + " " + LanguageUtils.translate("tooltip.forDetails") + ".");
+			list.add(LanguageUtils.localize("tooltip.hold") + " " + Color.AQUA + GameSettings.getKeyDisplayString(Key.SNEAK.getKeyBinding().getKeyCode()) + Color.GREY + " " + LanguageUtils.localize("tooltip.forDetails") + ".");
 		} else {
 			switch (machineType) {
 				case BASIC_ELECTRICITY_METER:
 				case ADVANCED_ELECTRICITY_METER:
 				case ELITE_ELECTRICITY_METER:
 				case ULTIMATE_ELECTRICITY_METER:
-					list.add(Color.BRIGHT_GREEN + LanguageUtils.translate("tooltip.measuredEnergy") + ": " + Color.GREY + EnergyUtils.getEnergyDisplay(getElectricityCount(itemStack)));
-					list.add(Color.AQUA + LanguageUtils.translate("tooltip.storedEnergy") + ": " + Color.GREY + EnergyUtils.getEnergyDisplay(getElectricityStored(itemStack)));
+					list.add(Color.BRIGHT_GREEN + LanguageUtils.localize("tooltip.measuredEnergy") + ": " + Color.GREY + EnergyUtils.getEnergyDisplay(getElectricityCount(itemStack)));
+					list.add(Color.AQUA + LanguageUtils.localize("tooltip.storedEnergy") + ": " + Color.GREY + EnergyUtils.getEnergyDisplay(getElectricityStored(itemStack)));
 					break;
 
 				default:
-					list.add(Color.RED + LanguageUtils.translate("tooltip.noInformation"));
+					list.add(Color.RED + LanguageUtils.localize("tooltip.noInformation"));
 					break;
 			}
 		}

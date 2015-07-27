@@ -55,4 +55,9 @@ public class BlockLocation {
 	public TileEntity getTileEntity(IBlockAccess world) {
 		return TileEntity.getTileEntity(world, x, y, z);
 	}
+
+    @Override
+    public String toString() {
+        return x + ", " + y + ", " + z + " in dimension " + dimensionId;
+    }
 }

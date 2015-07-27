@@ -7,7 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import org.halvors.electrometrics.common.CommonProxy;
 import org.halvors.electrometrics.common.tile.TileEntity;
-import org.halvors.electrometrics.common.tile.TileEntityMachine;
+import org.halvors.electrometrics.common.tile.machine.TileEntityMachine;
 
 /**
  * This is the client proxy used only by the client.

@@ -26,7 +26,7 @@ import org.halvors.electrometrics.common.base.tile.ITileOwnable;
 import org.halvors.electrometrics.common.base.tile.ITileRedstoneControl;
 import org.halvors.electrometrics.common.item.ItemBlockMachine;
 import org.halvors.electrometrics.common.tile.TileEntity;
-import org.halvors.electrometrics.common.tile.TileEntityElectricBlock;
+import org.halvors.electrometrics.common.tile.machine.TileEntityElectricMachine;
 import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.util.LanguageUtils;
 import org.halvors.electrometrics.common.util.MachineUtils;
@@ -76,23 +76,25 @@ public class BlockMachine extends BlockRotatable {
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item item, CreativeTabs creativetabs, List list) {
 		// Making all MachineTypes available in creative mode.
-		for (MachineType machineType : MachineType.values()) {
-			switch (machineType) {
-				case BASIC_ELECTRICITY_METER:
-				case ADVANCED_ELECTRICITY_METER:
-				case ELITE_ELECTRICITY_METER:
-				case ULTIMATE_ELECTRICITY_METER:
-					ItemStack itemStack = machineType.getItemStack();
-					ItemBlockMachine itemBlockMachine = (ItemBlockMachine) itemStack.getItem();
-					itemBlockMachine.setElectricityMeterTier(itemStack, Tier.ElectricityMeter.getFromMachineType(machineType));
+        for (MachineType machineType : MachineType.values()) {
+            if (machineType.isEnabled()) {
+                switch (machineType) {
+                    case BASIC_ELECTRICITY_METER:
+                    case ADVANCED_ELECTRICITY_METER:
+                    case ELITE_ELECTRICITY_METER:
+                    case ULTIMATE_ELECTRICITY_METER:
+                        ItemStack itemStack = machineType.getItemStack();
+                        ItemBlockMachine itemBlockMachine = (ItemBlockMachine) itemStack.getItem();
+                        itemBlockMachine.setElectricityMeterTier(itemStack, Tier.ElectricityMeter.getFromMachineType(machineType));
 
-					list.add(itemStack);
-					break;
+                        list.add(itemStack);
+                        break;
 
-				default:
-					list.add(machineType.getItemStack());
-					break;
-			}
+                    default:
+                        list.add(machineType.getItemStack());
+                        break;
+                }
+            }
 		}
 	}
 
@@ -111,7 +113,7 @@ public class BlockMachine extends BlockRotatable {
 				ITileOwnable tileOwnable = (ITileOwnable) tileEntity;
 
 				if (!tileOwnable.isOwner(player)) {
-					player.addChatMessage(new ChatComponentText(LanguageUtils.translate("tooltip.blockOwnedBy").replace("%s", tileOwnable.getOwnerName())));
+					player.addChatMessage(new ChatComponentText(LanguageUtils.localize("tooltip.blockOwnedBy").replace("%s", tileOwnable.getOwnerName())));
 				}
 			}
 		}
@@ -169,9 +171,9 @@ public class BlockMachine extends BlockRotatable {
 		if (!world.isRemote) {
 			TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
 
-			if (tileEntity instanceof TileEntityElectricBlock) {
-				TileEntityElectricBlock tileEntityElectricBlock = (TileEntityElectricBlock) tileEntity;
-				tileEntityElectricBlock.onNeighborChange();
+			if (tileEntity instanceof TileEntityElectricMachine) {
+				TileEntityElectricMachine tileEntityElectricMachine = (TileEntityElectricMachine) tileEntity;
+				tileEntityElectricMachine.onNeighborChange();
 			}
 		}
 	}

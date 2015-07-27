@@ -4,8 +4,12 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
-import org.halvors.electrometrics.Electrometrics;
-import org.halvors.electrometrics.common.util.energy.Unit;
+import org.halvors.electrometrics.common.ConfigurationManager.Client;
+import org.halvors.electrometrics.common.ConfigurationManager.General;
+import org.halvors.electrometrics.common.ConfigurationManager.Integration;
+import org.halvors.electrometrics.common.ConfigurationManager.Machine;
+import org.halvors.electrometrics.common.base.MachineType;
+import org.halvors.electrometrics.common.util.energy.EnergyUnit;
 
 /**
  * This is a packet that synchronizes the configuration from the server to the clients.
@@ -20,25 +24,43 @@ public class PacketConfiguration implements IMessage {
 	@Override
 	public void fromBytes(ByteBuf dataStream) {
 		// General.
-		Electrometrics.energyUnitType = Unit.values()[dataStream.readInt()];
-		Electrometrics.toJoules = dataStream.readDouble();
-		Electrometrics.toMinecraftJoules = dataStream.readDouble();
-		Electrometrics.toElectricalUnits = dataStream.readDouble();
+        General.destroyDisabledBlocks = dataStream.readBoolean();
 
-		// Mod integration.
-		Electrometrics.isMekanismIntegrationEnabled = dataStream.readBoolean();
+        General.toJoules = dataStream.readDouble();
+        General.toMinecraftJoules = dataStream.readDouble();
+        General.toElectricalUnits = dataStream.readDouble();
+
+        // Machine.
+        for (MachineType machineType : MachineType.values()) {
+            Machine.setEntry(machineType, dataStream.readBoolean());
+        }
+
+        // Integration.
+        Integration.isMekanismEnabled = dataStream.readBoolean();
+
+		// Client.
+		Client.energyUnit = EnergyUnit.values()[dataStream.readInt()];
 	}
 
 	@Override
 	public void toBytes(ByteBuf dataStream) {
 		// General.
-		dataStream.writeInt(Electrometrics.energyUnitType.ordinal());
-		dataStream.writeDouble(Electrometrics.toJoules);
-		dataStream.writeDouble(Electrometrics.toMinecraftJoules);
-		dataStream.writeDouble(Electrometrics.toElectricalUnits);
+        dataStream.writeBoolean(General.destroyDisabledBlocks);
 
-		// Mod integration.
-		dataStream.writeBoolean(Electrometrics.isMekanismIntegrationEnabled);
+		dataStream.writeDouble(General.toJoules);
+		dataStream.writeDouble(General.toMinecraftJoules);
+		dataStream.writeDouble(General.toElectricalUnits);
+
+        // Machine.
+        for (MachineType machineType : MachineType.values()) {
+            dataStream.writeBoolean(Machine.isEnabled(machineType));
+        }
+
+        // Integration.
+        dataStream.writeBoolean(Integration.isMekanismEnabled);
+
+		// Client.
+		dataStream.writeInt(Client.energyUnit.ordinal());
 	}
 
 	public static class PacketConfigurationMessage implements IMessageHandler<PacketConfiguration, IMessage> {

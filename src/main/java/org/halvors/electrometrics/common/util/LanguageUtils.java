@@ -6,10 +6,10 @@ public class LanguageUtils {
 	/**
 	 * Get the translation for the current text.
 	 *
-	 * @param text the text that we want to transelate.
+	 * @param text the text that we want to localize.
 	 * @return text
 	 */
-	public static String translate(String text) {
+	public static String localize(String text) {
 		return StatCollector.translateToLocal(text);
 	}
 }

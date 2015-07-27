@@ -23,7 +23,7 @@ public class Tier {
 		}
 
 		public String getLocalizedName() {
-			return LanguageUtils.translate("tier." + name);
+			return LanguageUtils.localize("tier." + name);
 		}
 
 		public Color getColor() {

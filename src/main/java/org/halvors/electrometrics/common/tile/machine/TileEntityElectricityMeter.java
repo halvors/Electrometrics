@@ -16,7 +16,6 @@ import org.halvors.electrometrics.common.base.tile.ITileOwnable;
 import org.halvors.electrometrics.common.base.tile.ITileRedstoneControl;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketRequestData;
-import org.halvors.electrometrics.common.tile.TileEntityElectricityProvider;
 import org.halvors.electrometrics.common.util.PlayerUtils;
 
 import java.util.EnumSet;

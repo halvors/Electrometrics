@@ -5,8 +5,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.client.gui.machine.GuiElectricityMeter;
-import org.halvors.electrometrics.common.tile.TileEntityMachine;
+import org.halvors.electrometrics.common.ConfigurationManager.Machine;
 import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityMeter;
+import org.halvors.electrometrics.common.tile.machine.TileEntityMachine;
 import org.halvors.electrometrics.common.util.LanguageUtils;
 
 public enum MachineType {
@@ -43,7 +44,7 @@ public enum MachineType {
 	}
 
 	public String getLocalizedName() {
-		String localizedName = LanguageUtils.translate("tile." + name + ".name");
+		String localizedName = LanguageUtils.localize("tile." + name + ".name");
 
 		switch (this) {
 			case BASIC_ELECTRICITY_METER:
@@ -115,4 +116,8 @@ public enum MachineType {
 	public Item getItem() {
 		return getItemStack().getItem();
 	}
+
+    public boolean isEnabled() {
+        return Machine.isEnabled(this);
+    }
 }

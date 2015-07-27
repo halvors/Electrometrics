@@ -17,7 +17,7 @@ public class TileEntityRotatable extends TileEntity implements ITileNetworkable,
 	// The direction this TileEntity's block is facing, client side.
 	private int clientFacing;
 
-	TileEntityRotatable(String inventoryName) {
+	protected TileEntityRotatable(String inventoryName) {
 		super(inventoryName);
 	}
 

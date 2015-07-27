@@ -1,7 +1,6 @@
 package org.halvors.electrometrics;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -20,6 +19,8 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.halvors.electrometrics.common.CommonProxy;
+import org.halvors.electrometrics.common.ConfigurationManager;
+import org.halvors.electrometrics.common.ConfigurationManager.Integration;
 import org.halvors.electrometrics.common.Reference;
 import org.halvors.electrometrics.common.Tab;
 import org.halvors.electrometrics.common.base.MachineType;
@@ -29,17 +30,18 @@ import org.halvors.electrometrics.common.event.PlayerEventHandler;
 import org.halvors.electrometrics.common.item.ItemBlockMachine;
 import org.halvors.electrometrics.common.item.ItemMultimeter;
 import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityMeter;
-import org.halvors.electrometrics.common.util.energy.Unit;
-
-import java.io.File;
 
 /**
  * This is the Electrometrics class, which is the main class of this mod.
  *
  * @author halvors
  */
-@Mod(modid = Reference.ID, name = Reference.NAME, version = Reference.VERSION, dependencies = "after:CoFHCore;" +
-																							  "after:Mekanism")
+@Mod(modid = Reference.ID,
+     name = Reference.NAME,
+     version = Reference.VERSION,
+     dependencies = "after:CoFHCore;" +
+				    "after:Mekanism",
+     guiFactory = "org.halvors." + Reference.ID + ".client.gui.configuration.GuiConfiguationFactory")
 public class Electrometrics {
 	// The instance of your mod that Forge uses.
 	@Instance(value = Reference.ID)
@@ -61,49 +63,17 @@ public class Electrometrics {
 	// Blocks.
 	public static final BlockMachine blockMachine = new BlockMachine();
 
-	// Configuration.
+	// ConfigurationManager.
 	private static Configuration configuration;
 
-	// Configuration variables.
-
-	// General.
-	public static Unit energyUnitType = Unit.JOULES;
-	public static double toJoules;
-	public static double toMinecraftJoules;
-	public static double toElectricalUnits;
-
-	// Mod integration.
-	public static boolean isMekanismIntegrationEnabled;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		File config = event.getSuggestedConfigurationFile();
+		// Initialize configuration.
+        configuration = new Configuration(event.getSuggestedConfigurationFile());
 
-		// Set the mod's configuration
-		configuration = new Configuration(config);
-		configuration.load();
-
-		isMekanismIntegrationEnabled = configuration.get(Configuration.CATEGORY_GENERAL, "MekanismIntegration", Loader.isModLoaded("Mekanism")).getBoolean();
-
-		String energyUnitTypeString = configuration.get(Configuration.CATEGORY_GENERAL, "EnergyType", "J", "The default energy system to display.", new String[] { "RF", "J", "MJ", "EU" }).getString();
-
-		if (energyUnitTypeString != null) {
-			if (energyUnitTypeString.trim().equalsIgnoreCase("RF")) {
-				energyUnitType = Unit.REDSTONE_FLUX;
-			} else if (energyUnitTypeString.trim().equalsIgnoreCase("J")) {
-				energyUnitType = Unit.JOULES;
-			} else if (energyUnitTypeString.trim().equalsIgnoreCase("MJ")) {
-				energyUnitType = Unit.MINECRAFT_JOULES;
-			} else if (energyUnitTypeString.trim().equalsIgnoreCase("EU")) {
-				energyUnitType = Unit.ELECTRICAL_UNITS;
-			}
-		}
-
-		toJoules = configuration.get(Configuration.CATEGORY_GENERAL, "RFToJoules", 2.5).getDouble();
-		toMinecraftJoules = configuration.get(Configuration.CATEGORY_GENERAL, "RFToMinecraftJoules", 0.1).getDouble();
-		toElectricalUnits = configuration.get(Configuration.CATEGORY_GENERAL, "RFToElectricalUnits", 0.25).getDouble();
-
-		configuration.save();
+        // Load the configuration.
+        ConfigurationManager.loadConfiguration(configuration);
 	}
 
 	@EventHandler
@@ -121,7 +91,7 @@ public class Electrometrics {
 		addRecipes();
 
 		// Mod integration.
-		logger.log(Level.INFO, "Mekanism integration is " + (isMekanismIntegrationEnabled ? "enabled" : "disabled") + ".");
+		logger.log(Level.INFO, "Mekanism integration is " + (Integration.isMekanismEnabled ? "enabled" : "disabled") + ".");
 	}
 
 	private void addItems() {
@@ -146,20 +116,16 @@ public class Electrometrics {
         ItemStack copperIngot = new ItemStack(Items.iron_ingot);
         Item circuit = Items.repeater;
         ItemStack battery = new ItemStack(Items.diamond);
-
-        // Electricity Meter
         ItemStack cable = new ItemStack(Items.gold_ingot);
         ItemStack casing = new ItemStack(Blocks.iron_block);
 
-        if (isMekanismIntegrationEnabled) {
+        if (Integration.isMekanismEnabled) {
             // Multimeter
-            copperIngot = new ItemStack(ItemRetriever.getItem("Ingot").getItem(), 1, 5);
-            circuit = ItemRetriever.getItem("ControlCircuit").getItem();
-            battery = new ItemStack(ItemRetriever.getItem("EnergyTablet").getItem(), 1, 100);
-
-            // Electricity Meter
-            cable = new ItemStack(ItemRetriever.getItem("PartTransmitter").getItem(), 8);
-            casing = new ItemStack(ItemRetriever.getBlock("BasicBlock").getItem(), 1, 8);
+            copperIngot = new ItemStack(ItemRetriever.getItem("Ingot").getItem(), 1, 5); // Copper ingot.
+            circuit = ItemRetriever.getItem("ControlCircuit").getItem(); // Basic control circuit.
+            battery = new ItemStack(ItemRetriever.getItem("EnergyTablet").getItem(), 1, 100); // Uncharged battery.
+            cable = new ItemStack(ItemRetriever.getItem("PartTransmitter").getItem(), 8); // Basic universal cable.
+            casing = new ItemStack(ItemRetriever.getBlock("BasicBlock").getItem(), 1, 8); // Steel casing.
         }
 
         // Multimeter
@@ -176,8 +142,8 @@ public class Electrometrics {
 
         // Electricity Meter
         for (Tier.ElectricityMeter tier : Tier.ElectricityMeter.values()) {
-            if (isMekanismIntegrationEnabled) {
-                cable = new ItemStack(ItemRetriever.getItem("PartTransmitter").getItem(), 8, tier.ordinal());
+            if (Integration.isMekanismEnabled) {
+                cable = new ItemStack(ItemRetriever.getItem("PartTransmitter").getItem(), 8, tier.ordinal()); // Tier matching universal cable.
             }
 
             MachineType machineType = tier.getMachineType();
