@@ -16,20 +16,22 @@ tile.ElectricityMeter.name=Electricity Meter
 item.Multimeter.name=Multimeter
 
 // Gui
-gui.config.category.general=General
-gui.config.category.general.tooltip=General settings
-gui.config.category.machine=Machine
-gui.config.category.machine.tooltip=Settings regarding enabling and disabling of specific machines
-gui.config.category.integration=Integration
-gui.config.category.integration.tooltip=Settings regarding enabling and disabling of specific mod integrations
-gui.config.category.client=Client
-gui.config.category.client.tooltip=Client-specific settings
 gui.using=Using
 gui.needed=Needed
 gui.reset=Reset
 gui.measured=Measured
 gui.stored=Stored
 gui.maxOutput=Max output
+
+// Gui configuration
+gui.configuration.category.general=General
+gui.configuration.category.general.tooltip=General settings
+gui.configuration.category.machine=Machine
+gui.configuration.category.machine.tooltip=Settings regarding enabling and disabling of specific machines
+gui.configuration.category.integration=Integration
+gui.configuration.category.integration.tooltip=Settings regarding enabling and disabling of specific mod integrations
+gui.configuration.category.client=Client
+gui.configuration.category.client.tooltip=Client-specific settings
 
 // Tooltip
 tooltip.hold=Hold

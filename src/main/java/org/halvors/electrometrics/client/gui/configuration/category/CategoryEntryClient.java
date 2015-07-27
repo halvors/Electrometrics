@@ -26,6 +26,6 @@ public class CategoryEntryClient extends CategoryEntry {
                 category,
                 false,
                 false,
-                Reference.NAME + " - " + LanguageUtils.localize("gui.config.category." + category));
+                Reference.NAME + " - " + LanguageUtils.localize("gui.configuration.category." + category));
     }
 }
