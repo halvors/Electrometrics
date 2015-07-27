@@ -8,8 +8,8 @@ import org.halvors.electrometrics.Electrometrics;
  *
  * @author halvors
  */
-class ItemBlock extends net.minecraft.item.ItemBlock {
-	ItemBlock(Block block) {
+public class ItemBlock extends net.minecraft.item.ItemBlock {
+	protected ItemBlock(Block block) {
 		super(block);
 
 		setCreativeTab(Electrometrics.getTab());

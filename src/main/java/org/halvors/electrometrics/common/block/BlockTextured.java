@@ -18,7 +18,7 @@ public abstract class BlockTextured extends Block {
 	protected final IIcon[][] iconList = new IIcon[16][16];
 
 	@SideOnly(Side.CLIENT)
-	protected DefaultIcon defaultBaseIcon;
+	protected DefaultIcon defaultBlockIcon;
 
 	protected BlockTextured(String name, Material material) {
 		super(name, material);
@@ -27,8 +27,8 @@ public abstract class BlockTextured extends Block {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
-		IIcon baseIcon = iconRegister.registerIcon(Reference.PREFIX + name);
-		defaultBaseIcon = DefaultIcon.getAll(baseIcon);
+		blockIcon = iconRegister.registerIcon(Reference.PREFIX + name);
+		defaultBlockIcon = DefaultIcon.getAll(blockIcon);
 	}
 
 	@Override

@@ -3,7 +3,7 @@ package org.halvors.electrometrics.common.item;
 import net.minecraft.block.Block;
 
 public class ItemBlockSubtyped extends ItemBlock {
-	ItemBlockSubtyped(Block block) {
+	protected ItemBlockSubtyped(Block block) {
 		super(block);
 
 		setHasSubtypes(true);

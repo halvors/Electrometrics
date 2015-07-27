@@ -8,9 +8,9 @@ import org.halvors.electrometrics.Electrometrics;
  * @author halvors
  */
 public class Item extends net.minecraft.item.Item {
-	final String name;
+	protected final String name;
 
-	Item(String name) {
+	protected Item(String name) {
 		this.name = name;
 
 		setUnlocalizedName(name);
