@@ -63,11 +63,19 @@ public class BlockMachine extends BlockRotatable {
 		super.registerBlockIcons(iconRegister);
 
 		IIcon topIcon = iconRegister.registerIcon(Reference.PREFIX + name + "Top");
+		IIcon inputIcon = iconRegister.registerIcon(Reference.PREFIX + name + "Input");
+		IIcon outputIcon = iconRegister.registerIcon(Reference.PREFIX + name + "Output");
 		DefaultIcon defaultTopIcon = DefaultIcon.getActivePair(topIcon, 1);
 
 		// Adding all icons for the machine types.
 		for (MachineType machineType : MachineType.values()) {
-			BlockRenderer.loadDynamicTextures(iconRegister, machineType.getUnlocalizedName(), iconList[machineType.getMetadata()], defaultBaseIcon, defaultTopIcon);
+			BlockRenderer.loadDynamicTextures(iconRegister,
+					machineType.getUnlocalizedName(),
+					iconList[machineType.getMetadata()],
+					defaultBaseIcon,
+					defaultTopIcon,
+					DefaultIcon.getActivePair(outputIcon, 4),
+					DefaultIcon.getActivePair(inputIcon, 5));
 		}
 	}
 
