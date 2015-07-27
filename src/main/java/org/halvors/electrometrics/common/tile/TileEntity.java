@@ -13,10 +13,6 @@ public class TileEntity extends net.minecraft.tileentity.TileEntity {
 		return inventoryName;
 	}
 
-	public net.minecraft.tileentity.TileEntity getNative() {
-		return this;
-	}
-
 	public static TileEntity getTileEntity(IBlockAccess world, int x, int y, int z) {
 		return (TileEntity) world.getTileEntity(x, y, z);
 	}

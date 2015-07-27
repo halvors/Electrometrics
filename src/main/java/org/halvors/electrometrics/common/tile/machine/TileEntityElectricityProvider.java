@@ -2,9 +2,9 @@ package org.halvors.electrometrics.common.tile.machine;
 
 import cofh.api.energy.IEnergyProvider;
 import cofh.api.energy.IEnergyReceiver;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.halvors.electrometrics.common.base.MachineType;
-import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.util.MachineUtils;
 
 import java.util.EnumSet;
@@ -47,30 +47,16 @@ public class TileEntityElectricityProvider extends TileEntityElectricityReceiver
 		return 0;
 	}
 
-	@Override
-	protected EnumSet<ForgeDirection> getReceivingSides() {
-		EnumSet<ForgeDirection> directions = EnumSet.allOf(ForgeDirection.class);
-		directions.removeAll(getExtractingSides());
-		directions.remove(ForgeDirection.UNKNOWN);
-
-		return directions;
-	}
-
-	@Override
-	protected EnumSet<ForgeDirection> getExtractingSides() {
-		return EnumSet.of(ForgeDirection.getOrientation(facing));
-	}
-
 	/**
 	 * Transfer energy to any blocks demanding energy that are connected to
 	 * this one.
 	 */
 	private void transferEnergy() {
 		for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
-			TileEntity tileEntity = TileEntity.getTileEntity(worldObj, xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
+			TileEntity tileEntity = worldObj.getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
 
 			if (tileEntity instanceof IEnergyReceiver) {
-				IEnergyReceiver receiver = (IEnergyReceiver) tileEntity.getNative();
+				IEnergyReceiver receiver = (IEnergyReceiver) tileEntity;
 
 				extractEnergy(direction.getOpposite(), receiver.receiveEnergy(direction.getOpposite(), storage.getEnergyStored(), false), false);
 			}
