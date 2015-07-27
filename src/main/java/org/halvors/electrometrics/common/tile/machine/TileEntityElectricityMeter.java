@@ -7,7 +7,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
-import org.halvors.electrometrics.common.base.IElectricTiered;
+import org.halvors.electrometrics.common.base.IElectricTier;
 import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.base.RedstoneControlType;
 import org.halvors.electrometrics.common.base.Tier;
@@ -29,7 +29,7 @@ import java.util.UUID;
  *
  * @author halvors
  */
-public class TileEntityElectricityMeter extends TileEntityElectricityProvider implements ITileNetworkable, ITileActiveState, IElectricTiered, ITileOwnable, ITileRedstoneControl {
+public class TileEntityElectricityMeter extends TileEntityElectricityProvider implements ITileNetworkable, ITileActiveState, IElectricTier, ITileOwnable, ITileRedstoneControl {
 	// Whether or not this TileEntity's block is in it's active state.
 	private boolean isActive;
 
@@ -67,6 +67,15 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 		super.validate();
 
 		PacketHandler.sendToServer(new PacketRequestData(this));
+	}
+
+	@Override
+	public void updateEntity() {
+		super.updateEntity();
+
+		if (!worldObj.isRemote) {
+			isActive = false;
+		}
 	}
 
 	@Override
@@ -156,11 +165,23 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 	}
 
 	@Override
-	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
-		if (getExtractingSides().contains(from)) {
+	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+		if (getReceivingSides().contains(from)) {
 			// Add the amount of energy we're extracting to the counter.
 			if (!simulate) {
-				electricityCount += maxExtract;
+				isActive = true;
+				electricityCount += maxReceive;
+			}
+		}
+
+		return super.receiveEnergy(from, maxReceive, simulate);
+	}
+
+	@Override
+	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+		if (getExtractingSides().contains(from)) {
+			if (!simulate) {
+				isActive = true;
 			}
 		}
 
