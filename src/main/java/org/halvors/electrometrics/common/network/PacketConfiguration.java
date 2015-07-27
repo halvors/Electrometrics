@@ -4,6 +4,7 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
+import org.halvors.electrometrics.common.ConfigurationManager.Client;
 import org.halvors.electrometrics.common.ConfigurationManager.General;
 import org.halvors.electrometrics.common.ConfigurationManager.Integration;
 import org.halvors.electrometrics.common.ConfigurationManager.Machine;
@@ -25,7 +26,6 @@ public class PacketConfiguration implements IMessage {
 		// General.
         General.destroyDisabledBlocks = dataStream.readBoolean();
 
-        General.energyUnitType = EnergyUnit.values()[dataStream.readInt()];
         General.toJoules = dataStream.readDouble();
         General.toMinecraftJoules = dataStream.readDouble();
         General.toElectricalUnits = dataStream.readDouble();
@@ -37,6 +37,9 @@ public class PacketConfiguration implements IMessage {
 
         // Integration.
         Integration.isMekanismEnabled = dataStream.readBoolean();
+
+		// Client.
+		Client.energyUnitType = EnergyUnit.values()[dataStream.readInt()];
 	}
 
 	@Override
@@ -44,7 +47,6 @@ public class PacketConfiguration implements IMessage {
 		// General.
         dataStream.writeBoolean(General.destroyDisabledBlocks);
 
-		dataStream.writeInt(General.energyUnitType.ordinal());
 		dataStream.writeDouble(General.toJoules);
 		dataStream.writeDouble(General.toMinecraftJoules);
 		dataStream.writeDouble(General.toElectricalUnits);
@@ -56,6 +58,9 @@ public class PacketConfiguration implements IMessage {
 
         // Integration.
         dataStream.writeBoolean(Integration.isMekanismEnabled);
+
+		// Client.
+		dataStream.writeInt(Client.energyUnitType.ordinal());
 	}
 
 	public static class PacketConfigurationMessage implements IMessageHandler<PacketConfiguration, IMessage> {

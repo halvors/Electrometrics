@@ -1,5 +1,6 @@
 package org.halvors.electrometrics.common.util.energy;
 
+import org.halvors.electrometrics.common.ConfigurationManager.Client;
 import org.halvors.electrometrics.common.ConfigurationManager.General;
 
 public class EnergyUtils {
@@ -9,7 +10,7 @@ public class EnergyUtils {
 	 * @return the energy as a String.
 	 */
 	public static String getEnergyDisplay(double energy) {
-		EnergyUnit energyType = General.energyUnitType;
+		EnergyUnit energyType = Client.energyUnitType;
 		double multiplier = 1;
 
 		switch (energyType) {

@@ -20,7 +20,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.halvors.electrometrics.common.CommonProxy;
 import org.halvors.electrometrics.common.ConfigurationManager;
-import org.halvors.electrometrics.common.ConfigurationManager.General;
 import org.halvors.electrometrics.common.ConfigurationManager.Integration;
 import org.halvors.electrometrics.common.Reference;
 import org.halvors.electrometrics.common.Tab;

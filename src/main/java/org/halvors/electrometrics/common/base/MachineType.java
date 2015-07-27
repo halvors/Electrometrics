@@ -6,8 +6,8 @@ import net.minecraft.item.ItemStack;
 import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.client.gui.machine.GuiElectricityMeter;
 import org.halvors.electrometrics.common.ConfigurationManager.Machine;
-import org.halvors.electrometrics.common.tile.machine.TileEntityMachine;
 import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityMeter;
+import org.halvors.electrometrics.common.tile.machine.TileEntityMachine;
 import org.halvors.electrometrics.common.util.LanguageUtils;
 
 public enum MachineType {

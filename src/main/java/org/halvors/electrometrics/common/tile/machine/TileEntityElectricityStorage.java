@@ -7,7 +7,6 @@ import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.base.tile.ITileNetworkable;
 import org.halvors.electrometrics.common.network.PacketHandler;
 import org.halvors.electrometrics.common.network.PacketRequestData;
-import org.halvors.electrometrics.common.tile.machine.TileEntityElectricMachine;
 
 import java.util.List;
 

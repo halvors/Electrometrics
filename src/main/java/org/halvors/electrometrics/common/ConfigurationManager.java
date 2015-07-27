@@ -16,8 +16,6 @@ public class ConfigurationManager {
     public static class General {
         public static boolean destroyDisabledBlocks;
 
-        // Energy.
-        public static EnergyUnit energyUnitType;
         public static double toJoules;
         public static double toMinecraftJoules;
         public static double toElectricalUnits;
@@ -40,7 +38,7 @@ public class ConfigurationManager {
 }
 
     public static class Client {
-
+        public static EnergyUnit energyUnitType;
     }
 
     public static void loadConfiguration(Configuration configuration) {
@@ -49,18 +47,20 @@ public class ConfigurationManager {
         // General.
         General.destroyDisabledBlocks = configuration.get(Configuration.CATEGORY_GENERAL, "DestroyDisabledBlocks", true).getBoolean();
 
-        General.energyUnitType = EnergyUnit.getUnitFromSymbol(configuration.get(Configuration.CATEGORY_GENERAL, "EnergyUnitType", "J", "The default energy system to display.", new String[]{"RF", "J", "MJ", "EU"}).getString());
         General.toJoules = configuration.get(Configuration.CATEGORY_GENERAL, "RFToJoules", 2.5).getDouble();
         General.toMinecraftJoules = configuration.get(Configuration.CATEGORY_GENERAL, "RFToMinecraftJoules", 0.1).getDouble();
         General.toElectricalUnits = configuration.get(Configuration.CATEGORY_GENERAL, "RFToElectricalUnits", 0.25).getDouble();
 
-        // Machines.
+        // Machine.
         for (MachineType machineType : MachineType.values()) {
             Machine.setEntry(machineType, configuration.get(CATEGORY_MACHINE, machineType.getUnlocalizedName() + "Enabled", true).getBoolean());
         }
 
         // Integration.
         Integration.isMekanismEnabled = configuration.get(CATEGORY_INTEGRATION, "Mekanism", Loader.isModLoaded("Mekanism")).getBoolean();
+
+        // Client.
+        Client.energyUnitType = EnergyUnit.getUnitFromSymbol(configuration.get(Configuration.CATEGORY_GENERAL, "EnergyUnitType", "J", "The default energy system to display.", new String[]{"RF", "J", "MJ", "EU"}).getString());
 
         configuration.save();
     }
