@@ -8,6 +8,8 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.common.config.ConfigElement;
 import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.common.ConfigurationManager;
+import org.halvors.electrometrics.common.Reference;
+import org.halvors.electrometrics.common.util.LanguageUtils;
 
 public class CategoryEntryClient extends CategoryEntry {
     public CategoryEntryClient(GuiConfig guiConfig, GuiConfigEntries guiConfigEntries, IConfigElement configElement) {
@@ -16,9 +18,14 @@ public class CategoryEntryClient extends CategoryEntry {
 
     @Override
     protected GuiScreen buildChildScreen() {
+        String category = ConfigurationManager.CATEGORY_CLIENT;
+
         return new GuiConfig(owningScreen,
-                new ConfigElement(Electrometrics.getConfiguration().getCategory(ConfigurationManager.CATEGORY_CLIENT)).getChildElements(),
-                owningScreen.modID, ConfigurationManager.CATEGORY_CLIENT, false, false,
-                GuiConfig.getAbridgedConfigPath(Electrometrics.getConfiguration().toString()));
+                new ConfigElement(Electrometrics.getConfiguration().getCategory(category)).getChildElements(),
+                owningScreen.modID,
+                category,
+                false,
+                false,
+                Reference.NAME + " - " + LanguageUtils.localize("gui.config.category." + category));
     }
 }
