@@ -7,8 +7,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.util.MachineUtils;
 
-import java.util.EnumSet;
-
 /**
  * When extended, this makes a TileEntity able to provide electricity.
  *

@@ -74,7 +74,7 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 		super.updateEntity();
 
 		if (!worldObj.isRemote) {
-			isActive = false;
+            setActive(false);
 		}
 	}
 
@@ -169,7 +169,7 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 		if (getReceivingSides().contains(from)) {
 			// Add the amount of energy we're extracting to the counter.
 			if (!simulate) {
-				isActive = true;
+				setActive(true);
 				electricityCount += maxReceive;
 			}
 		}
@@ -181,16 +181,25 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
 		if (getExtractingSides().contains(from)) {
 			if (!simulate) {
-				isActive = true;
+                setActive(true);
 			}
 		}
 
 		return super.extractEnergy(from, maxExtract, simulate);
 	}
 
+    @Override
+    protected EnumSet<ForgeDirection> getReceivingSides() {
+        EnumSet<ForgeDirection> directions = EnumSet.allOf(ForgeDirection.class);
+        directions.removeAll(getExtractingSides());
+        directions.remove(ForgeDirection.UNKNOWN);
+
+        return directions;
+    }
+
 	@Override
 	protected EnumSet<ForgeDirection> getExtractingSides() {
-		return EnumSet.of(ForgeDirection.getOrientation(facing).getRotation(ForgeDirection.DOWN));
+		return EnumSet.of(ForgeDirection.getOrientation(facing).getRotation(ForgeDirection.UP));
 	}
 
 	@Override
@@ -200,7 +209,9 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 
 	@Override
 	public void setActive(boolean isActive) {
-		this.isActive = isActive;
+        this.isActive = isActive;
+
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
 
 	@Override
