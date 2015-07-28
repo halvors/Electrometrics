@@ -97,6 +97,18 @@ public enum MachineType {
 		return null;
 	}
 
+	public ItemStack getItemStack() {
+		return new ItemStack(Electrometrics.blockMachine, 1, metadata);
+	}
+
+	public Item getItem() {
+		return getItemStack().getItem();
+	}
+
+	public boolean isEnabled() {
+		return Machine.isEnabled(this);
+	}
+
 	public static MachineType getType(Block block, int metadata) {
 		if (block instanceof BlockMachine) {
 			for (MachineType machineType : values()) {
@@ -110,18 +122,6 @@ public enum MachineType {
 	}
 
 	public static MachineType getType(ItemStack itemStack) {
-		return getType(Block.getBlockFromItem(itemStack.getItem()), itemStack.getCurrentDurability());
-	}
-
-	public ItemStack getItemStack() {
-		return new ItemStack(Electrometrics.blockMachine, 1, metadata);
-	}
-
-	public Item getItem() {
-		return getItemStack().getItem();
-	}
-
-    public boolean isEnabled() {
-        return Machine.isEnabled(this);
+		return getType(Block.getBlockFromItem(itemStack.getItem()), itemStack.getMetadata());
 	}
 }
