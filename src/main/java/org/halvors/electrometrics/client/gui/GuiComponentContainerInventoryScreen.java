@@ -97,10 +97,6 @@ public class GuiComponentContainerInventoryScreen extends GuiContainer implement
 		}
 	}
 
-	protected boolean isMouseOverSlot(Slot slot, int mouseX, int mouseY) {
-		return func_146978_c(slot.xDisplayPosition, slot.yDisplayPosition, 16, 16, mouseX, mouseY); // isPointInRegion
-	}
-
 	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int button) {
 		int guiWidth = (width - xSize) / 2;
@@ -126,18 +122,6 @@ public class GuiComponentContainerInventoryScreen extends GuiContainer implement
 	}
 
 	@Override
-	protected void drawCreativeTabHoveringText(String text, int x, int y) {
-		func_146283_a(Collections.singletonList(text), x, y);
-	}
-
-	@Override
-	protected void func_146283_a(List list, int x, int y) {
-		GL11.glPushAttrib(GL11.GL_ENABLE_BIT + GL11.GL_LIGHTING_BIT);
-		super.func_146283_a(list, x, y);
-		GL11.glPopAttrib();
-	}
-
-	@Override
 	protected void mouseClickMove(int mouseX, int mouseY, int button, long ticks) {
 		super.mouseClickMove(mouseX, mouseY, button, ticks);
 
@@ -155,8 +139,8 @@ public class GuiComponentContainerInventoryScreen extends GuiContainer implement
 	}
 
 	@Override
-	protected void mouseMovedOrUp(int mouseX, int mouseY, int type) {
-		super.mouseMovedOrUp(mouseX, mouseY, type);
+	protected void mouseReleased(int mouseX, int mouseY, int type) {
+		super.mouseReleased(mouseX, mouseY, type);
 
 		int xAxis = (mouseX - (width - xSize) / 2);
 		int yAxis = (mouseY - (height - ySize) / 2);
@@ -164,7 +148,7 @@ public class GuiComponentContainerInventoryScreen extends GuiContainer implement
 		for (IComponent component : components) {
 			if (component instanceof IGuiComponent) {
 				IGuiComponent guiComponent = (IGuiComponent) component;
-				guiComponent.mouseMovedOrUp(xAxis, yAxis, type);
+				guiComponent.mouseReleased(xAxis, yAxis, type);
 			}
 		}
 	}
@@ -195,7 +179,7 @@ public class GuiComponentContainerInventoryScreen extends GuiContainer implement
 
 	@Override
 	public void displayTooltips(List<String> list, int xAxis, int yAxis) {
-		func_146283_a(list, xAxis, yAxis);
+		drawHoveringText(list, xAxis, yAxis);
 	}
 
 	@Override

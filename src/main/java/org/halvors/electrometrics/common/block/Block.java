@@ -17,7 +17,7 @@ public abstract class Block extends BlockContainer {
 
 		this.name = name;
 
-		setBlockName(name);
+		setUnlocalizedName(name);
 		setCreativeTab(Electrometrics.getTab());
 	}
 }

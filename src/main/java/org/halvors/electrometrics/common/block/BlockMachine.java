@@ -67,8 +67,8 @@ public class BlockMachine extends BlockRotatable {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister iconRegister) {
-		super.registerBlockIcons(iconRegister);
+	public void registerIcons(IIconRegister iconRegister) {
+		super.registerIcons(iconRegister);
 
 		IIcon topIcon = iconRegister.registerIcon(Reference.PREFIX + name + "Top");
 		IIcon inputIcon = iconRegister.registerIcon(Reference.PREFIX + name + "Input");

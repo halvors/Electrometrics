@@ -5,7 +5,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
 import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.util.ResourceLocation;
+import org.halvors.electrometrics.common.base.ResourceType;
+import org.halvors.electrometrics.common.util.ResourceUtils;
 
 @SideOnly(Side.CLIENT)
 public class SoundHandler {
@@ -16,7 +17,7 @@ public class SoundHandler {
 	}
 
 	public static void playSound(String sound) {
-		playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation(sound), 1.0F));
+		playSound(PositionedSoundRecord.createPositionedSoundRecord(ResourceUtils.getResource(ResourceType.SOUND, sound), 1.0F));
 	}
 }
 

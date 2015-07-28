@@ -52,7 +52,7 @@ public class GuiEnergyInfo extends GuiComponent implements IGuiComponent {
 	}
 
 	@Override
-	public void mouseMovedOrUp(int x, int y, int type) {
+	public void mouseReleased(int x, int y, int type) {
 
 	}
 }

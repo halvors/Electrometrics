@@ -22,14 +22,18 @@ import org.halvors.electrometrics.common.util.location.Range;
  * @author halvors
  */
 public class PacketHandler {
-	private static final SimpleNetworkWrapper network = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.ID);
+	private static final SimpleNetworkWrapper networkWrapper = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.ID);
 
 	static {
 		// Register packets.
-		network.registerMessage(PacketConfiguration.PacketConfigurationMessage.class, PacketConfiguration.class, 0, Side.CLIENT);
-		network.registerMessage(PacketRequestData.PacketRequestDataMessage.class, PacketRequestData.class, 1, Side.SERVER);
-		network.registerMessage(PacketTileEntity.PacketTileEntityMessage.class, PacketTileEntity.class, 2, Side.SERVER);
-		network.registerMessage(PacketTileEntity.PacketTileEntityMessage.class, PacketTileEntity.class, 2, Side.CLIENT);
+		networkWrapper.registerMessage(PacketConfiguration.PacketConfigurationMessage.class, PacketConfiguration.class, 0, Side.CLIENT);
+		networkWrapper.registerMessage(PacketRequestData.PacketRequestDataMessage.class, PacketRequestData.class, 1, Side.SERVER);
+		networkWrapper.registerMessage(PacketTileEntity.PacketTileEntityMessage.class, PacketTileEntity.class, 2, Side.SERVER);
+		networkWrapper.registerMessage(PacketTileEntity.PacketTileEntityMessage.class, PacketTileEntity.class, 2, Side.CLIENT);
+	}
+
+	public static SimpleNetworkWrapper getNetworkWrapper() {
+		return networkWrapper;
 	}
 
 	public static EntityPlayer getPlayer(MessageContext context) {
@@ -41,23 +45,23 @@ public class PacketHandler {
 	}
 
 	public static void sendTo(IMessage message, EntityPlayerMP player) {
-		network.sendTo(message, player);
+		networkWrapper.sendTo(message, player);
 	}
 
 	public static void sendToAll(IMessage message) {
-		network.sendToAll(message);
+		networkWrapper.sendToAll(message);
 	}
 
 	public static void sendToAllAround(IMessage message, TargetPoint point) {
-		network.sendToAllAround(message, point);
+		networkWrapper.sendToAllAround(message, point);
 	}
 
 	public static void sendToDimension(IMessage message, int dimensionId) {
-		network.sendToDimension(message, dimensionId);
+		networkWrapper.sendToDimension(message, dimensionId);
 	}
 
 	public static void sendToServer(IMessage message) {
-		network.sendToServer(message);
+		networkWrapper.sendToServer(message);
 	}
 
 	/**

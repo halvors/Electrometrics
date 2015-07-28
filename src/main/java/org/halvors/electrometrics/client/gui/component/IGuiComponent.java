@@ -16,5 +16,5 @@ public interface IGuiComponent extends IComponent {
 
 	void mouseClickMove(int mouseX, int mouseY, int button, long ticks);
 
-	void mouseMovedOrUp(int x, int y, int type);
+	void mouseReleased(int x, int y, int type);
 }

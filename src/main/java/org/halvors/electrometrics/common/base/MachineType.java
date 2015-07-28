@@ -110,7 +110,7 @@ public enum MachineType {
 	}
 
 	public static MachineType getType(ItemStack itemStack) {
-		return getType(Block.getBlockFromItem(itemStack.getItem()), itemStack.getItemDamage());
+		return getType(Block.getBlockFromItem(itemStack.getItem()), itemStack.getCurrentDurability());
 	}
 
 	public ItemStack getItemStack() {

@@ -26,7 +26,7 @@ public class Location {
 	}
 
 	public Location(TileEntity tileEntity) {
-		this.dimensionId = tileEntity.getWorldObj().provider.dimensionId;
+		this.dimensionId = tileEntity.getWorld().provider.dimensionId;
 		this.x = tileEntity.xCoord;
 		this.y = tileEntity.yCoord;
 		this.z = tileEntity.zCoord;
