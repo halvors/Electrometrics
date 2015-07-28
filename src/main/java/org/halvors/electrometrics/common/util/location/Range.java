@@ -24,11 +24,11 @@ public class Range {
 		this.maxZ = maxZ;
 	}
 
-	public Range(ChunkLocation chunkLocation) {
-		this.dimensionId = chunkLocation.getDimensionId();
-		this.minX = chunkLocation.getX() * 16;
+	public Range(Chunk chunk) {
+		this.dimensionId = chunk.getDimensionId();
+		this.minX = chunk.getX() * 16;
 		this.minY = 0;
-		this.minZ = chunkLocation.getZ() * 16;
+		this.minZ = chunk.getZ() * 16;
 		this.maxX = minX + 16;
 		this.maxY = 255;
 		this.maxZ = minZ + 16;
@@ -55,7 +55,7 @@ public class Range {
 	public static Range getChunkRange(EntityPlayer player) {
 		int radius = FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getViewDistance();
 
-		return new Range(new ChunkLocation(player)).expandChunks(radius);
+		return new Range(new Chunk(player)).expandChunks(radius);
 	}
 
 	public Range expandChunks(int chunks) {

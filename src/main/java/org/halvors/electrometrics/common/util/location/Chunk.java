@@ -3,51 +3,50 @@ package org.halvors.electrometrics.common.util.location;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
 import org.halvors.electrometrics.common.tile.TileEntity;
 
 /**
- * ChunkLocation - an integer-based way to keep track of and perform operations on chunks in a Minecraft-based environment. This also takes
+ * Chunk - an integer-based way to keep track of and perform operations on chunks in a Minecraft-based environment. This also takes
  * in account the dimension the chunk is in.
  * @author aidancbrady
  *
  */
-public class ChunkLocation {
+public class Chunk {
 	private final int dimensionId;
 	private final int x;
 	private final int z;
 
 	/**
-	 * Creates a ChunkLocation object from the given x and z coordinates, as well as a dimension.
+	 * Creates a Chunk object from the given x and z coordinates, as well as a dimension.
 	 * @param x - chunk x location
 	 * @param z - chunk z location
-	 * @param dimensionId - the dimension this ChunkLocation is in
+	 * @param dimensionId - the dimension this Chunk is in
 	 */
-	public ChunkLocation(int dimensionId, int x, int z) {
+	public Chunk(int dimensionId, int x, int z) {
 		this.dimensionId = dimensionId;
 		this.x = x;
 		this.z = z;
 	}
 
 	/**
-	 * Creates a ChunkLocation from a Location based on it's coordinates and dimension.
-	 * @param location - the Location object to get this ChunkLocation from
+	 * Creates a Chunk from a Location based on it's coordinates and dimension.
+	 * @param location - the Location object to get this Chunk from
 	 */
-	public ChunkLocation(Location location) {
+	public Chunk(Location location) {
 		this.dimensionId = location.getDimensionId();
 		this.x = location.getX() >> 4;
 		this.z = location.getZ() >> 4;
 	}
 
 	/**
-	 * Creates a ChunkLocation from an entity based on it's location and dimension.
-	 * @param entity - the entity to get the ChunkLocation object from
+	 * Creates a Chunk from an entity based on it's location and dimension.
+	 * @param entity - the entity to get the Chunk object from
 	 */
-	public ChunkLocation(Entity entity) {
+	public Chunk(Entity entity) {
 		this(new Location(entity));
 	}
 
-	public ChunkLocation(TileEntity tileEntity) {
+	public Chunk(TileEntity tileEntity) {
 		this(new Location(tileEntity));
 	}
 
@@ -61,17 +60,17 @@ public class ChunkLocation {
 	}
 
 	/**
-	 * Gets a Chunk object corresponding to this ChunkLocation's coordinates.
+	 * Gets a Chunk object corresponding to this Chunk's coordinates.
 	 * @param world - the world to get the Chunk object from
 	 * @return the corresponding Chunk object
 	 */
-	public Chunk getChunk(World world) {
+	public net.minecraft.world.chunk.Chunk getChunk(World world) {
 		return world.getChunkFromChunkCoords(x, z);
 	}
 
 	/**
-	 * Returns this ChunkLocation in the Minecraft-based ChunkCoordIntPair format.
-	 * @return this ChunkLocation as a ChunkCoordIntPair
+	 * Returns this Chunk in the Minecraft-based ChunkCoordIntPair format.
+	 * @return this Chunk as a ChunkCoordIntPair
 	 */
 	public ChunkCoordIntPair toPair() {
 		return new ChunkCoordIntPair(x, z);
@@ -91,12 +90,12 @@ public class ChunkLocation {
 
 	@Override
 	public boolean equals(Object object) {
-		if (object instanceof ChunkLocation) {
-			ChunkLocation chunkLocation = (ChunkLocation) object;
+		if (object instanceof Chunk) {
+			Chunk chunk = (Chunk) object;
 
-			return chunkLocation.dimensionId == dimensionId &&
-					chunkLocation.x == x &&
-					chunkLocation.z == z;
+			return chunk.dimensionId == dimensionId &&
+					chunk.x == x &&
+					chunk.z == z;
 		}
 
 		return false;

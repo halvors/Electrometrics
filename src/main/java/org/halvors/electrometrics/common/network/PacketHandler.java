@@ -64,12 +64,12 @@ public class PacketHandler {
 	 * Send this message to all players within a defined AABB cuboid.
 	 * @param message - the message to send
 	 * @param cuboid - the AABB cuboid to send the packet in
-	 * @param dimId - the dimension the cuboid is in
+	 * @param dimensionId - the dimension the cuboid is in
 	 */
-	public static void sendToCuboid(IMessage message, AxisAlignedBB cuboid, int dimId) {
+	public static void sendToCuboid(IMessage message, AxisAlignedBB cuboid, int dimensionId) {
 		if (cuboid != null) {
 			for (EntityPlayerMP player : PlayerUtils.getPlayers()) {
-				if (player.dimension == dimId && cuboid.isVecInside(Vec3.createVectorHelper(player.posX, player.posY, player.posZ))) {
+				if (player.dimension == dimensionId && cuboid.isVecInside(Vec3.createVectorHelper(player.posX, player.posY, player.posZ))) {
 					sendTo(message, player);
 				}
 			}
