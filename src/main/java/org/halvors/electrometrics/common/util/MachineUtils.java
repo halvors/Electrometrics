@@ -28,7 +28,11 @@ public class MachineUtils {
 			if (item instanceof IToolWrench) {
 				IToolWrench wrench = (IToolWrench) item;
 
-				return wrench.canWrench(player, x, y, z);
+				if (wrench.canWrench(player, x, y, z)) {
+					wrench.wrenchUsed(player, x, y, z);
+
+					return true;
+				}
 			}
 
 			// Check if item is a CoFH wrench.

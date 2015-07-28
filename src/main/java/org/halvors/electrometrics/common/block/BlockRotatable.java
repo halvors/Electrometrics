@@ -58,21 +58,13 @@ public abstract class BlockRotatable extends BlockTextured {
 		}
 	}
 
+	// TODO: Figure out this, seems to work just fine without this code.
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int facing, float playerX, float playerY, float playerZ) {
 		TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
 
-		// Handle wrenching.
-		if (player.getCurrentEquippedItem() != null && MachineUtils.hasUsableWrench(player, x, y, z)) {
-			if (player.isSneaking()) {
-				dismantleBlock(world, x, y, z, false);
-
-				return true;
-			}
-
-            // TODO: Figure out this, seems to work just fine without this code.
-            /*
-            } else {
+		if (MachineUtils.hasUsableWrench(player, x, y, z)) {
+			if (!world.isRemote && !player.isSneaking()) {
 				if (tileEntity instanceof ITileRotatable) {
 					ITileRotatable tileRotatable = (ITileRotatable) tileEntity;
 					int change = ForgeDirection.ROTATION_MATRIX[ForgeDirection.UP.ordinal()][tileRotatable.getFacing()];
@@ -82,7 +74,6 @@ public abstract class BlockRotatable extends BlockTextured {
 					return true;
 				}
 			}
-			*/
 		}
 
 		return false;

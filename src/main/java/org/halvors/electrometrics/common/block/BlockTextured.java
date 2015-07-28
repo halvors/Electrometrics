@@ -26,7 +26,7 @@ public abstract class BlockTextured extends Block {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister iconRegister) {
+	public void registerIcons(IIconRegister iconRegister) {
 		blockIcon = iconRegister.registerIcon(Reference.PREFIX + name);
 		defaultBlockIcon = DefaultIcon.getAll(blockIcon);
 	}

@@ -92,7 +92,7 @@ public class GuiRedstoneControl<T extends TileEntity & ITileNetworkable & ITileR
 	}
 
 	@Override
-	public void mouseMovedOrUp(int x, int y, int type) {
+	public void mouseReleased(int x, int y, int type) {
 
 	}
 }

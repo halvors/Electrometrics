@@ -66,7 +66,9 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 	public void validate() {
 		super.validate();
 
-		PacketHandler.sendToServer(new PacketRequestData(this));
+		if (worldObj.isRemote) {
+			PacketHandler.sendToServer(new PacketRequestData(this));
+		}
 	}
 
 	@Override

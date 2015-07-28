@@ -67,8 +67,8 @@ public class BlockMachine extends BlockRotatable {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister iconRegister) {
-		super.registerBlockIcons(iconRegister);
+	public void registerIcons(IIconRegister iconRegister) {
+		super.registerIcons(iconRegister);
 
 		IIcon topIcon = iconRegister.registerIcon(Reference.PREFIX + name + "Top");
 		IIcon inputIcon = iconRegister.registerIcon(Reference.PREFIX + name + "Input");
@@ -132,23 +132,31 @@ public class BlockMachine extends BlockRotatable {
 
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int facing, float playerX, float playerY, float playerZ) {
-		TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
+        TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
 
-		if (!MachineUtils.hasUsableWrench(player, x, y, z)) {
-			// Check whether or not this ITileOwnable has a owner, if not set the current player as owner.
-			if (tileEntity instanceof ITileOwnable) {
-				ITileOwnable tileOwnable = (ITileOwnable) tileEntity;
+        if (!MachineUtils.hasUsableWrench(player, x, y, z)) {
+            if (!player.isSneaking()) {
+                // Check whether or not this ITileOwnable has a owner, if not set the current player as owner.
+                if (tileEntity instanceof ITileOwnable) {
+                    ITileOwnable tileOwnable = (ITileOwnable) tileEntity;
 
-				if (!tileOwnable.hasOwner()) {
-					tileOwnable.setOwner(player);
-				}
-			}
+                    if (!tileOwnable.hasOwner()) {
+                        tileOwnable.setOwner(player);
+                    }
+                }
 
-			// Open the GUI.
-			player.openGui(Electrometrics.getInstance(), 0, world, x, y, z);
+                // Open the GUI.
+                player.openGui(Electrometrics.getInstance(), 0, world, x, y, z);
 
-			return true;
-		}
+                return true;
+            }
+        } else {
+            if (!world.isRemote && player.isSneaking()) {
+                dismantleBlock(world, x, y, z, false);
+
+                return true;
+            }
+        }
 
 		return super.onBlockActivated(world, x, y, z, player, facing, playerX, playerY, playerZ);
 	}
