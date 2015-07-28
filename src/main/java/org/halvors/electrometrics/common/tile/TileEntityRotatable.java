@@ -14,9 +14,6 @@ public class TileEntityRotatable extends TileEntity implements ITileNetworkable,
 	// The direction this TileEntity's block is facing.
 	protected int facing;
 
-	// The direction this TileEntity's block is facing, client side.
-	private int clientFacing;
-
 	protected TileEntityRotatable(String inventoryName) {
 		super(inventoryName);
 	}
@@ -48,16 +45,11 @@ public class TileEntityRotatable extends TileEntity implements ITileNetworkable,
 	public void handlePacketData(ByteBuf dataStream) throws Exception {
 		facing = dataStream.readInt();
 
-		// Check if client is in sync with the server, if not update it.
-		if (clientFacing != facing) {
-			clientFacing = facing;
+		// Re-render the block.
+		worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
 
-			// Update the block's rotation.
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-
-			// Update potentially connected redstone blocks.
-			worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
-		}
+		// Update potentially connected redstone blocks.
+		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
 	}
 
 	@Override
@@ -83,16 +75,8 @@ public class TileEntityRotatable extends TileEntity implements ITileNetworkable,
 			this.facing = facing;
 		}
 
-		if (!worldObj.isRemote || clientFacing != facing) {
-			clientFacing = facing;
-
+		if (!worldObj.isRemote) {
 			PacketHandler.sendToReceivers(new PacketTileEntity(this), this);
 		}
-
-		// Update the block's rotation.
-		//worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-
-		// Update potentially connected redstone blocks.
-		//worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
 	}
 }
