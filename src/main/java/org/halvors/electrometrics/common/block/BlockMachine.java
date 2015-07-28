@@ -150,14 +150,13 @@ public class BlockMachine extends BlockRotatable {
 
                 return true;
             }
-        }
-        /*else {
+        } else {
             if (!world.isRemote && player.isSneaking()) {
                 dismantleBlock(world, x, y, z, false);
 
                 return true;
             }
-        }*/
+        }
 
 		return super.onBlockActivated(world, x, y, z, player, facing, playerX, playerY, playerZ);
 	}
