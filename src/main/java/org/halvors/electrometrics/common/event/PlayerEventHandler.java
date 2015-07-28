@@ -6,8 +6,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
 import org.halvors.electrometrics.Electrometrics;
-import org.halvors.electrometrics.common.network.PacketConfiguration;
-import org.halvors.electrometrics.common.network.PacketHandler;
+import org.halvors.electrometrics.common.network.NetworkHandler;
+import org.halvors.electrometrics.common.network.packet.PacketConfiguration;
 
 /**
  * This is the event handler that handles player events.
@@ -21,7 +21,7 @@ public class PlayerEventHandler {
 		World world = player.worldObj;
 
 		if (!world.isRemote) {
-			PacketHandler.sendTo(new PacketConfiguration(), (EntityPlayerMP) player);
+			NetworkHandler.sendTo(new PacketConfiguration(), (EntityPlayerMP) player);
 
 			Electrometrics.getLogger().info("Sent configuration to '" + player.getDisplayName() + "'.");
 		}

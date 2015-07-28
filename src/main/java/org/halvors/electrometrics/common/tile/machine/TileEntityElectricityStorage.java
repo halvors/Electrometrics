@@ -5,8 +5,8 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.base.tile.ITileNetworkable;
-import org.halvors.electrometrics.common.network.PacketHandler;
-import org.halvors.electrometrics.common.network.PacketRequestData;
+import org.halvors.electrometrics.common.network.NetworkHandler;
+import org.halvors.electrometrics.common.network.packet.PacketRequestData;
 
 import java.util.List;
 
@@ -43,7 +43,7 @@ public class TileEntityElectricityStorage extends TileEntityElectricMachine impl
 		super.validate();
 
 		if (worldObj.isRemote) {
-			PacketHandler.sendToServer(new PacketRequestData(this));
+			NetworkHandler.sendToServer(new PacketRequestData(this));
 		}
 	}
 

@@ -15,8 +15,8 @@ import org.halvors.electrometrics.common.base.tile.ITileActiveState;
 import org.halvors.electrometrics.common.base.tile.ITileNetworkable;
 import org.halvors.electrometrics.common.base.tile.ITileOwnable;
 import org.halvors.electrometrics.common.base.tile.ITileRedstoneControl;
-import org.halvors.electrometrics.common.network.PacketHandler;
-import org.halvors.electrometrics.common.network.PacketRequestData;
+import org.halvors.electrometrics.common.network.NetworkHandler;
+import org.halvors.electrometrics.common.network.packet.PacketRequestData;
 import org.halvors.electrometrics.common.util.PlayerUtils;
 
 import java.util.EnumSet;
@@ -67,7 +67,7 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 		super.validate();
 
 		if (worldObj.isRemote) {
-			PacketHandler.sendToServer(new PacketRequestData(this));
+			NetworkHandler.sendToServer(new PacketRequestData(this));
 		}
 	}
 

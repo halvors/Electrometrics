@@ -8,8 +8,8 @@ import org.halvors.electrometrics.client.sound.SoundHandler;
 import org.halvors.electrometrics.common.base.RedstoneControlType;
 import org.halvors.electrometrics.common.base.tile.ITileNetworkable;
 import org.halvors.electrometrics.common.base.tile.ITileRedstoneControl;
-import org.halvors.electrometrics.common.network.PacketHandler;
-import org.halvors.electrometrics.common.network.PacketTileEntity;
+import org.halvors.electrometrics.common.network.NetworkHandler;
+import org.halvors.electrometrics.common.network.packet.PacketTileEntity;
 import org.halvors.electrometrics.common.tile.TileEntity;
 
 @SideOnly(Side.CLIENT)
@@ -80,7 +80,7 @@ public class GuiRedstoneControl<T extends TileEntity & ITileNetworkable & ITileR
 					tileEntity.setControlType(RedstoneControlType.values()[ordinalToSet]);
 
 					// Send a update packet to the server.
-					PacketHandler.sendToServer(new PacketTileEntity(tileEntity));
+					NetworkHandler.sendToServer(new PacketTileEntity(tileEntity));
 				}
 				break;
 		}

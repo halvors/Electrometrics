@@ -4,9 +4,9 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 import org.halvors.electrometrics.common.base.tile.ITileNetworkable;
 import org.halvors.electrometrics.common.base.tile.ITileRotatable;
-import org.halvors.electrometrics.common.network.PacketHandler;
-import org.halvors.electrometrics.common.network.PacketRequestData;
-import org.halvors.electrometrics.common.network.PacketTileEntity;
+import org.halvors.electrometrics.common.network.NetworkHandler;
+import org.halvors.electrometrics.common.network.packet.PacketRequestData;
+import org.halvors.electrometrics.common.network.packet.PacketTileEntity;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class TileEntityRotatable extends TileEntity implements ITileNetworkable,
 		super.validate();
 
 		if (worldObj.isRemote) {
-			PacketHandler.sendToServer(new PacketRequestData(this));
+			NetworkHandler.sendToServer(new PacketRequestData(this));
 		}
 	}
 
@@ -76,7 +76,7 @@ public class TileEntityRotatable extends TileEntity implements ITileNetworkable,
 		}
 
 		if (!worldObj.isRemote) {
-			PacketHandler.sendToReceivers(new PacketTileEntity(this), this);
+			NetworkHandler.sendToReceivers(new PacketTileEntity(this), this);
 		}
 	}
 }

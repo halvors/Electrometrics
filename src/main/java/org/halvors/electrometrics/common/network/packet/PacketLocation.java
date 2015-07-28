@@ -1,4 +1,4 @@
-package org.halvors.electrometrics.common.network;
+package org.halvors.electrometrics.common.network.packet;
 
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;

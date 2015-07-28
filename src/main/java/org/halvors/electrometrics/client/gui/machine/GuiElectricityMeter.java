@@ -6,9 +6,9 @@ import net.minecraft.client.gui.GuiButton;
 import org.halvors.electrometrics.client.gui.GuiComponentContainerScreen;
 import org.halvors.electrometrics.client.gui.component.*;
 import org.halvors.electrometrics.common.base.tile.ITileOwnable;
-import org.halvors.electrometrics.common.network.PacketHandler;
-import org.halvors.electrometrics.common.network.PacketRequestData;
-import org.halvors.electrometrics.common.network.PacketTileEntity;
+import org.halvors.electrometrics.common.network.NetworkHandler;
+import org.halvors.electrometrics.common.network.packet.PacketRequestData;
+import org.halvors.electrometrics.common.network.packet.PacketTileEntity;
 import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.util.LanguageUtils;
 import org.halvors.electrometrics.common.util.PlayerUtils;
@@ -91,7 +91,7 @@ public class GuiElectricityMeter extends GuiComponentContainerScreen {
 					tileEntityElectricityMeter.setElectricityCount(0);
 
 					// Update the server-side TileEntity.
-					PacketHandler.sendToServer(new PacketTileEntity(tileEntityElectricityMeter));
+					NetworkHandler.sendToServer(new PacketTileEntity(tileEntityElectricityMeter));
 					break;
 			}
 		}
@@ -119,7 +119,7 @@ public class GuiElectricityMeter extends GuiComponentContainerScreen {
 			if (ticker == 0) {
 				ticker = 5;
 				// Request the latest data from the server-side TileEntity.
-				PacketHandler.sendToServer(new PacketRequestData(tileEntityElectricityMeter));
+				NetworkHandler.sendToServer(new PacketRequestData(tileEntityElectricityMeter));
 			} else {
 				ticker--;
 			}

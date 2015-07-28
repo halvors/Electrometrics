@@ -1,27 +1,38 @@
 package org.halvors.electrometrics.common.network;
 
+import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.common.Reference;
+import org.halvors.electrometrics.common.network.packet.PacketConfiguration;
+import org.halvors.electrometrics.common.network.packet.PacketRequestData;
+import org.halvors.electrometrics.common.network.packet.PacketTileEntity;
 import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.util.PlayerUtils;
 import org.halvors.electrometrics.common.util.location.Range;
 
+import java.util.List;
+import java.util.Objects;
+
 /**
- * This is the PacketHandler which is responsible for registering the packet that we are going to use.
+ * This is the NetworkHandler which is responsible for registering the packet that we are going to use.
  *
  * @author halvors
  */
-public class PacketHandler {
+public class NetworkHandler {
 	private static final SimpleNetworkWrapper networkWrapper = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.ID);
 
 	static {
@@ -91,4 +102,44 @@ public class PacketHandler {
 	public static void sendToReceivers(IMessage message, TileEntity tileEntity) {
 		sendToReceivers(message, new Range(tileEntity));
 	}
+
+    public static void writeObject(Object object, ByteBuf dataStream) {
+        try {
+            // Language types.
+            if (object instanceof Boolean) {
+                dataStream.writeBoolean((Boolean) object);
+            } else if (object instanceof Byte) {
+                dataStream.writeByte((Byte) object);
+            } else if (object instanceof byte[]) {
+                dataStream.writeBytes((byte[]) object);
+            } else if (object instanceof Double) {
+                dataStream.writeDouble((Double) object);
+            } else if (object instanceof Float) {
+                dataStream.writeFloat((Float) object);
+            } else if (object instanceof Integer) {
+                dataStream.writeInt((Integer) object);
+            } else if (object instanceof int[]) {
+                for (int i : (int[]) object) {
+                    dataStream.writeInt(i);
+                }
+            } else if (object instanceof Long) {
+                dataStream.writeLong((Long) object);
+            } else if (object instanceof String) {
+                ByteBufUtils.writeUTF8String(dataStream, (String) object);
+            } else if (object instanceof ItemStack) {
+                ByteBufUtils.writeItemStack(dataStream, (ItemStack) object);
+            } else if (object instanceof NBTTagCompound) {
+                ByteBufUtils.writeTag(dataStream, (NBTTagCompound) object);
+            }
+        } catch (Exception e) {
+            Electrometrics.getLogger().error("An error occurred when sending packet data.");
+            e.printStackTrace();
+        }
+    }
+
+    public static void writeObjects(List<Object> objects, ByteBuf dataStream) {
+        for (Object object : objects) {
+            writeObject(object, dataStream);
+        }
+    }
 }

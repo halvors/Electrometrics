@@ -40,7 +40,7 @@ import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityMeter
      name = Reference.NAME,
      version = Reference.VERSION,
      dependencies = "after:CoFHCore;" +
-				    "after:Mekanism",
+                    "after:Mekanism",
      guiFactory = "org.halvors." + Reference.ID + ".client.gui.configuration.GuiConfiguationFactory")
 public class Electrometrics {
 	// The instance of your mod that Forge uses.
