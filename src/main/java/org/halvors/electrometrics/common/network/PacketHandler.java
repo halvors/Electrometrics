@@ -14,7 +14,6 @@ import net.minecraft.world.World;
 import org.halvors.electrometrics.common.Reference;
 import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.util.PlayerUtils;
-import org.halvors.electrometrics.common.util.location.BlockLocation;
 import org.halvors.electrometrics.common.util.location.Range;
 
 /**
@@ -86,6 +85,6 @@ public class PacketHandler {
 	}
 
 	public static void sendToReceivers(IMessage message, TileEntity tileEntity) {
-		sendToReceivers(message, new Range(new BlockLocation(tileEntity)));
+		sendToReceivers(message, new Range(tileEntity));
 	}
 }

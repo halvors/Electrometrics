@@ -5,27 +5,27 @@ import net.minecraft.entity.Entity;
 import net.minecraft.world.IBlockAccess;
 import org.halvors.electrometrics.common.tile.TileEntity;
 
-public class BlockLocation {
+public class Location {
 	private final int dimensionId;
 	private final int x;
 	private final int y;
 	private final int z;
 
-	public BlockLocation(int dimensionId, int x, int y, int z) {
+	public Location(int dimensionId, int x, int y, int z) {
 		this.dimensionId = dimensionId;
 		this.x = x;
 		this.y = y;
 		this.z = z;
 	}
 
-	public BlockLocation(Entity entity) {
+	public Location(Entity entity) {
 		this.dimensionId = entity.dimension;
-		this.x = entity.serverPosX;
-		this.y = entity.serverPosY;
-		this.z = entity.serverPosZ;
+		this.x = (int) entity.posX;
+		this.y = (int) entity.posY;
+		this.z = (int) entity.posZ;
 	}
 
-	public BlockLocation(TileEntity tileEntity) {
+	public Location(TileEntity tileEntity) {
 		this.dimensionId = tileEntity.getWorldObj().provider.dimensionId;
 		this.x = tileEntity.xCoord;
 		this.y = tileEntity.yCoord;

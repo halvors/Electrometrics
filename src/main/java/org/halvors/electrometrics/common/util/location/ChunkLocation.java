@@ -30,13 +30,13 @@ public class ChunkLocation {
 	}
 
 	/**
-	 * Creates a ChunkLocation from a BlockLocation based on it's coordinates and dimension.
-	 * @param blockLocation - the BlockLocation object to get this ChunkLocation from
+	 * Creates a ChunkLocation from a Location based on it's coordinates and dimension.
+	 * @param location - the Location object to get this ChunkLocation from
 	 */
-	public ChunkLocation(BlockLocation blockLocation) {
-		this.dimensionId = blockLocation.getDimensionId();
-		this.x = blockLocation.getX() >> 4;
-		this.z = blockLocation.getZ() >> 4;
+	public ChunkLocation(Location location) {
+		this.dimensionId = location.getDimensionId();
+		this.x = location.getX() >> 4;
+		this.z = location.getZ() >> 4;
 	}
 
 	/**
@@ -44,11 +44,11 @@ public class ChunkLocation {
 	 * @param entity - the entity to get the ChunkLocation object from
 	 */
 	public ChunkLocation(Entity entity) {
-		this(new BlockLocation(entity));
+		this(new Location(entity));
 	}
 
 	public ChunkLocation(TileEntity tileEntity) {
-		this(new BlockLocation(tileEntity));
+		this(new Location(tileEntity));
 	}
 
 	/**
@@ -92,11 +92,11 @@ public class ChunkLocation {
 	@Override
 	public boolean equals(Object object) {
 		if (object instanceof ChunkLocation) {
-			ChunkLocation chunk = (ChunkLocation) object;
+			ChunkLocation chunkLocation = (ChunkLocation) object;
 
-			return chunk.dimensionId == dimensionId &&
-					chunk.x == x &&
-					chunk.z == z;
+			return chunkLocation.dimensionId == dimensionId &&
+					chunkLocation.x == x &&
+					chunkLocation.z == z;
 		}
 
 		return false;

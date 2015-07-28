@@ -6,7 +6,7 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import org.halvors.electrometrics.common.base.tile.ITileNetworkable;
 import org.halvors.electrometrics.common.tile.TileEntity;
 
-public class PacketRequestData extends PacketBlockLocation implements IMessage {
+public class PacketRequestData extends PacketLocation implements IMessage {
 	public PacketRequestData() {
 
 	}
@@ -22,7 +22,7 @@ public class PacketRequestData extends PacketBlockLocation implements IMessage {
 		}
 
 		public <T extends TileEntity & ITileNetworkable> IMessage onPacketRequestDataMessage(PacketRequestData message, MessageContext messageContext) {
-			TileEntity tileEntity = message.getBlockLocation().getTileEntity(PacketHandler.getWorld(messageContext));
+			TileEntity tileEntity = message.getLocation().getTileEntity(PacketHandler.getWorld(messageContext));
 
 			if (tileEntity != null && tileEntity instanceof ITileNetworkable) {
 				return new PacketTileEntity((T) tileEntity);
