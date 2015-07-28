@@ -42,7 +42,9 @@ public class TileEntityElectricityStorage extends TileEntityElectricMachine impl
 	public void validate() {
 		super.validate();
 
-		PacketHandler.sendToServer(new PacketRequestData(this));
+		if (worldObj.isRemote) {
+			PacketHandler.sendToServer(new PacketRequestData(this));
+		}
 	}
 
 	@Override
