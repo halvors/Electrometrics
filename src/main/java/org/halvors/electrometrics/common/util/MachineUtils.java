@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import org.halvors.electrometrics.common.base.tile.ITileRedstoneControl;
+import org.halvors.electrometrics.common.item.ItemMultimeter;
 import org.halvors.electrometrics.common.tile.TileEntity;
 
 public class MachineUtils {
@@ -28,7 +29,11 @@ public class MachineUtils {
 			if (item instanceof IToolWrench) {
 				IToolWrench wrench = (IToolWrench) item;
 
-				return wrench.canWrench(player, x, y, z);
+				if (wrench.canWrench(player, x, y, z)) {
+					wrench.wrenchUsed(player, x, y, z);
+
+					return true;
+				}
 			}
 
 			// Check if item is a CoFH wrench.
