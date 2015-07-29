@@ -12,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.Packet;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
@@ -53,6 +54,10 @@ public class NetworkHandler {
 
 	public static World getWorld(MessageContext context) {
 		return getPlayer(context).worldObj;
+	}
+
+	public static Packet getPacketFrom(IMessage message) {
+		return networkWrapper.getPacketFrom(message);
 	}
 
 	public static void sendTo(IMessage message, EntityPlayerMP player) {
