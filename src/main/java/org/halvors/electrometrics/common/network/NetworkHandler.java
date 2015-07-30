@@ -26,7 +26,6 @@ import org.halvors.electrometrics.common.util.PlayerUtils;
 import org.halvors.electrometrics.common.util.location.Range;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * This is the NetworkHandler which is responsible for registering the packet that we are going to use.
