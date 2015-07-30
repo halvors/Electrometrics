@@ -26,7 +26,7 @@ public class TileEntityElectricityReceiver extends TileEntityElectricityStorage 
 
 	@Override
 	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-		if (getReceivingSides().contains(from)) {
+		if (getReceivingDirections().contains(from)) {
 			return storage.receiveEnergy(maxReceive, simulate);
 		}
 
@@ -45,17 +45,13 @@ public class TileEntityElectricityReceiver extends TileEntityElectricityStorage 
 
 	@Override
 	public boolean canConnectEnergy(ForgeDirection from) {
-		return getReceivingSides().contains(from) || getExtractingSides().contains(from);
+		return getReceivingDirections().contains(from);
 	}
 
-	protected EnumSet<ForgeDirection> getReceivingSides() {
+	protected EnumSet<ForgeDirection> getReceivingDirections() {
 		EnumSet<ForgeDirection> directions = EnumSet.allOf(ForgeDirection.class);
 		directions.remove(ForgeDirection.UNKNOWN);
 
 		return directions;
-	}
-
-	protected EnumSet<ForgeDirection> getExtractingSides() {
-		return EnumSet.noneOf(ForgeDirection.class);
 	}
 }

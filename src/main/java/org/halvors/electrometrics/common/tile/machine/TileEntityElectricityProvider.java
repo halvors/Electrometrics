@@ -7,6 +7,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.util.MachineUtils;
 
+import java.util.EnumSet;
+
 /**
  * When extended, this makes a TileEntity able to provide electricity.
  *
@@ -29,34 +31,46 @@ public class TileEntityElectricityProvider extends TileEntityElectricityReceiver
 	public void updateEntity() {
 		super.updateEntity();
 
-		if (!worldObj.isRemote && MachineUtils.canFunction(this)) {
-			if (storage.getEnergyStored() > 0) {
-				transferEnergy();
+		if (!worldObj.isRemote) {
+			if (MachineUtils.canFunction(this)) {
+				distributeEnergy();
 			}
 		}
 	}
 
 	@Override
+	public boolean canConnectEnergy(ForgeDirection from) {
+		return getReceivingDirections().contains(from) || getExtractingDirections().contains(from);
+	}
+
+	@Override
 	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
-		if (getExtractingSides().contains(from)) {
+		if (getExtractingDirections().contains(from)) {
 			return storage.extractEnergy(maxExtract, simulate);
 		}
 
 		return 0;
 	}
 
+	protected EnumSet<ForgeDirection> getExtractingDirections() {
+		return EnumSet.noneOf(ForgeDirection.class);
+	}
+
 	/**
 	 * Transfer energy to any blocks demanding energy that are connected to
 	 * this one.
 	 */
-	private void transferEnergy() {
-		for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
+	protected void distributeEnergy() {
+		for (ForgeDirection direction : getExtractingDirections()) {
 			TileEntity tileEntity = worldObj.getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
 
 			if (tileEntity instanceof IEnergyReceiver) {
 				IEnergyReceiver receiver = (IEnergyReceiver) tileEntity;
+				int actualEnergyAmount = extractEnergy(direction, getExtract(), true);
 
-				extractEnergy(direction.getOpposite(), receiver.receiveEnergy(direction.getOpposite(), storage.getEnergyStored(), false), false);
+				if (actualEnergyAmount > 0) {
+					extractEnergy(direction, receiver.receiveEnergy(direction.getOpposite(), actualEnergyAmount, false), false);
+				}
 			}
 		}
 	}

@@ -1,8 +1,6 @@
 package org.halvors.electrometrics.common.tile.machine;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,6 +15,7 @@ import org.halvors.electrometrics.common.base.tile.ITileOwnable;
 import org.halvors.electrometrics.common.base.tile.ITileRedstoneControl;
 import org.halvors.electrometrics.common.network.NetworkHandler;
 import org.halvors.electrometrics.common.network.packet.PacketRequestData;
+import org.halvors.electrometrics.common.network.packet.PacketTileEntity;
 import org.halvors.electrometrics.common.util.PlayerUtils;
 
 import java.util.EnumSet;
@@ -32,10 +31,6 @@ import java.util.UUID;
 public class TileEntityElectricityMeter extends TileEntityElectricityProvider implements ITileNetworkable, ITileActiveState, IElectricTier, ITileOwnable, ITileRedstoneControl {
 	// Whether or not this TileEntity's block is in it's active state.
 	private boolean isActive;
-
-	// The client's current active state.
-	@SideOnly(Side.CLIENT)
-	private boolean clientIsActive;
 
 	// The UUID of the player owning this.
 	private UUID ownerUUID;
@@ -68,15 +63,6 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 
 		if (worldObj.isRemote) {
 			NetworkHandler.sendToServer(new PacketRequestData(this));
-		}
-	}
-
-	@Override
-	public void updateEntity() {
-		super.updateEntity();
-
-		if (!worldObj.isRemote) {
-            setActive(false);
 		}
 	}
 
@@ -139,16 +125,14 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 		}
 
 		redstoneControlType = RedstoneControlType.values()[dataStream.readInt()];
-
-		// Check if client is in sync with the server, if not update it.
-		if (worldObj.isRemote && clientIsActive != isActive) {
-			clientIsActive = isActive;
-
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		}
-
 		electricTier = Tier.Electric.values()[dataStream.readInt()];
 		electricityCount = dataStream.readDouble();
+
+		// Re-render the block.
+		worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
+
+		// Update potentially connected redstone blocks.
+		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
 	}
 
 	@Override
@@ -167,23 +151,12 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 	}
 
 	@Override
-	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-		if (getReceivingSides().contains(from)) {
-			// Add the amount of energy we're extracting to the counter.
-			if (!simulate) {
-				setActive(true);
-				electricityCount += maxReceive;
-			}
-		}
-
-		return super.receiveEnergy(from, maxReceive, simulate);
-	}
-
-	@Override
 	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
-		if (getExtractingSides().contains(from)) {
-			if (!simulate) {
+		if (getExtractingDirections().contains(from)) {
+			// Add the amount of energy we're extracting to the counter, and set the block as active.
+			if (!simulate) {// && storage.extractEnergy(maxExtract, true) > 0) {
                 setActive(true);
+				electricityCount += maxExtract;
 			}
 		}
 
@@ -191,17 +164,30 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 	}
 
     @Override
-    protected EnumSet<ForgeDirection> getReceivingSides() {
+    protected EnumSet<ForgeDirection> getReceivingDirections() {
         EnumSet<ForgeDirection> directions = EnumSet.allOf(ForgeDirection.class);
-        directions.removeAll(getExtractingSides());
+        directions.removeAll(getExtractingDirections());
         directions.remove(ForgeDirection.UNKNOWN);
 
         return directions;
     }
 
 	@Override
-	protected EnumSet<ForgeDirection> getExtractingSides() {
+	protected EnumSet<ForgeDirection> getExtractingDirections() {
 		return EnumSet.of(ForgeDirection.getOrientation(facing).getRotation(ForgeDirection.UP));
+	}
+
+	@Override
+	protected void distributeEnergy() {
+		for (ForgeDirection direction : getExtractingDirections()) {
+			int actualEnergyAmount = extractEnergy(direction, getExtract(), true);
+
+			if (actualEnergyAmount <= 0) {
+				setActive(false);
+			}
+		}
+
+		super.distributeEnergy();
 	}
 
 	@Override
@@ -213,7 +199,9 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 	public void setActive(boolean isActive) {
         this.isActive = isActive;
 
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		if (!worldObj.isRemote) {
+			NetworkHandler.sendToReceivers(new PacketTileEntity(this), this);
+		}
 	}
 
 	@Override
