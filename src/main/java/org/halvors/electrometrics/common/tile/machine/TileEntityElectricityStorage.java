@@ -80,4 +80,8 @@ public class TileEntityElectricityStorage extends TileEntityElectricMachine impl
 	public EnergyStorage getStorage() {
 		return storage;
 	}
+
+	protected int getExtract() {
+		return Math.min(storage.getMaxExtract(), storage.getEnergyStored());
+	}
 }
