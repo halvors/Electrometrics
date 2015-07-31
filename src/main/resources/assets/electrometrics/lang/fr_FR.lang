@@ -4,34 +4,34 @@
 itemGroup.tabElectrometrics=Electrometrics
 
 // Tier names
-tier.Basic=Basic
-tier.Advanced=Advanced
+tier.Basic=Basique
+tier.Advanced=Advancé
 tier.Elite=Elite
-tier.Ultimate=Ultimate
+tier.Ultimate=Ultime
 
 // Blocks
-tile.ElectricityMeter.name=Electricity Meter
+tile.ElectricityMeter.name=Compteur électrique
 
 // Items
-item.Multimeter.name=Multimeter
+item.Multimeter.name=Multimètre
 
 // Gui
-gui.using=Using
-gui.needed=Needed
-gui.reset=Reset
-gui.measured=Measured
-gui.stored=Stored
-gui.maxOutput=Max output
+gui.using=Utilisé
+gui.needed=Demandé
+gui.reset=Mis à zéro
+gui.measured=Mesuré
+gui.stored=Stocké
+gui.maxOutput=Sortie maxi
 
 // Gui configuration
-gui.configuration.category.general=General
-gui.configuration.category.general.tooltip=General settings
+gui.configuration.category.general=Général
+gui.configuration.category.general.tooltip=Options générales
 gui.configuration.category.machine=Machine
-gui.configuration.category.machine.tooltip=Settings regarding enabling and disabling of specific machines
-gui.configuration.category.integration=Integration
-gui.configuration.category.integration.tooltip=Settings regarding enabling and disabling of specific mod integrations
+gui.configuration.category.machine.tooltip=Options d'arret ou de mise en route des machines
+gui.configuration.category.integration=Intégration
+gui.configuration.category.integration.tooltip=Options d'intégration de mod spécifiques
 gui.configuration.category.client=Client
-gui.configuration.category.client.tooltip=Client-specific settings
+gui.configuration.category.client.tooltip=Client-Options client
 
 // Tooltip
 tooltip.hold=Maintenir
