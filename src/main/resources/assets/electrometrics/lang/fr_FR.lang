@@ -39,7 +39,7 @@ tooltip.forDetails=pour les détails
 tooltip.noInformation=Pas d'information a afficher
 tooltip.measuredEnergy=Energie mesurée
 tooltip.storedEnergy=Energie stockée
-tooltip.blockOwnedBy=Ce % est la propriété de %, vous ne pouvez pas le supprimer.
+tooltip.blockOwnedBy=Ce %s est la propriété de %s, vous ne pouvez pas le supprimer.
 
 // Colors
 color.black=Noir

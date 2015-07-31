@@ -38,7 +38,7 @@ tooltip.forDetails=for detaljer
 tooltip.noInformation=Ingen informasjon å vise
 tooltip.measuredEnergy=Målt energi
 tooltip.storedEnergy=Lagret energi
-tooltip.blockOwnedBy=Denne % eies av %, du har ikke rettigheter til å fjerne denne blokken.
+tooltip.blockOwnedBy=Denne %s eies av %s, du har ikke rettigheter til å fjerne denne blokken.
 
 // Colors
 color.black=Svart
