@@ -13,6 +13,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,6 +24,7 @@ import org.halvors.electrometrics.common.Reference;
 import org.halvors.electrometrics.common.Tab;
 import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.base.Tier;
+import org.halvors.electrometrics.common.block.Block;
 import org.halvors.electrometrics.common.block.BlockMachine;
 import org.halvors.electrometrics.common.event.PlayerEventHandler;
 import org.halvors.electrometrics.common.item.ItemBlockMachine;
@@ -59,7 +61,7 @@ public class Electrometrics {
 	public static final Item itemMultimeter = new ItemMultimeter();
 
 	// Blocks.
-	public static final BlockMachine blockMachine = new BlockMachine();
+	public static final Block blockMachine = new BlockMachine();
 
 	// ConfigurationManager.
 	private static Configuration configuration;
@@ -111,14 +113,12 @@ public class Electrometrics {
 
 	private void addRecipes() {
 		// Register recipes.
-        ItemStack copperIngot = new ItemStack(Items.iron_ingot);
         Item circuit = Items.repeater;
         ItemStack battery = new ItemStack(Items.diamond);
         ItemStack cable = new ItemStack(Items.gold_ingot);
         ItemStack casing = new ItemStack(Blocks.iron_block);
 
         if (Integration.isMekanismEnabled) {
-			copperIngot = new ItemStack(ItemRetriever.getItem("Ingot").getItem(), 1, 5); // Copper ingot.
             circuit = ItemRetriever.getItem("ControlCircuit").getItem(); // Basic control circuit.
             battery = new ItemStack(ItemRetriever.getItem("EnergyTablet").getItem(), 1, 100); // Uncharged battery.
             cable = new ItemStack(ItemRetriever.getItem("PartTransmitter").getItem(), 8); // Basic universal cable.
@@ -132,7 +132,7 @@ public class Electrometrics {
                 "CBC",
                 'R', Items.redstone,
                 'G', Blocks.glass_pane,
-                'I', copperIngot,
+                'I', OreDictionary.doesOreNameExist("ingotCopper") ? "ingotCopper" : Items.gold_ingot,
                 'M', Items.clock,
                 'C', circuit,
                 'B', battery);
@@ -168,7 +168,7 @@ public class Electrometrics {
 		return proxy;
 	}
 
-	public static  Logger getLogger() {
+	public static Logger getLogger() {
 		return logger;
 	}
 
