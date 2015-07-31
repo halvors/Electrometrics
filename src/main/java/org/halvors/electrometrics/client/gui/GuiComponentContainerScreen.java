@@ -20,7 +20,7 @@ import java.util.Set;
 
 @SideOnly(Side.CLIENT)
 public class GuiComponentContainerScreen extends GuiScreen implements IGui {
-	static final Minecraft game = Minecraft.getMinecraft();
+	private static final Minecraft game = Minecraft.getMinecraft();
 
     protected final Set<IComponent> components = new HashSet<>();
     protected final ResourceLocation defaultResource = ResourceUtils.getResource(ResourceType.GUI, "Screen.png");

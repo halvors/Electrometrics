@@ -16,6 +16,7 @@ public class CategoryEntryMachine extends CategoryEntry {
         super(guiConfig, guiConfigEntries, configElement);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected GuiScreen buildChildScreen() {
         String category = ConfigurationManager.CATEGORY_MACHINE;

@@ -116,7 +116,7 @@ public abstract class BlockRotatable extends BlockTextured {
 		return false;
 	}
 
-	ItemStack dismantleBlock(World world, int x, int y, int z, boolean returnBlock) {
+	protected ItemStack dismantleBlock(World world, int x, int y, int z, boolean returnBlock) {
 		ItemStack itemStack = getPickBlock(null, world, x, y, z, null);
 		world.setBlockToAir(x, y, z);
 

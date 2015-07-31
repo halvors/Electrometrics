@@ -22,6 +22,7 @@ public class PacketRequestData extends PacketLocation implements IMessage {
 			return onPacketRequestDataMessage(message, messageContext);
 		}
 
+		@SuppressWarnings("unchecked")
 		public <T extends TileEntity & ITileNetworkable> IMessage onPacketRequestDataMessage(PacketRequestData message, MessageContext messageContext) {
 			TileEntity tileEntity = message.getLocation().getTileEntity(NetworkHandler.getWorld(messageContext));
 
