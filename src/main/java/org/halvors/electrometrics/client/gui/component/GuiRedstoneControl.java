@@ -25,16 +25,16 @@ public class GuiRedstoneControl<T extends TileEntity & ITileNetworkable & ITileR
 	@Override
 	public void renderBackground(int xAxis, int yAxis, int xOrigin, int yOrigin, int guiWidth, int guiHeight) {
 		game.renderEngine.bindTexture(resource);
-		gui.drawTexturedRect(xOrigin + guiWidth, yOrigin + guiHeight - 2 - 26, 0, 0, 26, 26);
+		gui.drawTexturedModalRect(xOrigin + guiWidth, yOrigin + guiHeight - 2 - 26, 0, 0, 26, 26);
 
 		int x = guiWidth + 4;
 		int y = guiHeight - 2 - 26 + 5;
         int renderX = 26 + (18 * tileEntity.getControlType().ordinal());
 
         if (xAxis >= x && xAxis <= x + 15 && yAxis >= y && yAxis <= y + 15) {
-			gui.drawTexturedRect(xOrigin + x - 1, yOrigin + y - 1, renderX, 0, 18, 18);
+			gui.drawTexturedModalRect(xOrigin + x - 1, yOrigin + y - 1, renderX, 0, 18, 18);
 		} else {
-			gui.drawTexturedRect(xOrigin + x - 1, yOrigin + y - 1, renderX, 18, 18, 18);
+			gui.drawTexturedModalRect(xOrigin + x - 1, yOrigin + y - 1, renderX, 18, 18, 18);
 		}
 
 		super.renderBackground(xAxis, yAxis, xOrigin, yOrigin, guiWidth, guiHeight);

@@ -13,22 +13,22 @@ public interface IGui {
 	 * Draws a textured rectangle in this GUI.
 	 * @param x
 	 * @param y
-	 * @param u
-	 * @param v
-	 * @param w
-	 * @param h
+	 * @param textureX
+	 * @param textureY
+	 * @param width
+	 * @param height
 	 */
-	void drawTexturedRect(int x, int y, int u, int v, int w, int h);
+	void drawTexturedModalRect(int x, int y, int textureX, int textureY, int width, int height);
 
 	/**
 	 * Draws a textured rectangle from the specified icon.
 	 * @param x
 	 * @param y
 	 * @param icon
-	 * @param w
-	 * @param h
+	 * @param width
+	 * @param height
 	 */
-	void drawTexturedRectFromIcon(int x, int y, IIcon icon, int w, int h);
+	void drawTexturedModelRectFromIcon(int x, int y, IIcon icon, int width, int height);
 
 	void drawString(String text, int x, int y);
 

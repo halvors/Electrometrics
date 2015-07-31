@@ -157,16 +157,6 @@ public class GuiComponentContainerInventoryScreen extends GuiContainer implement
 	}
 
 	@Override
-	public void drawTexturedRect(int x, int y, int u, int v, int w, int h) {
-		drawTexturedModalRect(x, y, u, v, w, h);
-	}
-
-	@Override
-	public void drawTexturedRectFromIcon(int x, int y, IIcon icon, int w, int h) {
-		drawTexturedModelRectFromIcon(x, y, icon, w, h);
-	}
-
-	@Override
 	public void drawString(String text, int x, int y) {
 		fontRendererObj.drawString(text, x, y, 0x404040);
 	}
