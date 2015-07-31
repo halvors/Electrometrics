@@ -8,6 +8,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import org.halvors.electrometrics.common.base.tile.ITileRedstoneControl;
 import org.halvors.electrometrics.common.tile.TileEntity;
+import cpw.mods.fml.common.Loader;
 
 public class MachineUtils {
 	/**
@@ -23,7 +24,7 @@ public class MachineUtils {
 
 		if (itemStack != null) {
 			Item item = itemStack.getItem();
-
+			 if (Loader.isModLoaded("BuildCraft|Core")) {
 			// Check if item is a Buildcraft wrench.
 			if (item instanceof IToolWrench) {
 				IToolWrench wrench = (IToolWrench) item;
@@ -34,7 +35,7 @@ public class MachineUtils {
 					return true;
 				}
 			}
-
+			 }
 			// Check if item is a CoFH wrench.
 			if (item instanceof IToolHammer) {
 				IToolHammer wrench = (IToolHammer) item;
