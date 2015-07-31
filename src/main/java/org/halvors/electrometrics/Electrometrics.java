@@ -74,7 +74,8 @@ public class Electrometrics implements IUpdatableMod {
 		// Initialize configuration.
         configuration = new Configuration(event.getSuggestedConfigurationFile());
 
-		UpdateManager.registerUpdater(new UpdateManager(this, Reference.RELEASE_URL, Reference.DOWNLOAD_URL));
+		// Check for updates.
+		UpdateManager.registerUpdater(new UpdateManager(this, Reference.RELEASE_URL));
 
         // Load the configuration.
         ConfigurationManager.loadConfiguration(configuration);

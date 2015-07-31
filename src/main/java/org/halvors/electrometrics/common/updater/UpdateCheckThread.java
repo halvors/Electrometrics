@@ -1,8 +1,5 @@
 package org.halvors.electrometrics.common.updater;
 
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.event.FMLInterModComms;
-import net.minecraft.nbt.NBTTagCompound;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.spi.AbstractLogger;
 
@@ -11,118 +8,79 @@ import java.io.InputStreamReader;
 import java.net.URL;
 
 public class UpdateCheckThread extends Thread {
-    private final String _releaseUrl, _downloadUrl;
-    private final IUpdatableMod _mod;
+    private final IUpdatableMod mod;
+    private final String releaseUrl;
 
-    private boolean _checkComplete = false;
-    private boolean _newVerAvailable = false;
-    private boolean _criticalUpdate = false;
-    private ModVersion _newVer;
-
-    public UpdateCheckThread(IUpdatableMod mod) {
-        this(mod, null);
-    }
+    private boolean checkComplete, newVersionAvailable, criticalUpdate;
+    private ModVersion newVersion;
 
     public UpdateCheckThread(IUpdatableMod mod, String releaseUrl) {
-        this(mod, null, null);
-    }
+        super("Updater:" + mod.getModId());
 
-    public UpdateCheckThread(IUpdatableMod mod, String releaseUrl, String downloadUrl) {
-        super("CoFHUpdater:" + mod.getModId());
-
-        _mod = mod;
-
-        if (releaseUrl == null) {
-            releaseUrl = "https://raw.github.com/skyboy/" + mod.getModId() + "/master/VERSION";
-        }
-
-        _releaseUrl = releaseUrl;
-        _downloadUrl = downloadUrl;
+        this.mod = mod;
+        this.releaseUrl = releaseUrl;
     }
 
     @Override
     public void run() {
-        l: try {
-            String id = _mod.getModName();
-            ModVersion ourVer = ModVersion.parse(id, _mod.getModVersion());
+        try {
+            String id = mod.getModName();
+            ModVersion ourVer = ModVersion.parse(id, "1.7.10-" + mod.getModVersion());
 
-            URL versionFile = new URL(_releaseUrl);
-
+            URL versionFile = new URL(releaseUrl + "VERSION");
             BufferedReader reader = new BufferedReader(new InputStreamReader(versionFile.openStream()));
-            ModVersion newVer = ModVersion.parse(id, reader.readLine());
-            ModVersion critVer = ModVersion.parse(id, reader.readLine());
+            ModVersion newVer = new ModVersion(id, reader.readLine()); //ModVersion.parse(id, reader.readLine());
+            //ModVersion critVer = new ModVersion(id, reader.readLine()); //ModVersion.parse(id, reader.readLine());
             reader.close();
 
+            /*
             if (newVer == null) {
                 break l;
             }
+            */
 
-            _newVer = newVer;
-            _newVerAvailable = ourVer.compareTo(newVer) < 0;
+            newVersion = newVer;
+            newVersionAvailable = ourVer.compareTo(newVer) < 0;
 
-            if (_newVerAvailable) {
-                _mod.getLogger().info("An updated version of " + _mod.getModName() + " is available: " + newVer + ".");
+            if (newVersionAvailable) {
+                mod.getLogger().info("An updated version of " + mod.getModName() + " is available: " + newVer + ".");
 
-                if (ourVer.minecraftVersion().compareTo(newVer.minecraftVersion()) < 0) {
-                    ReleaseVersion newv = newVer.minecraftVersion(), our = ourVer.minecraftVersion();
-                    _newVerAvailable = newv.major() == our.major() && newv.minor() == our.minor();
+                if (ourVer.getMinecraftVersion().compareTo(newVer.getMinecraftVersion()) < 0) {
+                    ReleaseVersion newv = newVer.getMinecraftVersion(), our = ourVer.getMinecraftVersion();
+                    newVersionAvailable = newv.getMajor() == our.getMajor() && newv.getMinor() == our.getMinor();
                 }
 
+                /*
                 if (critVer != null && ourVer.compareTo(critVer) >= 0) {
-                    _criticalUpdate = Boolean.parseBoolean(critVer.description());
-                    _criticalUpdate &= _newVerAvailable;
+                    criticalUpdate = Boolean.parseBoolean(critVer.getDescription());
+                    criticalUpdate &= newVersionAvailable;
                 }
+                */
             }
 
-            if (_criticalUpdate) {
-                _mod.getLogger().info("This update has been marked as CRITICAL and will ignore notification suppression.");
-            }
-
-            if (Loader.isModLoaded("VersionChecker")) {
-                NBTTagCompound compound = new NBTTagCompound();
-                compound.setString("modDisplayName", _mod.getModName());
-                compound.setString("oldVersion", ourVer.toString());
-                compound.setString("newVersion", newVer.toString());
-
-                if (_downloadUrl != null) {
-                    compound.setString("updateUrl", _downloadUrl);
-                    compound.setBoolean("isDirectLink", false);
-                }
-
-                FMLInterModComms.sendRuntimeMessage(_mod.getModId(), "VersionChecker", "addUpdate", compound);
-                _newVerAvailable &= _criticalUpdate;
+            if (criticalUpdate) {
+                mod.getLogger().info("This update has been marked as CRITICAL and will ignore notification suppression.");
             }
         } catch (Exception e) {
-            Level level = Level.WARN;
-            String base = _mod.getClass().getPackage().getName();
-            int i = base.indexOf('.');
-
-            if (i > 0) {
-                base = base.substring(0, i);
-            }
-
-            if (base.equals("cofh") || base.equals("powercrystals")) {
-                level = Level.ERROR;
-            }
-
-            _mod.getLogger().log(level, AbstractLogger.CATCHING_MARKER, "Update check for " + _mod.getModName() + " failed.", e);
+            mod.getLogger().log(Level.WARN, AbstractLogger.CATCHING_MARKER, "Update check for " + mod.getModName() + " failed.", e);
         }
-        _checkComplete = true;
+
+        checkComplete = true;
     }
 
-    public boolean checkComplete() {
-        return _checkComplete;
+    public boolean isCheckComplete() {
+        return checkComplete;
     }
 
     public boolean isCriticalUpdate() {
-        return _criticalUpdate;
+        return criticalUpdate;
     }
 
-    public boolean newVersionAvailable() {
-        return _newVerAvailable;
+    public boolean isNewVersionAvailable() {
+        return newVersionAvailable;
     }
 
-    public ModVersion newVersion() {
-        return _newVer;
+    public ModVersion getNewVersion() {
+        return newVersion;
     }
 }

@@ -3,188 +3,106 @@ package org.halvors.electrometrics.common.updater;
 import cpw.mods.fml.common.versioning.ArtifactVersion;
 
 public class ReleaseVersion implements ArtifactVersion {
-    private final String _label;
-    private final int _major;
-    private final int _minor;
-    private final int _patch;
-    private final int _rc;
-    private final int _beta;
+    private final String label;
+    private final int major;
+    private final int minor;
+    private final int build;
 
-    public ReleaseVersion(String label, int major, int minor, int patch) {
-        this(label, major, minor, patch, 0, 0);
-    }
-
-    public ReleaseVersion(String label, int major, int minor, int patch, int rc, int beta) {
-        _label = label;
-        _major = major;
-        _minor = minor;
-        _patch = patch;
-        _rc = rc;
-        _beta = beta;
+    public ReleaseVersion(String label, int major, int minor, int build) {
+        this.label = label;
+        this.major = major;
+        this.minor = minor;
+        this.build = build;
     }
 
     public ReleaseVersion(String label, String s) {
         int major = 0;
         int minor = 0;
-        int patch = 0;
-        int rc = 0;
-        int beta = 0;
+        int build = 0;
         String main = s;
         String[] parts;
-
-        parts = main.split("RC");
-
-        if (parts.length > 1) {
-            rc = Integer.parseInt(parts[1]);
-            main = parts[0];
-        }
-
-        parts = main.split("B");
-
-        if (parts.length > 1) {
-            beta = Integer.parseInt(parts[1]);
-            main = parts[0];
-        }
 
         parts = main.split("\\.");
 
         switch (parts.length) {
-            default:
-            case 3:
-                patch = Integer.parseInt(parts[2]);
-            case 2:
-                minor = Integer.parseInt(parts[1]);
-            case 1:
-                major = Integer.parseInt(parts[0]);
             case 0:
                 break;
+
+            case 1:
+                major = Integer.parseInt(parts[0]);
+
+            case 2:
+                minor = Integer.parseInt(parts[1]);
+
+            default:
+                build = Integer.parseInt(parts[2]);
         }
 
-        _label = label;
-        _major = major;
-        _minor = minor;
-        _patch = patch;
-        _rc = rc;
-        _beta = beta;
+        this.label = label;
+        this.major = major;
+        this.minor = minor;
+        this.build = build;
     }
 
     public static ReleaseVersion parse(String label, String s) {
         return new ReleaseVersion(label, s);
     }
 
-    public int major() {
-        return _major;
+    public int getMajor() {
+        return major;
     }
 
-    public int minor() {
-        return _minor;
+    public int getMinor() {
+        return minor;
     }
 
-    public int patch() {
-        return _patch;
-    }
-
-    public int rc() {
-        return _rc;
-    }
-
-    public int beta() {
-        return _beta;
-    }
-
-    public boolean isStable() {
-        return _rc == 0 & _beta == 0;
-    }
-
-    public boolean isRC() {
-        return _rc > 0;
-    }
-
-    public boolean isBeta() {
-        return _beta > 0;
+    public int getBuild() {
+        return build;
     }
 
     @Override
-    public int compareTo(ArtifactVersion o) {
-        if (o instanceof ReleaseVersion) {
-            return compareTo((ReleaseVersion) o);
+    public int compareTo(ArtifactVersion artifactVersion) {
+        if (artifactVersion instanceof ReleaseVersion) {
+            return compareTo((ReleaseVersion) artifactVersion);
         }
 
-        if (o instanceof ModVersion) {
-            ModVersion r = (ModVersion) o;
-            if (_label.equals(r.getLabel())) {
-                return compareTo(r.modVersion());
-            } else if ("Minecraft".equals(_label)) {
-                return compareTo(r.minecraftVersion());
+        if (artifactVersion instanceof ModVersion) {
+            ModVersion modVersion = (ModVersion) artifactVersion;
+
+            if (label.equals(modVersion.getLabel())) {
+                return compareTo(modVersion.getModVersion());
+            } else if ("Minecraft".equals(label)) {
+                return compareTo(modVersion.getMinecraftVersion());
             }
         }
 
         return 0;
     }
 
-    public int compareTo(ReleaseVersion arg0) {
-        if (this.major() != arg0.major()) {
-            return this.major() < arg0.major() ? -1 : 1;
+    public int compareTo(ReleaseVersion releaseVersion) {
+        if (major != releaseVersion.getMajor()) {
+            return major < releaseVersion.getMajor() ? -1 : 1;
         }
 
-        if (this.minor() != arg0.minor()) {
-            return this.minor() < arg0.minor() ? -1 : 1;
+        if (minor != releaseVersion.getMinor()) {
+            return minor < releaseVersion.getMinor() ? -1 : 1;
         }
 
-        if (this.patch() != arg0.patch()) {
-            return this.patch() < arg0.patch() ? -1 : 1;
-        }
-
-        if (this.isStable() && !arg0.isStable()) {
-            return 1;
-        }
-
-        if (this.isRC() && arg0.isBeta()) {
-            return 1;
-        }
-
-        if (!this.isStable() && arg0.isStable()) {
-            return -1;
-        }
-
-        if (this.isBeta() && arg0.isRC()) {
-            return -1;
-        }
-
-        if (this.rc() != arg0.rc()) {
-            return this.rc() < arg0.rc() ? -1 : 1;
-        }
-
-        if (this.beta() != arg0.beta()) {
-            return this.beta() < arg0.beta() ? -1 : 1;
+        if (build != releaseVersion.getBuild()) {
+            return build < releaseVersion.getBuild() ? -1 : 1;
         }
 
         return 0;
     }
 
     @Override
-    public String toString() {
-        return _label + " " + getVersionString();
+    public String getLabel() {
+        return label;
     }
 
     @Override
     public String getVersionString() {
-        String v = _major + "." + _minor + "." + _patch;
-
-        if (_rc != 0) {
-            v += "RC" + _rc;
-        }
-
-        if (_beta != 0) {
-            v += "B" + _beta;
-        }
-
-        return v;
-    }
-
-    @Override
-    public String getLabel() {
-        return _label;
+        return major + "." + minor + "." + build;
     }
 
     @Override
@@ -197,4 +115,8 @@ public class ReleaseVersion implements ArtifactVersion {
         return null;
     }
 
+    @Override
+    public String toString() {
+        return label + " " + getVersionString();
+    }
 }

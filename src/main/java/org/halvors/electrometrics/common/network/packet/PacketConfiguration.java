@@ -45,7 +45,7 @@ public class PacketConfiguration implements IMessage {
 
 		// TODO: Should we sync this?
 		// Client.
-		Client.energyUnit = EnergyUnit.values()[dataStream.readInt()];
+		//Client.energyUnit = EnergyUnit.values()[dataStream.readInt()];
 	}
 
 	@Override
