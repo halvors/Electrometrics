@@ -6,9 +6,9 @@ import mekanism.api.IMekWrench;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import org.halvors.electrometrics.common.ConfigurationManager.Integration;
 import org.halvors.electrometrics.common.base.tile.ITileRedstoneControl;
 import org.halvors.electrometrics.common.tile.TileEntity;
-import cpw.mods.fml.common.Loader;
 
 public class MachineUtils {
 	/**
@@ -24,30 +24,36 @@ public class MachineUtils {
 
 		if (itemStack != null) {
 			Item item = itemStack.getItem();
-			 if (Loader.isModLoaded("BuildCraft|Core")) {
-			// Check if item is a Buildcraft wrench.
-			if (item instanceof IToolWrench) {
-				IToolWrench wrench = (IToolWrench) item;
 
-				if (wrench.canWrench(player, x, y, z)) {
-					wrench.wrenchUsed(player, x, y, z);
+			if (Integration.isBuildCraftEnabled) {
+				// Check if item is a Buildcraft wrench.
+				if (item instanceof IToolWrench) {
+					IToolWrench wrench = (IToolWrench) item;
 
-					return true;
+					if (wrench.canWrench(player, x, y, z)) {
+						wrench.wrenchUsed(player, x, y, z);
+
+						return true;
+					}
 				}
 			}
-			 }
-			// Check if item is a CoFH wrench.
-			if (item instanceof IToolHammer) {
-				IToolHammer wrench = (IToolHammer) item;
 
-				return wrench.isUsable(itemStack, player, x, y, z);
+			if (Integration.isCoFHCoreEnabled) {
+				// Check if item is a CoFH wrench.
+				if (item instanceof IToolHammer) {
+					IToolHammer wrench = (IToolHammer) item;
+
+					return wrench.isUsable(itemStack, player, x, y, z);
+				}
 			}
 
-			// Check if item is a Mekanism wrench.
-			if (item instanceof IMekWrench) {
-				IMekWrench wrench = (IMekWrench) item;
+			if (Integration.isMekanismEnabled) {
+				// Check if item is a Mekanism wrench.
+				if (item instanceof IMekWrench) {
+					IMekWrench wrench = (IMekWrench) item;
 
-				return wrench.canUseWrench(player, x, y, z);
+					return wrench.canUseWrench(player, x, y, z);
+				}
 			}
 		}
 

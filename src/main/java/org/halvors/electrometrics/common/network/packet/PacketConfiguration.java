@@ -41,11 +41,13 @@ public class PacketConfiguration implements IMessage {
         }
 
         // Integration.
+		Integration.isBuildCraftEnabled = dataStream.readBoolean();
+		Integration.isCoFHCoreEnabled = dataStream.readBoolean();
         Integration.isMekanismEnabled = dataStream.readBoolean();
 
 		// TODO: Should we sync this?
 		// Client.
-		Client.energyUnit = EnergyUnit.values()[dataStream.readInt()];
+		//Client.energyUnit = EnergyUnit.values()[dataStream.readInt()];
 	}
 
 	@Override
@@ -66,6 +68,8 @@ public class PacketConfiguration implements IMessage {
         }
 
         // Integration.
+		objects.add(Integration.isBuildCraftEnabled);
+		objects.add(Integration.isCoFHCoreEnabled);
 		objects.add(Integration.isMekanismEnabled);
 
 		// TODO: Should we sync this?

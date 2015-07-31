@@ -72,6 +72,11 @@ public class Electrometrics {
 
         // Load the configuration.
         ConfigurationManager.loadConfiguration(configuration);
+
+		// Mod integration.
+		logger.log(Level.INFO, "BuildCraft integration is " + (Integration.isBuildCraftEnabled ? "enabled" : "disabled") + ".");
+		logger.log(Level.INFO, "CoFHCore integration is " + (Integration.isCoFHCoreEnabled ? "enabled" : "disabled") + ".");
+		logger.log(Level.INFO, "Mekanism integration is " + (Integration.isMekanismEnabled ? "enabled" : "disabled") + ".");
 	}
 
 	@Mod.EventHandler
@@ -87,9 +92,6 @@ public class Electrometrics {
 		addBlocks();
 		addTileEntities();
 		addRecipes();
-
-		// Mod integration.
-		logger.log(Level.INFO, "Mekanism integration is " + (Integration.isMekanismEnabled ? "enabled" : "disabled") + ".");
 	}
 
 	private void addItems() {
