@@ -15,7 +15,6 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.client.render.BlockRenderer;
 import org.halvors.electrometrics.client.render.DefaultIcon;
@@ -31,13 +30,10 @@ import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.tile.machine.TileEntityElectricMachine;
 import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityStorage;
-import org.halvors.electrometrics.common.tile.machine.TileEntityMachine;
 import org.halvors.electrometrics.common.util.LanguageUtils;
 import org.halvors.electrometrics.common.util.MachineUtils;
 import org.halvors.electrometrics.common.util.PlayerUtils;
-import org.halvors.electrometrics.common.util.render.Color;
 
-import java.io.PrintStream;
 import java.util.List;
 
 /**
@@ -63,11 +59,6 @@ public class BlockMachine extends BlockRotatable {
 
 		return machineType.getTileEntity();
 	}
-
-    @Override
-    public int damageDropped (int metadata) {
-        return metadata;
-    }
 
 	@Override
 	@SideOnly(Side.CLIENT)

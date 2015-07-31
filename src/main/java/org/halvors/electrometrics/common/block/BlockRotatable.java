@@ -12,7 +12,7 @@ import org.halvors.electrometrics.common.base.tile.ITileRotatable;
 import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.util.MachineUtils;
 
-public abstract class BlockRotatable extends BlockTextured {
+public class BlockRotatable extends BlockMetadataTextured {
 	protected BlockRotatable(String name, Material material) {
 		super(name, material);
 	}
