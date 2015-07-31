@@ -16,11 +16,10 @@ tile.ElectricityMeter.name=电能测量器
 item.Multimeter.name=万用表
 
 // Gui
-gui.using=耗能
-gui.needed=需求
-gui.reset=重置
 gui.measured=Measured
 gui.stored=存储能量
+gui.reset=重置
+gui.release=Release
 gui.maxOutput=最高输出
 
 // Gui configuration

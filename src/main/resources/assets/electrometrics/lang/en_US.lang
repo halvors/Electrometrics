@@ -16,11 +16,10 @@ tile.ElectricityMeter.name=Electricity Meter
 item.Multimeter.name=Multimeter
 
 // Gui
-gui.using=Using
-gui.needed=Needed
-gui.reset=Reset
 gui.measured=Measured
 gui.stored=Stored
+gui.reset=Reset
+gui.release=Release
 gui.maxOutput=Max output
 
 // Gui configuration

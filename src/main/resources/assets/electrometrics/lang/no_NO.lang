@@ -16,11 +16,10 @@ tile.ElectricityMeter.name=Amperemeter
 item.Multimeter.name=Multimeter
 
 // Gui
-gui.using=Bruker
-gui.needed=Trengs
-gui.reset=Nullstill
 gui.measured=Målt
 gui.stored=Lagret
+gui.reset=Nullstill
+gui.release=Gi fra
 gui.maxOutput=Maks utgående
 
 // Gui configuration

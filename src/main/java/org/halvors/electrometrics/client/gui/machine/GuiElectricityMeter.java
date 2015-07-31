@@ -3,6 +3,7 @@ package org.halvors.electrometrics.client.gui.machine;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.EntityPlayer;
 import org.halvors.electrometrics.client.gui.GuiComponentContainerScreen;
 import org.halvors.electrometrics.client.gui.component.*;
 import org.halvors.electrometrics.common.base.tile.ITileOwnable;
@@ -25,16 +26,19 @@ import java.util.List;
  */
 @SideOnly(Side.CLIENT)
 public class GuiElectricityMeter extends GuiComponentContainerScreen {
+	private final TileEntityElectricityMeter tileEntityElectricityMeter;
 	private int ticker = 0;
 
-	public GuiElectricityMeter(final TileEntityElectricityMeter tileEntity) {
-		super(tileEntity);
+	public GuiElectricityMeter(final TileEntityElectricityMeter tileEntityElectricityMeter) {
+		super(tileEntityElectricityMeter);
+
+		this.tileEntityElectricityMeter = tileEntityElectricityMeter;
 
 		components.add(new GuiOwnerInfo(new IInfoHandler() {
 			@Override
 			public List<String> getInfo() {
 				List<String> list = new ArrayList<>();
-				list.add(tileEntity.getOwnerName());
+				list.add(tileEntityElectricityMeter.getOwnerName());
 
 				return list;
 			}
@@ -45,15 +49,15 @@ public class GuiElectricityMeter extends GuiComponentContainerScreen {
 			@Override
 			public List<String> getInfo() {
 				List<String> list = new ArrayList<>();
-				list.add(LanguageUtils.localize("gui.stored") + ": " + EnergyUtils.getEnergyDisplay(tileEntity.getStorage().getEnergyStored()));
-				list.add(LanguageUtils.localize("gui.maxOutput") + ": " + EnergyUtils.getEnergyDisplay(tileEntity.getElectricTier().getMaxTransfer()));
+				list.add(LanguageUtils.localize("gui.stored") + ": " + EnergyUtils.getEnergyDisplay(tileEntityElectricityMeter.getStorage().getEnergyStored()));
+				list.add(LanguageUtils.localize("gui.maxOutput") + ": " + EnergyUtils.getEnergyDisplay(tileEntityElectricityMeter.getElectricTier().getMaxTransfer()));
 
 				return list;
 			}
 		}, this, defaultResource));
 
 		components.add(new GuiEnergyUnitType(this, defaultResource));
-		components.add(new GuiRedstoneControl<>(this, tileEntity, defaultResource));
+		components.add(new GuiRedstoneControl<>(this, tileEntityElectricityMeter, defaultResource));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -65,64 +69,61 @@ public class GuiElectricityMeter extends GuiComponentContainerScreen {
 		int guiHeight = (height - ySize) / 2;
 
 		// Create buttons.
-		GuiButton resetButton = new GuiButton(0, (guiWidth + xSize) - (60 + 6), (guiHeight + ySize) - (20 + 6), 60, 20, LanguageUtils.localize("gui.reset"));
+		GuiButton resetButton = new GuiButton(0, guiWidth + 6, (guiHeight + ySize) - (20 + 6), 60, 20, LanguageUtils.localize("gui.reset"));
+		GuiButton unclaimButton = new GuiButton(1, (guiWidth + xSize) - (60 + 6), (guiHeight + ySize) - (20 + 6), 60, 20, LanguageUtils.localize("gui.release"));
 
 		// If this has a owner, restrict the reset button to that player.
 		if (tileEntity instanceof ITileOwnable) {
 			ITileOwnable ownable = (ITileOwnable) tileEntity;
+			EntityPlayer player = PlayerUtils.getClientPlayer();
 
-			resetButton.enabled = ownable.isOwner(PlayerUtils.getClientPlayer());
+			unclaimButton.enabled = ownable.isOwner(player);
+			resetButton.enabled = ownable.isOwner(player);
 		}
 
 		// Add buttons.
 		buttonList.clear();
 		buttonList.add(resetButton);
+		buttonList.add(unclaimButton);
 	}
 
 	@Override
 	protected void actionPerformed(GuiButton guiButton) {
-		super.actionPerformed(guiButton);
+		switch (guiButton.id) {
+			case 0:
+				tileEntityElectricityMeter.setElectricityCount(0);
 
-		if (tileEntity instanceof TileEntityElectricityMeter) {
-			TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
+				// Update the server-side TileEntity.
+				NetworkHandler.sendToServer(new PacketTileEntity(tileEntityElectricityMeter));
+				break;
 
-			switch (guiButton.id) {
-				case 0:
-					tileEntityElectricityMeter.setElectricityCount(0);
-
-					// Update the server-side TileEntity.
-					NetworkHandler.sendToServer(new PacketTileEntity(tileEntityElectricityMeter));
-					break;
-			}
+			case 1:
+				// Claim or unclaim this here.
+				break;
 		}
 	}
 
 	@Override
 	protected void drawGuiScreenForegroundLayer(int mouseX, int mouseY) {
-		if (tileEntity instanceof TileEntityElectricityMeter) {
-			TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
+		// Formatting energy to the correct energy unit.
+		String measuredEnergy = EnergyUtils.getEnergyDisplay(tileEntityElectricityMeter.getElectricityCount());
+		String storedEnergy = EnergyUtils.getEnergyDisplay(tileEntityElectricityMeter.getStorage().getEnergyStored());
 
-			// Formatting energy to the correct energy unit.
-			String measuredEnergy = EnergyUtils.getEnergyDisplay(tileEntityElectricityMeter.getElectricityCount());
-			String storedEnergy = EnergyUtils.getEnergyDisplay(tileEntityElectricityMeter.getStorage().getEnergyStored());
+		int x = 6;
+		int y = ySize / 2;
 
-            int x = (xSize / 2) - 64;
-            int y = ySize / 2;
+		drawString(LanguageUtils.localize("gui.measured") + ":", x, y - 24);
+		drawString(measuredEnergy, x + 64, y - 24);
+		drawString(LanguageUtils.localize("gui.stored") + ":", x, y - 12);
+		drawString(storedEnergy, x + 64, y - 12);
 
-			drawString(LanguageUtils.localize("gui.measured") + ":", x, y - 12);
-			drawString(measuredEnergy, x + 64, y - 12);
+		if (ticker > 0) {
+			ticker--;
+		} else {
+			ticker = 5;
 
-			// Stored energy.
-			drawString(LanguageUtils.localize("gui.stored") + ":", x, y);
-			drawString(storedEnergy, x + 64, y);
-
-			if (ticker == 0) {
-				ticker = 5;
-				// Request the latest data from the server-side TileEntity.
-				NetworkHandler.sendToServer(new PacketRequestData(tileEntityElectricityMeter));
-			} else {
-				ticker--;
-			}
+			// Request the latest data from the server-side TileEntity.
+			NetworkHandler.sendToServer(new PacketRequestData(tileEntityElectricityMeter));
 		}
 
 		super.drawGuiScreenForegroundLayer(mouseX, mouseY);
