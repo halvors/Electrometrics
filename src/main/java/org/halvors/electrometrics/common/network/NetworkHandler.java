@@ -8,6 +8,7 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -101,6 +102,10 @@ public class NetworkHandler {
 				sendTo(message, player);
 			}
 		}
+	}
+
+	public static void sendToReceivers(IMessage message, Entity entity) {
+		sendToReceivers(message, new Range(entity));
 	}
 
 	public static void sendToReceivers(IMessage message, TileEntity tileEntity) {
