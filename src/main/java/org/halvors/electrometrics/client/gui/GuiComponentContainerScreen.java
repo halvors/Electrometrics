@@ -5,7 +5,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import org.halvors.electrometrics.client.gui.component.IGuiComponent;
 import org.halvors.electrometrics.common.base.ResourceType;

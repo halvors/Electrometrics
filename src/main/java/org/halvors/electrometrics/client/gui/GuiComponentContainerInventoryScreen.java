@@ -7,7 +7,6 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import org.halvors.electrometrics.client.gui.component.IGuiComponent;
 import org.halvors.electrometrics.common.base.ResourceType;

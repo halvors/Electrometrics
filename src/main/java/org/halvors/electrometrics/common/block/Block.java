@@ -2,6 +2,8 @@ package org.halvors.electrometrics.common.block;
 
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import org.halvors.electrometrics.Electrometrics;
 
 /**
@@ -9,15 +11,20 @@ import org.halvors.electrometrics.Electrometrics;
  *
  * @author halvors
  */
-public abstract class Block extends BlockContainer {
+public class Block extends BlockContainer {
 	protected final String name;
 
-	Block(String name, Material material) {
+	protected Block(String name, Material material) {
 		super(material);
 
 		this.name = name;
 
 		setUnlocalizedName(name);
 		setCreativeTab(Electrometrics.getTab());
+	}
+
+	@Override
+	public TileEntity createNewTileEntity(World world, int metadata) {
+		return null;
 	}
 }
