@@ -38,7 +38,7 @@ tooltip.forDetails=查看详情
 tooltip.noInformation=无可显示的信息.
 tooltip.measuredEnergy=电能测量完成.
 tooltip.storedEnergy=存储能量
-tooltip.blockOwnedBy=该方块的所有者是 %s, 你不能破坏它.
+tooltip.blockOwnedBy=该 % 方块的所有者是 %, 你不能破坏它.
 
 // Colors
 color.black=黑色

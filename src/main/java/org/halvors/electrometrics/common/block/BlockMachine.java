@@ -15,6 +15,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.client.render.BlockRenderer;
 import org.halvors.electrometrics.client.render.DefaultIcon;
@@ -30,10 +31,13 @@ import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.tile.machine.TileEntityElectricMachine;
 import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityStorage;
+import org.halvors.electrometrics.common.tile.machine.TileEntityMachine;
 import org.halvors.electrometrics.common.util.LanguageUtils;
 import org.halvors.electrometrics.common.util.MachineUtils;
 import org.halvors.electrometrics.common.util.PlayerUtils;
+import org.halvors.electrometrics.common.util.render.Color;
 
+import java.io.PrintStream;
 import java.util.List;
 
 /**
@@ -118,13 +122,14 @@ public class BlockMachine extends BlockRotatable {
 	public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player) {
 		if (!world.isRemote) {
 			TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
-			
+			MachineType machineType = MachineType.getType(this, world.getBlockMetadata(x, y, z));
+
 			// Display a message the the player clicking this block if not the owner.
 			if (tileEntity instanceof ITileOwnable) {
 				ITileOwnable tileOwnable = (ITileOwnable) tileEntity;
 
 				if (!tileOwnable.isOwner(player)) {
-					player.addChatMessage(new ChatComponentText(LanguageUtils.localize("tooltip.blockOwnedBy").replace("%s", tileOwnable.getOwnerName())));
+					player.addChatMessage(new ChatComponentText(String.format(LanguageUtils.localize("tooltip.blockOwnedBy"), machineType.getLocalizedName(), tileOwnable.getOwnerName())));
 				}
 			}
 		}

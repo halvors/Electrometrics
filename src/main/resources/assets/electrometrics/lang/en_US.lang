@@ -38,7 +38,7 @@ tooltip.forDetails=for details
 tooltip.noInformation=No information to display
 tooltip.measuredEnergy=Measured energy
 tooltip.storedEnergy=Stored energy
-tooltip.blockOwnedBy=This block is owned by %s, you don't have permission to remove this block.
+tooltip.blockOwnedBy=This % is owned by %, you don't have permission to remove this block.
 
 // Colors
 color.black=Black
