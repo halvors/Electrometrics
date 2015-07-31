@@ -23,7 +23,7 @@ public class PlayerEventHandler {
 		if (!world.isRemote) {
 			NetworkHandler.sendTo(new PacketConfiguration(), (EntityPlayerMP) player);
 
-			Electrometrics.getLogger().info("Sent configuration to '" + player.getDisplayName() + "'.");
+			Electrometrics.getInstance().getLogger().info("Sent configuration to '" + player.getDisplayName() + "'.");
 		}
 	}
 }

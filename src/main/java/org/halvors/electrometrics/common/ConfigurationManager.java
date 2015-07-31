@@ -14,6 +14,7 @@ public class ConfigurationManager {
     public static final String CATEGORY_CLIENT = "client";
 
     public static class General {
+        public static boolean enableUpdateNotice;
         public static boolean destroyDisabledBlocks;
 
         public static double toJoules;
@@ -45,6 +46,7 @@ public class ConfigurationManager {
         configuration.load();
 
         // General.
+        General.enableUpdateNotice = configuration.get(Configuration.CATEGORY_GENERAL, "EnableUpdateNotice", true).getBoolean();
         General.destroyDisabledBlocks = configuration.get(Configuration.CATEGORY_GENERAL, "DestroyDisabledBlocks", true).getBoolean();
 
         General.toJoules = configuration.get(Configuration.CATEGORY_GENERAL, "RFToJoules", 2.5).getDouble();

@@ -30,6 +30,8 @@ import org.halvors.electrometrics.common.event.PlayerEventHandler;
 import org.halvors.electrometrics.common.item.ItemBlockMachine;
 import org.halvors.electrometrics.common.item.ItemMultimeter;
 import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityMeter;
+import org.halvors.electrometrics.common.updater.IUpdatableMod;
+import org.halvors.electrometrics.common.updater.UpdateManager;
 
 /**
  * This is the Electrometrics class, which is the main class of this mod.
@@ -42,7 +44,7 @@ import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityMeter
      dependencies = "after:CoFHCore;" +
                     "after:Mekanism",
      guiFactory = "org.halvors." + Reference.ID + ".client.gui.configuration.GuiConfiguationFactory")
-public class Electrometrics {
+public class Electrometrics implements IUpdatableMod {
 	// The instance of your mod that Forge uses.
 	@Instance(value = Reference.ID)
 	public static Electrometrics instance;
@@ -71,6 +73,8 @@ public class Electrometrics {
 	public void preInit(FMLPreInitializationEvent event) {
 		// Initialize configuration.
         configuration = new Configuration(event.getSuggestedConfigurationFile());
+
+		UpdateManager.registerUpdater(new UpdateManager(this, Reference.RELEASE_URL, Reference.DOWNLOAD_URL));
 
         // Load the configuration.
         ConfigurationManager.loadConfiguration(configuration);
@@ -160,16 +164,32 @@ public class Electrometrics {
         }
 	}
 
+	@Override
+	public String getModId() {
+		return Reference.ID;
+	}
+
+	@Override
+	public String getModName() {
+		return Reference.NAME;
+	}
+
+	@Override
+	public String getModVersion() {
+		return Reference.VERSION;
+	}
+
+	@Override
+	public Logger getLogger() {
+		return logger;
+	}
+
 	public static CommonProxy getProxy() {
 		return proxy;
 	}
 
 	public static Electrometrics getInstance() {
 		return instance;
-	}
-
-	public static Logger getLogger() {
-		return logger;
 	}
 
 	public static Tab getTab() {

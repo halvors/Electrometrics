@@ -141,7 +141,7 @@ public class NetworkHandler {
                 ByteBufUtils.writeTag(dataStream, (NBTTagCompound) object);
             }
         } catch (Exception e) {
-            Electrometrics.getLogger().error("An error occurred when sending packet data.");
+            Electrometrics.getInstance().getLogger().error("An error occurred when sending packet data.");
             e.printStackTrace();
         }
     }

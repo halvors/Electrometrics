@@ -80,7 +80,7 @@ public enum MachineType {
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
-			Electrometrics.getLogger().error("Unable to indirectly create TileEntity.");
+			Electrometrics.getInstance().getLogger().error("Unable to indirectly create TileEntity.");
 		}
 
 		return null;
@@ -91,7 +91,7 @@ public enum MachineType {
 			return guiClass.getConstructor(tileEntityClass).newInstance(tileEntity);
 		} catch(Exception e) {
 			e.printStackTrace();
-			Electrometrics.getLogger().error("Unable to indirectly create GuiScreen.");
+			Electrometrics.getInstance().getLogger().error("Unable to indirectly create GuiScreen.");
 		}
 
 		return null;

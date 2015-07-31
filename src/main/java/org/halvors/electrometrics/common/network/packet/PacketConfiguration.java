@@ -9,7 +9,11 @@ import org.halvors.electrometrics.common.ConfigurationManager.General;
 import org.halvors.electrometrics.common.ConfigurationManager.Integration;
 import org.halvors.electrometrics.common.ConfigurationManager.Machine;
 import org.halvors.electrometrics.common.base.MachineType;
+import org.halvors.electrometrics.common.network.NetworkHandler;
 import org.halvors.electrometrics.common.util.energy.EnergyUnit;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is a packet that synchronizes the configuration from the server to the clients.
@@ -24,6 +28,7 @@ public class PacketConfiguration implements IMessage {
 	@Override
 	public void fromBytes(ByteBuf dataStream) {
 		// General.
+		General.enableUpdateNotice = dataStream.readBoolean();
         General.destroyDisabledBlocks = dataStream.readBoolean();
 
         General.toJoules = dataStream.readDouble();
@@ -38,29 +43,36 @@ public class PacketConfiguration implements IMessage {
         // Integration.
         Integration.isMekanismEnabled = dataStream.readBoolean();
 
+		// TODO: Should we sync this?
 		// Client.
 		Client.energyUnit = EnergyUnit.values()[dataStream.readInt()];
 	}
 
 	@Override
 	public void toBytes(ByteBuf dataStream) {
-		// General.
-        dataStream.writeBoolean(General.destroyDisabledBlocks);
+		List<Object> objects = new ArrayList<>();
 
-		dataStream.writeDouble(General.toJoules);
-		dataStream.writeDouble(General.toMinecraftJoules);
-		dataStream.writeDouble(General.toElectricalUnits);
+		// General.
+		objects.add(General.enableUpdateNotice);
+		objects.add(General.destroyDisabledBlocks);
+
+		objects.add(General.toJoules);
+		objects.add(General.toMinecraftJoules);
+		objects.add(General.toElectricalUnits);
 
         // Machine.
         for (MachineType machineType : MachineType.values()) {
-            dataStream.writeBoolean(Machine.isEnabled(machineType));
+			objects.add(Machine.isEnabled(machineType));
         }
 
         // Integration.
-        dataStream.writeBoolean(Integration.isMekanismEnabled);
+		objects.add(Integration.isMekanismEnabled);
 
+		// TODO: Should we sync this?
 		// Client.
-		dataStream.writeInt(Client.energyUnit.ordinal());
+		//objects.add(Client.energyUnit.ordinal());
+
+		NetworkHandler.writeObjects(objects, dataStream);
 	}
 
 	public static class PacketConfigurationMessage implements IMessageHandler<PacketConfiguration, IMessage> {
