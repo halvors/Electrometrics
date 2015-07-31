@@ -17,10 +17,4 @@ public class Reference {
 	 */
 	public static final String DOMAIN = ID;
 	public static final String PREFIX = DOMAIN + ":";
-
-	/**
-	 * Update URL.
-	 */
-	public static final String RELEASE_URL = "https://raw.githubusercontent.com/halvors/" + NAME + "/master/";
-	public static final String DOWNLOAD_URL = "http://minecraft.curseforge.com/mc-mods/232407-electrometrics/files/";
 }

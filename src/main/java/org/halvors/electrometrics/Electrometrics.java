@@ -2,8 +2,6 @@ package org.halvors.electrometrics;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -30,8 +28,6 @@ import org.halvors.electrometrics.common.event.PlayerEventHandler;
 import org.halvors.electrometrics.common.item.ItemBlockMachine;
 import org.halvors.electrometrics.common.item.ItemMultimeter;
 import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityMeter;
-import org.halvors.electrometrics.common.updater.IUpdatableMod;
-import org.halvors.electrometrics.common.updater.UpdateManager;
 
 /**
  * This is the Electrometrics class, which is the main class of this mod.
@@ -44,9 +40,9 @@ import org.halvors.electrometrics.common.updater.UpdateManager;
      dependencies = "after:CoFHCore;" +
                     "after:Mekanism",
      guiFactory = "org.halvors." + Reference.ID + ".client.gui.configuration.GuiConfiguationFactory")
-public class Electrometrics implements IUpdatableMod {
+public class Electrometrics {
 	// The instance of your mod that Forge uses.
-	@Instance(value = Reference.ID)
+	@Mod.Instance(value = Reference.ID)
 	public static Electrometrics instance;
 
 	// Says where the client and server 'proxy' code is loaded.
@@ -69,18 +65,16 @@ public class Electrometrics implements IUpdatableMod {
 	private static Configuration configuration;
 
 
-	@EventHandler
+	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		// Initialize configuration.
         configuration = new Configuration(event.getSuggestedConfigurationFile());
-
-		UpdateManager.registerUpdater(new UpdateManager(this, Reference.RELEASE_URL, Reference.DOWNLOAD_URL));
 
         // Load the configuration.
         ConfigurationManager.loadConfiguration(configuration);
 	}
 
-	@EventHandler
+	@Mod.EventHandler
 	public void init(FMLInitializationEvent event) {
 		// Register the our EventHandler.
 		FMLCommonHandler.instance().bus().register(new PlayerEventHandler());
@@ -164,32 +158,16 @@ public class Electrometrics implements IUpdatableMod {
         }
 	}
 
-	@Override
-	public String getModId() {
-		return Reference.ID;
-	}
-
-	@Override
-	public String getModName() {
-		return Reference.NAME;
-	}
-
-	@Override
-	public String getModVersion() {
-		return Reference.VERSION;
-	}
-
-	@Override
-	public Logger getLogger() {
-		return logger;
+	public static Electrometrics getInstance() {
+		return instance;
 	}
 
 	public static CommonProxy getProxy() {
 		return proxy;
 	}
 
-	public static Electrometrics getInstance() {
-		return instance;
+	public static  Logger getLogger() {
+		return logger;
 	}
 
 	public static Tab getTab() {
