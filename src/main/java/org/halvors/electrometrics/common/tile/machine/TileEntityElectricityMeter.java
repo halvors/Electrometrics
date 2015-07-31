@@ -1,9 +1,11 @@
 package org.halvors.electrometrics.common.tile.machine;
 
+import cofh.api.energy.IEnergyReceiver;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.halvors.electrometrics.common.base.IElectricTier;
 import org.halvors.electrometrics.common.base.MachineType;
@@ -16,6 +18,7 @@ import org.halvors.electrometrics.common.base.tile.ITileRedstoneControl;
 import org.halvors.electrometrics.common.network.NetworkHandler;
 import org.halvors.electrometrics.common.network.packet.PacketRequestData;
 import org.halvors.electrometrics.common.network.packet.PacketTileEntity;
+import org.halvors.electrometrics.common.util.MachineUtils;
 import org.halvors.electrometrics.common.util.PlayerUtils;
 
 import java.util.EnumSet;
@@ -180,9 +183,17 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 	@Override
 	protected void distributeEnergy() {
 		for (ForgeDirection direction : getExtractingDirections()) {
-			int actualEnergyAmount = extractEnergy(direction, getExtract(), true);
+			TileEntity tileEntity = worldObj.getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
 
-			if (actualEnergyAmount <= 0) {
+			if (tileEntity != null) {
+				if (tileEntity instanceof IEnergyReceiver) {
+					int actualEnergyAmount = extractEnergy(direction, getExtract(), true);
+
+					if (!MachineUtils.canFunction(this) || actualEnergyAmount <= 0) {
+						setActive(false);
+					}
+				}
+			} else {
 				setActive(false);
 			}
 		}

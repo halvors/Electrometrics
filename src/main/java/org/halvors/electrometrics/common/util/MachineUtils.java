@@ -61,20 +61,20 @@ public class MachineUtils {
 	 */
 	public static boolean canFunction(TileEntity tileEntity) {
 		if (tileEntity instanceof ITileRedstoneControl) {
-			ITileRedstoneControl redstoneControl = (ITileRedstoneControl) tileEntity;
+			ITileRedstoneControl tileRedstoneControl = (ITileRedstoneControl) tileEntity;
 
-			switch (redstoneControl.getControlType()) {
+			switch (tileRedstoneControl.getControlType()) {
 				case DISABLED:
 					return true;
 
 				case HIGH:
-					return redstoneControl.isPowered();
+					return tileRedstoneControl.isPowered();
 
 				case LOW:
-					return !redstoneControl.isPowered();
+					return !tileRedstoneControl.isPowered();
 
 				case PULSE:
-					return redstoneControl.isPowered() && !redstoneControl.wasPowered();
+					return tileRedstoneControl.isPowered() && !tileRedstoneControl.wasPowered();
 			}
 		}
 

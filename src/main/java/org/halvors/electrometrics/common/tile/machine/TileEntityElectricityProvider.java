@@ -32,9 +32,7 @@ public class TileEntityElectricityProvider extends TileEntityElectricityReceiver
 		super.updateEntity();
 
 		if (!worldObj.isRemote) {
-			if (MachineUtils.canFunction(this)) {
-				distributeEnergy();
-			}
+			distributeEnergy();
 		}
 	}
 
@@ -61,15 +59,17 @@ public class TileEntityElectricityProvider extends TileEntityElectricityReceiver
 	 * this one.
 	 */
 	protected void distributeEnergy() {
-		for (ForgeDirection direction : getExtractingDirections()) {
-			TileEntity tileEntity = worldObj.getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
+		if (MachineUtils.canFunction(this)) {
+			for (ForgeDirection direction : getExtractingDirections()) {
+				TileEntity tileEntity = worldObj.getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
 
-			if (tileEntity instanceof IEnergyReceiver) {
-				IEnergyReceiver receiver = (IEnergyReceiver) tileEntity;
-				int actualEnergyAmount = extractEnergy(direction, getExtract(), true);
+				if (tileEntity instanceof IEnergyReceiver) {
+					IEnergyReceiver receiver = (IEnergyReceiver) tileEntity;
+					int actualEnergyAmount = extractEnergy(direction, getExtract(), true);
 
-				if (actualEnergyAmount > 0) {
-					extractEnergy(direction, receiver.receiveEnergy(direction.getOpposite(), actualEnergyAmount, false), false);
+					if (actualEnergyAmount > 0) {
+						extractEnergy(direction, receiver.receiveEnergy(direction.getOpposite(), actualEnergyAmount, false), false);
+					}
 				}
 			}
 		}
