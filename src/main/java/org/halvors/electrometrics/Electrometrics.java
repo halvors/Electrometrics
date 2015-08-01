@@ -132,7 +132,7 @@ public class Electrometrics {
                 "IMI",
                 "CBC",
                 'R', Items.redstone,
-                'G', Blocks.glass_pane,
+                'G', "paneGlass",
                 'I', OreDictionary.doesOreNameExist("ingotCopper") ? "ingotCopper" : Items.gold_ingot,
                 'M', Items.clock,
                 'C', circuit,
