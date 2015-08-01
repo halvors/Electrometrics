@@ -14,6 +14,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -126,7 +127,7 @@ public class Electrometrics {
         }
 
         // Multimeter
-        GameRegistry.addRecipe(new ItemStack(itemMultimeter),
+        GameRegistry.addRecipe(new ShapedOreRecipe(itemMultimeter,
                 "RGR",
                 "IMI",
                 "CBC",
@@ -135,7 +136,7 @@ public class Electrometrics {
                 'I', OreDictionary.doesOreNameExist("ingotCopper") ? "ingotCopper" : Items.gold_ingot,
                 'M', Items.clock,
                 'C', circuit,
-                'B', battery);
+                'B', battery));
 
         // Electricity Meter
         for (Tier.Electric electricTier : Tier.Electric.values()) {

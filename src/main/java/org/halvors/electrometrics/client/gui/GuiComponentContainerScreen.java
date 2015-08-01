@@ -5,6 +5,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import org.halvors.electrometrics.client.gui.component.IGuiComponent;
 import org.halvors.electrometrics.common.base.ResourceType;
@@ -18,7 +19,7 @@ import java.util.List;
 import java.util.Set;
 
 @SideOnly(Side.CLIENT)
-public class GuiComponentContainerScreen extends GuiScreen implements IGui {
+public abstract class GuiComponentContainerScreen extends GuiScreen implements IGui {
 	private static final Minecraft game = Minecraft.getMinecraft();
 
     protected final Set<IComponent> components = new HashSet<>();
@@ -183,6 +184,16 @@ public class GuiComponentContainerScreen extends GuiScreen implements IGui {
 				guiComponent.mouseReleased(xAxis, yAxis, type);
 			}
 		}
+	}
+
+	@Override
+	public void drawTexturedRect(int x, int y, int textureX, int textureY, int width, int height) {
+		super.drawTexturedModalRect(x, y, textureX, textureY, width, height);
+	}
+
+	@Override
+	public void drawTexturedRectFromIcon(int x, int y, IIcon icon, int width, int height) {
+		super.drawTexturedModelRectFromIcon(x, y, icon, width, height);
 	}
 
 	@Override

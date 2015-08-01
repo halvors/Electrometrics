@@ -7,6 +7,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import org.halvors.electrometrics.client.gui.component.IGuiComponent;
 import org.halvors.electrometrics.common.base.ResourceType;
@@ -153,6 +154,16 @@ public class GuiComponentContainerInventoryScreen extends GuiContainer implement
 
 	public void handleMouse(Slot slot, int slotIndex, int button, int modifier) {
 		handleMouseClick(slot, slotIndex, button, modifier);
+	}
+
+	@Override
+	public void drawTexturedRect(int x, int y, int textureX, int textureY, int width, int height) {
+		super.drawTexturedModalRect(x, y, textureX, textureY, width, height);
+	}
+
+	@Override
+	public void drawTexturedRectFromIcon(int x, int y, IIcon icon, int width, int height) {
+		super.drawTexturedModelRectFromIcon(x, y, icon, width, height);
 	}
 
 	@Override

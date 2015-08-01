@@ -19,7 +19,6 @@ item.Multimeter.name=Multimeter
 gui.measured=Målt
 gui.stored=Lagret
 gui.reset=Nullstill
-gui.release=Gi fra
 gui.maxOutput=Maks utgående
 
 // Gui configuration

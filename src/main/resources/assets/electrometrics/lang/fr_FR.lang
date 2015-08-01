@@ -20,7 +20,6 @@ item.Multimeter.name=Multimètre
 gui.measured=Mesuré
 gui.stored=Stocké
 gui.reset=Mis à zéro
-gui.release=Release
 gui.maxOutput=Sortie maxi
 
 // Gui configuration

@@ -18,7 +18,7 @@ public interface IGui {
 	 * @param width
 	 * @param height
 	 */
-	void drawTexturedModalRect(int x, int y, int textureX, int textureY, int width, int height);
+	void drawTexturedRect(int x, int y, int textureX, int textureY, int width, int height);
 
 	/**
 	 * Draws a textured rectangle from the specified icon.
@@ -28,7 +28,7 @@ public interface IGui {
 	 * @param width
 	 * @param height
 	 */
-	void drawTexturedModelRectFromIcon(int x, int y, IIcon icon, int width, int height);
+	void drawTexturedRectFromIcon(int x, int y, IIcon icon, int width, int height);
 
 	void drawString(String text, int x, int y);
 

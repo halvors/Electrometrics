@@ -19,7 +19,6 @@ item.Multimeter.name=万用表
 gui.measured=Measured
 gui.stored=存储能量
 gui.reset=重置
-gui.release=Release
 gui.maxOutput=最高输出
 
 // Gui configuration
