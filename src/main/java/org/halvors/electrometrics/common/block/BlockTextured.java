@@ -9,10 +9,8 @@ import org.halvors.electrometrics.client.render.DefaultIcon;
 import org.halvors.electrometrics.common.Reference;
 
 public abstract class BlockTextured extends Block {
-	@SideOnly(Side.CLIENT)
 	protected final IIcon[] iconList = new IIcon[16];
 
-	@SideOnly(Side.CLIENT)
 	protected DefaultIcon defaultBlockIcon;
 
 	protected BlockTextured(String name, Material material) {

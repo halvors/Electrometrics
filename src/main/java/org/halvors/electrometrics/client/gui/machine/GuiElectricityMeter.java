@@ -4,7 +4,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
-import org.halvors.electrometrics.client.gui.GuiComponentContainerScreen;
 import org.halvors.electrometrics.client.gui.component.GuiEnergyInfo;
 import org.halvors.electrometrics.client.gui.component.GuiOwnerInfo;
 import org.halvors.electrometrics.client.gui.component.IInfoHandler;

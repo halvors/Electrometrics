@@ -11,8 +11,7 @@ import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.util.render.Orientation;
 
 public class BlockMetadataTextured extends BlockMetadata {
-    @SideOnly(Side.CLIENT)
-    protected final IIcon[][] iconList = new IIcon[16][16];
+    protected final IIcon[][] iconMetadataList = new IIcon[16][16];
 
     protected BlockMetadataTextured(String name, Material material) {
         super(name, material);
@@ -35,10 +34,10 @@ public class BlockMetadataTextured extends BlockMetadata {
         if (tileEntity instanceof ITileRotatable) {
             ITileRotatable tileRotatable = (ITileRotatable) tileEntity;
 
-            return iconList[metadata][Orientation.getBaseOrientation(side, tileRotatable.getFacing()) + (isActive ? 6 : 0)];
+            return iconMetadataList[metadata][Orientation.getBaseOrientation(side, tileRotatable.getFacing()) + (isActive ? 6 : 0)];
         }
 
-        return iconList[metadata][side + (isActive ? 6 : 0)];
+        return iconMetadataList[metadata][side + (isActive ? 6 : 0)];
     }
 
     @Override
@@ -55,6 +54,6 @@ public class BlockMetadataTextured extends BlockMetadata {
                 break;
         }
 
-        return iconList[metadata][side];
+        return iconMetadataList[metadata][side];
     }
 }

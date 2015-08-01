@@ -74,7 +74,7 @@ public class BlockMachine extends BlockRotatable {
 		for (MachineType machineType : MachineType.values()) {
 			BlockRenderer.loadDynamicTextures(iconRegister,
 					machineType.getUnlocalizedName(),
-					iconList[machineType.getMetadata()],
+					iconMetadataList[machineType.getMetadata()],
 					defaultBlockIcon,
 					defaultTopIcon,
 					DefaultIcon.getActivePair(outputIcon, 4),
