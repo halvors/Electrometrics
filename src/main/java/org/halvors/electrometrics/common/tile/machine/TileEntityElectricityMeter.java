@@ -9,12 +9,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.halvors.electrometrics.common.base.IElectricTier;
 import org.halvors.electrometrics.common.base.MachineType;
-import org.halvors.electrometrics.common.base.RedstoneControlType;
 import org.halvors.electrometrics.common.base.Tier;
 import org.halvors.electrometrics.common.base.tile.ITileActiveState;
 import org.halvors.electrometrics.common.base.tile.ITileNetworkable;
 import org.halvors.electrometrics.common.base.tile.ITileOwnable;
-import org.halvors.electrometrics.common.base.tile.ITileRedstoneControl;
 import org.halvors.electrometrics.common.network.NetworkHandler;
 import org.halvors.electrometrics.common.network.packet.PacketRequestData;
 import org.halvors.electrometrics.common.network.packet.PacketTileEntity;
@@ -31,7 +29,7 @@ import java.util.UUID;
  *
  * @author halvors
  */
-public class TileEntityElectricityMeter extends TileEntityElectricityProvider implements ITileNetworkable, ITileActiveState, IElectricTier, ITileOwnable, ITileRedstoneControl {
+public class TileEntityElectricityMeter extends TileEntityElectricityProvider implements ITileNetworkable, ITileActiveState, IElectricTier, ITileOwnable {
 	// Whether or not this TileEntity's block is in it's active state.
 	private boolean isActive;
 
@@ -40,9 +38,6 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 
 	// The name of the player owning this.
 	private String ownerName;
-
-	// The current RedstoneControlType of this TileEntity.
-	private RedstoneControlType redstoneControlType = RedstoneControlType.DISABLED;
 
 	// The tier of this TileEntity.
 	private Tier.Electric electricTier;
@@ -83,7 +78,6 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 			ownerName = nbtTagCompound.getString("ownerName");
 		}
 
-		redstoneControlType = RedstoneControlType.values()[nbtTagCompound.getInteger("redstoneControlType")];
 		electricTier = Tier.Electric.values()[nbtTagCompound.getInteger("electricTier")];
 		electricityCount = nbtTagCompound.getDouble("electricityCount");
 	}
@@ -103,7 +97,6 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 			nbtTagCompound.setString("ownerName", ownerName);
 		}
 
-		nbtTagCompound.setInteger("redstoneControlType", redstoneControlType.ordinal());
 		nbtTagCompound.setInteger("electricTier", electricTier.ordinal());
 		nbtTagCompound.setDouble("electricityCount", electricityCount);
 	}
@@ -127,7 +120,6 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 			ownerName = ownerNameText;
 		}
 
-		redstoneControlType = RedstoneControlType.values()[dataStream.readInt()];
 		electricTier = Tier.Electric.values()[dataStream.readInt()];
 		electricityCount = dataStream.readDouble();
 
@@ -146,7 +138,6 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 		objects.add(ownerUUID != null ? ownerUUID.getMostSignificantBits() : 0);
 		objects.add(ownerUUID != null ? ownerUUID.getLeastSignificantBits() : 0);
 		objects.add(ownerName != null ? ownerName : "");
-		objects.add(redstoneControlType.ordinal());
 		objects.add(electricTier.ordinal());
 		objects.add(electricityCount);
 
@@ -249,36 +240,6 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 	public void setOwner(EntityPlayer player) {
 		this.ownerUUID = player.getPersistentID();
 		this.ownerName = player.getDisplayName();
-	}
-
-	@Override
-	public RedstoneControlType getControlType() {
-		return redstoneControlType;
-	}
-
-	@Override
-	public void setControlType(RedstoneControlType redstoneControlType) {
-		this.redstoneControlType = redstoneControlType;
-	}
-
-	@Override
-	public boolean isPowered() {
-		return isPowered;
-	}
-
-	@Override
-	public void setPowered(boolean isPowered) {
-		this.isPowered = isPowered;
-	}
-
-	@Override
-	public boolean wasPowered() {
-		return wasPowered;
-	}
-
-	@Override
-	public boolean canPulse() {
-		return false;
 	}
 
 	/**
