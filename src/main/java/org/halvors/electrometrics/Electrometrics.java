@@ -114,11 +114,14 @@ public class Electrometrics {
 
 	private void addRecipes() {
 		// Register recipes.
+        Item circuit = Items.repeater;
+        ItemStack battery = new ItemStack(Items.diamond);
         ItemStack cable = new ItemStack(Items.gold_ingot);
         ItemStack casing = new ItemStack(Blocks.iron_block);
-		ItemStack energyStorage = new ItemStack(Blocks.diamond_block);
 
         if (Integration.isMekanismEnabled) {
+            circuit = ItemRetriever.getItem("ControlCircuit").getItem(); // Basic control circuit.
+            battery = new ItemStack(ItemRetriever.getItem("EnergyTablet").getItem(), 1, 100); // Uncharged battery.
             cable = new ItemStack(ItemRetriever.getItem("PartTransmitter").getItem(), 8); // Basic universal cable.
             casing = new ItemStack(ItemRetriever.getBlock("BasicBlock").getItem(), 1, 8); // Steel casing.
         }
@@ -128,36 +131,33 @@ public class Electrometrics {
                 "RGR",
                 "IMI",
                 "CBC",
-                'R', "dustRedstone",
+                'R', Items.redstone,
                 'G', "paneGlass",
-                'I', OreDictionary.doesOreNameExist("ingotCopper") ? "ingotCopper" : "ingotIron",
+                'I', OreDictionary.doesOreNameExist("ingotCopper") ? "ingotCopper" : Items.gold_ingot,
                 'M', Items.clock,
-                'C', OreDictionary.doesOreNameExist("circuitBasic") ? "circuitBasic" : Items.repeater,
-                'B', OreDictionary.doesOreNameExist("battery") ? "battery" : "gemEmerald"));
+                'C', circuit,
+                'B', battery));
 
         // Electricity Meter
         for (Tier.Electric electricTier : Tier.Electric.values()) {
             if (Integration.isMekanismEnabled) {
                 cable = new ItemStack(ItemRetriever.getItem("PartTransmitter").getItem(), 8, electricTier.ordinal()); // Tier matching universal cable.
-				energyStorage = new ItemStack(ItemRetriever.getBlock("EnergyCube").getItem(), 1, electricTier.ordinal()); // Tier matching energy cube.
-			}
+            }
 
             MachineType machineType = electricTier.getMachineType();
-			ItemStack itemStackMachine = machineType.getItemStack();
+            ItemStack itemStackMachine = machineType.getItemStack();
             ItemBlockMachine itemBlockMachine = (ItemBlockMachine) itemStackMachine.getItem();
             itemBlockMachine.setElectricTier(itemStackMachine, electricTier);
-			Tier.Base baseTier = electricTier.getBase();
 
-            GameRegistry.addRecipe(new ShapedOreRecipe(itemStackMachine,
+            GameRegistry.addRecipe(itemStackMachine,
                     "RMR",
                     "C#C",
-                    "@B@",
-                    'R', "dustRedstone",
+                    "RBR",
+                    'R', Items.redstone,
                     'M', itemMultimeter,
                     'C', cable,
                     '#', casing,
-					'@', OreDictionary.doesOreNameExist("circuit" + baseTier.getUnlocalizedName()) ? "circuit" + baseTier.getUnlocalizedName() : Items.repeater,
-                    'B', energyStorage));
+                    'B', battery);
         }
 	}
 
