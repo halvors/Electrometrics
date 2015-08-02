@@ -10,6 +10,7 @@ import org.halvors.electrometrics.common.base.tile.ITileNetworkable;
 import org.halvors.electrometrics.common.base.tile.ITileRedstoneControl;
 import org.halvors.electrometrics.common.network.NetworkHandler;
 import org.halvors.electrometrics.common.network.packet.PacketTileEntity;
+import org.halvors.electrometrics.common.network.packet.PacketTileRedstoneControl;
 import org.halvors.electrometrics.common.tile.TileEntity;
 
 @SideOnly(Side.CLIENT)
@@ -80,7 +81,7 @@ public class GuiRedstoneControl<T extends TileEntity & ITileNetworkable & ITileR
 					tileEntity.setControlType(RedstoneControlType.values()[ordinalToSet]);
 
 					// Send a update packet to the server.
-					NetworkHandler.sendToServer(new PacketTileEntity(tileEntity));
+					NetworkHandler.sendToServer(new PacketTileRedstoneControl(tileEntity, PacketTileRedstoneControl.PacketType.UPDATE));
 				}
 				break;
 		}
