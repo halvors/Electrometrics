@@ -26,11 +26,9 @@ public class PacketConfiguration implements IMessage {
 	@Override
 	public void fromBytes(ByteBuf dataStream) {
 		// General.
-		General.enableUpdateNotice = dataStream.readBoolean();
         General.destroyDisabledBlocks = dataStream.readBoolean();
 
         General.toJoules = dataStream.readDouble();
-        General.toMinecraftJoules = dataStream.readDouble();
         General.toElectricalUnits = dataStream.readDouble();
 
         // Machine.
@@ -43,9 +41,8 @@ public class PacketConfiguration implements IMessage {
 		Integration.isCoFHCoreEnabled = dataStream.readBoolean();
         Integration.isMekanismEnabled = dataStream.readBoolean();
 
-		// TODO: Should we sync this?
 		// Client.
-		//Client.energyUnit = EnergyUnit.values()[dataStream.readInt()];
+		// We don't sync this as this is client specific changes that the server shouldn't care about.
 	}
 
 	@Override
@@ -53,11 +50,9 @@ public class PacketConfiguration implements IMessage {
 		List<Object> objects = new ArrayList<>();
 
 		// General.
-		objects.add(General.enableUpdateNotice);
 		objects.add(General.destroyDisabledBlocks);
 
 		objects.add(General.toJoules);
-		objects.add(General.toMinecraftJoules);
 		objects.add(General.toElectricalUnits);
 
         // Machine.
@@ -70,9 +65,8 @@ public class PacketConfiguration implements IMessage {
 		objects.add(Integration.isCoFHCoreEnabled);
 		objects.add(Integration.isMekanismEnabled);
 
-		// TODO: Should we sync this?
 		// Client.
-		//objects.add(Client.energyUnit.ordinal());
+		// We don't sync this as this is client specific changes that the server shouldn't care about.
 
 		NetworkHandler.writeObjects(objects, dataStream);
 	}

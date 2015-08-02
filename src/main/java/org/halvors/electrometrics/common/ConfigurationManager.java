@@ -14,11 +14,9 @@ public class ConfigurationManager {
     public static final String CATEGORY_CLIENT = "client";
 
     public static class General {
-        public static boolean enableUpdateNotice;
         public static boolean destroyDisabledBlocks;
 
         public static double toJoules;
-        public static double toMinecraftJoules;
         public static double toElectricalUnits;
     }
 
@@ -48,11 +46,9 @@ public class ConfigurationManager {
         configuration.load();
 
         // General.
-        General.enableUpdateNotice = configuration.get(Configuration.CATEGORY_GENERAL, "EnableUpdateNotice", true).getBoolean();
         General.destroyDisabledBlocks = configuration.get(Configuration.CATEGORY_GENERAL, "DestroyDisabledBlocks", true).getBoolean();
 
         General.toJoules = configuration.get(Configuration.CATEGORY_GENERAL, "RFToJoules", 2.5).getDouble();
-        General.toMinecraftJoules = configuration.get(Configuration.CATEGORY_GENERAL, "RFToMinecraftJoules", 0.1).getDouble();
         General.toElectricalUnits = configuration.get(Configuration.CATEGORY_GENERAL, "RFToElectricalUnits", 0.25).getDouble();
 
         // Machine.
