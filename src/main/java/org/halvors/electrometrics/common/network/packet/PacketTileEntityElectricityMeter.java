@@ -12,8 +12,12 @@ import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityMeter
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This is a packet that provides common information for all TileEntity packets, and is meant to be extended.
+ *
+ * @author halvors
+ */
 public class PacketTileEntityElectricityMeter extends PacketLocation implements IMessage {
-    private TileEntityElectricityMeter tileEntityElectricityMeter;
     private PacketType packetType;
     private double electricityCount;
 
@@ -21,11 +25,16 @@ public class PacketTileEntityElectricityMeter extends PacketLocation implements 
 
     }
 
-    public PacketTileEntityElectricityMeter(TileEntityElectricityMeter tileEntityElectricityMeter, PacketType packetType) {
-        super(tileEntityElectricityMeter);
+    public PacketTileEntityElectricityMeter(TileEntityElectricityMeter tileEntity, PacketType packetType) {
+        super(tileEntity);
 
-        this.tileEntityElectricityMeter = tileEntityElectricityMeter;
         this.packetType = packetType;
+
+        switch (packetType) {
+            case RESPONSE:
+                electricityCount = tileEntity.getElectricityCount();
+                break;
+        }
     }
 
     @Override
@@ -35,7 +44,7 @@ public class PacketTileEntityElectricityMeter extends PacketLocation implements 
         packetType = PacketType.values()[dataStream.readInt()];
 
         switch (packetType) {
-            case GET:
+            case RESPONSE:
                 electricityCount = dataStream.readDouble();
                 break;
         }
@@ -49,8 +58,8 @@ public class PacketTileEntityElectricityMeter extends PacketLocation implements 
         objects.add(packetType.ordinal());
 
         switch (packetType) {
-            case GET:
-                objects.add(tileEntityElectricityMeter.getElectricityCount());
+            case RESPONSE:
+                objects.add(electricityCount);
                 break;
         }
 
@@ -71,15 +80,23 @@ public class PacketTileEntityElectricityMeter extends PacketLocation implements 
                 TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
 
                 switch (message.packetType) {
-                    case GET:
-                        if (world.isRemote) {
+                    case REQUEST:
+                        if (messageContext.side.isServer()) {
+                            return new PacketTileEntityElectricityMeter(tileEntityElectricityMeter, PacketType.RESPONSE);
+                        }
+                        break;
+
+                    case RESPONSE:
+                        if (messageContext.side.isClient()) {
                             tileEntityElectricityMeter.setElectricityCount(message.electricityCount);
                         }
                         break;
 
                     case RESET:
-                        if (!world.isRemote) {
+                        if (messageContext.side.isServer()) {
                             tileEntityElectricityMeter.setElectricityCount(0);
+
+                            return new PacketTileEntityElectricityMeter(tileEntityElectricityMeter, PacketType.RESPONSE);
                         }
                         break;
                 }
@@ -90,7 +107,8 @@ public class PacketTileEntityElectricityMeter extends PacketLocation implements 
     }
 
     public enum PacketType {
-        GET,
+        REQUEST,
+        RESPONSE,
         RESET
     }
 }

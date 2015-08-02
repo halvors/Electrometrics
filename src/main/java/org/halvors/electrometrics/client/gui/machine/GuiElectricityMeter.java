@@ -3,13 +3,13 @@ package org.halvors.electrometrics.client.gui.machine;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.GuiButton;
-import org.halvors.electrometrics.client.gui.GuiComponentContainerScreen;
-import org.halvors.electrometrics.client.gui.component.*;
+import net.minecraft.entity.player.EntityPlayer;
+import org.halvors.electrometrics.client.gui.component.GuiEnergyInfo;
+import org.halvors.electrometrics.client.gui.component.GuiOwnerInfo;
+import org.halvors.electrometrics.client.gui.component.IInfoHandler;
 import org.halvors.electrometrics.common.base.tile.ITileOwnable;
 import org.halvors.electrometrics.common.network.NetworkHandler;
-import org.halvors.electrometrics.common.network.packet.PacketTileEntity;
 import org.halvors.electrometrics.common.network.packet.PacketTileEntityElectricityMeter;
-import org.halvors.electrometrics.common.network.packet.PacketTileEntityElectricityMeter.PacketType;
 import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.util.LanguageUtils;
 import org.halvors.electrometrics.common.util.PlayerUtils;
@@ -25,11 +25,14 @@ import java.util.List;
  * @author halvors
  */
 @SideOnly(Side.CLIENT)
-public class GuiElectricityMeter extends GuiComponentContainerScreen {
+public class GuiElectricityMeter extends GuiElectricMachine {
+	private final TileEntityElectricityMeter tileEntityElectricityMeter;
 	private int ticker = 0;
 
 	public GuiElectricityMeter(final TileEntityElectricityMeter tileEntity) {
 		super(tileEntity);
+
+		this.tileEntityElectricityMeter = tileEntity;
 
 		components.add(new GuiOwnerInfo(new IInfoHandler() {
 			@Override
@@ -52,9 +55,6 @@ public class GuiElectricityMeter extends GuiComponentContainerScreen {
 				return list;
 			}
 		}, this, defaultResource));
-
-		components.add(new GuiEnergyUnitType(this, defaultResource));
-		components.add(new GuiRedstoneControl<>(this, tileEntity, defaultResource));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -66,13 +66,14 @@ public class GuiElectricityMeter extends GuiComponentContainerScreen {
 		int guiHeight = (height - ySize) / 2;
 
 		// Create buttons.
-		GuiButton resetButton = new GuiButton(0, (guiWidth + xSize) - (60 + 6), (guiHeight + ySize) - (20 + 6), 60, 20, LanguageUtils.localize("gui.reset"));
+		GuiButton resetButton = new GuiButton(0, guiWidth + 6, (guiHeight + ySize) - (20 + 6), 60, 20, LanguageUtils.localize("gui.reset"));
 
 		// If this has a owner, restrict the reset button to that player.
 		if (tileEntity instanceof ITileOwnable) {
 			ITileOwnable ownable = (ITileOwnable) tileEntity;
+			EntityPlayer player = PlayerUtils.getClientPlayer();
 
-			resetButton.enabled = ownable.isOwner(PlayerUtils.getClientPlayer());
+			resetButton.enabled = ownable.isOwner(player);
 		}
 
 		// Add buttons.
@@ -82,46 +83,35 @@ public class GuiElectricityMeter extends GuiComponentContainerScreen {
 
 	@Override
 	protected void actionPerformed(GuiButton guiButton) {
-		super.actionPerformed(guiButton);
-
-		if (tileEntity instanceof TileEntityElectricityMeter) {
-			TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
-
-			switch (guiButton.id) {
-				case 0:
-					// Update the server-side TileEntity.
-					NetworkHandler.sendToServer(new PacketTileEntityElectricityMeter(tileEntityElectricityMeter, PacketType.RESET));
-					break;
-			}
+		switch (guiButton.id) {
+			case 0:
+				// Update the server-side TileEntity.
+				NetworkHandler.sendToServer(new PacketTileEntityElectricityMeter(tileEntityElectricityMeter, PacketTileEntityElectricityMeter.PacketType.RESET));
+				break;
 		}
 	}
 
 	@Override
 	protected void drawGuiScreenForegroundLayer(int mouseX, int mouseY) {
-		if (tileEntity instanceof TileEntityElectricityMeter) {
-			TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
+		// Formatting energy to the correct energy unit.
+		String measuredEnergy = EnergyUtils.getEnergyDisplay(tileEntityElectricityMeter.getElectricityCount());
+		String storedEnergy = EnergyUtils.getEnergyDisplay(tileEntityElectricityMeter.getStorage().getEnergyStored());
 
-			// Formatting energy to the correct energy unit.
-			String measuredEnergy = EnergyUtils.getEnergyDisplay(tileEntityElectricityMeter.getElectricityCount());
-			String storedEnergy = EnergyUtils.getEnergyDisplay(tileEntityElectricityMeter.getStorage().getEnergyStored());
+		int x = 6 + 12;
+		int y = ySize / 2;
 
-            int x = (xSize / 2) - 64;
-            int y = ySize / 2;
+		drawString(LanguageUtils.localize("gui.measured") + ":", x, y - 24);
+		drawString(measuredEnergy, x + 64, y - 24);
+		drawString(LanguageUtils.localize("gui.stored") + ":", x, y - 12);
+		drawString(storedEnergy, x + 64, y - 12);
 
-			drawString(LanguageUtils.localize("gui.measured") + ":", x, y - 12);
-			drawString(measuredEnergy, x + 64, y - 12);
+		if (ticker > 0) {
+			ticker--;
+		} else {
+			ticker = 5;
 
-			// Stored energy.
-			drawString(LanguageUtils.localize("gui.stored") + ":", x, y);
-			drawString(storedEnergy, x + 64, y);
-
-			if (ticker == 0) {
-				ticker = 5;
-				// Request the latest data from the server-side TileEntity.
-				NetworkHandler.sendToServer(new PacketTileEntityElectricityMeter(tileEntityElectricityMeter, PacketType.GET));
-			} else {
-				ticker--;
-			}
+			// Request the latest data from the server-side TileEntity.
+			NetworkHandler.sendToServer(new PacketTileEntityElectricityMeter(tileEntityElectricityMeter, PacketTileEntityElectricityMeter.PacketType.REQUEST));
 		}
 
 		super.drawGuiScreenForegroundLayer(mouseX, mouseY);

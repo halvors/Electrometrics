@@ -1,22 +1,22 @@
 package org.halvors.electrometrics.common.tile.machine;
 
+import cofh.api.energy.IEnergyReceiver;
 import cpw.mods.fml.common.network.ByteBufUtils;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.halvors.electrometrics.common.base.IElectricTier;
 import org.halvors.electrometrics.common.base.MachineType;
-import org.halvors.electrometrics.common.base.RedstoneControlType;
 import org.halvors.electrometrics.common.base.Tier;
 import org.halvors.electrometrics.common.base.tile.ITileActiveState;
 import org.halvors.electrometrics.common.base.tile.ITileNetworkable;
 import org.halvors.electrometrics.common.base.tile.ITileOwnable;
-import org.halvors.electrometrics.common.base.tile.ITileRedstoneControl;
 import org.halvors.electrometrics.common.network.NetworkHandler;
 import org.halvors.electrometrics.common.network.packet.PacketRequestData;
+import org.halvors.electrometrics.common.network.packet.PacketTileEntity;
+import org.halvors.electrometrics.common.util.MachineUtils;
 import org.halvors.electrometrics.common.util.PlayerUtils;
 
 import java.util.EnumSet;
@@ -29,22 +29,15 @@ import java.util.UUID;
  *
  * @author halvors
  */
-public class TileEntityElectricityMeter extends TileEntityElectricityProvider implements ITileNetworkable, ITileActiveState, IElectricTier, ITileOwnable, ITileRedstoneControl {
+public class TileEntityElectricityMeter extends TileEntityElectricityProvider implements ITileNetworkable, ITileActiveState, IElectricTier, ITileOwnable {
 	// Whether or not this TileEntity's block is in it's active state.
 	private boolean isActive;
-
-	// The client's current active state.
-	@SideOnly(Side.CLIENT)
-	private boolean clientIsActive;
 
 	// The UUID of the player owning this.
 	private UUID ownerUUID;
 
 	// The name of the player owning this.
 	private String ownerName;
-
-	// The current RedstoneControlType of this TileEntity.
-	private RedstoneControlType redstoneControlType = RedstoneControlType.DISABLED;
 
 	// The tier of this TileEntity.
 	private Tier.Electric electricTier;
@@ -72,15 +65,6 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 	}
 
 	@Override
-	public void updateEntity() {
-		super.updateEntity();
-
-		if (!worldObj.isRemote) {
-            setActive(false);
-		}
-	}
-
-	@Override
 	public void readFromNBT(NBTTagCompound nbtTagCompound) {
 		super.readFromNBT(nbtTagCompound);
 
@@ -94,7 +78,6 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 			ownerName = nbtTagCompound.getString("ownerName");
 		}
 
-		redstoneControlType = RedstoneControlType.values()[nbtTagCompound.getInteger("redstoneControlType")];
 		electricTier = Tier.Electric.values()[nbtTagCompound.getInteger("electricTier")];
 		electricityCount = nbtTagCompound.getDouble("electricityCount");
 	}
@@ -114,7 +97,6 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 			nbtTagCompound.setString("ownerName", ownerName);
 		}
 
-		nbtTagCompound.setInteger("redstoneControlType", redstoneControlType.ordinal());
 		nbtTagCompound.setInteger("electricTier", electricTier.ordinal());
 		nbtTagCompound.setDouble("electricityCount", electricityCount);
 	}
@@ -138,17 +120,14 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 			ownerName = ownerNameText;
 		}
 
-		redstoneControlType = RedstoneControlType.values()[dataStream.readInt()];
-
-		// Check if client is in sync with the server, if not update it.
-		if (worldObj.isRemote && clientIsActive != isActive) {
-			clientIsActive = isActive;
-
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		}
-
 		electricTier = Tier.Electric.values()[dataStream.readInt()];
 		electricityCount = dataStream.readDouble();
+
+		// Re-render the block.
+		worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
+
+		// Update potentially connected redstone blocks.
+		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
 	}
 
 	@Override
@@ -159,7 +138,6 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 		objects.add(ownerUUID != null ? ownerUUID.getMostSignificantBits() : 0);
 		objects.add(ownerUUID != null ? ownerUUID.getLeastSignificantBits() : 0);
 		objects.add(ownerName != null ? ownerName : "");
-		objects.add(redstoneControlType.ordinal());
 		objects.add(electricTier.ordinal());
 		objects.add(electricityCount);
 
@@ -167,23 +145,12 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 	}
 
 	@Override
-	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-		if (getReceivingSides().contains(from)) {
-			// Add the amount of energy we're extracting to the counter.
-			if (!simulate) {
-				setActive(true);
-				electricityCount += maxReceive;
-			}
-		}
-
-		return super.receiveEnergy(from, maxReceive, simulate);
-	}
-
-	@Override
 	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
-		if (getExtractingSides().contains(from)) {
-			if (!simulate) {
+		if (getExtractingDirections().contains(from)) {
+			// Add the amount of energy we're extracting to the counter, and set the block as active.
+			if (!simulate) {// && storage.extractEnergy(maxExtract, true) > 0) {
                 setActive(true);
+				electricityCount += maxExtract;
 			}
 		}
 
@@ -191,17 +158,38 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 	}
 
     @Override
-    protected EnumSet<ForgeDirection> getReceivingSides() {
+    protected EnumSet<ForgeDirection> getReceivingDirections() {
         EnumSet<ForgeDirection> directions = EnumSet.allOf(ForgeDirection.class);
-        directions.removeAll(getExtractingSides());
+        directions.removeAll(getExtractingDirections());
         directions.remove(ForgeDirection.UNKNOWN);
 
         return directions;
     }
 
 	@Override
-	protected EnumSet<ForgeDirection> getExtractingSides() {
+	protected EnumSet<ForgeDirection> getExtractingDirections() {
 		return EnumSet.of(ForgeDirection.getOrientation(facing).getRotation(ForgeDirection.UP));
+	}
+
+	@Override
+	protected void distributeEnergy() {
+		for (ForgeDirection direction : getExtractingDirections()) {
+			TileEntity tileEntity = worldObj.getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
+
+			if (tileEntity != null) {
+				if (tileEntity instanceof IEnergyReceiver) {
+					int actualEnergyAmount = extractEnergy(direction, getExtract(), true);
+
+					if (!MachineUtils.canFunction(this) || actualEnergyAmount <= 0) {
+						setActive(false);
+					}
+				}
+			} else {
+				setActive(false);
+			}
+		}
+
+		super.distributeEnergy();
 	}
 
 	@Override
@@ -213,7 +201,9 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 	public void setActive(boolean isActive) {
         this.isActive = isActive;
 
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		if (!worldObj.isRemote) {
+			NetworkHandler.sendToReceivers(new PacketTileEntity(this), this);
+		}
 	}
 
 	@Override
@@ -250,36 +240,6 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 	public void setOwner(EntityPlayer player) {
 		this.ownerUUID = player.getPersistentID();
 		this.ownerName = player.getDisplayName();
-	}
-
-	@Override
-	public RedstoneControlType getControlType() {
-		return redstoneControlType;
-	}
-
-	@Override
-	public void setControlType(RedstoneControlType redstoneControlType) {
-		this.redstoneControlType = redstoneControlType;
-	}
-
-	@Override
-	public boolean isPowered() {
-		return isPowered;
-	}
-
-	@Override
-	public void setPowered(boolean isPowered) {
-		this.isPowered = isPowered;
-	}
-
-	@Override
-	public boolean wasPowered() {
-		return wasPowered;
-	}
-
-	@Override
-	public boolean canPulse() {
-		return false;
 	}
 
 	/**

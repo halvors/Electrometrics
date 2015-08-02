@@ -18,10 +18,6 @@ public class EnergyUtils {
 				multiplier = General.toJoules;
 				break;
 
-			case MINECRAFT_JOULES:
-				multiplier = General.toMinecraftJoules;
-				break;
-
 			case ELECTRICAL_UNITS:
 				multiplier = General.toElectricalUnits;
 				break;

@@ -16,11 +16,9 @@ tile.ElectricityMeter.name=Electricity Meter
 item.Multimeter.name=Multimeter
 
 // Gui
-gui.using=Using
-gui.needed=Needed
-gui.reset=Reset
 gui.measured=Measured
 gui.stored=Stored
+gui.reset=Reset
 gui.maxOutput=Max output
 
 // Gui configuration
@@ -39,7 +37,7 @@ tooltip.forDetails=for details
 tooltip.noInformation=No information to display
 tooltip.measuredEnergy=Measured energy
 tooltip.storedEnergy=Stored energy
-tooltip.blockOwnedBy=This block is owned by %s, you cannot remove this block.
+tooltip.blockOwnedBy=This %s is owned by %s, you don't have permission to remove this block.
 
 // Colors
 color.black=Black

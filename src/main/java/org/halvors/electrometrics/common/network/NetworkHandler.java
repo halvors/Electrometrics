@@ -8,10 +8,12 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.Packet;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
@@ -20,12 +22,12 @@ import org.halvors.electrometrics.common.Reference;
 import org.halvors.electrometrics.common.network.packet.PacketConfiguration;
 import org.halvors.electrometrics.common.network.packet.PacketRequestData;
 import org.halvors.electrometrics.common.network.packet.PacketTileEntity;
+import org.halvors.electrometrics.common.network.packet.PacketTileEntityElectricityMeter;
 import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.util.PlayerUtils;
 import org.halvors.electrometrics.common.util.location.Range;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * This is the NetworkHandler which is responsible for registering the packet that we are going to use.
@@ -41,6 +43,8 @@ public class NetworkHandler {
 		networkWrapper.registerMessage(PacketRequestData.PacketRequestDataMessage.class, PacketRequestData.class, 1, Side.SERVER);
 		networkWrapper.registerMessage(PacketTileEntity.PacketTileEntityMessage.class, PacketTileEntity.class, 2, Side.SERVER);
 		networkWrapper.registerMessage(PacketTileEntity.PacketTileEntityMessage.class, PacketTileEntity.class, 2, Side.CLIENT);
+		networkWrapper.registerMessage(PacketTileEntityElectricityMeter.PacketTileEntityElectricityMeterMessage.class, PacketTileEntityElectricityMeter.class, 3, Side.SERVER);
+		networkWrapper.registerMessage(PacketTileEntityElectricityMeter.PacketTileEntityElectricityMeterMessage.class, PacketTileEntityElectricityMeter.class, 3, Side.CLIENT);
 	}
 
 	public static SimpleNetworkWrapper getNetworkWrapper() {
@@ -53,6 +57,10 @@ public class NetworkHandler {
 
 	public static World getWorld(MessageContext context) {
 		return getPlayer(context).worldObj;
+	}
+
+	public static Packet getPacketFrom(IMessage message) {
+		return networkWrapper.getPacketFrom(message);
 	}
 
 	public static void sendTo(IMessage message, EntityPlayerMP player) {
@@ -97,6 +105,10 @@ public class NetworkHandler {
 				sendTo(message, player);
 			}
 		}
+	}
+
+	public static void sendToReceivers(IMessage message, Entity entity) {
+		sendToReceivers(message, new Range(entity));
 	}
 
 	public static void sendToReceivers(IMessage message, TileEntity tileEntity) {

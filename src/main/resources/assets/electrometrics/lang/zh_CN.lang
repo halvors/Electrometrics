@@ -16,11 +16,9 @@ tile.ElectricityMeter.name=电能测量器
 item.Multimeter.name=万用表
 
 // Gui
-gui.using=耗能
-gui.needed=需求
-gui.reset=重置
 gui.measured=Measured
 gui.stored=存储能量
+gui.reset=重置
 gui.maxOutput=最高输出
 
 // Gui configuration
@@ -39,7 +37,7 @@ tooltip.forDetails=查看详情
 tooltip.noInformation=无可显示的信息.
 tooltip.measuredEnergy=电能测量完成.
 tooltip.storedEnergy=存储能量
-tooltip.blockOwnedBy=该方块的所有者是 %s, 你不能破坏它.
+tooltip.blockOwnedBy=该 %s 方块的所有者是 %s, 你不能破坏它.
 
 // Colors
 color.black=黑色

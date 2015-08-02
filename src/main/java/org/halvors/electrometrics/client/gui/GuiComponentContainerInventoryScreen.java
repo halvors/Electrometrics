@@ -16,14 +16,13 @@ import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.util.ResourceUtils;
 import org.lwjgl.opengl.GL11;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @SideOnly(Side.CLIENT)
 public class GuiComponentContainerInventoryScreen extends GuiContainer implements IGui {
-	static final Minecraft game = Minecraft.getMinecraft();
+	private static final Minecraft game = Minecraft.getMinecraft();
 
     protected final Set<IComponent> components = new HashSet<>();
     protected final ResourceLocation defaultResource = ResourceUtils.getResource(ResourceType.GUI, "Container.png");
@@ -158,13 +157,13 @@ public class GuiComponentContainerInventoryScreen extends GuiContainer implement
 	}
 
 	@Override
-	public void drawTexturedRect(int x, int y, int u, int v, int w, int h) {
-		drawTexturedModalRect(x, y, u, v, w, h);
+	public void drawTexturedRect(int x, int y, int textureX, int textureY, int width, int height) {
+		super.drawTexturedModalRect(x, y, textureX, textureY, width, height);
 	}
 
 	@Override
-	public void drawTexturedRectFromIcon(int x, int y, IIcon icon, int w, int h) {
-		drawTexturedModelRectFromIcon(x, y, icon, w, h);
+	public void drawTexturedRectFromIcon(int x, int y, IIcon icon, int width, int height) {
+		super.drawTexturedModelRectFromIcon(x, y, icon, width, height);
 	}
 
 	@Override

@@ -12,9 +12,8 @@ public class Reference {
 	public static final String ID = "electrometrics";
 	public static final String NAME = "Electrometrics";
 	public static final String VERSION = "@version@";
-
 	/**
-	 * Directory Information
+	 * Directory information.
 	 */
 	public static final String DOMAIN = ID;
 	public static final String PREFIX = DOMAIN + ":";

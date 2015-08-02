@@ -11,19 +11,17 @@ import org.halvors.electrometrics.common.base.MachineType;
  * @author halvors
  */
 public class Tab extends CreativeTabs {
-	private final MachineType machineType = MachineType.BASIC_ELECTRICITY_METER;
-
 	public Tab() {
 		super("tab" + Reference.NAME);
 	}
 
 	@Override
 	public ItemStack getIconItemStack() {
-		return machineType.getItemStack();
+		return MachineType.BASIC_ELECTRICITY_METER.getItemStack();
 	}
 
 	@Override
 	public Item getTabIconItem() {
-		return machineType.getItem();
+		return MachineType.BASIC_ELECTRICITY_METER.getItem();
 	}
 }
