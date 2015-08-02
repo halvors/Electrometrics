@@ -2,7 +2,7 @@ package org.halvors.electrometrics.common.block;
 
 import net.minecraft.block.material.Material;
 
-public class BlockMetadata extends BlockTextured {
+public abstract class BlockMetadata extends Block {
     protected BlockMetadata(String name, Material material) {
         super(name, material);
     }
