@@ -17,8 +17,6 @@ public class TileEntityMachine extends TileEntityRotatable {
 
     @Override
     public void updateEntity() {
-        super.updateEntity();
-
         // Remove disabled blocks.
         if (!worldObj.isRemote && General.destroyDisabledBlocks) {
             MachineType machineType = MachineType.getType(getBlockType(), getBlockMetadata());

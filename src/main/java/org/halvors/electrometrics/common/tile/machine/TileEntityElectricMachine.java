@@ -30,15 +30,6 @@ public class TileEntityElectricMachine extends TileEntityMachine implements ITil
 	}
 
 	@Override
-	public void validate() {
-		super.validate();
-
-		if (worldObj.isRemote) {
-			NetworkHandler.sendToServer(new PacketRequestData(this));
-		}
-	}
-
-	@Override
 	public void updateEntity() {
 		super.updateEntity();
 

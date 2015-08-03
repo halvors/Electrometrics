@@ -56,15 +56,6 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 	}
 
 	@Override
-	public void validate() {
-		super.validate();
-
-		if (worldObj.isRemote) {
-			NetworkHandler.sendToServer(new PacketRequestData(this));
-		}
-	}
-
-	@Override
 	public void readFromNBT(NBTTagCompound nbtTagCompound) {
 		super.readFromNBT(nbtTagCompound);
 
