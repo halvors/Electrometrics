@@ -19,10 +19,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.common.Reference;
-import org.halvors.electrometrics.common.network.packet.PacketConfiguration;
-import org.halvors.electrometrics.common.network.packet.PacketRequestData;
-import org.halvors.electrometrics.common.network.packet.PacketTileEntity;
-import org.halvors.electrometrics.common.network.packet.PacketTileEntityElectricityMeter;
+import org.halvors.electrometrics.common.network.packet.*;
 import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.util.PlayerUtils;
 import org.halvors.electrometrics.common.util.location.Range;
@@ -45,6 +42,8 @@ public class NetworkHandler {
 		networkWrapper.registerMessage(PacketTileEntity.PacketTileEntityMessage.class, PacketTileEntity.class, 2, Side.CLIENT);
 		networkWrapper.registerMessage(PacketTileEntityElectricityMeter.PacketTileEntityElectricityMeterMessage.class, PacketTileEntityElectricityMeter.class, 3, Side.SERVER);
 		networkWrapper.registerMessage(PacketTileEntityElectricityMeter.PacketTileEntityElectricityMeterMessage.class, PacketTileEntityElectricityMeter.class, 3, Side.CLIENT);
+		networkWrapper.registerMessage(PacketTileRedstoneControl.PacketTileRedstoneControlMessage.class, PacketTileRedstoneControl.class, 4, Side.SERVER);
+		networkWrapper.registerMessage(PacketTileRedstoneControl.PacketTileRedstoneControlMessage.class, PacketTileRedstoneControl.class, 4, Side.CLIENT);
 	}
 
 	public static SimpleNetworkWrapper getNetworkWrapper() {

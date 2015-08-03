@@ -2,8 +2,8 @@ package org.halvors.electrometrics.common.item;
 
 import net.minecraft.block.Block;
 
-public class ItemBlockSubtyped extends ItemBlock {
-	protected ItemBlockSubtyped(Block block) {
+public class ItemBlockMetadata extends ItemBlock {
+	protected ItemBlockMetadata(Block block) {
 		super(block);
 
 		setHasSubtypes(true);

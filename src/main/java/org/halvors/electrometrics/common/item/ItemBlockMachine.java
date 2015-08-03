@@ -20,7 +20,7 @@ import org.halvors.electrometrics.common.util.render.Color;
 
 import java.util.List;
 
-public class ItemBlockMachine extends ItemBlockSubtyped {
+public class ItemBlockMachine extends ItemBlockMetadata {
 	public ItemBlockMachine(Block block) {
 		super(block);
 	}

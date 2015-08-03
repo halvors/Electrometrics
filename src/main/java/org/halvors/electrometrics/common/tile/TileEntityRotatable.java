@@ -2,6 +2,7 @@ package org.halvors.electrometrics.common.tile;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.Packet;
 import org.halvors.electrometrics.common.base.tile.ITileNetworkable;
 import org.halvors.electrometrics.common.base.tile.ITileRotatable;
 import org.halvors.electrometrics.common.network.NetworkHandler;
@@ -19,15 +20,6 @@ public class TileEntityRotatable extends TileEntity implements ITileNetworkable,
 	}
 
 	@Override
-	public void validate() {
-		super.validate();
-
-		if (worldObj.isRemote) {
-			NetworkHandler.sendToServer(new PacketRequestData(this));
-		}
-	}
-
-	@Override
 	public void readFromNBT(NBTTagCompound nbtTagCompound) {
 		super.readFromNBT(nbtTagCompound);
 
@@ -39,6 +31,11 @@ public class TileEntityRotatable extends TileEntity implements ITileNetworkable,
 		super.writeToNBT(nbtTagCompound);
 
 		nbtTagCompound.setInteger("facing", facing);
+	}
+
+	@Override
+	public Packet getDescriptionPacket() {
+		return NetworkHandler.getPacketFrom(new PacketTileEntity(this));
 	}
 
 	@Override
