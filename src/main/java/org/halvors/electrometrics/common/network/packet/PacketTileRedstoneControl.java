@@ -4,14 +4,12 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import org.halvors.electrometrics.common.base.RedstoneControlType;
 import org.halvors.electrometrics.common.base.tile.ITileNetworkable;
 import org.halvors.electrometrics.common.base.tile.ITileRedstoneControl;
 import org.halvors.electrometrics.common.network.NetworkHandler;
 import org.halvors.electrometrics.common.tile.TileEntity;
-import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityMeter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +22,7 @@ public class PacketTileRedstoneControl extends PacketLocation implements IMessag
 
     }
 
-    public <T extends TileEntity & ITileNetworkable & ITileRedstoneControl> PacketTileRedstoneControl(T tileEntity, PacketType packetType) {
+    public <T extends TileEntity & ITileNetworkable & ITileRedstoneControl> PacketTileRedstoneControl(T tileEntity, PacketType packetType, RedstoneControlType redstoneControlType) {
         super(tileEntity);
 
         this.packetType = packetType;
@@ -32,9 +30,13 @@ public class PacketTileRedstoneControl extends PacketLocation implements IMessag
         switch (packetType) {
             case UPDATE:
             case RESPONSE:
-                this.redstoneControlType = tileEntity.getControlType();
+                this.redstoneControlType = redstoneControlType;
                 break;
         }
+    }
+
+    public <T extends TileEntity & ITileNetworkable & ITileRedstoneControl> PacketTileRedstoneControl(T tileEntity, PacketType packetType) {
+        this(tileEntity, packetType, tileEntity.getControlType());
     }
 
     @Override

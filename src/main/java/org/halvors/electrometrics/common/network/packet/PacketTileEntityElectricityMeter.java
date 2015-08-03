@@ -25,16 +25,20 @@ public class PacketTileEntityElectricityMeter extends PacketLocation implements 
 
     }
 
-    public PacketTileEntityElectricityMeter(TileEntityElectricityMeter tileEntity, PacketType packetType) {
+    public PacketTileEntityElectricityMeter(TileEntityElectricityMeter tileEntity, PacketType packetType, double electricityCount) {
         super(tileEntity);
 
         this.packetType = packetType;
 
         switch (packetType) {
             case RESPONSE:
-                electricityCount = tileEntity.getElectricityCount();
+                this.electricityCount = electricityCount;
                 break;
         }
+    }
+
+    public PacketTileEntityElectricityMeter(TileEntityElectricityMeter tileEntity, PacketType packetType) {
+        this(tileEntity, packetType, tileEntity.getElectricityCount());
     }
 
     @Override
@@ -64,10 +68,6 @@ public class PacketTileEntityElectricityMeter extends PacketLocation implements 
         }
 
         NetworkHandler.writeObjects(objects, dataStream);
-    }
-
-    public double getElectricityCount() {
-        return electricityCount;
     }
 
     public static class PacketTileEntityElectricityMeterMessage implements IMessageHandler<PacketTileEntityElectricityMeter, IMessage> {
