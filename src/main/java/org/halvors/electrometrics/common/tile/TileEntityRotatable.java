@@ -6,7 +6,6 @@ import net.minecraft.network.Packet;
 import org.halvors.electrometrics.common.base.tile.ITileNetworkable;
 import org.halvors.electrometrics.common.base.tile.ITileRotatable;
 import org.halvors.electrometrics.common.network.NetworkHandler;
-import org.halvors.electrometrics.common.network.packet.PacketRequestData;
 import org.halvors.electrometrics.common.network.packet.PacketTileEntity;
 
 import java.util.List;

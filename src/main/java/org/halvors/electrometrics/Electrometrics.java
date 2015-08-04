@@ -2,6 +2,8 @@ package org.halvors.electrometrics;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -31,6 +33,7 @@ import org.halvors.electrometrics.common.event.PlayerEventHandler;
 import org.halvors.electrometrics.common.item.ItemBlockMachine;
 import org.halvors.electrometrics.common.item.ItemMultimeter;
 import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityMeter;
+import org.halvors.electrometrics.common.updater.IUpdatableMod;
 import org.halvors.electrometrics.common.updater.UpdateManager;
 
 /**
@@ -44,9 +47,9 @@ import org.halvors.electrometrics.common.updater.UpdateManager;
      dependencies = "after:CoFHCore;" +
                     "after:Mekanism",
      guiFactory = "org.halvors." + Reference.ID + ".client.gui.configuration.GuiConfiguationFactory")
-public class Electrometrics {
+public class Electrometrics implements IUpdatableMod {
 	// The instance of your mod that Forge uses.
-	@Mod.Instance(value = Reference.ID)
+	@Instance(value = Reference.ID)
 	public static Electrometrics instance;
 
 	// Says where the client and server 'proxy' code is loaded.
@@ -69,7 +72,7 @@ public class Electrometrics {
 	private static Configuration configuration;
 
 
-	@Mod.EventHandler
+	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		// Initialize configuration.
         configuration = new Configuration(event.getSuggestedConfigurationFile());
@@ -86,7 +89,7 @@ public class Electrometrics {
 		logger.log(Level.INFO, "Mekanism integration is " + (Integration.isMekanismEnabled ? "enabled" : "disabled") + ".");
 	}
 
-	@Mod.EventHandler
+	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		// Register the our EventHandler.
 		FMLCommonHandler.instance().bus().register(new PlayerEventHandler());
@@ -171,6 +174,26 @@ public class Electrometrics {
 
 	public static CommonProxy getProxy() {
 		return proxy;
+	}
+
+	@Override
+	public String getModId() {
+		return Reference.ID;
+	}
+
+	@Override
+	public String getModName() {
+		return Reference.NAME;
+	}
+
+	@Override
+	public String getModVersion() {
+		return Reference.VERSION;
+	}
+
+	@Override
+	public Logger getStaticLogger() {
+		return logger;
 	}
 
 	public static Logger getLogger() {
