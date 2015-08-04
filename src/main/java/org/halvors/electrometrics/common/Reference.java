@@ -11,7 +11,7 @@ public class Reference {
 	 */
 	public static final String ID = "electrometrics";
 	public static final String NAME = "Electrometrics";
-	public static final String VERSION = "1.7.10R1.0.0";
+	public static final String VERSION = "1.0.0";
 
 	/**
 	 * Directory information.
@@ -20,7 +20,8 @@ public class Reference {
 	public static final String PREFIX = DOMAIN + ":";
 
 	/**
-	 * Update URL.
+	 * Update information.
 	 */
 	public static final String RELEASE_URL = "https://raw.githubusercontent.com/halvors/Electrometrics/feature/version-checker/VERSION";
+	public static final String DOWNLOAD_URL = "http://minecraft.curseforge.com/mc-mods/232407-electrometrics/files";
 }

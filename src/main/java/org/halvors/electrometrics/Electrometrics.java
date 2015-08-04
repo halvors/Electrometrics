@@ -33,7 +33,6 @@ import org.halvors.electrometrics.common.event.PlayerEventHandler;
 import org.halvors.electrometrics.common.item.ItemBlockMachine;
 import org.halvors.electrometrics.common.item.ItemMultimeter;
 import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityMeter;
-import org.halvors.electrometrics.common.updater.IUpdatableMod;
 import org.halvors.electrometrics.common.updater.UpdateManager;
 
 /**
@@ -47,7 +46,7 @@ import org.halvors.electrometrics.common.updater.UpdateManager;
      dependencies = "after:CoFHCore;" +
                     "after:Mekanism",
      guiFactory = "org.halvors." + Reference.ID + ".client.gui.configuration.GuiConfiguationFactory")
-public class Electrometrics implements IUpdatableMod {
+public class Electrometrics {
 	// The instance of your mod that Forge uses.
 	@Instance(value = Reference.ID)
 	public static Electrometrics instance;
@@ -81,7 +80,7 @@ public class Electrometrics implements IUpdatableMod {
 		ConfigurationManager.loadConfiguration(configuration);
 
 		// Check for updates.
-		UpdateManager.registerUpdater(new UpdateManager(this, Reference.RELEASE_URL));
+		FMLCommonHandler.instance().bus().register(new UpdateManager(Reference.RELEASE_URL, Reference.DOWNLOAD_URL));
 
 		// Mod integration.
 		logger.log(Level.INFO, "BuildCraft integration is " + (Integration.isBuildCraftEnabled ? "enabled" : "disabled") + ".");
@@ -174,26 +173,6 @@ public class Electrometrics implements IUpdatableMod {
 
 	public static CommonProxy getProxy() {
 		return proxy;
-	}
-
-	@Override
-	public String getModId() {
-		return Reference.ID;
-	}
-
-	@Override
-	public String getModName() {
-		return Reference.NAME;
-	}
-
-	@Override
-	public String getModVersion() {
-		return Reference.VERSION;
-	}
-
-	@Override
-	public Logger getStaticLogger() {
-		return logger;
 	}
 
 	public static Logger getLogger() {
