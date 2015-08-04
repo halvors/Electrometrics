@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Set;
 
 @SideOnly(Side.CLIENT)
-public class GuiComponentContainerScreen extends GuiScreen implements IGui {
+public abstract class GuiComponentContainerScreen extends GuiScreen implements IGui {
 	private static final Minecraft game = Minecraft.getMinecraft();
 
     protected final Set<IComponent> components = new HashSet<>();
@@ -187,13 +187,13 @@ public class GuiComponentContainerScreen extends GuiScreen implements IGui {
 	}
 
 	@Override
-	public void drawTexturedRect(int x, int y, int u, int v, int w, int h) {
-		drawTexturedModalRect(x, y, u, v, w, h);
+	public void drawTexturedRect(int x, int y, int textureX, int textureY, int width, int height) {
+		super.drawTexturedModalRect(x, y, textureX, textureY, width, height);
 	}
 
 	@Override
-	public void drawTexturedRectFromIcon(int x, int y, IIcon icon, int w, int h) {
-		drawTexturedModelRectFromIcon(x, y, icon, w, h);
+	public void drawTexturedRectFromIcon(int x, int y, IIcon icon, int width, int height) {
+		super.drawTexturedModelRectFromIcon(x, y, icon, width, height);
 	}
 
 	@Override

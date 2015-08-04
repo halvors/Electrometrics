@@ -4,7 +4,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import org.halvors.electrometrics.common.Reference;
 
 public class ItemTextured extends Item {
-	ItemTextured(String name) {
+	protected ItemTextured(String name) {
 		super(name);
 	}
 

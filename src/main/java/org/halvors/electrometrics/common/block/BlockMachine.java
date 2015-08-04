@@ -60,11 +60,6 @@ public class BlockMachine extends BlockRotatable {
 		return machineType.getTileEntity();
 	}
 
-    @Override
-    public int damageDropped (int metadata) {
-        return metadata;
-    }
-
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister iconRegister) {
@@ -79,7 +74,7 @@ public class BlockMachine extends BlockRotatable {
 		for (MachineType machineType : MachineType.values()) {
 			BlockRenderer.loadDynamicTextures(iconRegister,
 					machineType.getUnlocalizedName(),
-					iconList[machineType.getMetadata()],
+					iconMetadataList[machineType.getMetadata()],
 					defaultBlockIcon,
 					defaultTopIcon,
 					DefaultIcon.getActivePair(outputIcon, 4),
@@ -118,13 +113,14 @@ public class BlockMachine extends BlockRotatable {
 	public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player) {
 		if (!world.isRemote) {
 			TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
-			
+			MachineType machineType = MachineType.getType(this, world.getBlockMetadata(x, y, z));
+
 			// Display a message the the player clicking this block if not the owner.
 			if (tileEntity instanceof ITileOwnable) {
 				ITileOwnable tileOwnable = (ITileOwnable) tileEntity;
 
 				if (!tileOwnable.isOwner(player)) {
-					player.addChatMessage(new ChatComponentText(LanguageUtils.localize("tooltip.blockOwnedBy").replace("%s", tileOwnable.getOwnerName())));
+					player.addChatMessage(new ChatComponentText(String.format(LanguageUtils.localize("tooltip.blockOwnedBy"), machineType.getLocalizedName(), tileOwnable.getOwnerName())));
 				}
 			}
 		}

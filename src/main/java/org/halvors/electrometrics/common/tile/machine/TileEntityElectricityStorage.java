@@ -39,15 +39,6 @@ public class TileEntityElectricityStorage extends TileEntityElectricMachine impl
 	}
 
 	@Override
-	public void validate() {
-		super.validate();
-
-		if (worldObj.isRemote) {
-			NetworkHandler.sendToServer(new PacketRequestData(this));
-		}
-	}
-
-	@Override
 	public void readFromNBT(NBTTagCompound nbtTagCompound) {
 		super.readFromNBT(nbtTagCompound);
 
@@ -77,11 +68,11 @@ public class TileEntityElectricityStorage extends TileEntityElectricMachine impl
 		return objects;
 	}
 
-	public EnergyStorage getStorage() {
-		return storage;
-	}
-
 	protected int getExtract() {
 		return Math.min(storage.getMaxExtract(), storage.getEnergyStored());
+	}
+
+	public EnergyStorage getStorage() {
+		return storage;
 	}
 }

@@ -17,14 +17,12 @@ public class TileEntityMachine extends TileEntityRotatable {
 
     @Override
     public void updateEntity() {
-        super.updateEntity();
-
         // Remove disabled blocks.
         if (!worldObj.isRemote && General.destroyDisabledBlocks) {
             MachineType machineType = MachineType.getType(getBlockType(), getBlockMetadata());
 
             if (machineType != null && !machineType.isEnabled()) {
-                Electrometrics.getInstance().getLogger().info("Destroying machine of type '" + machineType.getLocalizedName() + "' at " + new Location(this) + " as according to configuration.");
+                Electrometrics.getLogger().info("Destroying machine of type '" + machineType.getLocalizedName() + "' at " + new Location(this) + " as according to configuration.");
                 worldObj.setBlockToAir(xCoord, yCoord, zCoord);
             }
         }

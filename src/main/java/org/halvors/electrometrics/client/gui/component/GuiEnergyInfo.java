@@ -18,7 +18,6 @@ public class GuiEnergyInfo extends GuiComponent implements IGuiComponent {
 	@Override
 	public void renderBackground(int xAxis, int yAxis, int xOrigin, int yOrigin, int guiWidth, int guiHeight) {
 		game.renderEngine.bindTexture(resource);
-
 		gui.drawTexturedRect(xOrigin - 26, yOrigin + guiHeight - 2 - 26, 0, 0, 26, 26);
 
 		super.renderBackground(xAxis, yAxis, xOrigin, yOrigin, guiWidth, guiHeight);
