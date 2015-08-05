@@ -7,39 +7,19 @@ public class ReleaseVersion implements ArtifactVersion {
     private final int major;
     private final int minor;
     private final int patch;
-    private final int _rc;
-    private final int _beta;
 
     public ReleaseVersion(String label, int major, int minor, int patch, int rc, int beta) {
         this.label = label;
         this.major = major;
         this.minor = minor;
         this.patch = patch;
-        _rc = rc;
-        _beta = beta;
     }
 
     public ReleaseVersion(String label, String s) {
         int major = 0;
         int minor = 0;
         int patch = 0;
-        int rc = 0;
-        int beta = 0;
-        String[] parts = s.split("RC");
-
-        if (parts.length > 1) {
-            rc = Integer.parseInt(parts[1]);
-            s = parts[0];
-        }
-
-        parts = s.split("B");
-
-        if (parts.length > 1) {
-            beta = Integer.parseInt(parts[1]);
-            s = parts[0];
-        }
-
-        parts = s.split("\\.");
+        String[] parts = s.split("\\.");
 
         switch (parts.length) {
             case 3:
@@ -54,8 +34,6 @@ public class ReleaseVersion implements ArtifactVersion {
         this.major = major;
         this.minor = minor;
         this.patch = patch;
-        _rc = rc;
-        _beta = beta;
     }
 
     public static ReleaseVersion parse(String label, String s) {
@@ -94,30 +72,6 @@ public class ReleaseVersion implements ArtifactVersion {
             return patch < releaseVersion.getPatch() ? -1 : 1;
         }
 
-        if (this.isStable() && !releaseVersion.isStable()) {
-            return 1;
-        }
-
-        if (this.isRC() && releaseVersion.isBeta()) {
-            return 1;
-        }
-
-        if (!this.isStable() && releaseVersion.isStable()) {
-            return -1;
-        }
-
-        if (this.isBeta() && releaseVersion.isRC()) {
-            return -1;
-        }
-
-        if (this.rc() != releaseVersion.rc()) {
-            return this.rc() < releaseVersion.rc() ? -1 : 1;
-        }
-
-        if (this.beta() != releaseVersion.beta()) {
-            return this.beta() < releaseVersion.beta() ? -1 : 1;
-        }
-
         return 0;
     }
 
@@ -128,17 +82,7 @@ public class ReleaseVersion implements ArtifactVersion {
 
     @Override
     public String getVersionString() {
-        String v = major + "." + minor + "." + patch;
-
-        if (_rc != 0) {
-            v += "RC" + _rc;
-        }
-
-        if (_beta != 0) {
-            v += "B" + _beta;
-        }
-
-        return v;
+        return major + "." + minor + "." + patch;
     }
 
     @Override
@@ -166,25 +110,5 @@ public class ReleaseVersion implements ArtifactVersion {
 
     public int getPatch() {
         return patch;
-    }
-
-    public int rc() {
-        return _rc;
-    }
-
-    public int beta() {
-        return _beta;
-    }
-
-    public boolean isStable() {
-        return _rc == 0 & _beta == 0;
-    }
-
-    public boolean isRC() {
-        return _rc > 0;
-    }
-
-    public boolean isBeta() {
-        return _beta > 0;
     }
 }
