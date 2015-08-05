@@ -17,9 +17,9 @@ public class UpdateThread extends Thread {
     private final IUpdatableMod mod;
 
     private ModVersion newModVersion;
-    private boolean isCheckCompleted = false;
-    private boolean isNewVersionAvailable = false;
-    private boolean isCriticalUpdate = false;
+    private boolean isCheckCompleted;
+    private boolean isNewVersionAvailable;
+    private boolean isCriticalUpdate;
 
     public UpdateThread(IUpdatableMod mod, String releaseUrl, String downloadUrl) {
         super(mod.getModId() + " updater");
@@ -31,7 +31,6 @@ public class UpdateThread extends Thread {
 
     @Override
     public void run() {
-
         l: try {
             ModVersion ourVersion = ModVersion.parse(mod.getModName(), mod.getModVersion());
 
