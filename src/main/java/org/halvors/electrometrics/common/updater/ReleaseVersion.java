@@ -8,7 +8,7 @@ public class ReleaseVersion implements ArtifactVersion {
     private final int minor;
     private final int patch;
 
-    public ReleaseVersion(String label, int major, int minor, int patch, int rc, int beta) {
+    public ReleaseVersion(String label, int major, int minor, int patch) {
         this.label = label;
         this.major = major;
         this.minor = minor;
@@ -51,7 +51,7 @@ public class ReleaseVersion implements ArtifactVersion {
 
             if (label.equals(modVersion.getLabel())) {
                 return compareTo(modVersion.getModVersion());
-            } else if ("Minecraft".equals(label)) {
+            } else if (label.equals("Minecraft")) {
                 return compareTo(modVersion.getMinecraftVersion());
             }
         }

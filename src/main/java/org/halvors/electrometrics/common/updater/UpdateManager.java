@@ -10,14 +10,15 @@ import net.minecraft.event.ClickEvent.Action;
 import net.minecraft.event.HoverEvent;
 import net.minecraft.util.*;
 import org.halvors.electrometrics.common.ConfigurationManager.General;
+import org.halvors.electrometrics.common.base.IUpdatableMod;
 
 public class UpdateManager {
-    private static transient int pollOffset = 0;
     private static final ChatStyle description = new ChatStyle();
     private static final ChatStyle version = new ChatStyle();
     private static final ChatStyle modname = new ChatStyle();
     private static final ChatStyle download = new ChatStyle();
     private static final ChatStyle white = new ChatStyle();
+    private static int pollOffset = 0;
 
     static {
         description.setColor(EnumChatFormatting.GRAY);

@@ -28,7 +28,7 @@ configFile.withReader {
 }
 
 version = config.minecraft_version + "-" + config.mod_version
-group= "org.halvors.electrometrics"
+group = "org.halvors.electrometrics"
 archivesBaseName = "Electrometrics"
 sourceCompatibility = "7"
 targetCompatibility = "7"
@@ -39,7 +39,7 @@ minecraft {
     mappings = config.mcp_mappings
 
     // Replace version in Reference.java
-    replace "@version@", config.mod_version
+    replace "@version", config.mod_version
 }
 
 dependencies {

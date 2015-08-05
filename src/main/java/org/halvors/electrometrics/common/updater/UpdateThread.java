@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.spi.AbstractLogger;
 import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.common.ConfigurationManager.Integration;
+import org.halvors.electrometrics.common.base.IUpdatableMod;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -32,8 +33,10 @@ public class UpdateThread extends Thread {
     @Override
     public void run() {
         try {
+            // This is our current locally used version.
             ModVersion ourVersion = ModVersion.parse(mod.getModName(), MinecraftForge.MC_VERSION + "-" + mod.getModVersion());
 
+            // Fetch the new version from the internet.
             URL versionFile = new URL(releaseUrl);
             BufferedReader reader = new BufferedReader(new InputStreamReader(versionFile.openStream()));
             newModVersion = ModVersion.parse(mod.getModName(), reader.readLine());
@@ -46,8 +49,9 @@ public class UpdateThread extends Thread {
                 Electrometrics.getLogger().info("An updated version of " + mod.getModName() + " is available: " + newModVersion + ".");
 
                 if (ourVersion.getMinecraftVersion().compareTo(newModVersion.getMinecraftVersion()) < 0) {
-                    ReleaseVersion newv = newModVersion.getMinecraftVersion(), our = ourVersion.getMinecraftVersion();
-                    isNewVersionAvailable = newv.getMajor() == our.getMajor() && newv.getMinor() == our.getMinor();
+                    ReleaseVersion newReleaseVersion = newModVersion.getMinecraftVersion();
+                    ReleaseVersion ourReleaseVersion = ourVersion.getMinecraftVersion();
+                    isNewVersionAvailable = newReleaseVersion.getMajor() == ourReleaseVersion.getMajor() && newReleaseVersion.getMinor() == ourReleaseVersion.getMinor();
                 }
 
                 if (criticalVersion != null && ourVersion.compareTo(criticalVersion) >= 0) {
