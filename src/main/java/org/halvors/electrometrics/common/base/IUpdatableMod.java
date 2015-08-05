@@ -1,4 +1,4 @@
-package org.halvors.electrometrics.common.updater;
+package org.halvors.electrometrics.common.base;
 
 public interface IUpdatableMod {
 	String getModId();

@@ -33,7 +33,7 @@ import org.halvors.electrometrics.common.event.PlayerEventHandler;
 import org.halvors.electrometrics.common.item.ItemBlockMachine;
 import org.halvors.electrometrics.common.item.ItemMultimeter;
 import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityMeter;
-import org.halvors.electrometrics.common.updater.IUpdatableMod;
+import org.halvors.electrometrics.common.base.IUpdatableMod;
 import org.halvors.electrometrics.common.updater.UpdateManager;
 
 /**
