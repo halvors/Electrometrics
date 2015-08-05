@@ -22,6 +22,6 @@ public class Reference {
 	/**
 	 * Update information.
 	 */
-	public static final String RELEASE_URL = "https://raw.githubusercontent.com/halvors/Electrometrics/feature/version-checker/VERSION";
+	public static final String RELEASE_URL = "https://raw.githubusercontent.com/halvors/Electrometrics/master/VERSION";
 	public static final String DOWNLOAD_URL = "http://minecraft.curseforge.com/mc-mods/232407-electrometrics/files";
 }
