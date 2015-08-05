@@ -34,7 +34,7 @@ gui.configuration.category.client.tooltip=Client-specific settings
 // Tooltip
 tooltip.download=Download
 tooltip.clickToDownload=Click to download the latest version
-tooltip.versionAvailable=A new version is available
+tooltip.newVersionAvailable=A new version is available
 
 tooltip.hold=Hold
 tooltip.forDetails=for details
