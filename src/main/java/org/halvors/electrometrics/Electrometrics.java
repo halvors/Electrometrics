@@ -24,7 +24,7 @@ import org.halvors.electrometrics.common.CommonProxy;
 import org.halvors.electrometrics.common.ConfigurationManager;
 import org.halvors.electrometrics.common.ConfigurationManager.Integration;
 import org.halvors.electrometrics.common.Reference;
-import org.halvors.electrometrics.common.Tab;
+import org.halvors.electrometrics.common.CreativeTab;
 import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.base.Tier;
 import org.halvors.electrometrics.common.block.Block;
@@ -60,7 +60,7 @@ public class Electrometrics implements IUpdatableMod {
 	private static final Logger logger = LogManager.getLogger(Reference.ID);
 
 	// Creative tab.
-	private static final Tab tab = new Tab();
+	private static final CreativeTab creativeTab = new CreativeTab();
 
 	// Items.
 	public static final Item itemMultimeter = new ItemMultimeter();
@@ -180,8 +180,8 @@ public class Electrometrics implements IUpdatableMod {
 		return logger;
 	}
 
-	public static Tab getTab() {
-		return tab;
+	public static CreativeTab getCreativeTab() {
+		return creativeTab;
 	}
 
 	public static Configuration getConfiguration() {
