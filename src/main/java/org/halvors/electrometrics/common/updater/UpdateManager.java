@@ -19,8 +19,8 @@ public class UpdateManager {
     private static final ChatStyle modname = new ChatStyle();
     private static final ChatStyle download = new ChatStyle();
     private static final ChatStyle white = new ChatStyle();
-    static {
 
+    static {
         description.setColor(EnumChatFormatting.GRAY);
         version.setColor(EnumChatFormatting.AQUA);
         modname.setColor(EnumChatFormatting.GOLD);
@@ -37,74 +37,68 @@ public class UpdateManager {
         FMLCommonHandler.instance().bus().register(manager);
     }
 
-    private boolean _notificationDisplayed;
-    private final IUpdatableMod _mod;
-    private final UpdateThread _updateThread;
-    private final String _downloadUrl;
+    private final IUpdatableMod mod;
+    private final UpdateThread updateThread;
+    private final String downloadUrl;
+
+    private boolean isNotificationDisplayed;
     private int lastPoll = 400;
 
     public UpdateManager(IUpdatableMod mod, String releaseUrl, String downloadUrl) {
-        _mod = mod;
-        _updateThread = new UpdateThread(mod, releaseUrl, downloadUrl);
-        _updateThread.start();
-        _downloadUrl = downloadUrl;
+        this.mod = mod;
+        this.updateThread = new UpdateThread(mod, releaseUrl, downloadUrl);
+        this.downloadUrl = downloadUrl;
+
+        updateThread.start();
         lastPoll += (pollOffset += 140);
     }
 
     @SubscribeEvent
-    public void tickStart(PlayerTickEvent event) {
-        if (event.phase != Phase.START) {
-            return;
-        }
+    public void onTick(PlayerTickEvent event) {
+        if (event.phase == Phase.END) {
+            if (lastPoll > 0) {
+                --lastPoll;
+            } else {
+                lastPoll = 400;
 
-        /*
-        if (MinecraftServer.getServer() != null && MinecraftServer.getServer().isServerRunning()) {
-            if (!MinecraftServer.getServer().getConfigurationManager().func_152596_g(evt.player.getGameProfile())) {
-                return;
-            }
-        }
-        */
+                if (!isNotificationDisplayed && updateThread.isCheckCompleted()) {
+                    isNotificationDisplayed = true;
+                    FMLCommonHandler.instance().bus().unregister(this);
 
-        if (lastPoll > 0) {
-            --lastPoll;
-            return;
-        }
+                    if (updateThread.isNewVersionAvailable()) {
+                        if (General.enableUpdateNotice && updateThread.isCriticalUpdate()) {
+                            return;
+                        }
 
-        lastPoll = 400;
+                        ModVersion newVersion = updateThread.getNewVersion();
+                        EntityPlayer player = event.player;
 
-        if (!_notificationDisplayed && _updateThread.isCheckCompleted()) {
-            _notificationDisplayed = true;
-            FMLCommonHandler.instance().bus().unregister(this);
-            if (_updateThread.isNewVersionAvailable()) {
-                if (!General.enableUpdateNotice && !_updateThread.isCriticalUpdate()) {
-                    return;
+                        IChatComponent chat = new ChatComponentText("");
+                        {
+                            ChatStyle data = modname.createShallowCopy();
+                            IChatComponent msg = new ChatComponentText(newVersion.getModVersion().toString()).setChatStyle(version);
+                            data.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, msg));
+                            chat.appendSibling(new ChatComponentText("[" + mod.getModName() + "] ").setChatStyle(data));
+                        }
+
+                        chat.appendSibling(new ChatComponentTranslation("tooltip.newVersionAvailable").setChatStyle(white));
+                        chat.appendText(EnumChatFormatting.GOLD + ":");
+                        player.addChatMessage(chat);
+                        chat = new ChatComponentText("");
+
+                        if (!Strings.isNullOrEmpty(downloadUrl)) {
+                            chat.appendText(EnumChatFormatting.WHITE + "[");
+                            ChatStyle data = download.createShallowCopy();
+                            data.setChatClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, downloadUrl));
+                            chat.appendSibling(new ChatComponentTranslation("info.cofh.updater.download").setChatStyle(data));
+                            chat.appendText(EnumChatFormatting.WHITE + "] ");
+                        }
+
+                        chat.appendSibling(new ChatComponentText(newVersion.getDescription()).setChatStyle(description));
+                        player.addChatMessage(chat);
+                    }
                 }
-
-                ModVersion newVersion = _updateThread.getNewVersion();
-
-                EntityPlayer player = event.player;
-                IChatComponent chat = new ChatComponentText("");
-                {
-                    ChatStyle data = modname.createShallowCopy();
-                    IChatComponent msg = new ChatComponentText(newVersion.getModVersion().toString()).setChatStyle(version);
-                    data.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, msg));
-                    chat.appendSibling(new ChatComponentText("[" + _mod.getModName() + "] ").setChatStyle(data));
-                }
-                chat.appendSibling(new ChatComponentTranslation("info.cofh.updater.version").setChatStyle(white));
-                chat.appendText(EnumChatFormatting.GOLD + ":");
-                player.addChatMessage(chat);
-                chat = new ChatComponentText("");
-                if (!Strings.isNullOrEmpty(_downloadUrl)) {
-                    chat.appendText(EnumChatFormatting.WHITE + "[");
-                    ChatStyle data = download.createShallowCopy();
-                    data.setChatClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, _downloadUrl));
-                    chat.appendSibling(new ChatComponentTranslation("info.cofh.updater.download").setChatStyle(data));
-                    chat.appendText(EnumChatFormatting.WHITE + "] ");
-                }
-                chat.appendSibling(new ChatComponentText(newVersion.getDescription()).setChatStyle(description));
-                player.addChatMessage(chat);
             }
         }
     }
-
 }
