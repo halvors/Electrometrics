@@ -14,7 +14,6 @@ import org.halvors.electrometrics.common.base.tile.ITileActiveState;
 import org.halvors.electrometrics.common.base.tile.ITileNetworkable;
 import org.halvors.electrometrics.common.base.tile.ITileOwnable;
 import org.halvors.electrometrics.common.network.NetworkHandler;
-import org.halvors.electrometrics.common.network.packet.PacketRequestData;
 import org.halvors.electrometrics.common.network.packet.PacketTileEntity;
 import org.halvors.electrometrics.common.util.MachineUtils;
 import org.halvors.electrometrics.common.util.PlayerUtils;

@@ -5,8 +5,6 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.base.tile.ITileNetworkable;
-import org.halvors.electrometrics.common.network.NetworkHandler;
-import org.halvors.electrometrics.common.network.packet.PacketRequestData;
 
 import java.util.List;
 

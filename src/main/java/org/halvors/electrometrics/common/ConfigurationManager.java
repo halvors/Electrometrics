@@ -1,11 +1,15 @@
 package org.halvors.electrometrics.common;
 
 import cpw.mods.fml.common.Loader;
+import io.netty.buffer.ByteBuf;
 import net.minecraftforge.common.config.Configuration;
 import org.halvors.electrometrics.common.base.MachineType;
+import org.halvors.electrometrics.common.network.NetworkHandler;
 import org.halvors.electrometrics.common.util.energy.EnergyUnit;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ConfigurationManager {
@@ -14,6 +18,7 @@ public class ConfigurationManager {
     public static final String CATEGORY_CLIENT = "client";
 
     public static class General {
+        public static boolean enableUpdateNotice;
         public static boolean destroyDisabledBlocks;
 
         public static double toJoules;
@@ -33,6 +38,7 @@ public class ConfigurationManager {
     }
 
     public static class Integration {
+        public static boolean isVersionCheckerEnabled;
         public static boolean isBuildCraftEnabled;
         public static boolean isCoFHCoreEnabled;
         public static boolean isMekanismEnabled;
@@ -46,6 +52,7 @@ public class ConfigurationManager {
         configuration.load();
 
         // General.
+        General.enableUpdateNotice = configuration.get(Configuration.CATEGORY_GENERAL, "EnableUpdateNotice", true).getBoolean();
         General.destroyDisabledBlocks = configuration.get(Configuration.CATEGORY_GENERAL, "DestroyDisabledBlocks", true).getBoolean();
 
         General.toJoules = configuration.get(Configuration.CATEGORY_GENERAL, "RFToJoules", 2.5).getDouble();
@@ -57,6 +64,7 @@ public class ConfigurationManager {
         }
 
         // Integration.
+        Integration.isVersionCheckerEnabled = configuration.get(CATEGORY_INTEGRATION, "VersionChecker", Loader.isModLoaded("VersionChecker")).getBoolean();
         Integration.isBuildCraftEnabled = configuration.get(CATEGORY_INTEGRATION, "BuildCraft", Loader.isModLoaded("BuildCraft|Core")).getBoolean();
         Integration.isCoFHCoreEnabled = configuration.get(CATEGORY_INTEGRATION, "CoFHCore", Loader.isModLoaded("CoFHCore")).getBoolean();
         Integration.isMekanismEnabled = configuration.get(CATEGORY_INTEGRATION, "Mekanism", Loader.isModLoaded("Mekanism")).getBoolean();
@@ -65,5 +73,55 @@ public class ConfigurationManager {
         Client.energyUnit = EnergyUnit.getUnitFromSymbol(configuration.get(CATEGORY_CLIENT, "EnergyUnitType", EnergyUnit.JOULES.getName(), "The default energy system to display.", EnergyUnit.getNames().toArray(new String[EnergyUnit.getNames().size()])).getString());
 
         configuration.save();
+    }
+
+    public static void readConfiguration(ByteBuf dataStream) {
+        // General.
+        General.enableUpdateNotice = dataStream.readBoolean();
+        General.destroyDisabledBlocks = dataStream.readBoolean();
+
+        General.toJoules = dataStream.readDouble();
+        General.toElectricalUnits = dataStream.readDouble();
+
+        // Machine.
+        for (MachineType machineType : MachineType.values()) {
+            Machine.setEntry(machineType, dataStream.readBoolean());
+        }
+
+        // Integration.
+        Integration.isVersionCheckerEnabled = dataStream.readBoolean();
+        Integration.isBuildCraftEnabled = dataStream.readBoolean();
+        Integration.isCoFHCoreEnabled = dataStream.readBoolean();
+        Integration.isMekanismEnabled = dataStream.readBoolean();
+
+        // Client.
+        // We don't sync this as this is client specific changes that the server shouldn't care about.
+    }
+
+    public static void writeConfiguration(ByteBuf dataStream) {
+        List<Object> objects = new ArrayList<>();
+
+        // General.
+        objects.add(General.enableUpdateNotice);
+        objects.add(General.destroyDisabledBlocks);
+
+        objects.add(General.toJoules);
+        objects.add(General.toElectricalUnits);
+
+        // Machine.
+        for (MachineType machineType : MachineType.values()) {
+            objects.add(Machine.isEnabled(machineType));
+        }
+
+        // Integration.
+        objects.add(Integration.isVersionCheckerEnabled);
+        objects.add(Integration.isBuildCraftEnabled);
+        objects.add(Integration.isCoFHCoreEnabled);
+        objects.add(Integration.isMekanismEnabled);
+
+        // Client.
+        // We don't sync this as this is client specific changes that the server shouldn't care about.
+
+        NetworkHandler.writeObjects(objects, dataStream);
     }
 }

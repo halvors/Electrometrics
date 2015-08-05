@@ -32,6 +32,10 @@ gui.configuration.category.client=Klient
 gui.configuration.category.client.tooltip=Klient-spesifikke innstillinger
 
 // Tooltip
+tooltip.download=Last ned
+tooltip.clickToDownload=Klikk for å laste ned den siste versjonen.
+tooltip.newVersionAvailable=En ny versjon er tilgjengelig.
+
 tooltip.hold=Hold
 tooltip.forDetails=for detaljer
 tooltip.noInformation=Ingen informasjon å vise

@@ -14,6 +14,6 @@ public class Item extends net.minecraft.item.Item {
 		this.name = name;
 
 		setUnlocalizedName(name);
-		setCreativeTab(Electrometrics.getTab());
+		setCreativeTab(Electrometrics.getCreativeTab());
 	}
 }

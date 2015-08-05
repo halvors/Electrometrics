@@ -10,8 +10,8 @@ import org.halvors.electrometrics.common.base.MachineType;
  *
  * @author halvors
  */
-public class Tab extends CreativeTabs {
-	public Tab() {
+public class CreativeTab extends CreativeTabs {
+	public CreativeTab() {
 		super("tab" + Reference.NAME);
 	}
 
