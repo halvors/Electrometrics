@@ -7,12 +7,14 @@ import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.event.ClickEvent;
-import net.minecraft.event.ClickEvent.Action;
 import net.minecraft.event.HoverEvent;
-import net.minecraft.util.*;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatStyle;
+import net.minecraft.util.IChatComponent;
 import org.halvors.electrometrics.common.ConfigurationManager.General;
-import org.halvors.electrometrics.common.Reference;
-import org.halvors.electrometrics.common.util.render.Color;
+
+import static net.minecraft.util.EnumChatFormatting.*;
 
 public class UpdateManager {
     private static transient int pollOffset = 0;
@@ -23,78 +25,89 @@ public class UpdateManager {
     private static final ChatStyle white = new ChatStyle();
 
     static {
-        description.setColor(EnumChatFormatting.GRAY);
-        version.setColor(EnumChatFormatting.AQUA);
-        modname.setColor(EnumChatFormatting.GOLD);
-        download.setColor(EnumChatFormatting.GREEN);
-        white.setColor(EnumChatFormatting.WHITE);
-
-        ChatStyle tooltip = new ChatStyle();
-        tooltip.setColor(EnumChatFormatting.YELLOW);
-        IChatComponent message = new ChatComponentTranslation("tooltip.clickToDownload").setChatStyle(tooltip);
-        download.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, message));
+        description.setColor(GRAY);
+        version.setColor(AQUA);
+        modname.setColor(GOLD);
+        download.setColor(GREEN);
+        white.setColor(WHITE);
+        {
+            ChatStyle tooltip = new ChatStyle();
+            tooltip.setColor(YELLOW);
+            IChatComponent msg = new ChatComponentTranslation("tooltip.clickToDownload").setChatStyle(tooltip);
+            download.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, msg));
+        }
     }
 
+    public static void registerUpdater(UpdateManager manager) {
+        FMLCommonHandler.instance().bus().register(manager);
+    }
+
+    private boolean _notificationDisplayed;
+    private final IUpdatableMod _mod;
     private final UpdateThread updateThread;
-    private final String downloadUrl;
-    private boolean notificationDisplayed;
+    private final String _downloadUrl;
     private int lastPoll = 400;
 
-    public UpdateManager(String releaseUrl, String downloadUrl) {
-        this.updateThread = new UpdateThread(releaseUrl);
-        this.downloadUrl = downloadUrl;
+    public UpdateManager(IUpdatableMod mod, String releaseUrl, String downloadUrl) {
 
+        _mod = mod;
+        updateThread = new UpdateThread(mod, releaseUrl, downloadUrl);
         updateThread.start();
+        _downloadUrl = downloadUrl;
         lastPoll += (pollOffset += 140);
     }
 
     @SubscribeEvent
-    public void onTick(PlayerTickEvent event) {
-        if (event.phase == Phase.END) {
-            if (lastPoll > 0) {
-                lastPoll--;
-            } else {
-                lastPoll = 400;
+    public void tickStart(PlayerTickEvent event) {
+        if (event.phase != Phase.START) {
+            return;
+        }
 
-                if (!notificationDisplayed && updateThread.isCheckCompleted()) {
-                    notificationDisplayed = true;
-                    FMLCommonHandler.instance().bus().unregister(this);
+        /*
+        if (MinecraftServer.getServer() != null && MinecraftServer.getServer().isServerRunning()) {
+            if (!MinecraftServer.getServer().getConfigurationManager().func_152596_g(evt.player.getGameProfile())) {
+                return;
+            }
+        }
+        */
 
-                    if (updateThread.isNewVersionAvailable()) {
-                        if (General.enableUpdateNotice && updateThread.isCriticalUpdate()) {
-                            ModVersion newModVersion = updateThread.getNewModVersion();
-                            EntityPlayer player = event.player;
+        if (lastPoll > 0) {
+            lastPoll--;
+        } else {
+            lastPoll = 400;
 
+            if (!_notificationDisplayed && updateThread.isCheckCompleted()) {
+                _notificationDisplayed = true;
+                FMLCommonHandler.instance().bus().unregister(this);
 
+                if (updateThread.isNewVersionAvailable()) {
+                    if (General.enableUpdateNotice && updateThread.isCriticalUpdate()) {
+                        ModVersion newVersion = updateThread.getNewVersion();
 
-                            // Display notification message.
-                            ChatStyle modnameData = modname.createShallowCopy();
-                            modnameData.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ChatComponentText(newModVersion.getModVersion().toString()).setChatStyle(version)));
-
-                            IChatComponent notificationChatMessage = new ChatComponentText("");
-                            notificationChatMessage.appendSibling(new ChatComponentText("[" + Reference.NAME + "] ").setChatStyle(modnameData));
-                            notificationChatMessage.appendSibling(new ChatComponentTranslation("tooltip.versionAvailable").setChatStyle(white));
-                            notificationChatMessage.appendText(Color.YELLOW + ":");
-
-                            // Display description.
-                            IChatComponent descriptionChatMessage = new ChatComponentText("");
-
-                            if (!Strings.isNullOrEmpty(downloadUrl)) {
-                                descriptionChatMessage.appendText(Color.WHITE + "[");
-
-                                ChatStyle downloadData = download.createShallowCopy();
-                                downloadData.setChatClickEvent(new ClickEvent(Action.OPEN_URL, downloadUrl));
-
-                                descriptionChatMessage.appendSibling(new ChatComponentTranslation("tooltip.download").setChatStyle(downloadData));
-                                descriptionChatMessage.appendText(Color.WHITE + "] ");
-                            }
-
-                            descriptionChatMessage.appendSibling(new ChatComponentText(newModVersion.getDescription()).setChatStyle(description));
-
-                            // Send the chat messages to the player.
-                            player.addChatMessage(descriptionChatMessage);
-                            player.addChatMessage(notificationChatMessage);
+                        EntityPlayer player = event.player;
+                        IChatComponent chat = new ChatComponentText("");
+                        {
+                            ChatStyle data = modname.createShallowCopy();
+                            IChatComponent msg = new ChatComponentText(newVersion.getModVersion().toString()).setChatStyle(version);
+                            data.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, msg));
+                            chat.appendSibling(new ChatComponentText("[" + _mod.getModName() + "] ").setChatStyle(data));
                         }
+
+                        chat.appendSibling(new ChatComponentTranslation("tooltip.versionAvailable").setChatStyle(white));
+                        chat.appendText(GOLD + ":");
+                        player.addChatMessage(chat);
+                        chat = new ChatComponentText("");
+
+                        if (!Strings.isNullOrEmpty(_downloadUrl)) {
+                            chat.appendText(WHITE + "[");
+                            ChatStyle data = download.createShallowCopy();
+                            data.setChatClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, _downloadUrl));
+                            chat.appendSibling(new ChatComponentTranslation("tooltip.download").setChatStyle(data));
+                            chat.appendText(WHITE + "] ");
+                        }
+
+                        chat.appendSibling(new ChatComponentText(newVersion.getDescription()).setChatStyle(description));
+                        player.addChatMessage(chat);
                     }
                 }
             }

@@ -4,20 +4,20 @@ import cpw.mods.fml.common.versioning.ArtifactVersion;
 
 public class ModVersion implements ArtifactVersion {
     private final String label;
-    private final ReleaseVersion minecraftVersion;
-    private final ReleaseVersion modVersion;
+    private final ReleaseVersion _mcVer;
+    private final ReleaseVersion _modVer;
     private final String description;
 
     public ModVersion(String label, ReleaseVersion minecraftVersion, ReleaseVersion modVersion, String description) {
         this.label = label;
-        this.minecraftVersion = minecraftVersion;
-        this.modVersion = modVersion;
+        _mcVer = minecraftVersion;
+        _modVer = modVersion;
         this.description = description;
     }
 
     public ModVersion(String label, String s) {
         String[] parts = s.split(" ", 2);
-        String description = "";
+        String description = null;
 
         if (parts.length > 1) {
             description = parts[1].trim();
@@ -26,8 +26,8 @@ public class ModVersion implements ArtifactVersion {
         parts = parts[0].split("-", 2);
 
         this.label = label;
-        this.minecraftVersion = new ReleaseVersion("Minecraft", parts[0]);
-        this.modVersion = new ReleaseVersion(label, parts[1]);
+        _mcVer = new ReleaseVersion("Minecraft", parts[0]);
+        _modVer = new ReleaseVersion(label, parts[1]);
         this.description = description;
     }
 
@@ -49,21 +49,21 @@ public class ModVersion implements ArtifactVersion {
             ReleaseVersion releaseVersion = (ReleaseVersion) artifactVersion;
 
             if (label.equals(releaseVersion.getLabel())) {
-                return modVersion.compareTo(releaseVersion);
+                return _modVer.compareTo(releaseVersion);
             } else if ("Minecraft".equals(releaseVersion.getLabel())) {
-                return minecraftVersion.compareTo(releaseVersion);
+                return _mcVer.compareTo(releaseVersion);
             }
         }
 
         return 0;
     }
 
-    public int compareTo(ModVersion compareModVersion) {
-        if (minecraftVersion.compareTo(compareModVersion.getMinecraftVersion()) != 0) {
-            return minecraftVersion.compareTo(compareModVersion.getMinecraftVersion());
+    public int compareTo(ModVersion modVersion) {
+        if (_mcVer.compareTo(modVersion.getMinecraftVersion()) != 0) {
+            return _mcVer.compareTo(modVersion.getMinecraftVersion());
         }
 
-        return modVersion.compareTo(compareModVersion.getModVersion());
+        return _modVer.compareTo(modVersion.getModVersion());
     }
 
     @Override
@@ -73,7 +73,7 @@ public class ModVersion implements ArtifactVersion {
 
     @Override
     public String getVersionString() {
-        return minecraftVersion.getVersionString() + "-" + modVersion.getVersionString();
+        return _mcVer.getVersionString() + "-" + _modVer.getVersionString();
     }
 
     @Override
@@ -88,15 +88,15 @@ public class ModVersion implements ArtifactVersion {
 
     @Override
     public String toString() {
-        return modVersion.toString() + " for " + minecraftVersion.toString();
+        return _modVer.toString() + " for " + _mcVer.toString();
     }
 
     public ReleaseVersion getMinecraftVersion() {
-        return minecraftVersion;
+        return _mcVer;
     }
 
     public ReleaseVersion getModVersion() {
-        return modVersion;
+        return _modVer;
     }
 
     public String getDescription() {

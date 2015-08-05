@@ -1,67 +1,91 @@
 package org.halvors.electrometrics.common.updater;
 
-import net.minecraftforge.common.MinecraftForge;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.event.FMLInterModComms;
+import net.minecraft.nbt.NBTTagCompound;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.spi.AbstractLogger;
 import org.halvors.electrometrics.Electrometrics;
-import org.halvors.electrometrics.common.Reference;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 
 public class UpdateThread extends Thread {
-    private final String releaseUrl;
+
+    private final String releaseUrl, downloadUrl;
+    private final IUpdatableMod mod;
 
     private ModVersion newModVersion;
+    private boolean isCheckCompleted = false;
     private boolean isNewVersionAvailable = false;
     private boolean isCriticalUpdate = false;
-    private boolean isCheckedComplete = false;
 
-    public UpdateThread(String releaseUrl) {
-        super(Reference.NAME + " updater");
+    public UpdateThread(IUpdatableMod mod, String releaseUrl, String downloadUrl) {
+        super(mod.getModId() + " updater");
 
+        this.mod = mod;
         this.releaseUrl = releaseUrl;
+        this.downloadUrl = downloadUrl;
     }
 
     @Override
     public void run() {
-        try {
+
+        l: try {
+            ModVersion ourVersion = ModVersion.parse(mod.getModName(), mod.getModVersion());
+
             URL versionFile = new URL(releaseUrl);
             BufferedReader reader = new BufferedReader(new InputStreamReader(versionFile.openStream()));
-            newModVersion = ModVersion.parse(Reference.NAME, reader.readLine());
-            ModVersion criticalModVersion = ModVersion.parse(Reference.NAME, reader.readLine());
+            newModVersion = ModVersion.parse(mod.getModName(), reader.readLine());
+            ModVersion criticalVersion = ModVersion.parse(mod.getModName(), reader.readLine());
             reader.close();
 
-            ModVersion ourModVersion = ModVersion.parse(Reference.NAME, MinecraftForge.MC_VERSION + "-" + Reference.VERSION);
-            isNewVersionAvailable = ourModVersion.compareTo(newModVersion) < 0;
+            if (newModVersion == null) {
+                break l;
+            }
+
+            isNewVersionAvailable = ourVersion.compareTo(newModVersion) < 0;
 
             if (isNewVersionAvailable) {
-                Electrometrics.getLogger().info("An updated version is available: " + newModVersion + ".");
+                Electrometrics.getLogger().info("An updated version of " + mod.getModName() + " is available: " + newModVersion + ".");
 
-                if (ourModVersion.getMinecraftVersion().compareTo(newModVersion.getMinecraftVersion()) < 0) {
-                    ReleaseVersion newReleaseVersion = newModVersion.getMinecraftVersion(), ourReleaseVersion = ourModVersion.getMinecraftVersion();
-                    isNewVersionAvailable = newReleaseVersion.getMajor() == ourReleaseVersion.getMajor() && newReleaseVersion.getMinor() == ourReleaseVersion.getMinor();
+                if (ourVersion.getMinecraftVersion().compareTo(newModVersion.getMinecraftVersion()) < 0) {
+                    ReleaseVersion newv = newModVersion.getMinecraftVersion(), our = ourVersion.getMinecraftVersion();
+                    isNewVersionAvailable = newv.major() == our.major() && newv.minor() == our.minor();
                 }
-
-                if (criticalModVersion != null && ourModVersion.compareTo(criticalModVersion) >= 0) {
-                    isCriticalUpdate = Boolean.parseBoolean(criticalModVersion.getDescription());
+                if (criticalVersion != null && ourVersion.compareTo(criticalVersion) >= 0) {
+                    isCriticalUpdate = Boolean.parseBoolean(criticalVersion.getDescription());
                     isCriticalUpdate &= isNewVersionAvailable;
                 }
             }
-
             if (isCriticalUpdate) {
                 Electrometrics.getLogger().info("This update has been marked as CRITICAL and will ignore notification suppression.");
             }
+
+            if (Loader.isModLoaded("VersionChecker")) {
+                NBTTagCompound compound = new NBTTagCompound();
+                compound.setString("modDisplayName", mod.getModName());
+                compound.setString("oldVersion", ourVersion.toString());
+                compound.setString("newVersion", newModVersion.toString());
+
+                if (downloadUrl != null) {
+                    compound.setString("updateUrl", downloadUrl);
+                    compound.setBoolean("isDirectLink", false);
+                }
+
+                FMLInterModComms.sendRuntimeMessage(mod.getModId(), "VersionChecker", "addUpdate", compound);
+                isNewVersionAvailable &= isCriticalUpdate;
+            }
         } catch (Exception e) {
-            Electrometrics.getLogger().log(Level.WARN, AbstractLogger.CATCHING_MARKER, "Update check for " + Reference.NAME + " failed.", e);
+            Electrometrics.getLogger().log(Level.WARN, AbstractLogger.CATCHING_MARKER, "Update check for " + mod.getModName() + " failed.", e);
         }
 
-        isCheckedComplete = true;
+        isCheckCompleted = true;
     }
 
     public boolean isCheckCompleted() {
-        return isCheckedComplete;
+        return isCheckCompleted;
     }
 
     public boolean isCriticalUpdate() {
@@ -72,7 +96,7 @@ public class UpdateThread extends Thread {
         return isNewVersionAvailable;
     }
 
-    public ModVersion getNewModVersion() {
+    public ModVersion getNewVersion() {
         return newModVersion;
     }
 }
