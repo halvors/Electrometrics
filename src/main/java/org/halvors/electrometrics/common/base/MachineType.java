@@ -32,7 +32,8 @@ public enum MachineType {
 			case ADVANCED_ELECTRICITY_METER:
 			case ELITE_ELECTRICITY_METER:
 			case ULTIMATE_ELECTRICITY_METER:
-				Tier.Base baseTier = Tier.Electric.getFromMachineType(this).getBase();
+				Tier.Electric electricTier = Tier.Electric.getFromMachineType(this);
+				Tier.Base baseTier = electricTier != null ? electricTier.getBase() : Tier.Base.BASIC;
 
 				return baseTier.getUnlocalizedName() + name;
 
@@ -49,7 +50,8 @@ public enum MachineType {
 			case ADVANCED_ELECTRICITY_METER:
 			case ELITE_ELECTRICITY_METER:
 			case ULTIMATE_ELECTRICITY_METER:
-				Tier.Base baseTier = Tier.Electric.getFromMachineType(this).getBase();
+				Tier.Electric electricTier = Tier.Electric.getFromMachineType(this);
+				Tier.Base baseTier = electricTier != null ? electricTier.getBase() : Tier.Base.BASIC;
 
 				return baseTier.getLocalizedName() + " " + localizedName;
 
