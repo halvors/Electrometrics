@@ -66,7 +66,7 @@ public class UpdateManager {
                     FMLCommonHandler.instance().bus().unregister(this);
 
                     if (updateThread.isNewVersionAvailable()) {
-                        if (General.enableUpdateNotice && updateThread.isCriticalUpdate()) {
+                        if (!General.enableUpdateNotice && !updateThread.isCriticalUpdate()) {
                             return;
                         }
 
