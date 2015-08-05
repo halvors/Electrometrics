@@ -1,20 +1,20 @@
 package org.halvors.electrometrics.common.updater;
 
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.MinecraftForge;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.spi.AbstractLogger;
 import org.halvors.electrometrics.Electrometrics;
+import org.halvors.electrometrics.common.ConfigurationManager.Integration;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 
 public class UpdateThread extends Thread {
-
-    private final String releaseUrl, downloadUrl;
     private final IUpdatableMod mod;
+    private final String releaseUrl, downloadUrl;
 
     private ModVersion newModVersion;
     private boolean isCheckCompleted;
@@ -31,18 +31,14 @@ public class UpdateThread extends Thread {
 
     @Override
     public void run() {
-        l: try {
-            ModVersion ourVersion = ModVersion.parse(mod.getModName(), mod.getModVersion());
+        try {
+            ModVersion ourVersion = ModVersion.parse(mod.getModName(), MinecraftForge.MC_VERSION + "-" + mod.getModVersion());
 
             URL versionFile = new URL(releaseUrl);
             BufferedReader reader = new BufferedReader(new InputStreamReader(versionFile.openStream()));
             newModVersion = ModVersion.parse(mod.getModName(), reader.readLine());
             ModVersion criticalVersion = ModVersion.parse(mod.getModName(), reader.readLine());
             reader.close();
-
-            if (newModVersion == null) {
-                break l;
-            }
 
             isNewVersionAvailable = ourVersion.compareTo(newModVersion) < 0;
 
@@ -51,29 +47,32 @@ public class UpdateThread extends Thread {
 
                 if (ourVersion.getMinecraftVersion().compareTo(newModVersion.getMinecraftVersion()) < 0) {
                     ReleaseVersion newv = newModVersion.getMinecraftVersion(), our = ourVersion.getMinecraftVersion();
-                    isNewVersionAvailable = newv.major() == our.major() && newv.minor() == our.minor();
+                    isNewVersionAvailable = newv.getMajor() == our.getMajor() && newv.getMinor() == our.getMinor();
                 }
+
                 if (criticalVersion != null && ourVersion.compareTo(criticalVersion) >= 0) {
                     isCriticalUpdate = Boolean.parseBoolean(criticalVersion.getDescription());
                     isCriticalUpdate &= isNewVersionAvailable;
                 }
             }
+
             if (isCriticalUpdate) {
                 Electrometrics.getLogger().info("This update has been marked as CRITICAL and will ignore notification suppression.");
             }
 
-            if (Loader.isModLoaded("VersionChecker")) {
-                NBTTagCompound compound = new NBTTagCompound();
-                compound.setString("modDisplayName", mod.getModName());
-                compound.setString("oldVersion", ourVersion.toString());
-                compound.setString("newVersion", newModVersion.toString());
+            // VersionChecker integration.
+            if (Integration.isVersionCheckerEnabled) {
+                NBTTagCompound nbtTagCompound = new NBTTagCompound();
+                nbtTagCompound.setString("modDisplayName", mod.getModName());
+                nbtTagCompound.setString("oldVersion", ourVersion.toString());
+                nbtTagCompound.setString("newVersion", newModVersion.toString());
 
                 if (downloadUrl != null) {
-                    compound.setString("updateUrl", downloadUrl);
-                    compound.setBoolean("isDirectLink", false);
+                    nbtTagCompound.setString("updateUrl", downloadUrl);
+                    nbtTagCompound.setBoolean("isDirectLink", false);
                 }
 
-                FMLInterModComms.sendRuntimeMessage(mod.getModId(), "VersionChecker", "addUpdate", compound);
+                FMLInterModComms.sendRuntimeMessage(mod.getModId(), "VersionChecker", "addUpdate", nbtTagCompound);
                 isNewVersionAvailable &= isCriticalUpdate;
             }
         } catch (Exception e) {
@@ -95,7 +94,7 @@ public class UpdateThread extends Thread {
         return isNewVersionAvailable;
     }
 
-    public ModVersion getNewVersion() {
+    public ModVersion getNewModVersion() {
         return newModVersion;
     }
 }

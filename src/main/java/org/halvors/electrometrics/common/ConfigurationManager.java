@@ -38,6 +38,7 @@ public class ConfigurationManager {
     }
 
     public static class Integration {
+        public static boolean isVersionCheckerEnabled;
         public static boolean isBuildCraftEnabled;
         public static boolean isCoFHCoreEnabled;
         public static boolean isMekanismEnabled;
@@ -63,6 +64,7 @@ public class ConfigurationManager {
         }
 
         // Integration.
+        Integration.isVersionCheckerEnabled = configuration.get(CATEGORY_INTEGRATION, "VersionChecker", Loader.isModLoaded("VersionChecker")).getBoolean();
         Integration.isBuildCraftEnabled = configuration.get(CATEGORY_INTEGRATION, "BuildCraft", Loader.isModLoaded("BuildCraft|Core")).getBoolean();
         Integration.isCoFHCoreEnabled = configuration.get(CATEGORY_INTEGRATION, "CoFHCore", Loader.isModLoaded("CoFHCore")).getBoolean();
         Integration.isMekanismEnabled = configuration.get(CATEGORY_INTEGRATION, "Mekanism", Loader.isModLoaded("Mekanism")).getBoolean();
@@ -87,6 +89,7 @@ public class ConfigurationManager {
         }
 
         // Integration.
+        Integration.isVersionCheckerEnabled = dataStream.readBoolean();
         Integration.isBuildCraftEnabled = dataStream.readBoolean();
         Integration.isCoFHCoreEnabled = dataStream.readBoolean();
         Integration.isMekanismEnabled = dataStream.readBoolean();
@@ -111,6 +114,7 @@ public class ConfigurationManager {
         }
 
         // Integration.
+        objects.add(Integration.isVersionCheckerEnabled);
         objects.add(Integration.isBuildCraftEnabled);
         objects.add(Integration.isCoFHCoreEnabled);
         objects.add(Integration.isMekanismEnabled);
