@@ -75,6 +75,10 @@ public class ConfigurationManager {
         configuration.save();
     }
 
+    public static void saveConfiguration(Configuration configuration) {
+        configuration.get(CATEGORY_CLIENT, "EnergyUnitType", EnergyUnit.REDSTONE_FLUX.getName(), "The default energy system to display.", EnergyUnit.getNames().toArray(new String[EnergyUnit.getNames().size()])).set(Client.energyUnit.getName());
+    }
+
     public static void readConfiguration(ByteBuf dataStream) {
         // General.
         General.enableUpdateNotice = dataStream.readBoolean();
