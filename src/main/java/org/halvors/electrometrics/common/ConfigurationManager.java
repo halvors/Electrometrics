@@ -70,7 +70,7 @@ public class ConfigurationManager {
         Integration.isMekanismEnabled = configuration.get(CATEGORY_INTEGRATION, "Mekanism", Loader.isModLoaded("Mekanism")).getBoolean();
 
         // Client.
-        Client.energyUnit = EnergyUnit.getUnitFromSymbol(configuration.get(CATEGORY_CLIENT, "EnergyUnitType", EnergyUnit.JOULES.getName(), "The default energy system to display.", EnergyUnit.getNames().toArray(new String[EnergyUnit.getNames().size()])).getString());
+        Client.energyUnit = EnergyUnit.getUnitFromSymbol(configuration.get(CATEGORY_CLIENT, "EnergyUnitType", EnergyUnit.REDSTONE_FLUX.getName(), "The default energy system to display.", EnergyUnit.getNames().toArray(new String[EnergyUnit.getNames().size()])).getString());
 
         configuration.save();
     }
