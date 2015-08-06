@@ -70,13 +70,15 @@ public class ConfigurationManager {
         Integration.isMekanismEnabled = configuration.get(CATEGORY_INTEGRATION, "Mekanism", Loader.isModLoaded("Mekanism")).getBoolean();
 
         // Client.
-        Client.energyUnit = EnergyUnit.getUnitFromSymbol(configuration.get(CATEGORY_CLIENT, "EnergyUnitType", EnergyUnit.REDSTONE_FLUX.getName(), "The default energy system to display.", EnergyUnit.getNames().toArray(new String[EnergyUnit.getNames().size()])).getString());
+        Client.energyUnit = EnergyUnit.getUnitFromSymbol(configuration.get(CATEGORY_CLIENT, "EnergyUnitType", EnergyUnit.REDSTONE_FLUX.getSymbol(), "The default energy system to display. " + EnergyUnit.getSymbols(), EnergyUnit.getSymbols().toArray(new String[EnergyUnit.getSymbols().size()])).getString());
 
         configuration.save();
     }
 
     public static void saveConfiguration(Configuration configuration) {
-        configuration.get(CATEGORY_CLIENT, "EnergyUnitType", EnergyUnit.REDSTONE_FLUX.getName(), "The default energy system to display.", EnergyUnit.getNames().toArray(new String[EnergyUnit.getNames().size()])).set(Client.energyUnit.getName());
+        configuration.get(CATEGORY_CLIENT, "EnergyUnitType", EnergyUnit.REDSTONE_FLUX.getSymbol(), "The default energy system to display. " + EnergyUnit.getSymbols(), EnergyUnit.getSymbols().toArray(new String[EnergyUnit.getSymbols().size()])).set(Client.energyUnit.getSymbol());
+
+        configuration.save();
     }
 
     public static void readConfiguration(ByteBuf dataStream) {
