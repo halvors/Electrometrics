@@ -64,21 +64,21 @@ idea {
 
 processResources {
     // This will ensure that this task is redone when this versions change.
-    inputs.property "mc_version", config.minecraft_version
-    inputs.property "forge_version", config.forge_version
     inputs.property "mod_version", config.mod_version
-    inputs.property "fmp_version", config.fmp_version
+    inputs.property "minecraft_version", config.minecraft_version
+    inputs.property "forge_version", config.forge_version
 
     // Replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
         include "*.info"
-                
-        // Replace version and mcversion
-        expand "version":project.version, "mcversion":config.mc_version
+
+        // Replace version and minecraft_version
+        expand "version" : config.mod_version,
+               "minecraft_version" : config.minecraft_version
     }
 
     // Copy everything else
     from(sourceSets.main.resources.srcDirs) {
-        include 'assets/**/*.*'
+        include "assets/**/*.*"
     }
 }
