@@ -23,7 +23,7 @@ public class PacketTileRedstoneControl extends PacketLocation implements IMessag
 
     }
 
-    public <T extends TileEntity & ITileNetworkable & ITileRedstoneControl> PacketTileRedstoneControl(T tileEntity, PacketType packetType, RedstoneControlType redstoneControlType) {
+    public <T extends TileEntity & ITileNetworkable> PacketTileRedstoneControl(T tileEntity, PacketType packetType, RedstoneControlType redstoneControlType) {
         super(tileEntity);
 
         this.packetType = packetType;
@@ -40,8 +40,12 @@ public class PacketTileRedstoneControl extends PacketLocation implements IMessag
         this(tileEntity, packetType, tileEntity.getControlType());
     }
 
+    public <T extends ITileComponent & ITileNetworkable> PacketTileRedstoneControl(T tileComponent, PacketType packetType, RedstoneControlType redstoneControlType) {
+        this(tileComponent.getTileEntity(), packetType, redstoneControlType);
+    }
+
     public <T extends ITileComponent & ITileNetworkable & ITileRedstoneControl> PacketTileRedstoneControl(T tileComponent, PacketType packetType) {
-        this(tileComponent.getTileEntity(), packetType);
+        this(tileComponent, packetType, tileComponent.getControlType());
     }
 
     @Override

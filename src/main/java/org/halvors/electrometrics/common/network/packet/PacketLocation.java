@@ -20,15 +20,15 @@ class PacketLocation implements IMessage {
 
 	}
 
-	PacketLocation(Location location) {
+	protected PacketLocation(Location location) {
 		this.location = location;
 	}
 
-	PacketLocation(Entity entity) {
+	protected PacketLocation(Entity entity) {
 		this(new Location(entity));
 	}
 
-	PacketLocation(TileEntity tileEntity) {
+	protected PacketLocation(TileEntity tileEntity) {
 		this(new Location(tileEntity));
 	}
 

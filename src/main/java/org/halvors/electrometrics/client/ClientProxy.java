@@ -5,6 +5,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
+import org.halvors.electrometrics.client.gui.machine.GuiElectricityMeter;
 import org.halvors.electrometrics.common.CommonProxy;
 import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.tile.TileEntity;

@@ -17,7 +17,7 @@ public class PacketRequestData extends PacketLocation implements IMessage {
 		super(tile);
 	}
 
-	public PacketRequestData(ITileComponent tileComponent) {
+	public <T extends ITileComponent & ITileNetworkable> PacketRequestData(T tileComponent) {
 		this(tileComponent.getTileEntity());
 	}
 

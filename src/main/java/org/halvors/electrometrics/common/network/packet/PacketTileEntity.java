@@ -36,7 +36,7 @@ public class PacketTileEntity extends PacketLocation implements IMessage {
 		this(new Location(tile), tile.getPacketData(new ArrayList<>()));
 	}
 
-	public PacketTileEntity(ITileComponent tileComponent) {
+	public <T extends ITileComponent & ITileNetworkable> PacketTileEntity(T tileComponent) {
 		super(tileComponent.getTileEntity());
 	}
 

@@ -78,7 +78,7 @@ public class GuiRedstoneControl<T extends ITileComponent & ITileNetworkable & IT
 					SoundHandler.playSound("gui.button.press");
 
 					// Send a update packet to the server.
-					NetworkHandler.sendToServer(new PacketTileRedstoneControl(tile.getTileEntity(), PacketType.UPDATE, RedstoneControlType.values()[ordinalToSet]));
+					NetworkHandler.sendToServer(new PacketTileRedstoneControl(tile, PacketType.UPDATE, RedstoneControlType.values()[ordinalToSet]));
 				}
 				break;
 		}
