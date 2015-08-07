@@ -1,24 +1,24 @@
 package org.halvors.electrometrics.common.multipart;
 
-import codechicken.lib.data.MCDataInput;
-import codechicken.multipart.MultiPartRegistry.IPartFactory2;
+import codechicken.multipart.MultiPartRegistry;
+import codechicken.multipart.MultiPartRegistry.IPartFactory;
 import codechicken.multipart.TMultiPart;
-import net.minecraft.nbt.NBTTagCompound;
+import org.halvors.electrometrics.common.Reference;
+import org.halvors.electrometrics.common.multipart.part.PartMachine;
 
-public class Multipart implements IPartFactory2 {
+public class Multipart implements IPartFactory {
     public void addMultiparts() {
-        //MultiPartRegistry.registerParts(this, new String[] {Reference.PREFIX + "blockElectricityMeter" });
+        MultiPartRegistry.registerParts(this, new String[] { Reference.PREFIX + "machine" });
 
         registerMicroMaterials();
     }
 
     @Override
-    public TMultiPart createPart(String s, NBTTagCompound nbtTagCompound) {
-        return null;
-    }
+    public TMultiPart createPart(String s, boolean b) {
+        if(s.equals(Reference.PREFIX + "machine")) {
+            return new PartMachine();
+        }
 
-    @Override
-    public TMultiPart createPart(String s, MCDataInput mcDataInput) {
         return null;
     }
 

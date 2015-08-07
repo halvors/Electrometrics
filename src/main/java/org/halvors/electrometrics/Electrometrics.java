@@ -34,6 +34,7 @@ import org.halvors.electrometrics.common.event.PlayerEventHandler;
 import org.halvors.electrometrics.common.item.ItemBlockMachine;
 import org.halvors.electrometrics.common.item.ItemMultimeter;
 import org.halvors.electrometrics.common.multipart.Multipart;
+import org.halvors.electrometrics.common.multipart.part.ItemPartMachine;
 import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.updater.UpdateManager;
 
@@ -68,6 +69,7 @@ public class Electrometrics implements IUpdatableMod {
 
 	// Items.
 	public static final Item itemMultimeter = new ItemMultimeter();
+	public static final Item itemPartMachine = new ItemPartMachine();
 
 	// Blocks.
 	public static final Block blockMachine = new BlockMachine();
@@ -113,6 +115,8 @@ public class Electrometrics implements IUpdatableMod {
 	private void addItems() {
 		// Register items.
 		GameRegistry.registerItem(itemMultimeter, "itemMultimeter");
+
+		GameRegistry.registerItem(itemPartMachine, "itemPartMachine");
 	}
 
 	private void addBlocks() {
