@@ -33,16 +33,6 @@ public class TileEntityComponentContainer extends TileEntity implements ITileNet
 		}
 	}
 
-	public void onNeighborChange() {
-		for (IComponent component : components) {
-			if (component instanceof ITileComponent) {
-				ITileComponent tileComponent = (ITileComponent) component;
-
-				tileComponent.onNeighborChange();
-			}
-		}
-	}
-
 	@Override
 	public void readFromNBT(NBTTagCompound nbtTagCompound) {
 		super.readFromNBT(nbtTagCompound);
@@ -91,6 +81,16 @@ public class TileEntityComponentContainer extends TileEntity implements ITileNet
 		}
 
 		return list;
+	}
+
+	public void onNeighborChange() {
+		for (IComponent component : components) {
+			if (component instanceof ITileComponent) {
+				ITileComponent tileComponent = (ITileComponent) component;
+
+				tileComponent.onNeighborChange();
+			}
+		}
 	}
 
     public boolean hasComponent(Class<? extends ITileComponent> componentClass) {

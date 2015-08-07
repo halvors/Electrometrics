@@ -2,11 +2,11 @@ package org.halvors.electrometrics.common.tile.component;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
+import org.halvors.electrometrics.common.base.RedstoneControlType;
 import org.halvors.electrometrics.common.base.tile.ITileNetworkable;
 import org.halvors.electrometrics.common.base.tile.ITileRedstoneControl;
-import org.halvors.electrometrics.common.base.tile.RedstoneControlType;
-import org.halvors.electrometrics.common.network.PacketHandler;
-import org.halvors.electrometrics.common.network.PacketTileEntity;
+import org.halvors.electrometrics.common.network.NetworkHandler;
+import org.halvors.electrometrics.common.network.packet.PacketTileEntity;
 import org.halvors.electrometrics.common.tile.TileEntityComponentContainer;
 
 import java.util.List;
@@ -31,13 +31,13 @@ public class TileRedstoneControlComponent extends TileComponent implements ITile
 
     @Override
     public void onNeighborChange() {
-        if (!tileEntity.getWorldObj().isRemote) {
-            boolean redstonePower = tileEntity.getWorldObj().isBlockIndirectlyGettingPowered(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
+        if (!tileEntity.getWorld().isRemote) {
+            boolean redstonePower = tileEntity.getWorld().isBlockIndirectlyGettingPowered(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
 
             if (isPowered != redstonePower) {
                 isPowered = redstonePower;
 
-                PacketHandler.sendToReceivers(new PacketTileEntity(this), tileEntity);
+                NetworkHandler.sendToReceivers(new PacketTileEntity(this), tileEntity);
             }
         }
     }

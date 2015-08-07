@@ -7,9 +7,6 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import org.halvors.electrometrics.client.gui.component.*;
 import org.halvors.electrometrics.common.base.tile.ITileOwnable;
-import org.halvors.electrometrics.common.network.PacketHandler;
-import org.halvors.electrometrics.common.network.PacketRequestData;
-import org.halvors.electrometrics.common.network.PacketTileEntity;
 import org.halvors.electrometrics.common.tile.component.TileRedstoneControlComponent;
 import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.util.energy.EnergyUtils;
@@ -56,14 +53,7 @@ public class GuiElectricityMeter extends GuiComponentContainerScreen {
 			}
 		}, this, defaultResource));
 
-		components.add(new GuiEnergyUnitType<>(this, tileEntity, defaultResource));
-
-        if (tileEntity.hasComponent(TileRedstoneControlComponent.class)) {
-            //final ITileRedstoneControl tileRedstoneControl = (ITileRedstoneControl) tileEntity.getComponentImplementing(ITileRedstoneControl.class);
-			TileRedstoneControlComponent tileRedstoneControlComponent = (TileRedstoneControlComponent) tileEntity.getComponent(TileRedstoneControlComponent.class);
-
-            components.add(new GuiRedstoneControl<>(this, tileRedstoneControlComponent, defaultResource));
-        }
+		components.add(new GuiEnergyUnitType(this, defaultResource));
 	}
 
 	@SuppressWarnings("unchecked")

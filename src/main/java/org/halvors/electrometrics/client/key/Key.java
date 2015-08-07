@@ -7,16 +7,16 @@ import net.minecraft.client.settings.KeyBinding;
 
 @SideOnly(Side.CLIENT)
 public enum Key {
-    SNEAK(Minecraft.getMinecraft().gameSettings.keyBindSneak),
-    JUMP(Minecraft.getMinecraft().gameSettings.keyBindJump);
+	SNEAK(Minecraft.getMinecraft().gameSettings.keyBindSneak),
+	JUMP(Minecraft.getMinecraft().gameSettings.keyBindJump);
 
-    private final KeyBinding keyBinding;
+	private final KeyBinding keyBinding;
 
-    Key(KeyBinding keyBinding) {
-        this.keyBinding = keyBinding;
-    }
+	Key(KeyBinding keyBinding) {
+		this.keyBinding = keyBinding;
+	}
 
-    public KeyBinding getKeyBinding() {
-        return keyBinding;
-    }
+	public KeyBinding getKeyBinding() {
+		return keyBinding;
+	}
 }

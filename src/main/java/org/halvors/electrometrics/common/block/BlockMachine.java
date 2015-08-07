@@ -2,9 +2,7 @@ package org.halvors.electrometrics.common.block;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -13,10 +11,15 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import org.halvors.electrometrics.Electrometrics;
 import org.halvors.electrometrics.client.render.BlockRenderer;
+import org.halvors.electrometrics.client.render.DefaultIcon;
+import org.halvors.electrometrics.common.Reference;
+import org.halvors.electrometrics.common.base.IElectricTier;
+import org.halvors.electrometrics.common.base.ITier;
 import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.base.Tier;
 import org.halvors.electrometrics.common.base.tile.ITileOwnable;
@@ -25,7 +28,10 @@ import org.halvors.electrometrics.common.item.ItemBlockMachine;
 import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.tile.TileEntityComponentContainer;
 import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityMeter;
+import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityStorage;
+import org.halvors.electrometrics.common.util.LanguageUtils;
 import org.halvors.electrometrics.common.util.MachineUtils;
+import org.halvors.electrometrics.common.util.PlayerUtils;
 
 import java.util.List;
 
@@ -36,7 +42,6 @@ import java.util.List;
  * 1: Advanced Electricity Meter
  * 2: Elite Electricity Meter
  * 3: Ultimate Electricity Meter
- * 4: Creative Electricity Meter
  */
 public class BlockMachine extends BlockRotatable {
 	public BlockMachine() {
@@ -49,19 +54,30 @@ public class BlockMachine extends BlockRotatable {
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
-		MachineType machineType = MachineType.getType(metadata);
+		MachineType machineType = MachineType.getType(this, metadata);
 
 		return machineType.getTileEntity();
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister iconRegister) {
-		super.registerBlockIcons(iconRegister);
+	public void registerIcons(IIconRegister iconRegister) {
+		super.registerIcons(iconRegister);
+
+		IIcon topIcon = iconRegister.registerIcon(Reference.PREFIX + name + "Top");
+		IIcon inputIcon = iconRegister.registerIcon(Reference.PREFIX + name + "Input");
+		IIcon outputIcon = iconRegister.registerIcon(Reference.PREFIX + name + "Output");
+		DefaultIcon defaultTopIcon = DefaultIcon.getActivePair(topIcon, 1);
 
 		// Adding all icons for the machine types.
 		for (MachineType machineType : MachineType.values()) {
-			BlockRenderer.loadDynamicTextures(iconRegister, machineType.getUnlocalizedName(), iconList[machineType.getMetadata()], defaultIcon);
+			BlockRenderer.loadDynamicTextures(iconRegister,
+					machineType.getUnlocalizedName(),
+					iconMetadataList[machineType.getMetadata()],
+					defaultBlockIcon,
+					defaultTopIcon,
+					DefaultIcon.getActivePair(outputIcon, 4),
+					DefaultIcon.getActivePair(inputIcon, 5));
 		}
 	}
 
@@ -70,36 +86,33 @@ public class BlockMachine extends BlockRotatable {
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item item, CreativeTabs creativetabs, List list) {
 		// Making all MachineTypes available in creative mode.
-		for (MachineType machineType : MachineType.values()) {
-			switch (machineType) {
-				case BASIC_ELECTRICITY_METER:
-				case ADVANCED_ELECTRICITY_METER:
-				case ELITE_ELECTRICITY_METER:
-				case ULTIMATE_ELECTRICITY_METER:
-				case CREATIVE_ELECTRICITY_METER:
-					ItemStack itemStack = machineType.getItemStack();
-					ItemBlockMachine itemBlockMachine = (ItemBlockMachine) itemStack.getItem();
-					itemBlockMachine.setElectricityMeterTier(itemStack, Tier.ElectricityMeter.getFromMachineType(machineType));
+        for (MachineType machineType : MachineType.values()) {
+            if (machineType.isEnabled()) {
+                switch (machineType) {
+                    case BASIC_ELECTRICITY_METER:
+                    case ADVANCED_ELECTRICITY_METER:
+                    case ELITE_ELECTRICITY_METER:
+                    case ULTIMATE_ELECTRICITY_METER:
+                        ItemStack itemStack = machineType.getItemStack();
+                        ItemBlockMachine itemBlockMachine = (ItemBlockMachine) itemStack.getItem();
+                        itemBlockMachine.setElectricTier(itemStack, Tier.Electric.getFromMachineType(machineType));
 
-					list.add(itemStack);
-					break;
+                        list.add(itemStack);
+                        break;
 
-				default:
-					list.add(machineType.getItemStack());
-					break;
-			}
+                    default:
+                        list.add(machineType.getItemStack());
+                        break;
+                }
+            }
 		}
-	}
-
-	@Override
-	public int damageDropped (int metadata) {
-		return metadata;
 	}
 
 	@Override
 	public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player) {
 		if (!world.isRemote) {
 			TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
+			MachineType machineType = MachineType.getType(this, world.getBlockMetadata(x, y, z));
 
 			// Display a message the the player clicking this block if not the owner.
 			if (tileEntity instanceof TileEntityComponentContainer) {
@@ -109,7 +122,7 @@ public class BlockMachine extends BlockRotatable {
 					ITileOwnable tileOwnable = (ITileOwnable) tileEntityComponentContainer.getComponentImplementing(ITileOwnable.class);
 
 					if (!tileOwnable.isOwner(player)) {
-						player.addChatMessage(new ChatComponentText("This block is owned by " + tileOwnable.getOwnerName() + ", you cannot remove this block."));
+						player.addChatMessage(new ChatComponentText(String.format(LanguageUtils.localize("tooltip.blockOwnedBy"), machineType.getLocalizedName(), tileOwnable.getOwnerName())));
 					}
 				}
 			}
@@ -118,35 +131,41 @@ public class BlockMachine extends BlockRotatable {
 
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int facing, float playerX, float playerY, float playerZ) {
-		TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
+        TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
 
-		if (!MachineUtils.hasUsableWrench(player, x, y, z)) {
-			// Check whether or not this ITileOwnable has a owner, if not set the current player as owner.
-			if (tileEntity instanceof TileEntityComponentContainer) {
-				TileEntityComponentContainer tileEntityComponentContainer = (TileEntityComponentContainer) tileEntity;
+        if (!MachineUtils.hasUsableWrench(player, x, y, z)) {
+            if (!player.isSneaking()) {
+				if (tileEntity instanceof TileEntityComponentContainer) {
+					TileEntityComponentContainer tileEntityComponentContainer = (TileEntityComponentContainer) tileEntity;
 
-				if (tileEntityComponentContainer.hasComponentImplementing(ITileOwnable.class)) {
-					ITileOwnable tileOwnable = (ITileOwnable) tileEntityComponentContainer.getComponentImplementing(ITileOwnable.class);
+					// Check whether or not this ITileOwnable has a owner, if not set the current player as owner.
+					if (tileEntityComponentContainer.hasComponentImplementing(ITileOwnable.class)) {
+						ITileOwnable tileOwnable = (ITileOwnable) tileEntityComponentContainer.getComponentImplementing(ITileOwnable.class);
 
-					if (!tileOwnable.hasOwner()) {
-						tileOwnable.setOwner(player);
+						if (!tileOwnable.hasOwner()) {
+							tileOwnable.setOwner(player);
+						}
 					}
 				}
-			}
 
-			// Open the GUI.
-			player.openGui(Electrometrics.getInstance(), 0, world, x, y, z);
+                // Open the GUI.
+                player.openGui(Electrometrics.getInstance(), 0, world, x, y, z);
 
-			return true;
-		}
+                return true;
+            }
+        } else {
+            if (!world.isRemote && player.isSneaking()) {
+                dismantleBlock(world, x, y, z, false);
+
+                return true;
+            }
+        }
 
 		return super.onBlockActivated(world, x, y, z, player, facing, playerX, playerY, playerZ);
 	}
 
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemStack) {
-		super.onBlockPlacedBy(world, x, y, z, entity, itemStack);
-
 		TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
 
 		if (tileEntity instanceof TileEntityComponentContainer) {
@@ -155,14 +174,15 @@ public class BlockMachine extends BlockRotatable {
 			// If this TileEntity implements ITileRedstoneControl, check if it's getting powered.
 			if (tileEntityComponentContainer.hasComponentImplementing(ITileRedstoneControl.class)) {
 				ITileRedstoneControl tileRedstoneControl = (ITileRedstoneControl) tileEntityComponentContainer.getComponentImplementing(ITileRedstoneControl.class);
-
 				tileRedstoneControl.setPowered(world.isBlockIndirectlyGettingPowered(x, y, z));
 			}
+
 
 			// Check if this entity is a player.
 			if (entity instanceof EntityPlayer) {
 				EntityPlayer player = (EntityPlayer) entity;
 
+				// If this TileEntity implements ITileOwnable, we set the owner.
 				if (tileEntityComponentContainer.hasComponentImplementing(ITileOwnable.class)) {
 					ITileOwnable tileOwnable = (ITileOwnable) tileEntityComponentContainer.getComponentImplementing(ITileOwnable.class);
 
@@ -170,10 +190,12 @@ public class BlockMachine extends BlockRotatable {
 				}
 			}
 		}
+
+		super.onBlockPlacedBy(world, x, y, z, entity, itemStack);
 	}
 
 	@Override
-	 public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
+	public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
 		if (!world.isRemote) {
 			TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
 
@@ -196,9 +218,21 @@ public class BlockMachine extends BlockRotatable {
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player) {
 		TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
-		int metadata = world.getBlockMetadata(x, y, z);
-		ItemStack itemStack = new ItemStack(this, 1, metadata);
+		MachineType machineType = MachineType.getType(this, tileEntity.getBlockMetadata());
+		ItemStack itemStack = machineType.getItemStack();
 		ItemBlockMachine itemBlockMachine = (ItemBlockMachine) itemStack.getItem();
+
+		if (tileEntity instanceof ITier) {
+			ITier tiered = (ITier) tileEntity;
+
+			itemBlockMachine.setTier(itemStack, tiered.getTier());
+		}
+
+		if (tileEntity instanceof IElectricTier) {
+			IElectricTier electricTiered = (IElectricTier) tileEntity;
+
+			itemBlockMachine.setElectricTier(itemStack, electricTiered.getElectricTier());
+		}
 
 		if (tileEntity instanceof TileEntityComponentContainer) {
 			TileEntityComponentContainer tileEntityComponentContainer = (TileEntityComponentContainer) tileEntity;
@@ -210,10 +244,15 @@ public class BlockMachine extends BlockRotatable {
 			}
 		}
 
+		if (tileEntity instanceof TileEntityElectricityStorage) {
+			TileEntityElectricityStorage tileEntityElectricityStorage = (TileEntityElectricityStorage) tileEntity;
+
+			itemBlockMachine.setElectricityStored(itemStack, tileEntityElectricityStorage.getStorage().getEnergyStored());
+		}
+
 		if (tileEntity instanceof TileEntityElectricityMeter) {
 			TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
 
-			itemBlockMachine.setElectricityMeterTier(itemStack, tileEntityElectricityMeter.getTier());
 			itemBlockMachine.setElectricityCount(itemStack, tileEntityElectricityMeter.getElectricityCount());
 			itemBlockMachine.setElectricityStored(itemStack, tileEntityElectricityMeter.getStorage().getEnergyStored());
 		}
@@ -231,9 +270,8 @@ public class BlockMachine extends BlockRotatable {
 
 			if (tileEntityComponentContainer.hasComponentImplementing(ITileOwnable.class)) {
 				ITileOwnable tileOwnable = (ITileOwnable) tileEntityComponentContainer.getComponentImplementing(ITileOwnable.class);
-				EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 
-				return tileOwnable.isOwner(player) ? blockHardness : -1;
+				return tileOwnable.isOwner(PlayerUtils.getClientPlayer()) ? blockHardness : -1;
 			}
 		}
 
@@ -250,10 +288,7 @@ public class BlockMachine extends BlockRotatable {
 			if (tileEntityComponentContainer.hasComponentImplementing(ITileOwnable.class)) {
 				ITileOwnable tileOwnable = (ITileOwnable) tileEntityComponentContainer.getComponentImplementing(ITileOwnable.class);
 
-
-				EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-
-				return tileOwnable.isOwner(player) ? blockResistance : -1;
+				return tileOwnable.isOwner(PlayerUtils.getClientPlayer()) ? blockResistance : -1;
 			}
 		}
 

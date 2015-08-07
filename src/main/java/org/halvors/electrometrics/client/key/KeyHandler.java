@@ -8,9 +8,9 @@ import org.lwjgl.input.Mouse;
 
 @SideOnly(Side.CLIENT)
 public class KeyHandler {
-    public static boolean getIsKeyPressed(KeyBinding keyBinding) {
-        int keyCode = keyBinding.getKeyCode();
+	public static boolean getIsKeyPressed(KeyBinding keyBinding) {
+		int keyCode = keyBinding.getKeyCode();
 
-        return keyCode < 0 ? Mouse.isButtonDown(keyCode + 100) : Keyboard.isKeyDown(keyCode);
-    }
+		return keyCode < 0 ? Mouse.isButtonDown(keyCode + 100) : Keyboard.isKeyDown(keyCode);
+	}
 }

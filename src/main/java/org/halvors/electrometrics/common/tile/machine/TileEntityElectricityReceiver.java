@@ -11,7 +11,7 @@ import java.util.EnumSet;
  *
  * @author halvors
  */
-public abstract class TileEntityElectricityReceiver extends TileEntityElectricityStorage implements IEnergyReceiver {
+public class TileEntityElectricityReceiver extends TileEntityElectricityStorage implements IEnergyReceiver {
 	protected TileEntityElectricityReceiver(MachineType machineType, int maxEnergy) {
 		super(machineType, maxEnergy);
 	}
@@ -26,7 +26,7 @@ public abstract class TileEntityElectricityReceiver extends TileEntityElectricit
 
 	@Override
 	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-		if (getReceivingSides().contains(from)) {
+		if (getReceivingDirections().contains(from)) {
 			return storage.receiveEnergy(maxReceive, simulate);
 		}
 
@@ -45,17 +45,13 @@ public abstract class TileEntityElectricityReceiver extends TileEntityElectricit
 
 	@Override
 	public boolean canConnectEnergy(ForgeDirection from) {
-		return getReceivingSides().contains(from) || getExtractingSides().contains(from);
+		return getReceivingDirections().contains(from);
 	}
 
-	EnumSet<ForgeDirection> getReceivingSides() {
+	protected EnumSet<ForgeDirection> getReceivingDirections() {
 		EnumSet<ForgeDirection> directions = EnumSet.allOf(ForgeDirection.class);
 		directions.remove(ForgeDirection.UNKNOWN);
 
 		return directions;
-	}
-
-	EnumSet<ForgeDirection> getExtractingSides() {
-		return EnumSet.noneOf(ForgeDirection.class);
 	}
 }

@@ -2,107 +2,77 @@ package org.halvors.electrometrics.common.tile;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.Packet;
 import org.halvors.electrometrics.common.base.tile.ITileNetworkable;
 import org.halvors.electrometrics.common.base.tile.ITileRotatable;
-import org.halvors.electrometrics.common.network.PacketHandler;
-import org.halvors.electrometrics.common.network.PacketRequestData;
-import org.halvors.electrometrics.common.network.PacketTileEntity;
+import org.halvors.electrometrics.common.network.NetworkHandler;
+import org.halvors.electrometrics.common.network.packet.PacketTileEntity;
 
 import java.util.List;
 
 public class TileEntityRotatable extends TileEntityComponentContainer implements ITileNetworkable, ITileRotatable {
-    // The direction this TileEntity's block is facing.
-    protected int facing;
+	// The direction this TileEntity's block is facing.
+	protected int facing;
 
-    // The direction this TileEntity's block is facing, client side.
-    private int clientFacing;
+	protected TileEntityRotatable(String inventoryName) {
+		super(inventoryName);
+	}
 
-    protected TileEntityRotatable(String inventoryName) {
-        super(inventoryName);
-    }
+	@Override
+	public void readFromNBT(NBTTagCompound nbtTagCompound) {
+		super.readFromNBT(nbtTagCompound);
 
-    @Override
-    public void validate() {
-        super.validate();
+		facing = nbtTagCompound.getInteger("facing");
+	}
 
-        if (worldObj.isRemote) {
-            PacketHandler.sendToServer(new PacketRequestData(this));
-        }
-    }
+	@Override
+	public void writeToNBT(NBTTagCompound nbtTagCompound) {
+		super.writeToNBT(nbtTagCompound);
 
-    @Override
-    public void readFromNBT(NBTTagCompound nbtTagCompound) {
-        super.readFromNBT(nbtTagCompound);
+		nbtTagCompound.setInteger("facing", facing);
+	}
 
-        facing = nbtTagCompound.getInteger("facing");
-    }
+	@Override
+	public Packet getDescriptionPacket() {
+		return NetworkHandler.getPacketFrom(new PacketTileEntity(this));
+	}
 
-    @Override
-    public void writeToNBT(NBTTagCompound nbtTagCompound) {
-        super.writeToNBT(nbtTagCompound);
+	@Override
+	public void handlePacketData(ByteBuf dataStream) throws Exception {
+		facing = dataStream.readInt();
 
-        nbtTagCompound.setInteger("facing", facing);
-    }
+		// Re-render the block.
+		worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
 
-    @Override
-    public void handlePacketData(ByteBuf dataStream) throws Exception {
-        super.handlePacketData(dataStream);
+		// Update potentially connected redstone blocks.
+		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
+	}
 
-        facing = dataStream.readInt();
+	@Override
+	public List<Object> getPacketData(List<Object> objects) {
+		objects.add(facing);
 
-        // Check if client is in sync with the server, if not update it.
-        if (clientFacing != facing) {
-            clientFacing = facing;
+		return objects;
+	}
 
-            // Update the block's rotation.
-            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+	@Override
+	public boolean canSetFacing(int facing) {
+		return true;
+	}
 
-            // Update potentially connected redstone blocks.
-            worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
-        }
-    }
+	@Override
+	public int getFacing() {
+		return facing;
+	}
 
-    @Override
-    public List<Object> getPacketData(List<Object> list) {
-        super.getPacketData(list);
+	@Override
+	public void setFacing(int facing) {
+		if (canSetFacing(facing)) {
+			this.facing = facing;
+		}
 
-        list.add(facing);
-
-        return list;
-    }
-
-    @Override
-    public boolean canSetFacing(int facing) {
-        return true;
-    }
-
-    @Override
-    public int getFacing() {
-        return facing;
-    }
-
-    @Override
-    public void setFacing(int facing) {
-        if (canSetFacing(facing)) {
-            this.facing = facing;
-        }
-
-        if (worldObj.isRemote) {
-            PacketHandler.sendToServer(new PacketTileEntity(this));
-        }
-
-        // Update the block's rotation.
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-
-        // Update potentially connected redstone blocks.
-        worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
-
-        /*
-        if (!worldObj.isRemote || clientFacing != facing) {
-            clientFacing = facing;
-
-            PacketHandler.sendToReceivers(new PacketTileEntity(this), this);
-        }
-        */
-    }
+		if (!worldObj.isRemote) {
+			NetworkHandler.sendToReceivers(new PacketTileEntity(this), this);
+		}
+	}
 }

@@ -28,18 +28,18 @@ configFile.withReader {
 }
 
 version = config.minecraft_version + "-" + config.mod_version
-group= "org.halvors.electrometrics"
+group = "org.halvors.electrometrics"
 archivesBaseName = "Electrometrics"
 sourceCompatibility = "7"
 targetCompatibility = "7"
 
 minecraft {
 	version = config.minecraft_version + "-" + config.forge_version
+    runDir = "eclipse"
+    mappings = config.mcp_mappings
 
     // Replace version in Reference.java
-    replace "@version@", config.mod_version
-
-    runDir = "eclipse"
+    replace "@version", config.mod_version
 }
 
 dependencies {
@@ -54,20 +54,22 @@ idea {
 }
 
 processResources {
-    // This will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
+    // This will ensure that this task is redone when this versions change.
+    inputs.property "mod_version", config.mod_version
+    inputs.property "minecraft_version", config.minecraft_version
+    inputs.property "forge_version", config.forge_version
 
     // Replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
-        include "mcmod.info"
-                
-        // Replace version and mcversion
-        expand "version" :project.version, "mcversion":project.minecraft.version
+        include "*.info"
+
+        // Replace version and minecraft_version
+        expand "version" : config.mod_version,
+               "minecraft_version" : config.minecraft_version
     }
-        
-    // Copy everything else, thats not the mcmod.info
+
+    // Copy everything else
     from(sourceSets.main.resources.srcDirs) {
-        exclude "mcmod.info"
+        include "assets/**/*.*"
     }
 }

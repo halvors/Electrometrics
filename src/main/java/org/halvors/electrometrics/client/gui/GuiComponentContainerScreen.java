@@ -14,27 +14,26 @@ import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.util.ResourceUtils;
 import org.lwjgl.opengl.GL11;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @SideOnly(Side.CLIENT)
 public abstract class GuiComponentContainerScreen extends GuiScreen implements IGui {
-	static final Minecraft game = Minecraft.getMinecraft();
+	private static final Minecraft game = Minecraft.getMinecraft();
 
-	final Set<IComponent> components = new HashSet<>();
-	final ResourceLocation defaultResource = ResourceUtils.getResource(ResourceType.GUI, "Screen.png");
-	final TileEntity tileEntity;
+    protected final Set<IComponent> components = new HashSet<>();
+    protected final ResourceLocation defaultResource = ResourceUtils.getResource(ResourceType.GUI, "Screen.png");
+    protected final TileEntity tileEntity;
 
 	// This is not present by default in GuiComponentContainerScreen as it is in GuiComponentContainerInventoryScreen.
-	final int xSize = 176;
-	final int ySize = 166;
+	protected final int xSize = 176;
+    protected final int ySize = 100;
 
 	private int guiLeft;
 	private int guiTop;
 
-	GuiComponentContainerScreen(TileEntity tileEntity) {
+    protected GuiComponentContainerScreen(TileEntity tileEntity) {
 		this.tileEntity = tileEntity;
 	}
 
@@ -95,29 +94,32 @@ public abstract class GuiComponentContainerScreen extends GuiScreen implements I
 		}
 	}
 
-	void drawGuiScreenForegroundLayer(int mouseX, int mouseY) {
-		fontRendererObj.drawString(tileEntity.getInventoryName(), (xSize / 2) - (fontRendererObj.getStringWidth(tileEntity.getInventoryName()) / 2), 6, 0x404040);
+    protected void drawGuiScreenBackgroundLayer(float partialTick, int mouseX, int mouseY) {
+        game.renderEngine.bindTexture(defaultResource);
 
-		int xAxis = (mouseX - (width - xSize) / 2);
-		int yAxis = (mouseY - (height - ySize) / 2);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-		for (IComponent component : components) {
-			if (component instanceof IGuiComponent) {
-				IGuiComponent guiComponent = (IGuiComponent) component;
-				guiComponent.renderForeground(xAxis, yAxis);
-			}
-		}
-	}
+        int guiWidth = (width - xSize) / 2;
+        int guiHeight = (height - ySize) / 2;
 
-	void drawGuiScreenBackgroundLayer(float partialTick, int mouseX, int mouseY) {
-		game.renderEngine.bindTexture(defaultResource);
+        drawTexturedModalRect(guiWidth, guiHeight, 0, 0, xSize, ySize);
 
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        int xAxis = mouseX - guiWidth;
+        int yAxis = mouseY - guiHeight;
 
+        for (IComponent component : components) {
+            if (component instanceof IGuiComponent) {
+                IGuiComponent guiComponent = (IGuiComponent) component;
+                guiComponent.renderBackground(xAxis, yAxis, guiWidth, guiHeight, xSize, ySize);
+            }
+        }
+    }
+
+	protected void drawGuiScreenForegroundLayer(int mouseX, int mouseY) {
 		int guiWidth = (width - xSize) / 2;
 		int guiHeight = (height - ySize) / 2;
 
-		drawTexturedModalRect(guiWidth, guiHeight, 0, 0, xSize, ySize);
+		drawString(tileEntity.getInventoryName(), (xSize / 2) - (fontRendererObj.getStringWidth(tileEntity.getInventoryName()) / 2), 6);
 
 		int xAxis = mouseX - guiWidth;
 		int yAxis = mouseY - guiHeight;
@@ -125,20 +127,22 @@ public abstract class GuiComponentContainerScreen extends GuiScreen implements I
 		for (IComponent component : components) {
 			if (component instanceof IGuiComponent) {
 				IGuiComponent guiComponent = (IGuiComponent) component;
-				guiComponent.renderBackground(xAxis, yAxis, guiWidth, guiHeight);
+				guiComponent.renderForeground(xAxis, yAxis, xSize, ySize);
 			}
 		}
 	}
 
 	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int button) {
-		int xAxis = (mouseX - (width - xSize) / 2);
-		int yAxis = (mouseY - (height - ySize) / 2);
+		int guiWidth = (width - xSize) / 2;
+		int guiHeight = (height - ySize) / 2;
+		int xAxis = mouseX - guiWidth;
+		int yAxis = mouseY - guiHeight;
 
 		for (IComponent component : components) {
 			if (component instanceof IGuiComponent) {
 				IGuiComponent guiComponent = (IGuiComponent) component;
-				guiComponent.preMouseClicked(xAxis, yAxis, button);
+				guiComponent.preMouseClicked(xAxis, yAxis, xSize, ySize, button);
 			}
 		}
 
@@ -147,21 +151,9 @@ public abstract class GuiComponentContainerScreen extends GuiScreen implements I
 		for (IComponent component : components) {
 			if (component instanceof IGuiComponent) {
 				IGuiComponent guiComponent = (IGuiComponent) component;
-				guiComponent.mouseClicked(xAxis, yAxis, button);
+				guiComponent.mouseClicked(xAxis, yAxis, xSize, ySize, button);
 			}
 		}
-	}
-
-	@Override
-	protected void drawCreativeTabHoveringText(String text, int x, int y) {
-		func_146283_a(Collections.singletonList(text), x, y);
-	}
-
-	@Override
-	protected void func_146283_a(List list, int x, int y) {
-		GL11.glPushAttrib(GL11.GL_ENABLE_BIT + GL11.GL_LIGHTING_BIT);
-		super.func_146283_a(list, x, y);
-		GL11.glPopAttrib();
 	}
 
 	@Override
@@ -180,8 +172,8 @@ public abstract class GuiComponentContainerScreen extends GuiScreen implements I
 	}
 
 	@Override
-	protected void mouseMovedOrUp(int mouseX, int mouseY, int type) {
-		super.mouseMovedOrUp(mouseX, mouseY, type);
+	protected void mouseReleased(int mouseX, int mouseY, int type) {
+		super.mouseReleased(mouseX, mouseY, type);
 
 		int xAxis = (mouseX - (width - xSize) / 2);
 		int yAxis = (mouseY - (height - ySize) / 2);
@@ -189,19 +181,24 @@ public abstract class GuiComponentContainerScreen extends GuiScreen implements I
 		for (IComponent component : components) {
 			if (component instanceof IGuiComponent) {
 				IGuiComponent guiComponent = (IGuiComponent) component;
-				guiComponent.mouseMovedOrUp(xAxis, yAxis, type);
+				guiComponent.mouseReleased(xAxis, yAxis, type);
 			}
 		}
 	}
 
 	@Override
-	public void drawTexturedRect(int x, int y, int u, int v, int w, int h) {
-		drawTexturedModalRect(x, y, u, v, w, h);
+	public void drawTexturedRect(int x, int y, int textureX, int textureY, int width, int height) {
+		super.drawTexturedModalRect(x, y, textureX, textureY, width, height);
 	}
 
 	@Override
-	public void drawTexturedRectFromIcon(int x, int y, IIcon icon, int w, int h) {
-		drawTexturedModelRectFromIcon(x, y, icon, w, h);
+	public void drawTexturedRectFromIcon(int x, int y, IIcon icon, int width, int height) {
+		super.drawTexturedModelRectFromIcon(x, y, icon, width, height);
+	}
+
+	@Override
+	public void drawString(String text, int x, int y) {
+		fontRendererObj.drawString(text, x, y, 0x404040);
 	}
 
 	@Override
@@ -211,7 +208,7 @@ public abstract class GuiComponentContainerScreen extends GuiScreen implements I
 
 	@Override
 	public void displayTooltips(List<String> list, int xAxis, int yAxis) {
-		func_146283_a(list, xAxis, yAxis);
+		drawHoveringText(list, xAxis, yAxis);
 	}
 
 	@Override

@@ -5,7 +5,7 @@ import net.minecraft.world.IBlockAccess;
 public class TileEntity extends net.minecraft.tileentity.TileEntity {
 	private final String inventoryName;
 
-	TileEntity(String inventoryName) {
+	protected TileEntity(String inventoryName) {
 		this.inventoryName = inventoryName;
 	}
 

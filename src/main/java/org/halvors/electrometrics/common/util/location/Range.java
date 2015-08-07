@@ -1,15 +1,17 @@
 package org.halvors.electrometrics.common.util.location;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import org.halvors.electrometrics.common.tile.TileEntity;
 
 public class Range {
-	private final int dimensionId;
+	private int dimensionId;
 	private int minX;
-	private final int minY;
+	private int minY;
 	private int minZ;
 	private int maxX;
-	private final int maxY;
+	private int maxY;
 	private int maxZ;
 
 	public Range(int minX, int minY, int minZ, int maxX, int maxY, int maxZ, int dimensionId) {
@@ -22,30 +24,38 @@ public class Range {
 		this.maxZ = maxZ;
 	}
 
-	public Range(ChunkLocation chunkLocation) {
-		this.dimensionId = chunkLocation.getDimensionId();
-		this.minX = chunkLocation.getX() * 16;
+	public Range(Chunk chunk) {
+		this.dimensionId = chunk.getDimensionId();
+		this.minX = chunk.getX() * 16;
 		this.minY = 0;
-		this.minZ = chunkLocation.getZ() * 16;
+		this.minZ = chunk.getZ() * 16;
 		this.maxX = minX + 16;
 		this.maxY = 255;
 		this.maxZ = minZ + 16;
 	}
 
-	public Range(BlockLocation blockLocation) {
-		this.dimensionId = blockLocation.getDimensionId();
-		this.minX = blockLocation.getX();
-		this.minY = blockLocation.getY();
-		this.minZ = blockLocation.getZ();
-		this.maxX = blockLocation.getX() + 1;
-		this.maxY = blockLocation.getY() + 1;
-		this.maxZ = blockLocation.getZ() + 1;
+	public Range(Location location) {
+		this.dimensionId = location.getDimensionId();
+		this.minX = location.getX();
+		this.minY = location.getY();
+		this.minZ = location.getZ();
+		this.maxX = location.getX() + 1;
+		this.maxY = location.getY() + 1;
+		this.maxZ = location.getZ() + 1;
+	}
+
+	public Range(Entity entity) {
+		this(new Location(entity));
+	}
+
+	public Range(TileEntity tileEntity) {
+		this(new Location(tileEntity));
 	}
 
 	public static Range getChunkRange(EntityPlayer player) {
 		int radius = FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getViewDistance();
 
-		return new Range(new ChunkLocation(player)).expandChunks(radius);
+		return new Range(new Chunk(player)).expandChunks(radius);
 	}
 
 	public Range expandChunks(int chunks) {
@@ -58,7 +68,12 @@ public class Range {
 	}
 
 	public boolean intersects(Range range) {
-		return (maxX + 1 - 1.E-05D > range.minX) && (range.maxX + 1 - 1.E-05D > minX) && (maxY + 1 - 1.E-05D > range.minY) && (range.maxY + 1 - 1.E-05D > minY) && (maxZ + 1 - 1.E-05D > range.minZ) && (range.maxZ + 1 - 1.E-05D > minZ);
+		return (maxX + 1 - 1.E-05D > range.minX) &&
+				(range.maxX + 1 - 1.E-05D > minX) &&
+				(maxY + 1 - 1.E-05D > range.minY) &&
+				(range.maxY + 1 - 1.E-05D > minY) &&
+				(maxZ + 1 - 1.E-05D > range.minZ) &&
+				(range.maxZ + 1 - 1.E-05D > minZ);
 	}
 
 	public int getDimensionId() {

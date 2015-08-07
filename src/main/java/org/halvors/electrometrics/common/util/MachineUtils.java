@@ -6,74 +6,85 @@ import mekanism.api.IMekWrench;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import org.halvors.electrometrics.common.ConfigurationManager.Integration;
 import org.halvors.electrometrics.common.base.tile.ITileRedstoneControl;
 import org.halvors.electrometrics.common.tile.TileEntity;
 
 public class MachineUtils {
-    /**
-     * Whether or not the player has a usable wrench for a block at the coordinates given.
-     * @param player - the player using the wrench
-     * @param x - the x coordinate of the block being wrenched
-     * @param y - the y coordinate of the block being wrenched
-     * @param z - the z coordinate of the block being wrenched
-     * @return if the player can use the wrench
-     */
-    public static boolean hasUsableWrench(EntityPlayer player, int x, int y, int z) {
-        ItemStack itemStack = player.getCurrentEquippedItem();
+	/**
+	 * Whether or not the player has a usable wrench for a block at the coordinates given.
+	 * @param player - the player using the wrench
+	 * @param x - the x coordinate of the block being wrenched
+	 * @param y - the y coordinate of the block being wrenched
+	 * @param z - the z coordinate of the block being wrenched
+	 * @return if the player can use the wrench
+	 */
+	public static boolean hasUsableWrench(EntityPlayer player, int x, int y, int z) {
+		ItemStack itemStack = player.getCurrentEquippedItem();
 
-        if (itemStack != null) {
-            Item item = itemStack.getItem();
+		if (itemStack != null) {
+			Item item = itemStack.getItem();
 
-            // Check if item is a Buildcraft wrench.
-            if (item instanceof IToolWrench) {
-                IToolWrench wrench = (IToolWrench) item;
+			if (Integration.isBuildCraftEnabled) {
+				// Check if item is a Buildcraft wrench.
+				if (item instanceof IToolWrench) {
+					IToolWrench wrench = (IToolWrench) item;
 
-                return wrench.canWrench(player, x, y, z);
-            }
+					if (wrench.canWrench(player, x, y, z)) {
+						wrench.wrenchUsed(player, x, y, z);
 
-            // Check if item is a CoFH wrench.
-            if (item instanceof IToolHammer) {
-                IToolHammer wrench = (IToolHammer) item;
+						return true;
+					}
+				}
+			}
 
-                return wrench.isUsable(itemStack, player, x, y, z);
-            }
+			if (Integration.isCoFHCoreEnabled) {
+				// Check if item is a CoFH wrench.
+				if (item instanceof IToolHammer) {
+					IToolHammer wrench = (IToolHammer) item;
 
-            // Check if item is a Mekanism wrench.
-            if (item instanceof IMekWrench) {
-                IMekWrench wrench = (IMekWrench) item;
+					return wrench.isUsable(itemStack, player, x, y, z);
+				}
+			}
 
-                return wrench.canUseWrench(player, x, y, z);
-            }
-        }
+			if (Integration.isMekanismEnabled) {
+				// Check if item is a Mekanism wrench.
+				if (item instanceof IMekWrench) {
+					IMekWrench wrench = (IMekWrench) item;
 
-        return false;
-    }
+					return wrench.canUseWrench(player, x, y, z);
+				}
+			}
+		}
 
-    /**
-     * Whether or not a certain TileEntity can function with redstone logic. Illogical to use unless the defined TileEntity implements
-     * ITileRedstoneControl.
-     * @param tileEntity - TileEntity to check
-     * @return if the TileEntity can function with redstone logic
-     */
-    public static boolean canFunction(TileEntity tileEntity) {
-        if (tileEntity instanceof ITileRedstoneControl) {
-            ITileRedstoneControl redstoneControl = (ITileRedstoneControl) tileEntity;
+		return false;
+	}
 
-            switch (redstoneControl.getControlType()) {
-                case DISABLED:
-                    return true;
+	/**
+	 * Whether or not a certain TileEntity can function with redstone logic. Illogical to use unless the defined TileEntity implements
+	 * ITileRedstoneControl.
+	 * @param tileEntity - TileEntity to check
+	 * @return if the TileEntity can function with redstone logic
+	 */
+	public static boolean canFunction(TileEntity tileEntity) {
+		if (tileEntity instanceof ITileRedstoneControl) {
+			ITileRedstoneControl tileRedstoneControl = (ITileRedstoneControl) tileEntity;
 
-                case HIGH:
-                    return redstoneControl.isPowered();
+			switch (tileRedstoneControl.getControlType()) {
+				case DISABLED:
+					return true;
 
-                case LOW:
-                    return !redstoneControl.isPowered();
+				case HIGH:
+					return tileRedstoneControl.isPowered();
 
-                case PULSE:
-                    return redstoneControl.isPowered() && !redstoneControl.wasPowered();
-            }
-        }
+				case LOW:
+					return !tileRedstoneControl.isPowered();
 
-        return false;
-    }
+				case PULSE:
+					return tileRedstoneControl.isPowered() && !tileRedstoneControl.wasPowered();
+			}
+		}
+
+		return false;
+	}
 }

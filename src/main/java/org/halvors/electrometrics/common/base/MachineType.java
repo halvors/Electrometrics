@@ -1,122 +1,114 @@
 package org.halvors.electrometrics.common.base;
 
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import org.halvors.electrometrics.Electrometrics;
-import org.halvors.electrometrics.client.gui.GuiElectricityMeter;
+import org.halvors.electrometrics.common.ConfigurationManager;
+import org.halvors.electrometrics.common.block.BlockMachine;
 import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.tile.machine.TileEntityMachine;
 import org.halvors.electrometrics.common.util.LanguageUtils;
 
 public enum MachineType {
-    BASIC_ELECTRICITY_METER(0, "ElectricityMeter", TileEntityElectricityMeter.class, GuiElectricityMeter.class),
-    ADVANCED_ELECTRICITY_METER(1, "ElectricityMeter", TileEntityElectricityMeter.class, GuiElectricityMeter.class),
-    ELITE_ELECTRICITY_METER(2, "ElectricityMeter", TileEntityElectricityMeter.class, GuiElectricityMeter.class),
-    ULTIMATE_ELECTRICITY_METER(3, "ElectricityMeter", TileEntityElectricityMeter.class, GuiElectricityMeter.class),
-    CREATIVE_ELECTRICITY_METER(4, "ElectricityMeter", TileEntityElectricityMeter.class, GuiElectricityMeter.class);
+	BASIC_ELECTRICITY_METER(0, "ElectricityMeter", TileEntityElectricityMeter.class),
+	ADVANCED_ELECTRICITY_METER(1, "ElectricityMeter", TileEntityElectricityMeter.class),
+	ELITE_ELECTRICITY_METER(2, "ElectricityMeter", TileEntityElectricityMeter.class),
+	ULTIMATE_ELECTRICITY_METER(3, "ElectricityMeter", TileEntityElectricityMeter.class);
 
-    private final int metadata;
-    private final String name;
-    private final Class<? extends TileEntityMachine> tileEntityClass;
-    private final Class<? extends GuiScreen> guiClass;
+	private final int metadata;
+	private final String name;
+	private final Class<? extends TileEntityMachine> tileEntityClass;
 
-    MachineType(int metadata, String name, Class<? extends TileEntityMachine> tileEntityClass, Class<? extends GuiScreen> guiClass) {
-        this.metadata = metadata;
-        this.name = name;
-        this.tileEntityClass = tileEntityClass;
-        this.guiClass = guiClass;
-    }
+	MachineType(int metadata, String name, Class<? extends TileEntityMachine> tileEntityClass) {
+		this.metadata = metadata;
+		this.name = name;
+		this.tileEntityClass = tileEntityClass;
+	}
 
-    public String getUnlocalizedName() {
-        switch (this) {
-            case BASIC_ELECTRICITY_METER:
-            case ADVANCED_ELECTRICITY_METER:
-            case ELITE_ELECTRICITY_METER:
-            case ULTIMATE_ELECTRICITY_METER:
-            case CREATIVE_ELECTRICITY_METER:
-                Tier.Base baseTier = Tier.ElectricityMeter.getFromMachineType(this).getBase();
+	public String getUnlocalizedName() {
+		switch (this) {
+			case BASIC_ELECTRICITY_METER:
+			case ADVANCED_ELECTRICITY_METER:
+			case ELITE_ELECTRICITY_METER:
+			case ULTIMATE_ELECTRICITY_METER:
+				Tier.Electric electricTier = Tier.Electric.getFromMachineType(this);
+				Tier.Base baseTier = electricTier != null ? electricTier.getBase() : Tier.Base.BASIC;
 
-                return baseTier.getUnlocalizedName() + name;
+				return baseTier.getUnlocalizedName() + name;
 
-            default:
-                return name;
-        }
-    }
+			default:
+				return name;
+		}
+	}
 
-    public String getLocalizedName() {
-        String localizedName = LanguageUtils.translate("tile." + name + ".name");
+	public String getLocalizedName() {
+		String localizedName = LanguageUtils.localize("tile." + name + ".name");
 
-        switch (this) {
-            case BASIC_ELECTRICITY_METER:
-            case ADVANCED_ELECTRICITY_METER:
-            case ELITE_ELECTRICITY_METER:
-            case ULTIMATE_ELECTRICITY_METER:
-            case CREATIVE_ELECTRICITY_METER:
-                Tier.Base baseTier = Tier.ElectricityMeter.getFromMachineType(this).getBase();
+		switch (this) {
+			case BASIC_ELECTRICITY_METER:
+			case ADVANCED_ELECTRICITY_METER:
+			case ELITE_ELECTRICITY_METER:
+			case ULTIMATE_ELECTRICITY_METER:
+				Tier.Electric electricTier = Tier.Electric.getFromMachineType(this);
+				Tier.Base baseTier = electricTier != null ? electricTier.getBase() : Tier.Base.BASIC;
 
-                return baseTier.getLocalizedName() + " " + localizedName;
+				return baseTier.getLocalizedName() + " " + localizedName;
 
-            default:
-                return localizedName;
-        }
-    }
+			default:
+				return localizedName;
+		}
+	}
 
-    public int getMetadata() {
-        return metadata;
-    }
+	public int getMetadata() {
+		return metadata;
+	}
 
-    public TileEntityMachine getTileEntity() {
-        try {
-            switch (this) {
-                case BASIC_ELECTRICITY_METER:
-                case ADVANCED_ELECTRICITY_METER:
-                case ELITE_ELECTRICITY_METER:
-                case ULTIMATE_ELECTRICITY_METER:
-                case CREATIVE_ELECTRICITY_METER:
-                    return tileEntityClass.getConstructor(MachineType.class, Tier.ElectricityMeter.class).newInstance(this, Tier.ElectricityMeter.getFromMachineType(this));
+	public TileEntityMachine getTileEntity() {
+		try {
+			switch (this) {
+				case BASIC_ELECTRICITY_METER:
+				case ADVANCED_ELECTRICITY_METER:
+				case ELITE_ELECTRICITY_METER:
+				case ULTIMATE_ELECTRICITY_METER:
+					return tileEntityClass.getConstructor(MachineType.class, Tier.Electric.class).newInstance(this, Tier.Electric.getFromMachineType(this));
 
-                default:
-                    return tileEntityClass.newInstance();
-            }
-        } catch(Exception e) {
-            e.printStackTrace();
-            Electrometrics.getLogger().error("Unable to indirectly create TileEntity.");
-        }
+				default:
+					return tileEntityClass.newInstance();
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+			Electrometrics.getLogger().error("Unable to indirectly create TileEntity.");
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    public GuiScreen getGui(TileEntityMachine tileEntity) {
-        try {
-            return guiClass.getConstructor(tileEntityClass).newInstance(tileEntity);
-        } catch(Exception e) {
-            e.printStackTrace();
-            Electrometrics.getLogger().error("Unable to indirectly create GuiScreen.");
-        }
+	public ItemStack getItemStack() {
+		return new ItemStack(Electrometrics.blockMachine, 1, metadata);
+	}
 
-        return null;
-    }
+	public Item getItem() {
+		return getItemStack().getItem();
+	}
 
-    public static MachineType getType(int metadata) {
-        for (MachineType machineType : values()) {
-            if (metadata == machineType.getMetadata()) {
-                return machineType;
-            }
-        }
+	public boolean isEnabled() {
+		return ConfigurationManager.Machine.isEnabled(this);
+	}
 
-        return null;
-    }
+	public static MachineType getType(Block block, int metadata) {
+		if (block instanceof BlockMachine) {
+			for (MachineType machineType : values()) {
+				if (metadata == machineType.getMetadata()) {
+					return machineType;
+				}
+			}
+		}
 
-    public static MachineType getType(ItemStack itemStack) {
-        return getType(itemStack.getItemDamage());
-    }
+		return null;
+	}
 
-    public ItemStack getItemStack() {
-        return new ItemStack(Electrometrics.blockMachine, 1, metadata);
-    }
-
-    public Item getItem() {
-        return getItemStack().getItem();
-    }
+	public static MachineType getType(ItemStack itemStack) {
+		return getType(Block.getBlockFromItem(itemStack.getItem()), itemStack.getMetadata());
+	}
 }

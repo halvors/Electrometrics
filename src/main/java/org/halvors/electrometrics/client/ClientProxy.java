@@ -5,8 +5,11 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
+import org.halvors.electrometrics.client.gui.GuiElectricityMeter;
 import org.halvors.electrometrics.common.CommonProxy;
+import org.halvors.electrometrics.common.base.MachineType;
 import org.halvors.electrometrics.common.tile.TileEntity;
+import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.tile.machine.TileEntityMachine;
 
 /**
@@ -27,8 +30,15 @@ public class ClientProxy extends CommonProxy implements IGuiHandler {
 
 		if (tileEntity instanceof TileEntityMachine) {
 			TileEntityMachine tileEntityMachine = (TileEntityMachine) tileEntity;
+			MachineType machineType = tileEntityMachine.getMachineType();
 
-			return tileEntityMachine.getMachineType().getGui(tileEntityMachine);
+			switch (machineType) {
+				case BASIC_ELECTRICITY_METER:
+				case ADVANCED_ELECTRICITY_METER:
+				case ELITE_ELECTRICITY_METER:
+				case ULTIMATE_ELECTRICITY_METER:
+					return new GuiElectricityMeter((TileEntityElectricityMeter) tileEntity);
+			}
 		}
 
 		return null;
