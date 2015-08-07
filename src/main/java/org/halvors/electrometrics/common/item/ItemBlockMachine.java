@@ -11,9 +11,7 @@ import net.minecraft.world.World;
 import org.halvors.electrometrics.client.key.Key;
 import org.halvors.electrometrics.client.key.KeyHandler;
 import org.halvors.electrometrics.common.base.*;
-import org.halvors.electrometrics.common.base.tile.ITileRedstoneControl;
 import org.halvors.electrometrics.common.tile.TileEntity;
-import org.halvors.electrometrics.common.tile.TileEntityComponentContainer;
 import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityStorage;
 import org.halvors.electrometrics.common.util.LanguageUtils;
@@ -91,16 +89,6 @@ public class ItemBlockMachine extends ItemBlockMetadata {
 			if (tileEntity instanceof TileEntityElectricityMeter) {
 				TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
 				tileEntityElectricityMeter.setElectricityCount(getElectricityCount(itemStack));
-			}
-
-			if (tileEntity instanceof TileEntityComponentContainer) {
-				TileEntityComponentContainer tileEntityComponentContainer = (TileEntityComponentContainer) tileEntity;
-
-				if (tileEntityComponentContainer.hasComponentImplementing(ITileRedstoneControl.class)) {
-					ITileRedstoneControl tileRedstoneControl = (ITileRedstoneControl) tileEntityComponentContainer.getComponentImplementing(ITileRedstoneControl.class);
-
-					tileRedstoneControl.setControlType(getRedstoneControlType(itemStack));
-				}
 			}
 		}
 

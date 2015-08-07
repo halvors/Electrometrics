@@ -4,7 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import org.halvors.electrometrics.Electrometrics;
-import org.halvors.electrometrics.common.ConfigurationManager;
+import org.halvors.electrometrics.common.ConfigurationManager.Machine;
 import org.halvors.electrometrics.common.block.BlockMachine;
 import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.tile.machine.TileEntityMachine;
@@ -93,7 +93,7 @@ public enum MachineType {
 	}
 
 	public boolean isEnabled() {
-		return ConfigurationManager.Machine.isEnabled(this);
+		return Machine.isEnabled(this);
 	}
 
 	public static MachineType getType(Block block, int metadata) {
