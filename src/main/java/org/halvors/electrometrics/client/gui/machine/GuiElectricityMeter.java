@@ -34,15 +34,19 @@ public class GuiElectricityMeter extends GuiElectricMachine {
 
 		this.tileEntityElectricityMeter = tileEntity;
 
-		components.add(new GuiOwnerInfo(new IInfoHandler() {
-			@Override
-			public List<String> getInfo() {
-				List<String> list = new ArrayList<>();
-				list.add(tileEntity.getOwnerName());
+		if (tileEntity.hasComponentImplementing(ITileOwnable.class)) {
+			final ITileOwnable tileOwnable = (ITileOwnable) tileEntity.getComponentImplementing(ITileOwnable.class);
 
-				return list;
-			}
-		}, this, defaultResource));
+			components.add(new GuiOwnerInfo(new IInfoHandler() {
+				@Override
+				public List<String> getInfo() {
+					List<String> list = new ArrayList<>();
+					list.add(tileOwnable.getOwnerName());
+
+					return list;
+				}
+			}, this, defaultResource));
+		}
 
 		// TODO: Get currect energy usage here.
 		components.add(new GuiEnergyInfo(new IInfoHandler() {
