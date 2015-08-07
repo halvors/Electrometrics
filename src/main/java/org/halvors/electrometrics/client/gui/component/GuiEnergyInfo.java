@@ -3,48 +3,45 @@ package org.halvors.electrometrics.client.gui.component;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.util.ResourceLocation;
-import org.halvors.electrometrics.Reference;
 import org.halvors.electrometrics.client.gui.IGui;
-import org.halvors.electrometrics.common.util.render.Rectangle4i;
 
 @SideOnly(Side.CLIENT)
-public class GuiEnergyInfo extends GuiComponentBase implements IGuiComponent {
+public class GuiEnergyInfo extends GuiComponent implements IGuiComponent {
 	private final IInfoHandler infoHandler;
 
 	public GuiEnergyInfo(IInfoHandler infoHandler, IGui gui, ResourceLocation defaultResource) {
-		super(new ResourceLocation(Reference.DOMAIN, "gui/elements/guiEnergyInfo.png"), gui, defaultResource);
+		super("EnergyInfo.png", gui, defaultResource);
 
 		this.infoHandler = infoHandler;
 	}
 
 	@Override
-	public Rectangle4i getBounds(int guiWidth, int guiHeight) {
-		return new Rectangle4i(guiWidth - 26, guiHeight + 138, 26, 26);
+	public void renderBackground(int xAxis, int yAxis, int xOrigin, int yOrigin, int guiWidth, int guiHeight) {
+		game.renderEngine.bindTexture(resource);
+		gui.drawTexturedRect(xOrigin - 26, yOrigin + guiHeight - 2 - 26, 0, 0, 26, 26);
+
+		super.renderBackground(xAxis, yAxis, xOrigin, yOrigin, guiWidth, guiHeight);
 	}
 
 	@Override
-	public void renderBackground(int xAxis, int yAxis, int guiWidth, int guiHeight) {
-		mc.renderEngine.bindTexture(resource);
+	public void renderForeground(int xAxis, int yAxis, int guiWidth, int guiHeight) {
+		int x = -26 + 3;
+		int y = guiHeight - 2 - 26 + 3;
 
-		gui.drawTexturedRect(guiWidth - 26, guiHeight + 138, 0, 0, 26, 26);
-
-		mc.renderEngine.bindTexture(defaultResource);
-	}
-
-	@Override
-	public void renderForeground(int xAxis, int yAxis) {
-		if (xAxis >= -21 && xAxis <= -3 && yAxis >= 142 && yAxis <= 160) {
+		if (xAxis >= x && xAxis <= x + 21 && yAxis >= y && yAxis <= y + 19) {
 			displayTooltips(infoHandler.getInfo(), xAxis, yAxis);
 		}
+
+		super.renderForeground(xAxis, yAxis, guiWidth, guiHeight);
 	}
 
 	@Override
-	public void preMouseClicked(int xAxis, int yAxis, int button) {
+	public void preMouseClicked(int xAxis, int yAxis, int guiWidth, int guiHeight, int button) {
 
 	}
 
 	@Override
-	public void mouseClicked(int xAxis, int yAxis, int button) {
+	public void mouseClicked(int xAxis, int yAxis, int guiWidth, int guiHeight, int button) {
 
 	}
 
@@ -54,7 +51,7 @@ public class GuiEnergyInfo extends GuiComponentBase implements IGuiComponent {
 	}
 
 	@Override
-	public void mouseMovedOrUp(int x, int y, int type) {
+	public void mouseReleased(int x, int y, int type) {
 
 	}
 }

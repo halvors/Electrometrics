@@ -9,30 +9,47 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraft.block.Block;
+import mekanism.api.ItemRetriever;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapedOreRecipe;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.halvors.electrometrics.common.CommonProxy;
-import org.halvors.electrometrics.common.Tab;
-import org.halvors.electrometrics.common.block.BlockElectricityMeter;
+import org.halvors.electrometrics.common.ConfigurationManager;
+import org.halvors.electrometrics.common.ConfigurationManager.Integration;
+import org.halvors.electrometrics.common.CreativeTab;
+import org.halvors.electrometrics.common.Reference;
+import org.halvors.electrometrics.common.base.IUpdatableMod;
+import org.halvors.electrometrics.common.base.MachineType;
+import org.halvors.electrometrics.common.base.Tier;
+import org.halvors.electrometrics.common.block.Block;
+import org.halvors.electrometrics.common.block.BlockMachine;
 import org.halvors.electrometrics.common.event.PlayerEventHandler;
-import org.halvors.electrometrics.common.item.ItemBlockElectricityMeter;
+import org.halvors.electrometrics.common.item.ItemBlockMachine;
+import org.halvors.electrometrics.common.item.ItemMultimeter;
 import org.halvors.electrometrics.common.multipart.Multipart;
-import org.halvors.electrometrics.common.tileentity.TileEntityElectricityMeter;
-import org.halvors.electrometrics.common.util.UnitDisplay.Unit;
-
-import java.io.File;
+import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityMeter;
+import org.halvors.electrometrics.common.updater.UpdateManager;
 
 /**
  * This is the Electrometrics class, which is the main class of this mod.
  *
  * @author halvors
  */
-@Mod(modid = Reference.ID, name = Reference.NAME, version = Reference.VERSION, dependencies = "after:ForgeMultipart;after:CoFHCore")
-public class Electrometrics {
+@Mod(modid = Reference.ID,
+     name = Reference.NAME,
+     version = Reference.VERSION,
+     dependencies = "after:ForgeMultipart;" +
+			 		"after:CoFHCore;" +
+                    "after:Mekanism",
+     guiFactory = "org.halvors." + Reference.ID + ".client.gui.configuration.GuiConfiguationFactory")
+public class Electrometrics implements IUpdatableMod {
 	// The instance of your mod that Forge uses.
 	@Instance(value = Reference.ID)
 	public static Electrometrics instance;
@@ -47,47 +64,33 @@ public class Electrometrics {
     private static final Multipart multipart = new Multipart();
 
 	// Creative tab.
-	private static final Tab tab = new Tab();
+	private static final CreativeTab creativeTab = new CreativeTab();
+
+	// Items.
+	public static final Item itemMultimeter = new ItemMultimeter();
 
 	// Blocks.
-	public static final Block blockElectricityMeter = new BlockElectricityMeter();
+	public static final Block blockMachine = new BlockMachine();
 
-	// Configuration.
+	// ConfigurationManager.
 	private static Configuration configuration;
 
-	// Configuration variables.
-	public static Unit energyType = Unit.JOULES;
-	public static double toJoules;
-	public static double toMinecraftJoules;
-	public static double toElectricalUnits;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		File config = event.getSuggestedConfigurationFile();
+		// Initialize configuration.
+        configuration = new Configuration(event.getSuggestedConfigurationFile());
 
-		// Set the mod's configuration
-		configuration = new Configuration(config);
-		configuration.load();
+		// Load the configuration.
+		ConfigurationManager.loadConfiguration(configuration);
 
-		String energyTypeString = configuration.get(Configuration.CATEGORY_GENERAL, "energyType", "J", "The default energy system to display.", new String[] { "RF", "J", "MJ", "EU" }).getString();
+		// Check for updates.
+		FMLCommonHandler.instance().bus().register(new UpdateManager(this, Reference.RELEASE_URL, Reference.DOWNLOAD_URL));
 
-		if (energyTypeString != null) {
-			if (energyTypeString.trim().equalsIgnoreCase("RF")) {
-				energyType = Unit.REDSTONE_FLUX;
-			} else if (energyTypeString.trim().equalsIgnoreCase("J")) {
-				energyType = Unit.JOULES;
-			} else if (energyTypeString.trim().equalsIgnoreCase("MJ")) {
-				energyType = Unit.MINECRAFT_JOULES;
-			} else if (energyTypeString.trim().equalsIgnoreCase("EU")) {
-				energyType = Unit.ELECTRICAL_UNITS;
-			}
-		}
-
-		toJoules = configuration.get(Configuration.CATEGORY_GENERAL, "RFToJoules", 2.5).getDouble();
-		toMinecraftJoules = configuration.get(Configuration.CATEGORY_GENERAL, "RFToMinecraftJoules", 0.1).getDouble();
-		toElectricalUnits = configuration.get(Configuration.CATEGORY_GENERAL, "RFToElectricalUnits", 0.25).getDouble();
-
-		configuration.save();
+		// Mod integration.
+		logger.log(Level.INFO, "BuildCraft integration is " + (Integration.isBuildCraftEnabled ? "enabled" : "disabled") + ".");
+		logger.log(Level.INFO, "CoFHCore integration is " + (Integration.isCoFHCoreEnabled ? "enabled" : "disabled") + ".");
+		logger.log(Level.INFO, "Mekanism integration is " + (Integration.isMekanismEnabled ? "enabled" : "disabled") + ".");
 	}
 
 	@EventHandler
@@ -99,6 +102,7 @@ public class Electrometrics {
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
 
 		// Call functions for adding blocks, items, etc.
+		addItems();
 		addBlocks();
 		addTileEntities();
 		addRecipes();
@@ -106,9 +110,14 @@ public class Electrometrics {
         multipart.addMultiparts();
 	}
 
+	private void addItems() {
+		// Register items.
+		GameRegistry.registerItem(itemMultimeter, "itemMultimeter");
+	}
+
 	private void addBlocks() {
 		// Register blocks.
-		GameRegistry.registerBlock(blockElectricityMeter, ItemBlockElectricityMeter.class, "blockElectricityMeter");
+		GameRegistry.registerBlock(blockMachine, ItemBlockMachine.class, "blockMachine");
 	}
 
 	private void addTileEntities() {
@@ -118,33 +127,85 @@ public class Electrometrics {
 
 	private void addRecipes() {
 		// Register recipes.
-		GameRegistry.addRecipe(new ItemStack(blockElectricityMeter),
-				"III",
-				"RCR",
-				"III", 'I', Items.iron_ingot, 'C', Items.clock, 'R', Items.redstone);
-	}
+        Item circuit = Items.repeater;
+        ItemStack battery = new ItemStack(Items.diamond);
+        ItemStack cable = new ItemStack(Items.gold_ingot);
+        ItemStack casing = new ItemStack(Blocks.iron_block);
 
-	public static CommonProxy getProxy() {
-		return proxy;
+        if (Integration.isMekanismEnabled) {
+            circuit = ItemRetriever.getItem("ControlCircuit").getItem(); // Basic control circuit.
+            battery = new ItemStack(ItemRetriever.getItem("EnergyTablet").getItem(), 1, 100); // Uncharged battery.
+            cable = new ItemStack(ItemRetriever.getItem("PartTransmitter").getItem(), 8); // Basic universal cable.
+            casing = new ItemStack(ItemRetriever.getBlock("BasicBlock").getItem(), 1, 8); // Steel casing.
+        }
+
+        // Multimeter
+        GameRegistry.addRecipe(new ShapedOreRecipe(itemMultimeter,
+                "RGR",
+                "IMI",
+                "CBC",
+                'R', Items.redstone,
+                'G', "paneGlass",
+                'I', OreDictionary.doesOreNameExist("ingotCopper") ? "ingotCopper" : Items.gold_ingot,
+                'M', Items.clock,
+                'C', circuit,
+                'B', battery));
+
+        // Electricity Meter
+        for (Tier.Electric electricTier : Tier.Electric.values()) {
+            if (Integration.isMekanismEnabled) {
+                cable = new ItemStack(ItemRetriever.getItem("PartTransmitter").getItem(), 8, electricTier.ordinal()); // Tier matching universal cable.
+            }
+
+            MachineType machineType = electricTier.getMachineType();
+            ItemStack itemStackMachine = machineType.getItemStack();
+            ItemBlockMachine itemBlockMachine = (ItemBlockMachine) itemStackMachine.getItem();
+            itemBlockMachine.setElectricTier(itemStackMachine, electricTier);
+
+            GameRegistry.addRecipe(itemStackMachine,
+                    "RMR",
+                    "C#C",
+                    "RBR",
+                    'R', Items.redstone,
+                    'M', itemMultimeter,
+                    'C', cable,
+                    '#', casing,
+                    'B', battery);
+        }
 	}
 
 	public static Electrometrics getInstance() {
 		return instance;
 	}
 
+	public static CommonProxy getProxy() {
+		return proxy;
+	}
+
 	public static Logger getLogger() {
 		return logger;
 	}
 
-	public static Multipart getMultipart() {
-		return multipart;
-	}
-
-	public static Tab getTab() {
-		return tab;
+	public static CreativeTab getCreativeTab() {
+		return creativeTab;
 	}
 
 	public static Configuration getConfiguration() {
 		return configuration;
+	}
+
+	@Override
+	public String getModId() {
+		return Reference.ID;
+	}
+
+	@Override
+	public String getModName() {
+		return Reference.NAME;
+	}
+
+	@Override
+	public String getModVersion() {
+		return Reference.VERSION;
 	}
 }

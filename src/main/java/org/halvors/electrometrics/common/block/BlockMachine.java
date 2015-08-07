@@ -4,42 +4,50 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import org.halvors.electrometrics.Electrometrics;
-import org.halvors.electrometrics.Reference;
-import org.halvors.electrometrics.common.tileentity.*;
-import org.halvors.electrometrics.common.util.Orientation;
-import org.halvors.electrometrics.common.util.render.DefaultIcon;
-import org.halvors.electrometrics.common.util.render.Renderer;
+import org.halvors.electrometrics.client.render.BlockRenderer;
+import org.halvors.electrometrics.client.render.DefaultIcon;
+import org.halvors.electrometrics.common.Reference;
+import org.halvors.electrometrics.common.base.IElectricTier;
+import org.halvors.electrometrics.common.base.ITier;
+import org.halvors.electrometrics.common.base.MachineType;
+import org.halvors.electrometrics.common.base.Tier;
+import org.halvors.electrometrics.common.base.tile.ITileOwnable;
+import org.halvors.electrometrics.common.base.tile.ITileRedstoneControl;
+import org.halvors.electrometrics.common.item.ItemBlockMachine;
+import org.halvors.electrometrics.common.tile.TileEntity;
+import org.halvors.electrometrics.common.tile.machine.TileEntityElectricMachine;
+import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityMeter;
+import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityStorage;
+import org.halvors.electrometrics.common.util.LanguageUtils;
+import org.halvors.electrometrics.common.util.MachineUtils;
+import org.halvors.electrometrics.common.util.PlayerUtils;
 
-public class BlockMachine extends BlockBasic {
-	private final String name;
+import java.util.List;
 
-	@SideOnly(Side.CLIENT)
-	private IIcon baseIcon;
+/**
+ * Block class for handling multiple machine block IDs.
+ *
+ * 0: Basic Electricity Meter
+ * 1: Advanced Electricity Meter
+ * 2: Elite Electricity Meter
+ * 3: Ultimate Electricity Meter
+ */
+public class BlockMachine extends BlockRotatable {
+	public BlockMachine() {
+		super("Machine", Material.iron);
 
-	@SideOnly(Side.CLIENT)
-	private final IIcon[] iconList = new IIcon[16];
-
-	BlockMachine(String name) {
-		super(Material.iron);
-
-		this.name = name;
-
-		setBlockName(name);
 		setHardness(2F);
 		setResistance(4F);
 		setStepSound(soundTypeMetal);
@@ -47,77 +55,72 @@ public class BlockMachine extends BlockBasic {
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
-		return null;
+		MachineType machineType = MachineType.getType(this, metadata);
+
+		return machineType.getTileEntity();
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean isOpaqueCube() {
-		return false;
-	}
+	public void registerIcons(IIconRegister iconRegister) {
+		super.registerIcons(iconRegister);
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister iconRegister) {
-		baseIcon = iconRegister.registerIcon(Reference.PREFIX + name);
+		IIcon topIcon = iconRegister.registerIcon(Reference.PREFIX + name + "Top");
+		IIcon inputIcon = iconRegister.registerIcon(Reference.PREFIX + name + "Input");
+		IIcon outputIcon = iconRegister.registerIcon(Reference.PREFIX + name + "Output");
+		DefaultIcon defaultTopIcon = DefaultIcon.getActivePair(topIcon, 1);
 
-		Renderer.loadDynamicTextures(iconRegister, name, iconList, DefaultIcon.getAll(baseIcon));
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
-		TileEntity tileEntity = world.getTileEntity(x, y, z);
-
-		// Check if this implements IRotatable.
-		if (tileEntity instanceof IRotatable) {
-			IRotatable rotatable = (IRotatable) tileEntity;
-			boolean isActive = false;
-
-			// Check if this implements IActiveState, if it do we get the state from it.
-			if (tileEntity instanceof IActiveState) {
-				IActiveState activeState = (IActiveState) tileEntity;
-
-				isActive = activeState.isActive();
-			}
-
-			return iconList[Orientation.getBaseOrientation(side, rotatable.getFacing()) + (isActive ? 6 : 0)];
+		// Adding all icons for the machine types.
+		for (MachineType machineType : MachineType.values()) {
+			BlockRenderer.loadDynamicTextures(iconRegister,
+					machineType.getUnlocalizedName(),
+					iconMetadataList[machineType.getMetadata()],
+					defaultBlockIcon,
+					defaultTopIcon,
+					DefaultIcon.getActivePair(outputIcon, 4),
+					DefaultIcon.getActivePair(inputIcon, 5));
 		}
-
-		return null;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	@SideOnly(Side.CLIENT)
-	public IIcon getIcon(int side, int meta) {
-		// Workaround to for when block is not rendered in world, by swapping the front and back sides.
-		switch (side) {
-			case 2: // Back
-				side = 3;
-				break;
+	public void getSubBlocks(Item item, CreativeTabs creativetabs, List list) {
+		// Making all MachineTypes available in creative mode.
+        for (MachineType machineType : MachineType.values()) {
+            if (machineType.isEnabled()) {
+                switch (machineType) {
+                    case BASIC_ELECTRICITY_METER:
+                    case ADVANCED_ELECTRICITY_METER:
+                    case ELITE_ELECTRICITY_METER:
+                    case ULTIMATE_ELECTRICITY_METER:
+                        ItemStack itemStack = machineType.getItemStack();
+                        ItemBlockMachine itemBlockMachine = (ItemBlockMachine) itemStack.getItem();
+                        itemBlockMachine.setElectricTier(itemStack, Tier.Electric.getFromMachineType(machineType));
 
-			case 3: // Front
-				side = 2;
-				break;
+                        list.add(itemStack);
+                        break;
+
+                    default:
+                        list.add(machineType.getItemStack());
+                        break;
+                }
+            }
 		}
-
-		return iconList[side];
 	}
 
 	@Override
 	public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player) {
 		if (!world.isRemote) {
-			TileEntity tileEntity = world.getTileEntity(x, y, z);
+			TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
+			MachineType machineType = MachineType.getType(this, world.getBlockMetadata(x, y, z));
 
 			// Display a message the the player clicking this block if not the owner.
-			if (tileEntity instanceof IOwnable) {
-				IOwnable ownable = (IOwnable) tileEntity;
+			if (tileEntity instanceof ITileOwnable) {
+				ITileOwnable tileOwnable = (ITileOwnable) tileEntity;
 
-				if (!ownable.isOwner(player)) {
-					EntityPlayerMP playerOwner = ownable.getOwner();
-					String name = playerOwner != null ? playerOwner.getDisplayName() : ownable.getOwnerName();
-
-					player.addChatMessage(new ChatComponentText("This block is owned by " + name + ", you cannot remove this block."));
+				if (!tileOwnable.isOwner(player)) {
+					player.addChatMessage(new ChatComponentText(String.format(LanguageUtils.localize("tooltip.blockOwnedBy"), machineType.getLocalizedName(), tileOwnable.getOwnerName())));
 				}
 			}
 		}
@@ -125,124 +128,130 @@ public class BlockMachine extends BlockBasic {
 
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int facing, float playerX, float playerY, float playerZ) {
-		if (!player.isSneaking()) {
-			TileEntity tileEntity = world.getTileEntity(x, y, z);
+        TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
 
-			// Check whether or not this IOwnable has a owner, if not set the current player as owner.
-			if (tileEntity instanceof IOwnable) {
-				IOwnable ownable = (IOwnable) tileEntity;
+        if (!MachineUtils.hasUsableWrench(player, x, y, z)) {
+            if (!player.isSneaking()) {
+                // Check whether or not this ITileOwnable has a owner, if not set the current player as owner.
+                if (tileEntity instanceof ITileOwnable) {
+                    ITileOwnable tileOwnable = (ITileOwnable) tileEntity;
 
-				if (!ownable.hasOwner()) {
-					ownable.setOwner(player);
-				}
-			}
+                    if (!tileOwnable.hasOwner()) {
+                        tileOwnable.setOwner(player);
+                    }
+                }
 
-			// Open the GUI.
-			player.openGui(Electrometrics.getInstance(), 0, world, x, y, z);
+                // Open the GUI.
+                player.openGui(Electrometrics.getInstance(), 0, world, x, y, z);
 
-			return true;
-		}
+                return true;
+            }
+        } else {
+            if (!world.isRemote && player.isSneaking()) {
+                dismantleBlock(world, x, y, z, false);
 
-		return false;
+                return true;
+            }
+        }
+
+		return super.onBlockActivated(world, x, y, z, player, facing, playerX, playerY, playerZ);
 	}
 
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemStack) {
-		TileEntity tileEntity = world.getTileEntity(x, y, z);
+		TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
 
-		// If this TileEntity implements IRotatable, we do our rotations.
-		if (tileEntity instanceof IRotatable) {
-			IRotatable rotatable = (IRotatable) tileEntity;
-
-			int side = MathHelper.floor_double((entity.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-			int height = Math.round(entity.rotationPitch);
-			int change = 3;
-
-			if (rotatable.canSetFacing(0) && rotatable.canSetFacing(1)) {
-				if (height >= 65) {
-					change = 1;
-				} else if (height <= -65) {
-					change = 0;
-				}
-			}
-
-			if (change != 0 && change != 1) {
-				switch (side) {
-					case 0: change = 2; break;
-					case 1: change = 5; break;
-					case 2: change = 3; break;
-					case 3: change = 4; break;
-				}
-			}
-
-			rotatable.setFacing((short) change);
-		}
-
-		// If this TileEntity implements IRedstoneControl, check if it's getting powered.
-		if (tileEntity instanceof IRedstoneControl) {
-			IRedstoneControl redstoneControl = (IRedstoneControl) tileEntity;
-			redstoneControl.setPowered(world.isBlockIndirectlyGettingPowered(x, y, z));
+		// If this TileEntity implements ITileRedstoneControl, check if it's getting powered.
+		if (tileEntity instanceof ITileRedstoneControl) {
+			ITileRedstoneControl tileRedstoneControl = (ITileRedstoneControl) tileEntity;
+			tileRedstoneControl.setPowered(world.isBlockIndirectlyGettingPowered(x, y, z));
 		}
 
 		// Check if this entity is a player.
 		if (entity instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) entity;
 
-			// If this TileEntity implements IOwnable, we set the owner.
-			if (tileEntity instanceof IOwnable) {
-				IOwnable ownable = (IOwnable) tileEntity;
-				ownable.setOwner(player);
+			// If this TileEntity implements ITileOwnable, we set the owner.
+			if (tileEntity instanceof ITileOwnable) {
+				ITileOwnable tileOwnable = (ITileOwnable) tileEntity;
+				tileOwnable.setOwner(player);
+			}
+		}
+
+		super.onBlockPlacedBy(world, x, y, z, entity, itemStack);
+	}
+
+	@Override
+	public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
+		if (!world.isRemote) {
+			TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
+
+			if (tileEntity instanceof TileEntityElectricMachine) {
+				TileEntityElectricMachine tileEntityElectricMachine = (TileEntityElectricMachine) tileEntity;
+				tileEntityElectricMachine.onNeighborChange();
 			}
 		}
 	}
 
 	@Override
-	public ForgeDirection[] getValidRotations(World world, int x, int y, int z) {
-		TileEntity tileEntity = world.getTileEntity(x, y, z);
-		ForgeDirection[] valid = new ForgeDirection[6];
-
-		// If this TileEntity implements IRotatable, we do our rotations.
-		if (tileEntity instanceof IRotatable) {
-			IRotatable rotatable = (IRotatable) tileEntity;
-
-			for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
-				if (rotatable.canSetFacing(direction.ordinal())) {
-					valid[direction.ordinal()] = direction;
-				}
-			}
+	public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean willHarvest) {
+		if (!player.capabilities.isCreativeMode && !world.isRemote && canHarvestBlock(player, world.getBlockMetadata(x, y, z))) {
+			dismantleBlock(world, x, y, z, false);
 		}
 
-		return valid;
+		return world.setBlockToAir(x, y, z);
 	}
 
 	@Override
-	public boolean rotateBlock(World world, int x, int y, int z, ForgeDirection axis) {
-		TileEntity tileEntity = world.getTileEntity(x, y, z);
+	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player) {
+		TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
+		MachineType machineType = MachineType.getType(this, tileEntity.getBlockMetadata());
+		ItemStack itemStack = machineType.getItemStack();
+		ItemBlockMachine itemBlockMachine = (ItemBlockMachine) itemStack.getItem();
 
-		// If this TileEntity implements IRotatable, we do our rotations.
-		if (tileEntity instanceof IRotatable) {
-			IRotatable rotatable = (IRotatable) tileEntity;
+		if (tileEntity instanceof ITier) {
+			ITier tiered = (ITier) tileEntity;
 
-			if (rotatable.canSetFacing(axis.ordinal())) {
-				rotatable.setFacing((short) axis.ordinal());
-
-				return true;
-			}
+			itemBlockMachine.setTier(itemStack, tiered.getTier());
 		}
 
-		return super.rotateBlock(world, x, y, z, axis);
+		if (tileEntity instanceof IElectricTier) {
+			IElectricTier electricTiered = (IElectricTier) tileEntity;
+
+			itemBlockMachine.setElectricTier(itemStack, electricTiered.getElectricTier());
+		}
+
+		if (tileEntity instanceof ITileRedstoneControl) {
+			ITileRedstoneControl tileRedstoneControl = (ITileRedstoneControl) tileEntity;
+
+			itemBlockMachine.setRedstoneControlType(itemStack, tileRedstoneControl.getControlType());
+		}
+
+		if (tileEntity instanceof TileEntityElectricityStorage) {
+			TileEntityElectricityStorage tileEntityElectricityStorage = (TileEntityElectricityStorage) tileEntity;
+
+			itemBlockMachine.setElectricityStored(itemStack, tileEntityElectricityStorage.getStorage().getEnergyStored());
+		}
+
+		if (tileEntity instanceof TileEntityElectricityMeter) {
+			TileEntityElectricityMeter tileEntityElectricityMeter = (TileEntityElectricityMeter) tileEntity;
+
+			itemBlockMachine.setElectricityCount(itemStack, tileEntityElectricityMeter.getElectricityCount());
+			itemBlockMachine.setElectricityStored(itemStack, tileEntityElectricityMeter.getStorage().getEnergyStored());
+		}
+
+		return itemStack;
 	}
 
 	@Override
 	public float getBlockHardness(World world, int x, int y, int z) {
-		TileEntity tileEntity = world.getTileEntity(x, y, z);
+		TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
 
-		// If this TileEntity implements IOwnable, we check if there is a owner.
-		if (tileEntity instanceof IOwnable) {
-			IOwnable ownable = (IOwnable) tileEntity;
-			EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+		// If this TileEntity implements ITileOwnable, we check if there is a owner.
+		if (tileEntity instanceof ITileOwnable) {
+			ITileOwnable tileOwnable = (ITileOwnable) tileEntity;
 
-			return ownable.isOwner(player) ? blockHardness : -1;
+			return tileOwnable.isOwner(PlayerUtils.getClientPlayer()) ? blockHardness : -1;
 		}
 
 		return blockHardness;
@@ -250,28 +259,14 @@ public class BlockMachine extends BlockBasic {
 
 	@Override
 	public float getExplosionResistance(Entity entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ) {
-		TileEntity tileEntity = world.getTileEntity(x, y, z);
+		TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
 
-		if (tileEntity instanceof IOwnable) {
-			IOwnable ownable = (IOwnable) tileEntity;
-			EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+		if (tileEntity instanceof ITileOwnable) {
+			ITileOwnable tileOwnable = (ITileOwnable) tileEntity;
 
-			return ownable.isOwner(player) ? blockResistance : -1;
+			return tileOwnable.isOwner(PlayerUtils.getClientPlayer()) ? blockResistance : -1;
 		}
 
 		return blockResistance;
-	}
-
-	@Override
-	public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
-		if (!world.isRemote) {
-			TileEntity tileEntity = world.getTileEntity(x, y, z);
-
-			if (tileEntity instanceof TileEntityMachine) {
-				TileEntityMachine tileEntityMachine = (TileEntityMachine) tileEntity;
-
-				tileEntityMachine.onNeighborChange();
-			}
-		}
 	}
 }

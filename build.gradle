@@ -28,24 +28,24 @@ configFile.withReader {
     ext.config = new ConfigSlurper().parse prop
 }
 
-version = config.mc_version + "-" + config.mod_version
-group= "org.halvors.electrometrics"
+version = config.minecraft_version + "-" + config.mod_version
+group = "org.halvors.electrometrics"
 archivesBaseName = "Electrometrics"
 sourceCompatibility = "7"
 targetCompatibility = "7"
 
 minecraft {
-	version = config.mc_version + "-" + config.forge_version
+	version = config.minecraft_version + "-" + config.forge_version
+    runDir = "eclipse"
+    mappings = config.mcp_mappings
 
     // Replace version in Reference.java
-    replace "@version@", config.mod_version
-
-    runDir = "eclipse"
+    replace "@version", config.mod_version
 }
 
 dependencies {
-    compile "codechicken:CodeChickenLib:" + config.mc_version + "-" + config.ccl_version + ":dev"
-    compile "codechicken:ForgeMultipart:" + config.mc_version + "-" + config.fmp_version + ":dev"
+    compile "codechicken:CodeChickenLib:" + config.minecraft_version + "-" + config.ccl_version + ":dev"
+    compile "codechicken:ForgeMultipart:" + config.minecraft_version + "-" + config.fmp_version + ":dev"
 }
 
 jar {
@@ -63,8 +63,8 @@ idea {
 }
 
 processResources {
-    // This will ensure that this task is redone when the versions change.
-    inputs.property "mc_version", config.mc_version
+    // This will ensure that this task is redone when this versions change.
+    inputs.property "mc_version", config.minecraft_version
     inputs.property "forge_version", config.forge_version
     inputs.property "mod_version", config.mod_version
     inputs.property "fmp_version", config.fmp_version
@@ -74,9 +74,7 @@ processResources {
         include "*.info"
                 
         // Replace version and mcversion
-        expand "version":project.version,
-                "mc_version":config.mc_version,
-                "fmp_version":config.fmp_version
+        expand "version":project.version, "mcversion":config.mc_version
     }
 
     // Copy everything else

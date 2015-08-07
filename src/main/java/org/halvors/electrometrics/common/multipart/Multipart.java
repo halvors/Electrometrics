@@ -3,10 +3,7 @@ package org.halvors.electrometrics.common.multipart;
 import codechicken.lib.data.MCDataInput;
 import codechicken.multipart.MultiPartRegistry.IPartFactory2;
 import codechicken.multipart.TMultiPart;
-import cpw.mods.fml.common.event.FMLInterModComms;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import org.halvors.electrometrics.Electrometrics;
 
 public class Multipart implements IPartFactory2 {
     public void addMultiparts() {
@@ -17,8 +14,6 @@ public class Multipart implements IPartFactory2 {
 
     @Override
     public TMultiPart createPart(String s, NBTTagCompound nbtTagCompound) {
-
-
         return null;
     }
 
