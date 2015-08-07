@@ -15,8 +15,10 @@ public class GuiElectricMachine extends GuiMachine {
 
 		components.add(new GuiEnergyUnitType(this, defaultResource));
 
-		if (tileEntity.hasComponentImplementing(ITileRedstoneControl.class)) {
-			TileRedstoneControlComponent tileRedstoneControlComponent = (TileRedstoneControlComponent) tileEntity.getComponentImplementing(ITileRedstoneControl.class);
+		System.out.println("TileRedstoneControlComponent is: " + tileEntity.hasComponent(TileRedstoneControlComponent.class));
+
+		if (tileEntity.hasComponent(TileRedstoneControlComponent.class)) {
+			TileRedstoneControlComponent tileRedstoneControlComponent = (TileRedstoneControlComponent) tileEntity.getComponent(TileRedstoneControlComponent.class);
 
 			components.add(new GuiRedstoneControl<>(this, tileRedstoneControlComponent, defaultResource));
 		}

@@ -6,7 +6,7 @@ import net.minecraft.util.ResourceLocation;
 import org.halvors.electrometrics.client.gui.IGui;
 
 @SideOnly(Side.CLIENT)
-public class GuiEnergyInfo extends GuiComponent implements IGuiComponent {
+public class GuiEnergyInfo extends GuiComponentBase implements IGuiComponent {
 	private final IInfoHandler infoHandler;
 
 	public GuiEnergyInfo(IInfoHandler infoHandler, IGui gui, ResourceLocation defaultResource) {

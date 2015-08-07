@@ -6,31 +6,22 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import org.halvors.electrometrics.common.base.tile.ITileNetworkable;
 import org.halvors.electrometrics.common.base.tile.ITileOwnable;
-import org.halvors.electrometrics.common.tile.TileEntityComponentContainer;
+import org.halvors.electrometrics.common.component.IComponentContainer;
+import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.util.PlayerUtils;
 
 import java.util.List;
 import java.util.UUID;
 
-public class TileOwnableComponent extends TileComponent implements ITileComponent, ITileNetworkable, ITileOwnable {
+public class TileOwnableComponent extends TileComponentBase implements ITileComponent, ITileNetworkable, ITileOwnable {
     // The UUID of the player owning this.
     private UUID ownerUUID;
 
     // The name of the player owning this.
     private String ownerName;
 
-    public TileOwnableComponent(TileEntityComponentContainer tileEntity) {
-        super(tileEntity);
-    }
-
-    @Override
-    public void onUpdate() {
-
-    }
-
-    @Override
-    public void onNeighborChange() {
-
+    public <T extends TileEntity & IComponentContainer> TileOwnableComponent(T componentContainer) {
+        super(componentContainer);
     }
 
     @Override
@@ -54,6 +45,16 @@ public class TileOwnableComponent extends TileComponent implements ITileComponen
         if (ownerName != null) {
             nbtTagCompound.setString("ownerName", ownerName);
         }
+    }
+
+    @Override
+    public void onUpdate() {
+
+    }
+
+    @Override
+    public void onNeighborChange() {
+
     }
 
     @Override

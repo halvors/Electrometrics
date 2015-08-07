@@ -12,19 +12,17 @@ import net.minecraft.util.ResourceLocation;
 import org.halvors.electrometrics.client.gui.component.IGuiComponent;
 import org.halvors.electrometrics.common.base.ResourceType;
 import org.halvors.electrometrics.common.component.IComponent;
+import org.halvors.electrometrics.common.component.IComponentContainer;
 import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.util.ResourceUtils;
 import org.lwjgl.opengl.GL11;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @SideOnly(Side.CLIENT)
-public class GuiComponentContainerInventoryScreen extends GuiContainer implements IGui {
+public class GuiComponentContainerInventoryScreen extends GuiContainer implements IComponentContainer, IGui {
 	private static final Minecraft game = Minecraft.getMinecraft();
 
-    protected final Set<IComponent> components = new HashSet<>();
     protected final ResourceLocation defaultResource = ResourceUtils.getResource(ResourceType.GUI, "Container.png");
     protected final TileEntity tileEntity;
 
@@ -32,25 +30,6 @@ public class GuiComponentContainerInventoryScreen extends GuiContainer implement
 		super(container);
 
 		this.tileEntity = tileEntity;
-	}
-
-	public void renderScaledText(String text, int x, int y, int color, int maxX) {
-		int length = fontRendererObj.getStringWidth(text);
-
-		if (length <= maxX) {
-			fontRendererObj.drawString(text, x, y, color);
-		} else {
-			float scale = (float) maxX / length;
-			float reverse = 1 / scale;
-			float yAdd = 4 - (scale * 8) / 2F;
-
-			GL11.glPushMatrix();
-
-			GL11.glScalef(scale, scale, scale);
-			fontRendererObj.drawString(text, (int) (x * reverse), (int) ((y * reverse) + yAdd), color);
-
-			GL11.glPopMatrix();
-		}
 	}
 
     @Override
@@ -152,8 +131,32 @@ public class GuiComponentContainerInventoryScreen extends GuiContainer implement
 		}
 	}
 
-	public void handleMouse(Slot slot, int slotIndex, int button, int modifier) {
-		handleMouseClick(slot, slotIndex, button, modifier);
+	@Override
+	public boolean hasComponent(Class<?> componentClass) {
+		for (IComponent component : components) {
+			if (component instanceof IGuiComponent) {
+				IGuiComponent guiComponent = (IGuiComponent) component;
+
+				return guiComponent.getClass().isInstance(componentClass);
+			}
+		}
+
+		return false;
+	}
+
+	@Override
+	public IComponent getComponent(Class<?> componentClass) {
+		for (IComponent component : components) {
+			if (component instanceof IGuiComponent) {
+				IGuiComponent guiComponent = (IGuiComponent) component;
+
+				if (guiComponent.getClass().isInstance(componentClass)) {
+					return guiComponent;
+				}
+			}
+		}
+
+		return null;
 	}
 
 	@Override
@@ -184,5 +187,28 @@ public class GuiComponentContainerInventoryScreen extends GuiContainer implement
 	@Override
 	public FontRenderer getFontRenderer() {
 		return fontRendererObj;
+	}
+
+	public void renderScaledText(String text, int x, int y, int color, int maxX) {
+		int length = fontRendererObj.getStringWidth(text);
+
+		if (length <= maxX) {
+			fontRendererObj.drawString(text, x, y, color);
+		} else {
+			float scale = (float) maxX / length;
+			float reverse = 1 / scale;
+			float yAdd = 4 - (scale * 8) / 2F;
+
+			GL11.glPushMatrix();
+
+			GL11.glScalef(scale, scale, scale);
+			fontRendererObj.drawString(text, (int) (x * reverse), (int) ((y * reverse) + yAdd), color);
+
+			GL11.glPopMatrix();
+		}
+	}
+
+	public void handleMouse(Slot slot, int slotIndex, int button, int modifier) {
+		handleMouseClick(slot, slotIndex, button, modifier);
 	}
 }

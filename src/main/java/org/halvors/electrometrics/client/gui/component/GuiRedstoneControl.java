@@ -14,13 +14,13 @@ import org.halvors.electrometrics.common.network.packet.PacketTileRedstoneContro
 import org.halvors.electrometrics.common.tile.component.ITileComponent;
 
 @SideOnly(Side.CLIENT)
-public class GuiRedstoneControl<T extends ITileComponent & ITileNetworkable & ITileRedstoneControl> extends GuiComponent implements IGuiComponent {
-	private final T tile;
+public class GuiRedstoneControl<TE extends ITileComponent & ITileNetworkable & ITileRedstoneControl> extends GuiComponentBase implements IGuiComponent {
+	private final TE tileComponent;
 
-	public GuiRedstoneControl(IGui gui, T tile, ResourceLocation defaultResource) {
+	public GuiRedstoneControl(IGui gui, TE tileComponent, ResourceLocation defaultResource) {
 		super("RedstoneControl.png", gui, defaultResource);
 
-		this.tile = tile;
+		this.tileComponent = tileComponent;
 	}
 
 	@Override
@@ -30,7 +30,7 @@ public class GuiRedstoneControl<T extends ITileComponent & ITileNetworkable & IT
 
 		int x = guiWidth + 4;
 		int y = guiHeight - 2 - 26 + 5;
-        int renderX = 26 + (18 * tile.getControlType().ordinal());
+        int renderX = 26 + (18 * tileComponent.getControlType().ordinal());
 
         if (xAxis >= x && xAxis <= x + 15 && yAxis >= y && yAxis <= y + 15) {
 			gui.drawTexturedRect(xOrigin + x - 1, yOrigin + y - 1, renderX, 0, 18, 18);
@@ -49,7 +49,7 @@ public class GuiRedstoneControl<T extends ITileComponent & ITileNetworkable & IT
 		game.renderEngine.bindTexture(resource);
 
 		if (xAxis >= x && xAxis <= x + 15 && yAxis >= y && yAxis <= y + 15) {
-			displayTooltip(tile.getControlType().getDisplay(), xAxis, yAxis);
+			displayTooltip(tileComponent.getControlType().getDisplay(), xAxis, yAxis);
 		}
 
 		super.renderForeground(xAxis, yAxis, guiWidth, guiHeight);
@@ -68,17 +68,17 @@ public class GuiRedstoneControl<T extends ITileComponent & ITileNetworkable & IT
 				int y = guiHeight - 2 - 26 + 5;
 
 				if (xAxis >= x && xAxis <= x + 15 && yAxis >= y && yAxis <= y + 15) {
-					RedstoneControlType current = tile.getControlType();
+					RedstoneControlType current = tileComponent.getControlType();
 					int ordinalToSet = current.ordinal() < (RedstoneControlType.values().length - 1) ? current.ordinal() + 1 : 0;
 
-					if (ordinalToSet == RedstoneControlType.PULSE.ordinal() && !tile.canPulse()) {
+					if (ordinalToSet == RedstoneControlType.PULSE.ordinal() && !tileComponent.canPulse()) {
 						ordinalToSet = 0;
 					}
 
 					SoundHandler.playSound("gui.button.press");
 
 					// Send a update packet to the server.
-					NetworkHandler.sendToServer(new PacketTileRedstoneControl(tile, PacketType.UPDATE, RedstoneControlType.values()[ordinalToSet]));
+					NetworkHandler.sendToServer(new PacketTileRedstoneControl(tileComponent, PacketType.UPDATE, RedstoneControlType.values()[ordinalToSet]));
 				}
 				break;
 		}

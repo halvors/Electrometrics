@@ -7,24 +7,30 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.ResourceLocation;
 import org.halvors.electrometrics.client.gui.IGui;
 import org.halvors.electrometrics.common.base.ResourceType;
+import org.halvors.electrometrics.common.component.IComponentContainer;
 import org.halvors.electrometrics.common.util.ResourceUtils;
 import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 
 @SideOnly(Side.CLIENT)
-public abstract class GuiComponent implements IGuiComponent {
+public abstract class GuiComponentBase implements IGuiComponent {
+	protected static final Minecraft game = Minecraft.getMinecraft();
+
 	private final ResourceLocation defaultResource;
 
-	static final Minecraft game = Minecraft.getMinecraft();
+	protected final ResourceLocation resource;
+	protected final IGui gui;
 
-	final ResourceLocation resource;
-	final IGui gui;
-
-	GuiComponent(String texture, IGui gui, ResourceLocation defaultResource) {
+	protected GuiComponentBase(String texture, IGui gui, ResourceLocation defaultResource) {
 		this.resource = ResourceUtils.getResource(ResourceType.GUI_ELEMENT, texture);
 		this.gui = gui;
 		this.defaultResource = defaultResource;
+	}
+
+	@Override
+	public IComponentContainer getComponentContainer() {
+		return null;
 	}
 
 	@Override
@@ -35,6 +41,11 @@ public abstract class GuiComponent implements IGuiComponent {
 	@Override
 	public void renderForeground(int xAxis, int yAxis, int xSize, int ySize) {
 		game.renderEngine.bindTexture(defaultResource);
+	}
+
+	@Override
+	public FontRenderer getFontRenderer() {
+		return gui.getFontRenderer();
 	}
 
 	void displayTooltip(String text, int xAxis, int yAxis) {
@@ -62,9 +73,5 @@ public abstract class GuiComponent implements IGuiComponent {
 
 			GL11.glPopMatrix();
 		}
-	}
-
-	private FontRenderer getFontRenderer() {
-		return gui.getFontRenderer();
 	}
 }

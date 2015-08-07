@@ -5,13 +5,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import org.halvors.electrometrics.common.base.RedstoneControlType;
 import org.halvors.electrometrics.common.base.tile.ITileNetworkable;
 import org.halvors.electrometrics.common.base.tile.ITileRedstoneControl;
+import org.halvors.electrometrics.common.component.IComponentContainer;
 import org.halvors.electrometrics.common.network.NetworkHandler;
 import org.halvors.electrometrics.common.network.packet.PacketTileEntity;
-import org.halvors.electrometrics.common.tile.TileEntityComponentContainer;
+import org.halvors.electrometrics.common.tile.TileEntity;
 
 import java.util.List;
 
-public class TileRedstoneControlComponent extends TileComponent implements ITileComponent, ITileNetworkable, ITileRedstoneControl {
+public class TileRedstoneControlComponent extends TileComponentBase implements ITileComponent, ITileNetworkable, ITileRedstoneControl {
     // The current RedstoneControlType of this TileEntity.
     private RedstoneControlType redstoneControlType = RedstoneControlType.DISABLED;
 
@@ -19,8 +20,18 @@ public class TileRedstoneControlComponent extends TileComponent implements ITile
     boolean isPowered;
     boolean wasPowered;
 
-    public TileRedstoneControlComponent(TileEntityComponentContainer tileEntity) {
-        super(tileEntity);
+    public <T extends TileEntity & IComponentContainer> TileRedstoneControlComponent(T componentContainer) {
+        super(componentContainer);
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound nbtTagCompound) {
+        redstoneControlType = RedstoneControlType.values()[nbtTagCompound.getInteger("redstoneControlType")];
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound nbtTagCompound) {
+        nbtTagCompound.setInteger("redstoneControlType", redstoneControlType.ordinal());
     }
 
     @Override
@@ -43,20 +54,8 @@ public class TileRedstoneControlComponent extends TileComponent implements ITile
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbtTagCompound) {
-        redstoneControlType = RedstoneControlType.values()[nbtTagCompound.getInteger("redstoneControlType")];
-    }
-
-    @Override
-    public void writeToNBT(NBTTagCompound nbtTagCompound) {
-        nbtTagCompound.setInteger("redstoneControlType", redstoneControlType.ordinal());
-    }
-
-    @Override
     public void handlePacketData(ByteBuf dataStream) {
         redstoneControlType = RedstoneControlType.values()[dataStream.readInt()];
-
-        System.out.println("RedstoneControlType is: " + redstoneControlType);
     }
 
     @Override

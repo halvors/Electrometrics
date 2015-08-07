@@ -18,7 +18,7 @@ import java.util.List;
  *
  * @author halvors
  */
-public class PacketTileEntity extends PacketLocation implements IMessage {
+public class PacketTileEntity<TE extends TileEntity & ITileNetworkable, TC extends ITileComponent & ITileNetworkable> extends PacketLocation implements IMessage {
 	private List<Object> objects;
 	private ByteBuf storedBuffer = null;
 
@@ -32,11 +32,11 @@ public class PacketTileEntity extends PacketLocation implements IMessage {
 		this.objects = objects;
 	}
 
-	public <T extends TileEntity & ITileNetworkable> PacketTileEntity(T tile) {
-		this(new Location(tile), tile.getPacketData(new ArrayList<>()));
+	public PacketTileEntity(TE tileEntity) {
+		this(new Location(tileEntity), tileEntity.getPacketData(new ArrayList<>()));
 	}
 
-	public <T extends ITileComponent & ITileNetworkable> PacketTileEntity(T tileComponent) {
+	public PacketTileEntity(TC tileComponent) {
 		super(tileComponent.getTileEntity());
 	}
 

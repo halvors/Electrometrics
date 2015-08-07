@@ -15,7 +15,7 @@ import org.halvors.electrometrics.common.tile.component.ITileComponent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PacketTileRedstoneControl extends PacketLocation implements IMessage {
+public class PacketTileRedstoneControl<TE extends TileEntity & ITileNetworkable, TC extends ITileComponent & ITileNetworkable> extends PacketLocation implements IMessage {
     private PacketType packetType;
     private RedstoneControlType redstoneControlType;
 
@@ -23,7 +23,7 @@ public class PacketTileRedstoneControl extends PacketLocation implements IMessag
 
     }
 
-    public <T extends TileEntity & ITileNetworkable> PacketTileRedstoneControl(T tileEntity, PacketType packetType, RedstoneControlType redstoneControlType) {
+    public PacketTileRedstoneControl(TE tileEntity, PacketType packetType, RedstoneControlType redstoneControlType) {
         super(tileEntity);
 
         this.packetType = packetType;
@@ -36,17 +36,22 @@ public class PacketTileRedstoneControl extends PacketLocation implements IMessag
         }
     }
 
-    public <T extends TileEntity & ITileNetworkable & ITileRedstoneControl> PacketTileRedstoneControl(T tileEntity, PacketType packetType) {
+
+    /*
+    public <TE extends PacketTileRedstoneControl<TE extends ITileRedstoneControl>> PacketTileRedstoneControl(TER tileEntity, PacketType packetType) {
         this(tileEntity, packetType, tileEntity.getControlType());
     }
+    */
 
-    public <T extends ITileComponent & ITileNetworkable> PacketTileRedstoneControl(T tileComponent, PacketType packetType, RedstoneControlType redstoneControlType) {
-        this(tileComponent.getTileEntity(), packetType, redstoneControlType);
+    public PacketTileRedstoneControl(TC tileComponent, PacketType packetType, RedstoneControlType redstoneControlType) {
+        this((TE) tileComponent.getTileEntity(), packetType, redstoneControlType);
     }
 
-    public <T extends ITileComponent & ITileNetworkable & ITileRedstoneControl> PacketTileRedstoneControl(T tileComponent, PacketType packetType) {
+    /*
+    public <T extends TE & ITileRedstoneControl> PacketTileRedstoneControl(T tileComponent, PacketType packetType) {
         this(tileComponent, packetType, tileComponent.getControlType());
     }
+    */
 
     @Override
     public void fromBytes(ByteBuf dataStream) {
@@ -86,19 +91,19 @@ public class PacketTileRedstoneControl extends PacketLocation implements IMessag
         }
 
         @SuppressWarnings("unchecked")
-        public <T extends TileEntity & ITileNetworkable & ITileRedstoneControl> IMessage onPacketTileRedstoneControlMessage(PacketTileRedstoneControl message, MessageContext messageContext) {
+        public <TE extends TileEntity & ITileNetworkable & ITileRedstoneControl> IMessage onPacketTileRedstoneControlMessage(PacketTileRedstoneControl message, MessageContext messageContext) {
             World world = NetworkHandler.getWorld(messageContext);
             TileEntity tileEntity = message.getLocation().getTileEntity(world);
 
             if (tileEntity != null && tileEntity instanceof ITileRedstoneControl) {
-                T tileRedstoneControl = (T) tileEntity;
+                TE tileRedstoneControl = (TE) tileEntity;
 
                 switch (message.packetType) {
                     case UPDATE:
                         if (messageContext.side.isServer()) {
                             tileRedstoneControl.setControlType(message.redstoneControlType);
 
-                            return new PacketTileRedstoneControl(tileRedstoneControl, PacketType.RESPONSE);
+                            return new PacketTileRedstoneControl(tileRedstoneControl, PacketType.RESPONSE, tileRedstoneControl.getControlType());
                         }
                         break;
 

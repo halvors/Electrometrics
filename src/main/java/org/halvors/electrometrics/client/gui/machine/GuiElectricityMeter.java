@@ -10,6 +10,7 @@ import org.halvors.electrometrics.client.gui.component.IInfoHandler;
 import org.halvors.electrometrics.common.base.tile.ITileOwnable;
 import org.halvors.electrometrics.common.network.NetworkHandler;
 import org.halvors.electrometrics.common.network.packet.PacketTileEntityElectricityMeter;
+import org.halvors.electrometrics.common.tile.component.TileOwnableComponent;
 import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityMeter;
 import org.halvors.electrometrics.common.util.LanguageUtils;
 import org.halvors.electrometrics.common.util.PlayerUtils;
@@ -34,16 +35,16 @@ public class GuiElectricityMeter extends GuiElectricMachine {
 
 		this.tileEntityElectricityMeter = tileEntity;
 
-		if (tileEntity.hasComponentImplementing(ITileOwnable.class)) {
-			final ITileOwnable tileOwnable = (ITileOwnable) tileEntity.getComponentImplementing(ITileOwnable.class);
+		if (tileEntity.hasComponent(TileOwnableComponent.class)) {
+			final ITileOwnable tileOwnable = (ITileOwnable) tileEntity.getComponent(TileOwnableComponent.class);
 
 			components.add(new GuiOwnerInfo(new IInfoHandler() {
 				@Override
 				public List<String> getInfo() {
-					List<String> list = new ArrayList<>();
-					list.add(tileOwnable.getOwnerName());
+				List<String> list = new ArrayList<>();
+				list.add(tileOwnable.getOwnerName());
 
-					return list;
+				return list;
 				}
 			}, this, defaultResource));
 		}

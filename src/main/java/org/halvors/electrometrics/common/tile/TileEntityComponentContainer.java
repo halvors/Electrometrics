@@ -4,20 +4,15 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 import org.halvors.electrometrics.common.base.tile.ITileNetworkable;
 import org.halvors.electrometrics.common.component.IComponent;
+import org.halvors.electrometrics.common.component.IComponentContainer;
 import org.halvors.electrometrics.common.tile.component.ITileComponent;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TileEntityComponentContainer extends TileEntity implements ITileNetworkable {
-	protected final List<IComponent> components = new ArrayList<>();
-
-	TileEntityComponentContainer(String inventoryName) {
+public class TileEntityComponentContainer extends TileEntity implements IComponentContainer, ITileNetworkable {
+	protected TileEntityComponentContainer(String inventoryName) {
 		super(inventoryName);
-	}
-
-	public List<IComponent> getComponents() {
-		return components;
 	}
 
 	@Override
@@ -60,6 +55,34 @@ public class TileEntityComponentContainer extends TileEntity implements ITileNet
 	}
 
 	@Override
+	public boolean hasComponent(Class<?> componentClass) {
+		for (IComponent component : components) {
+			if (component instanceof ITileComponent) {
+				ITileComponent tileComponent = (ITileComponent) component;
+
+				return tileComponent.getClass().isInstance(componentClass);
+			}
+		}
+
+		return false;
+	}
+
+	@Override
+	public IComponent getComponent(Class<?> componentClass) {
+		for (IComponent component : components) {
+			if (component instanceof ITileComponent) {
+				ITileComponent tileComponent = (ITileComponent) component;
+
+				if (tileComponent.getClass().isInstance(componentClass)) {
+					return tileComponent;
+				}
+			}
+		}
+
+		return null;
+	}
+
+	@Override
 	public void handlePacketData(ByteBuf dataStream) throws Exception {
 		for (IComponent component : components) {
 			if (component instanceof ITileComponent && component instanceof ITileNetworkable) {
@@ -91,61 +114,5 @@ public class TileEntityComponentContainer extends TileEntity implements ITileNet
 				tileComponent.onNeighborChange();
 			}
 		}
-	}
-
-    public boolean hasComponent(Class<? extends ITileComponent> componentClass) {
-        for (IComponent component : components) {
-            if (component instanceof ITileComponent) {
-                ITileComponent tileComponent = (ITileComponent) component;
-
-                if (tileComponent.getClass().isInstance(componentClass)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-	public ITileComponent getComponent(Class<? extends ITileComponent> componentClass) {
-		for (IComponent component : components) {
-			if (component instanceof ITileComponent) {
-				ITileComponent tileComponent = (ITileComponent) component;
-
-				if (tileComponent.getClass().isInstance(componentClass)) {
-					return tileComponent;
-				}
-			}
-		}
-
-		return null;
-	}
-
-	public boolean hasComponentImplementing(Class<?> interfaceClass) {
-		for (IComponent component : components) {
-			if (component instanceof ITileComponent) {
-				ITileComponent tileComponent = (ITileComponent) component;
-
-				if (interfaceClass.isInterface() && tileComponent.getClass().isInstance(interfaceClass)) {
-					return true;
-				}
-			}
-		}
-
-		return false;
-	}
-
-	public ITileComponent getComponentImplementing(Class<?> interfaceClass) {
-		for (IComponent component : components) {
-			if (component instanceof ITileComponent) {
-				ITileComponent tileComponent = (ITileComponent) component;
-
-				if (interfaceClass.isInterface() && tileComponent.getClass().isInstance(interfaceClass)) {
-					return tileComponent;
-				}
-			}
-		}
-
-		return null;
 	}
 }

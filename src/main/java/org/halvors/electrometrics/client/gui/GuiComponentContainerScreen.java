@@ -10,19 +10,17 @@ import net.minecraft.util.ResourceLocation;
 import org.halvors.electrometrics.client.gui.component.IGuiComponent;
 import org.halvors.electrometrics.common.base.ResourceType;
 import org.halvors.electrometrics.common.component.IComponent;
+import org.halvors.electrometrics.common.component.IComponentContainer;
 import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.util.ResourceUtils;
 import org.lwjgl.opengl.GL11;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @SideOnly(Side.CLIENT)
-public abstract class GuiComponentContainerScreen extends GuiScreen implements IGui {
+public abstract class GuiComponentContainerScreen extends GuiScreen implements IComponentContainer, IGui {
 	private static final Minecraft game = Minecraft.getMinecraft();
 
-    protected final Set<IComponent> components = new HashSet<>();
     protected final ResourceLocation defaultResource = ResourceUtils.getResource(ResourceType.GUI, "Screen.png");
     protected final TileEntity tileEntity;
 
@@ -63,35 +61,6 @@ public abstract class GuiComponentContainerScreen extends GuiScreen implements I
 		GL11.glTranslatef(guiLeft, guiTop, 0);
 
 		drawGuiScreenForegroundLayer(mouseX, mouseY);
-	}
-
-	public float getNeededScale(String text, int maxX) {
-		int length = fontRendererObj.getStringWidth(text);
-
-		if (length <= maxX) {
-			return 1;
-		} else {
-			return (float) maxX / length;
-		}
-	}
-
-	public void renderScaledText(String text, int x, int y, int color, int maxX) {
-		int length = fontRendererObj.getStringWidth(text);
-
-		if (length <= maxX) {
-			fontRendererObj.drawString(text, x, y, color);
-		} else {
-			float scale = (float) maxX / length;
-			float reverse = 1 / scale;
-			float yAdd = 4 - (scale * 8) / 2F;
-
-			GL11.glPushMatrix();
-
-			GL11.glScalef(scale, scale, scale);
-			fontRendererObj.drawString(text, (int) (x * reverse), (int) ((y * reverse) + yAdd), color);
-
-			GL11.glPopMatrix();
-		}
 	}
 
     protected void drawGuiScreenBackgroundLayer(float partialTick, int mouseX, int mouseY) {
@@ -187,6 +156,34 @@ public abstract class GuiComponentContainerScreen extends GuiScreen implements I
 	}
 
 	@Override
+	public boolean hasComponent(Class<?> componentClass) {
+		for (IComponent component : components) {
+			if (component instanceof IGuiComponent) {
+				IGuiComponent guiComponent = (IGuiComponent) component;
+
+				return guiComponent.getClass().isInstance(componentClass);
+			}
+		}
+
+		return false;
+	}
+
+	@Override
+	public IComponent getComponent(Class<?> componentClass) {
+		for (IComponent component : components) {
+			if (component instanceof IGuiComponent) {
+				IGuiComponent guiComponent = (IGuiComponent) component;
+
+				if (guiComponent.getClass().isInstance(componentClass)) {
+					return guiComponent;
+				}
+			}
+		}
+
+		return null;
+	}
+
+	@Override
 	public void drawTexturedRect(int x, int y, int textureX, int textureY, int width, int height) {
 		super.drawTexturedModalRect(x, y, textureX, textureY, width, height);
 	}
@@ -214,5 +211,34 @@ public abstract class GuiComponentContainerScreen extends GuiScreen implements I
 	@Override
 	public FontRenderer getFontRenderer() {
 		return fontRendererObj;
+	}
+
+	public float getNeededScale(String text, int maxX) {
+		int length = fontRendererObj.getStringWidth(text);
+
+		if (length <= maxX) {
+			return 1;
+		} else {
+			return (float) maxX / length;
+		}
+	}
+
+	public void renderScaledText(String text, int x, int y, int color, int maxX) {
+		int length = fontRendererObj.getStringWidth(text);
+
+		if (length <= maxX) {
+			fontRendererObj.drawString(text, x, y, color);
+		} else {
+			float scale = (float) maxX / length;
+			float reverse = 1 / scale;
+			float yAdd = 4 - (scale * 8) / 2F;
+
+			GL11.glPushMatrix();
+
+			GL11.glScalef(scale, scale, scale);
+			fontRendererObj.drawString(text, (int) (x * reverse), (int) ((y * reverse) + yAdd), color);
+
+			GL11.glPopMatrix();
+		}
 	}
 }
