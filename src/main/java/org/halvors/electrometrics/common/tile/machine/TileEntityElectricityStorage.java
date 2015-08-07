@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author halvors
  */
-public abstract class TileEntityElectricityStorage extends TileEntityMachine implements ITileNetworkable {
+public class TileEntityElectricityStorage extends TileEntityElectricMachine implements ITileNetworkable {
 	// The internal energy storage.
 	protected final EnergyStorage storage;
 
@@ -24,11 +24,11 @@ public abstract class TileEntityElectricityStorage extends TileEntityMachine imp
 	}
 
 	protected TileEntityElectricityStorage(MachineType machineType, int maxEnergy, int maxReceive, int maxExtract) {
-        this(machineType, maxEnergy);
+		this(machineType, maxEnergy);
 
-        storage.setMaxReceive(maxReceive);
-        storage.setMaxExtract(maxExtract);
-    }
+		storage.setMaxReceive(maxReceive);
+		storage.setMaxExtract(maxExtract);
+	}
 
 	protected TileEntityElectricityStorage(MachineType machineType, int maxEnergy, int maxTransfer) {
 		this(machineType, maxEnergy);
@@ -58,12 +58,16 @@ public abstract class TileEntityElectricityStorage extends TileEntityMachine imp
 	}
 
 	@Override
-	public List<Object> getPacketData(List<Object> list) {
-		super.getPacketData(list);
+	public List<Object> getPacketData(List<Object> objects) {
+		super.getPacketData(objects);
 
-		list.add(storage.getEnergyStored());
+		objects.add(storage.getEnergyStored());
 
-		return list;
+		return objects;
+	}
+
+	protected int getExtract() {
+		return Math.min(storage.getMaxExtract(), storage.getEnergyStored());
 	}
 
 	public EnergyStorage getStorage() {

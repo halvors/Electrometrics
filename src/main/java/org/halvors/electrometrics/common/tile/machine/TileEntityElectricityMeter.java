@@ -15,8 +15,6 @@ import org.halvors.electrometrics.common.base.tile.ITileNetworkable;
 import org.halvors.electrometrics.common.base.tile.ITileOwnable;
 import org.halvors.electrometrics.common.network.NetworkHandler;
 import org.halvors.electrometrics.common.network.packet.PacketTileEntity;
-import org.halvors.electrometrics.common.tile.component.TileOwnableComponent;
-import org.halvors.electrometrics.common.tile.component.TileRedstoneControlComponent;
 import org.halvors.electrometrics.common.util.MachineUtils;
 import org.halvors.electrometrics.common.util.PlayerUtils;
 
@@ -54,9 +52,6 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 		super(machineType, electricTier.getMaxEnergy(), electricTier.getMaxTransfer());
 
 		this.electricTier = electricTier;
-
-        components.add(new TileOwnableComponent(this));
-		components.add(new TileRedstoneControlComponent(this));
 	}
 
 	@Override

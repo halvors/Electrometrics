@@ -2,6 +2,8 @@ package org.halvors.electrometrics.common.block;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.*;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -194,8 +196,22 @@ public class BlockMachine extends BlockRotatable {
 		super.onBlockPlacedBy(world, x, y, z, entity, itemStack);
 	}
 
+	/*
 	@Override
-	public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
+	public void onNeighborBlockChange(World world, int x, int y, int z) {
+		if (!world.isRemote) {
+			TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
+
+			if (tileEntity instanceof TileEntityComponentContainer) {
+				TileEntityComponentContainer tileEntityComponentContainer = (TileEntityComponentContainer) tileEntity;
+				tileEntityComponentContainer.onNeighborChange();
+			}
+		}
+	}
+	*/
+
+	@Override
+	public void onNeighborBlockChange(World world, int x, int y, int z, Block neighborBlock) {
 		if (!world.isRemote) {
 			TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
 

@@ -10,6 +10,7 @@ import org.halvors.electrometrics.common.base.tile.ITileNetworkable;
 import org.halvors.electrometrics.common.base.tile.ITileRedstoneControl;
 import org.halvors.electrometrics.common.network.NetworkHandler;
 import org.halvors.electrometrics.common.tile.TileEntity;
+import org.halvors.electrometrics.common.tile.component.ITileComponent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +38,10 @@ public class PacketTileRedstoneControl extends PacketLocation implements IMessag
 
     public <T extends TileEntity & ITileNetworkable & ITileRedstoneControl> PacketTileRedstoneControl(T tileEntity, PacketType packetType) {
         this(tileEntity, packetType, tileEntity.getControlType());
+    }
+
+    public <T extends ITileComponent & ITileNetworkable & ITileRedstoneControl> PacketTileRedstoneControl(T tileComponent, PacketType packetType) {
+        this(tileComponent.getTileEntity(), packetType);
     }
 
     @Override

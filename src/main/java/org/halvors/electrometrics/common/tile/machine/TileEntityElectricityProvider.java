@@ -2,9 +2,9 @@ package org.halvors.electrometrics.common.tile.machine;
 
 import cofh.api.energy.IEnergyProvider;
 import cofh.api.energy.IEnergyReceiver;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.halvors.electrometrics.common.base.MachineType;
-import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.util.MachineUtils;
 
 import java.util.EnumSet;
@@ -14,7 +14,7 @@ import java.util.EnumSet;
  *
  * @author halvors
  */
-public abstract class TileEntityElectricityProvider extends TileEntityElectricityReceiver implements IEnergyProvider {
+public class TileEntityElectricityProvider extends TileEntityElectricityReceiver implements IEnergyProvider {
 	protected TileEntityElectricityProvider(MachineType machineType, int maxEnergy) {
 		super(machineType, maxEnergy);
 	}
@@ -31,48 +31,46 @@ public abstract class TileEntityElectricityProvider extends TileEntityElectricit
 	public void updateEntity() {
 		super.updateEntity();
 
-		if (!worldObj.isRemote && MachineUtils.canFunction(this)) {
-			if (storage.getEnergyStored() > 0) {
-				transferEnergy();
-			}
+		if (!worldObj.isRemote) {
+			distributeEnergy();
 		}
 	}
 
 	@Override
+	public boolean canConnectEnergy(ForgeDirection from) {
+		return getReceivingDirections().contains(from) || getExtractingDirections().contains(from);
+	}
+
+	@Override
 	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
-		if (getExtractingSides().contains(from)) {
+		if (getExtractingDirections().contains(from)) {
 			return storage.extractEnergy(maxExtract, simulate);
 		}
 
 		return 0;
 	}
 
-	@Override
-	EnumSet<ForgeDirection> getReceivingSides() {
-		EnumSet<ForgeDirection> directions = EnumSet.allOf(ForgeDirection.class);
-		directions.removeAll(getExtractingSides());
-		directions.remove(ForgeDirection.UNKNOWN);
-
-		return directions;
-	}
-
-	@Override
-	EnumSet<ForgeDirection> getExtractingSides() {
-		return EnumSet.of(ForgeDirection.getOrientation(facing));
+	protected EnumSet<ForgeDirection> getExtractingDirections() {
+		return EnumSet.noneOf(ForgeDirection.class);
 	}
 
 	/**
 	 * Transfer energy to any blocks demanding energy that are connected to
 	 * this one.
 	 */
-	private void transferEnergy() {
-		for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
-			TileEntity tileEntity = TileEntity.getTileEntity(worldObj, xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
+	protected void distributeEnergy() {
+		if (MachineUtils.canFunction(this)) {
+			for (ForgeDirection direction : getExtractingDirections()) {
+				TileEntity tileEntity = worldObj.getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
 
-			if (tileEntity instanceof IEnergyReceiver) {
-				IEnergyReceiver receiver = (IEnergyReceiver) tileEntity;
+				if (tileEntity instanceof IEnergyReceiver) {
+					IEnergyReceiver receiver = (IEnergyReceiver) tileEntity;
+					int actualEnergyAmount = extractEnergy(direction, getExtract(), true);
 
-				extractEnergy(direction.getOpposite(), receiver.receiveEnergy(direction.getOpposite(), storage.getEnergyStored(), false), false);
+					if (actualEnergyAmount > 0) {
+						extractEnergy(direction, receiver.receiveEnergy(direction.getOpposite(), actualEnergyAmount, false), false);
+					}
+				}
 			}
 		}
 	}
