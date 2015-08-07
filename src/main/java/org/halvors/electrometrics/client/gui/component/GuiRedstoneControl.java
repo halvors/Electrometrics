@@ -13,7 +13,7 @@ import org.halvors.electrometrics.common.network.packet.PacketTileRedstoneContro
 import org.halvors.electrometrics.common.tile.TileEntity;
 
 @SideOnly(Side.CLIENT)
-public class GuiRedstoneControl<T extends TileEntity & ITileNetworkable & ITileRedstoneControl> extends GuiComponent implements IGuiComponent {
+public class GuiRedstoneControl<T extends TileEntity & ITileNetworkable & ITileRedstoneControl> extends GuiComponentBase implements IGuiComponent {
 	private final T tileEntity;
 
 	public GuiRedstoneControl(IGui gui, T tileEntity, ResourceLocation defaultResource) {

@@ -2,7 +2,7 @@ package org.halvors.electrometrics.common.base;
 
 public enum ResourceType {
 	GUI("gui"),
-	GUI_ELEMENT("gui/elements"),
+	GUI_COMPONENT("gui/components"),
 	SOUND("sound"),
 	TEXTURE_BLOCKS("textures/blocks"),
 	TEXTURE_ITEMS("textures/items");

@@ -11,7 +11,7 @@ import org.halvors.electrometrics.common.ConfigurationManager.Client;
 import org.halvors.electrometrics.common.util.energy.EnergyUnit;
 
 @SideOnly(Side.CLIENT)
-public class GuiEnergyUnitType extends GuiComponent implements IGuiComponent {
+public class GuiEnergyUnitType extends GuiComponentBase implements IGuiComponent {
 	public GuiEnergyUnitType(IGui gui, ResourceLocation defaultResource) {
 		super("EnergyUnitType.png", gui, defaultResource);
 	}

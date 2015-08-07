@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL11;
 import java.util.List;
 
 @SideOnly(Side.CLIENT)
-public abstract class GuiComponent implements IGuiComponent {
+public abstract class GuiComponentBase implements IGuiComponent {
 	private final ResourceLocation defaultResource;
 
 	static final Minecraft game = Minecraft.getMinecraft();
@@ -21,8 +21,8 @@ public abstract class GuiComponent implements IGuiComponent {
 	final ResourceLocation resource;
 	final IGui gui;
 
-	GuiComponent(String texture, IGui gui, ResourceLocation defaultResource) {
-		this.resource = ResourceUtils.getResource(ResourceType.GUI_ELEMENT, texture);
+	GuiComponentBase(String texture, IGui gui, ResourceLocation defaultResource) {
+		this.resource = ResourceUtils.getResource(ResourceType.GUI_COMPONENT, texture);
 		this.gui = gui;
 		this.defaultResource = defaultResource;
 	}
