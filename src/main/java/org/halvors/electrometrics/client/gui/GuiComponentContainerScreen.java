@@ -10,19 +10,17 @@ import net.minecraft.util.ResourceLocation;
 import org.halvors.electrometrics.client.gui.component.IGuiComponent;
 import org.halvors.electrometrics.common.base.ResourceType;
 import org.halvors.electrometrics.common.component.IComponent;
+import org.halvors.electrometrics.common.component.IComponentContainer;
 import org.halvors.electrometrics.common.tile.TileEntity;
 import org.halvors.electrometrics.common.util.ResourceUtils;
 import org.lwjgl.opengl.GL11;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @SideOnly(Side.CLIENT)
-public abstract class GuiComponentContainerScreen extends GuiScreen implements IGui {
+public abstract class GuiComponentContainerScreen extends GuiScreen implements IComponentContainer, IGui {
 	private static final Minecraft game = Minecraft.getMinecraft();
 
-    protected final Set<IComponent> components = new HashSet<>();
     protected final ResourceLocation defaultResource = ResourceUtils.getResource(ResourceType.GUI, "Screen.png");
     protected final TileEntity tileEntity;
 
