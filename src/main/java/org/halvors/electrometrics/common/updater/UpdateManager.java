@@ -102,8 +102,4 @@ public class UpdateManager {
             }
         }
     }
-
-    public static void registerUpdater(UpdateManager updateManager) {
-        FMLCommonHandler.instance().bus().register(updateManager);
-    }
 }

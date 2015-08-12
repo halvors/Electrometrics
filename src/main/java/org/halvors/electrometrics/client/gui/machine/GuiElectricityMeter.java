@@ -6,6 +6,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import org.halvors.electrometrics.client.gui.component.GuiEnergyInfo;
 import org.halvors.electrometrics.client.gui.component.GuiOwnerInfo;
+import org.halvors.electrometrics.client.gui.component.GuiPowerBar;
 import org.halvors.electrometrics.client.gui.component.IInfoHandler;
 import org.halvors.electrometrics.common.base.tile.ITileOwnable;
 import org.halvors.electrometrics.common.network.NetworkHandler;
@@ -34,6 +35,7 @@ public class GuiElectricityMeter extends GuiElectricMachine {
 
 		this.tileEntityElectricityMeter = tileEntity;
 
+		components.add(new GuiPowerBar(this, tileEntity.getStorage(), defaultResource, 164, 15));
 		components.add(new GuiOwnerInfo(new IInfoHandler() {
 			@Override
 			public List<String> getInfo() {
