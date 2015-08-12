@@ -42,9 +42,12 @@ public class GuiPowerBar extends GuiComponentBase implements IGuiComponent {
 	@Override
 	public void renderBackground(int xAxis, int yAxis, int xOrigin, int yOrigin, int guiWidthSize, int guiHeightSize) {
 		game.renderEngine.bindTexture(resource);
+		gui.drawTexturedRect(xOrigin + x, yOrigin + y, 0, 0, width, height);
 
-		if (powerInfoHandler.getTooltip() != null && xAxis >= x && xAxis <= x + width && yAxis >= y && yAxis <= y + height) {
-			displayTooltip(powerInfoHandler.getTooltip(), xAxis, yAxis);
+		if (powerInfoHandler.getLevel() > 0) {
+			int displayInt = (int) (powerInfoHandler.getLevel() * 52) + innerOffsetY;
+
+			gui.drawTexturedRect(xOrigin + x, yOrigin + y + height - displayInt, 6, height - displayInt, width, displayInt);
 		}
 
 		super.renderBackground(xAxis, yAxis, xOrigin, yOrigin, guiWidthSize, guiHeightSize);
@@ -80,15 +83,4 @@ public class GuiPowerBar extends GuiComponentBase implements IGuiComponent {
 	public void mouseReleased(int x, int y, int type) {
 
 	}
-	/*
-	public static abstract class IPowerInfoHandler
-	{
-		public String getTooltip()
-		{
-			return null;
-		}
-
-		public abstract double getLevel();
-	}
-	*/
 }
