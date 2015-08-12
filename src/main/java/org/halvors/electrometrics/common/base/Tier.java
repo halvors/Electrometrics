@@ -37,11 +37,11 @@ public class Tier {
 		ELITE(80000000, 32000), // 12800 J
 		ULTIMATE(320000000, 128000); // 51200 J
 
-		private final int maxEnergy;
+		private final int capacity;
 		private final int maxTransfer;
 
-		Electric(int maxEnergy, int maxTransfer) {
-			this.maxEnergy = maxEnergy;
+		Electric(int capacity, int maxTransfer) {
+			this.capacity = capacity;
 			this.maxTransfer = maxTransfer;
 		}
 
@@ -49,8 +49,8 @@ public class Tier {
 			return Base.values()[ordinal()];
 		}
 
-		public int getMaxEnergy() {
-			return maxEnergy;
+		public int getCapacity() {
+			return capacity;
 		}
 
 		public int getMaxTransfer() {

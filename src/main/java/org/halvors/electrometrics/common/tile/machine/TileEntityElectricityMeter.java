@@ -49,7 +49,7 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 	}
 
 	public TileEntityElectricityMeter(MachineType machineType, Tier.Electric electricTier) {
-		super(machineType, electricTier.getMaxEnergy(), electricTier.getMaxTransfer());
+		super(machineType, electricTier.getCapacity(), electricTier.getMaxTransfer());
 
 		this.electricTier = electricTier;
 	}

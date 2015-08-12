@@ -4,10 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
-import org.halvors.electrometrics.client.gui.component.GuiEnergyInfo;
-import org.halvors.electrometrics.client.gui.component.GuiOwnerInfo;
 import org.halvors.electrometrics.client.gui.component.GuiPowerBar;
-import org.halvors.electrometrics.client.gui.component.IInfoHandler;
 import org.halvors.electrometrics.common.base.tile.ITileOwnable;
 import org.halvors.electrometrics.common.network.NetworkHandler;
 import org.halvors.electrometrics.common.network.packet.PacketTileEntityElectricityMeter;
@@ -15,9 +12,6 @@ import org.halvors.electrometrics.common.tile.machine.TileEntityElectricityMeter
 import org.halvors.electrometrics.common.util.LanguageUtils;
 import org.halvors.electrometrics.common.util.PlayerUtils;
 import org.halvors.electrometrics.common.util.energy.EnergyUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This is the GUI of the Electricity Meter which provides a simple way to keep count of the electricity you use.
@@ -36,27 +30,6 @@ public class GuiElectricityMeter extends GuiElectricMachine {
 		this.tileEntityElectricityMeter = tileEntity;
 
 		components.add(new GuiPowerBar(this, tileEntity.getStorage(), defaultResource, 164, 15));
-		components.add(new GuiOwnerInfo(new IInfoHandler() {
-			@Override
-			public List<String> getInfo() {
-				List<String> list = new ArrayList<>();
-				list.add(tileEntity.getOwnerName());
-
-				return list;
-			}
-		}, this, defaultResource));
-
-		// TODO: Get currect energy usage here.
-		components.add(new GuiEnergyInfo(new IInfoHandler() {
-			@Override
-			public List<String> getInfo() {
-				List<String> list = new ArrayList<>();
-				list.add(LanguageUtils.localize("gui.stored") + ": " + EnergyUtils.getEnergyDisplay(tileEntity.getStorage().getEnergyStored()));
-				list.add(LanguageUtils.localize("gui.maxOutput") + ": " + EnergyUtils.getEnergyDisplay(tileEntity.getElectricTier().getMaxTransfer()));
-
-				return list;
-			}
-		}, this, defaultResource));
 	}
 
 	@SuppressWarnings("unchecked")

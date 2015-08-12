@@ -16,7 +16,7 @@ import java.util.List;
  *
  * @author halvors
  */
-public class TileEntityElectricMachine extends TileEntityMachine implements ITileNetworkable, ITileRedstoneControl {
+public class TileEntityElectricMachine extends TileEntityElectricityReceiver implements ITileNetworkable, ITileRedstoneControl {
 	// The current RedstoneControlType of this TileEntity.
 	private RedstoneControlType redstoneControlType = RedstoneControlType.DISABLED;
 
@@ -24,8 +24,16 @@ public class TileEntityElectricMachine extends TileEntityMachine implements ITil
 	protected boolean isPowered;
 	protected boolean wasPowered;
 
-	protected TileEntityElectricMachine(MachineType machineType) {
-		super(machineType);
+	protected TileEntityElectricMachine(MachineType machineType, int capacity) {
+		super(machineType, capacity);
+	}
+
+	protected TileEntityElectricMachine(MachineType machineType, int capacity, int maxReceive, int maxExtract) {
+		super(machineType, capacity, maxReceive, maxExtract);
+	}
+
+	protected TileEntityElectricMachine(MachineType machineType, int capacity, int maxTransfer) {
+		super(machineType, capacity, maxTransfer);
 	}
 
 	@Override

@@ -14,17 +14,17 @@ import java.util.EnumSet;
  *
  * @author halvors
  */
-public class TileEntityElectricityProvider extends TileEntityElectricityReceiver implements IEnergyProvider {
-	protected TileEntityElectricityProvider(MachineType machineType, int maxEnergy) {
-		super(machineType, maxEnergy);
+public class TileEntityElectricityProvider extends TileEntityElectricMachine implements IEnergyProvider {
+	protected TileEntityElectricityProvider(MachineType machineType, int capacity) {
+		super(machineType, capacity);
 	}
 
-	protected TileEntityElectricityProvider(MachineType machineType, int maxEnergy, int maxTransfer) {
-		super(machineType, maxEnergy, maxTransfer);
+	protected TileEntityElectricityProvider(MachineType machineType, int capacity, int maxReceive, int maxExtract) {
+		super(machineType, capacity, maxReceive, maxExtract);
 	}
 
-	protected TileEntityElectricityProvider(MachineType machineType, int maxEnergy, int maxReceive, int maxExtract) {
-		super(machineType, maxEnergy, maxReceive, maxExtract);
+	protected TileEntityElectricityProvider(MachineType machineType, int capacity, int maxTransfer) {
+		super(machineType, capacity, maxTransfer);
 	}
 
 	@Override

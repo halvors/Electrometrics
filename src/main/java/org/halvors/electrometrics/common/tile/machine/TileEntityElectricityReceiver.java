@@ -12,16 +12,16 @@ import java.util.EnumSet;
  * @author halvors
  */
 public class TileEntityElectricityReceiver extends TileEntityElectricityStorage implements IEnergyReceiver {
-	protected TileEntityElectricityReceiver(MachineType machineType, int maxEnergy) {
-		super(machineType, maxEnergy);
+	protected TileEntityElectricityReceiver(MachineType machineType, int capacity) {
+		super(machineType, capacity);
 	}
 
-	protected TileEntityElectricityReceiver(MachineType machineType, int maxEnergy, int maxTransfer) {
-		super(machineType, maxEnergy, maxTransfer);
+	protected TileEntityElectricityReceiver(MachineType machineType, int capacity, int maxReceive, int maxExtract) {
+		super(machineType, capacity, maxReceive, maxExtract);
 	}
 
-	protected TileEntityElectricityReceiver(MachineType machineType, int maxEnergy, int maxReceive, int maxExtract) {
-		super(machineType, maxEnergy, maxReceive, maxExtract);
+	protected TileEntityElectricityReceiver(MachineType machineType, int capacity, int maxTransfer) {
+		super(machineType, capacity, maxTransfer);
 	}
 
 	@Override

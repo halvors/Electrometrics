@@ -13,27 +13,25 @@ import java.util.List;
  *
  * @author halvors
  */
-public class TileEntityElectricityStorage extends TileEntityElectricMachine implements ITileNetworkable {
+public class TileEntityElectricityStorage extends TileEntityMachine implements ITileNetworkable {
 	// The internal energy storage.
 	protected final EnergyStorage storage;
 
-	protected TileEntityElectricityStorage(MachineType machineType, int maxEnergy) {
+	protected TileEntityElectricityStorage(MachineType machineType, int capacity) {
 		super(machineType);
 
-		storage = new EnergyStorage(maxEnergy);
+		storage = new EnergyStorage(capacity);
 	}
 
-	protected TileEntityElectricityStorage(MachineType machineType, int maxEnergy, int maxReceive, int maxExtract) {
-		this(machineType, maxEnergy);
+	protected TileEntityElectricityStorage(MachineType machineType, int capacity, int maxReceive, int maxExtract) {
+		this(machineType, capacity);
 
 		storage.setMaxReceive(maxReceive);
 		storage.setMaxExtract(maxExtract);
 	}
 
-	protected TileEntityElectricityStorage(MachineType machineType, int maxEnergy, int maxTransfer) {
-		this(machineType, maxEnergy);
-
-		storage.setMaxTransfer(maxTransfer);
+	protected TileEntityElectricityStorage(MachineType machineType, int capacity, int maxTransfer) {
+		this(machineType, capacity, maxTransfer, maxTransfer);
 	}
 
 	@Override
