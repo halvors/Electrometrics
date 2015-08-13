@@ -20,12 +20,13 @@ import java.util.List;
 public class PacketTileEntityElectricityMeter extends PacketLocation implements IMessage {
     private PacketType packetType;
     private double electricityCount;
+    private double electricityUsage;
 
     public PacketTileEntityElectricityMeter() {
 
     }
 
-    public PacketTileEntityElectricityMeter(TileEntityElectricityMeter tileEntity, PacketType packetType, double electricityCount) {
+    public PacketTileEntityElectricityMeter(TileEntityElectricityMeter tileEntity, PacketType packetType, double electricityCount, double electricityUsage) {
         super(tileEntity);
 
         this.packetType = packetType;
@@ -33,12 +34,13 @@ public class PacketTileEntityElectricityMeter extends PacketLocation implements 
         switch (packetType) {
             case RESPONSE:
                 this.electricityCount = electricityCount;
+                this.electricityUsage = electricityUsage;
                 break;
         }
     }
 
     public PacketTileEntityElectricityMeter(TileEntityElectricityMeter tileEntity, PacketType packetType) {
-        this(tileEntity, packetType, tileEntity.getElectricityCount());
+        this(tileEntity, packetType, tileEntity.getElectricityCount(), tileEntity.getElectricityUsage());
     }
 
     @Override
@@ -50,6 +52,7 @@ public class PacketTileEntityElectricityMeter extends PacketLocation implements 
         switch (packetType) {
             case RESPONSE:
                 electricityCount = dataStream.readDouble();
+                electricityUsage = dataStream.readDouble();
                 break;
         }
     }
@@ -64,6 +67,7 @@ public class PacketTileEntityElectricityMeter extends PacketLocation implements 
         switch (packetType) {
             case RESPONSE:
                 objects.add(electricityCount);
+                objects.add(electricityUsage);
                 break;
         }
 
@@ -89,6 +93,7 @@ public class PacketTileEntityElectricityMeter extends PacketLocation implements 
                     case RESPONSE:
                         if (messageContext.side.isClient()) {
                             tileEntityElectricityMeter.setElectricityCount(message.electricityCount);
+                            tileEntityElectricityMeter.setElectricityUsage(message.electricityUsage);
                         }
                         break;
 

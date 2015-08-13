@@ -68,17 +68,13 @@ public class GuiElectricityMeter extends GuiElectricMachine {
 
 	@Override
 	protected void drawGuiScreenForegroundLayer(int mouseX, int mouseY) {
-		// Formatting energy to the correct energy unit.
-		String measuredEnergy = EnergyUtils.getEnergyDisplay(tileEntityElectricityMeter.getElectricityCount());
-		String storedEnergy = EnergyUtils.getEnergyDisplay(tileEntityElectricityMeter.getStorage().getEnergyStored());
-
 		int x = 6 + 12;
 		int y = ySize / 2;
 
 		drawString(LanguageUtils.localize("gui.measured") + ":", x, y - 24);
-		drawString(measuredEnergy, x + 64, y - 24);
-		drawString(LanguageUtils.localize("gui.stored") + ":", x, y - 12);
-		drawString(storedEnergy, x + 64, y - 12);
+		drawString(EnergyUtils.getEnergyDisplay(tileEntityElectricityMeter.getElectricityCount()), x + 64, y - 24);
+		drawString(LanguageUtils.localize("gui.averageOutput") + ":", x, y - 12);
+		drawString(EnergyUtils.getEnergyDisplay(tileEntityElectricityMeter.getElectricityUsage()) + "/t", x + 64, y - 12);
 
 		if (ticker > 0) {
 			ticker--;

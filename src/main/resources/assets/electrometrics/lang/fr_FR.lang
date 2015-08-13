@@ -16,10 +16,10 @@ tile.ElectricityMeter.name=Compteur électrique
 item.Multimeter.name=Multimètre
 
 // Gui
-
 gui.measured=Mesuré
-gui.stored=Stocké
+gui.averageUsage=Average usage
 gui.reset=Mis à zéro
+gui.stored=Stocké
 gui.maxOutput=Sortie maxi
 
 // Gui configuration

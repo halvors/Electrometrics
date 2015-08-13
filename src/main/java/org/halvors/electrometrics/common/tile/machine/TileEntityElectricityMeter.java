@@ -43,6 +43,8 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 
 	// The amount of energy that has passed thru.
 	private double electricityCount;
+	private double electricityUsage;
+	private double electricityUsageLastTick;
 
 	public TileEntityElectricityMeter() {
 		this(MachineType.BASIC_ELECTRICITY_METER, Tier.Electric.BASIC);
@@ -140,7 +142,9 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 			// Add the amount of energy we're extracting to the counter, and set the block as active.
 			if (!simulate) {// && storage.extractEnergy(maxExtract, true) > 0) {
                 setActive(true);
-				electricityCount += maxExtract;
+				electricityCount += maxExtract; // Adding the maxExtract value to the electricityCount.
+				setElectricityUsage((electricityUsageLastTick + maxExtract) / 2); // Calculating the average energy usage.
+				electricityUsageLastTick = maxExtract; // Update the last tick value to be used next tick.
 			}
 		}
 
@@ -244,5 +248,19 @@ public class TileEntityElectricityMeter extends TileEntityElectricityProvider im
 	 */
 	public void setElectricityCount(double electricityCount) {
 		this.electricityCount = electricityCount;
+	}
+
+	/**
+	 * Returns the amount of energy on average drained from this block.
+	 */
+	public double getElectricityUsage() {
+		return electricityUsage;
+	}
+
+	/**
+	 * Sets the amount of energy on average drained from this block.
+	 */
+	public void setElectricityUsage(double electricityUsage) {
+		this.electricityUsage = electricityUsage;
 	}
 }

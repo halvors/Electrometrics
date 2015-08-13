@@ -17,8 +17,9 @@ item.Multimeter.name=Multimeter
 
 // Gui
 gui.measured=Målt
-gui.stored=Lagret
+gui.averageUsage=Gjennomsnittlig bruk
 gui.reset=Nullstill
+gui.stored=Lagret
 gui.maxOutput=Maks utgående
 
 // Gui configuration
