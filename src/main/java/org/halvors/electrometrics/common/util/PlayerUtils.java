@@ -1,5 +1,7 @@
 package org.halvors.electrometrics.common.util;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -10,6 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class PlayerUtils {
+	@SideOnly(Side.CLIENT)
 	public static EntityPlayer getClientPlayer() {
 		return Minecraft.getMinecraft().thePlayer;
 	}
@@ -35,7 +38,7 @@ public class PlayerUtils {
 		MinecraftServer server = MinecraftServer.getServer();
 
 		if (server != null) {
-			return (List<EntityPlayerMP>) server.getConfigurationManager().playerEntityList;
+			return server.getConfigurationManager().playerEntityList;
 		}
 
 		return playerList;

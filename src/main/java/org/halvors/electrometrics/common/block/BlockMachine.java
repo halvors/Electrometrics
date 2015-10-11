@@ -245,13 +245,15 @@ public class BlockMachine extends BlockRotatable {
 
 	@Override
 	public float getBlockHardness(World world, int x, int y, int z) {
-		TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
+		if (world.isRemote) {
+			TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
 
-		// If this TileEntity implements ITileOwnable, we check if there is a owner.
-		if (tileEntity instanceof ITileOwnable) {
-			ITileOwnable tileOwnable = (ITileOwnable) tileEntity;
+			// If this TileEntity implements ITileOwnable, we check if there is a owner.
+			if (tileEntity instanceof ITileOwnable) {
+				ITileOwnable tileOwnable = (ITileOwnable) tileEntity;
 
-			return tileOwnable.isOwner(PlayerUtils.getClientPlayer()) ? blockHardness : -1;
+				return tileOwnable.isOwner(PlayerUtils.getClientPlayer()) ? blockHardness : -1;
+			}
 		}
 
 		return blockHardness;
@@ -259,12 +261,14 @@ public class BlockMachine extends BlockRotatable {
 
 	@Override
 	public float getExplosionResistance(Entity entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ) {
-		TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
+		if (world.isRemote) {
+			TileEntity tileEntity = TileEntity.getTileEntity(world, x, y, z);
 
-		if (tileEntity instanceof ITileOwnable) {
-			ITileOwnable tileOwnable = (ITileOwnable) tileEntity;
+			if (tileEntity instanceof ITileOwnable) {
+				ITileOwnable tileOwnable = (ITileOwnable) tileEntity;
 
-			return tileOwnable.isOwner(PlayerUtils.getClientPlayer()) ? blockResistance : -1;
+				return tileOwnable.isOwner(PlayerUtils.getClientPlayer()) ? blockResistance : -1;
+			}
 		}
 
 		return blockResistance;
