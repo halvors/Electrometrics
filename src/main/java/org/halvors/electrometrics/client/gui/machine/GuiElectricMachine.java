@@ -35,7 +35,7 @@ public class GuiElectricMachine extends GuiMachine {
 			public List<String> getInfo() {
 				List<String> list = new ArrayList<>();
 				list.add(LanguageUtils.localize("gui.stored") + ": " + EnergyUtils.getEnergyDisplay(tileEntity.getStorage().getEnergyStored()));
-				list.add(LanguageUtils.localize("gui.maxOutput") + ": " + EnergyUtils.getEnergyDisplay(tileEntity.getStorage().getMaxExtract()));
+				list.add(LanguageUtils.localize("gui.maxOutput") + ": " + EnergyUtils.getEnergyDisplay(tileEntity.getStorage().getMaxExtract()) + "/t");
 
 				return list;
 			}
