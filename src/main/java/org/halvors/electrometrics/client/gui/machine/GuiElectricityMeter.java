@@ -72,12 +72,12 @@ public class GuiElectricityMeter extends GuiElectricMachine {
 		int y = ySize / 2;
 
 		String measured = LanguageUtils.localize("gui.measured");
-		String averageUsage = LanguageUtils.localize("gui.averageUsage");
-		int xOffset = Math.max(fontRendererObj.getStringWidth(measured), fontRendererObj.getStringWidth(averageUsage)) + 8;
+		String usage = LanguageUtils.localize("gui.usage");
+		int xOffset = Math.max(fontRendererObj.getStringWidth(measured), fontRendererObj.getStringWidth(usage)) + 8;
 
 		drawString(measured + ":", x, y - 24);
 		drawString(EnergyUtils.getEnergyDisplay(tileEntityElectricityMeter.getElectricityCount()), x + xOffset, y - 24);
-		drawString(averageUsage + ":", x, y - 12);
+		drawString(usage + ":", x, y - 12);
 		drawString(EnergyUtils.getEnergyDisplay(tileEntityElectricityMeter.getElectricityUsage()) + "/t", x + xOffset, y - 12);
 
 		if (ticker > 0) {

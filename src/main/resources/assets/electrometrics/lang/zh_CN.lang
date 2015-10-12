@@ -17,7 +17,7 @@ item.Multimeter.name=万用表
 
 // Gui
 gui.measured=Measured
-gui.averageUsage=Average usage
+gui.using=Using
 gui.reset=重置
 gui.stored=存储能量
 gui.maxOutput=最高输出

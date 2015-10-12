@@ -17,7 +17,7 @@ item.Multimeter.name=Multimètre
 
 // Gui
 gui.measured=Mesuré
-gui.averageUsage=Average usage
+gui.using=Using
 gui.reset=Mis à zéro
 gui.stored=Stocké
 gui.maxOutput=Sortie maxi
